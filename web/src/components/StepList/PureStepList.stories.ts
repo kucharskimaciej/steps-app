@@ -10,8 +10,8 @@ import { TagTypes } from "../../../../types/Tag";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import { action } from "@storybook/addon-actions";
 
-const stories = storiesOf("Components/StepList/PureStepList", module)
-    .addDecorator(Container("400px", "500px"))
+const stories = storiesOf("Components/PureStepList", module)
+    .addDecorator(Container("900px", "600px"))
     .addDecorator(WithGlobalStyles)
     .addDecorator(Spacing)
     .addDecorator(NeutralBackground);
@@ -95,20 +95,6 @@ stories.add("With scroll", () => {
         data: () => ({
             list
         })
-    };
-});
-
-stories.add("Selected step", () => {
-    const list = [...steps];
-    return {
-        components: { PureStepList },
-        template: `<PureStepList :steps="list" :selected-step-id="'fake-13'" @select-step="handleStepSelect($event)"/>`,
-        data: () => ({
-            list
-        }),
-        methods: {
-            handleStepSelect: action("SELECT_STEP")
-        }
     };
 });
 

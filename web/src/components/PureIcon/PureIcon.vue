@@ -11,5 +11,5 @@
 </script>
 
 <template>
-    <i class="material-icons align-middle text-xl">{{ type }}</i>
+    <i class="material-icons align-middle -mt-px">{{ type }}</i>
 </template>

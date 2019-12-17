@@ -12,12 +12,12 @@ export class StepsModule extends VuexModule implements StepsState {
     public query: string = "";
 
     @Mutation
-    public setSteps(steps: Step[]) {
+    private SET_STEPS(steps: Step[]) {
         this.steps = steps;
     }
 
-    @Action({ commit: "setSteps" })
-    public async getAllSteps() {
+    @Action({ commit: "SET_STEPS" })
+    public async fetchAllSteps() {
         return stepsResource.query();
     }
 }

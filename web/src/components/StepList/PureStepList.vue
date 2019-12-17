@@ -10,18 +10,15 @@
     })
     export default class PureStepList extends Vue {
         @Prop() private steps!: Step[];
-        @Prop() private selectedStepId!: string;
 
         @Emit()
-        selectStep(stepId: string) {}
+        addStepToPractice(stepId: string) {}
     }
 </script>
 
 <template>
-    <section class="h-full overflow-y-auto overflow-x-hidden">
-        <PureStepListItem class="mb-2 hover:bg-gray-100 hover:rounded"
-                          @click.native="selectStep(step.document_id)"
-                          :class="{ 'bg-gray-200 rounded': step.document_id === selectedStepId }"
+    <section class="h-full overflow-y-auto overflow-x-hidden pr-4">
+        <PureStepListItem class="mb-2"
                           v-for="step in steps" :step="step" :key="step.id" />
     </section>
 </template>

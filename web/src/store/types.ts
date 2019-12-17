@@ -9,6 +9,13 @@ export interface StepsState {
     query: string;
 }
 
+
+export interface PracticeState {
+    steps: string[];
+}
+
 export interface RootState {
     auth: AuthState;
+    steps: StepsState;
+    practice: PracticeState;
 }

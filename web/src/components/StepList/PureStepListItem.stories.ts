@@ -26,12 +26,13 @@ const stepPrototype: Step = {
         { type: TagTypes.DANCE, text: "Fusion" },
         { text: "Zatrzymanie" }
     ],
-    created_at: Date.now()
+    created_at: Date.now(),
+    last_practiced_at: Date.now()
 };
 
-const stories = storiesOf("Components/StepList/PureStepListItem", module)
+const stories = storiesOf("Components/PureStepListItem", module)
     .addDecorator(WithGlobalStyles)
-    .addDecorator(Container("500px"))
+    .addDecorator(Container("1000px"))
     .addDecorator(Spacing)
     .addDecorator(NeutralBackground);
 
@@ -47,28 +48,23 @@ stories.add("Basic display", () => {
     };
 });
 
-stories.add("Extra long title", () => {
-    const step: Step = {
-        ...stepPrototype,
-        name:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus odio vitae cursus efficitur. Suspendisse pretium dui sed felis tincidunt consequat. Proin non nisi non sem commodo malesuada."
-    };
+stories.add("Selected", () => {
+    const step = { ...stepPrototype };
 
     return {
         components: { PureStepListItem },
-        template: '<PureStepListItem :step="step"/>',
+        template: '<PureStepListItem :step="step" :is-selected="true"/>',
         data: () => ({
             step
         })
     };
 });
 
-stories.add("No Tags", () => {
+stories.add("Extra long title", () => {
     const step: Step = {
         ...stepPrototype,
         name:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus odio vitae cursus efficitur. Suspendisse pretium dui sed felis tincidunt consequat. Proin non nisi non sem commodo malesuada.",
-        tags: undefined
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dapibus odio vitae cursus efficitur. Suspendisse pretium dui sed felis tincidunt consequat. Proin non nisi non sem commodo malesuada."
     };
 
     return {
