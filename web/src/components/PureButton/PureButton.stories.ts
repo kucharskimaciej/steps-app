@@ -90,3 +90,16 @@ stories.add("Icon only", () => {
         `
     };
 });
+
+stories.add("Disabled", () => {
+    return {
+        components: { PureButton },
+        template: `
+<div class="mb-5">
+    <PureButton kind="primary" feel="regular" disabled="true">Primary</PureButton>
+    <PureButton kind="success" feel="outline" disabled="true">Success</PureButton>
+    <PureButton kind="warning" feel="ghost" disabled="true">Warning</PureButton>
+</div>
+        `
+    };
+});

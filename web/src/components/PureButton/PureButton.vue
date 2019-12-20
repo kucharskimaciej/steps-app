@@ -34,9 +34,9 @@ export function buttonColors(kind: ButtonKind, feel: ButtonFeel): string {
             `;
         case "ghost":
             return `
-                bg-gray-100
+                bg-transparent
                 border-transparent
-                hover:bg-gray-200
+                hover:bg-gray-100
                 hover:text-${primaryColor}-base
             `;
     }
