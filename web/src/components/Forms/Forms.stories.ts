@@ -1,43 +1,3 @@
-// import { storiesOf } from "@storybook/vue";
-// import {
-//     Container,
-//     NeutralBackground,
-//     Spacing,
-//     WithGlobalStyles
-// } from "@/stories/decorators";
-// import Input from "@/components/Forms/Input.vue";
-// import FormGroup from "@/components/Forms/FormGroup.vue";
-// import { boolean, withKnobs } from "@storybook/addon-knobs";
-//
-// const stories = storiesOf("Components/Forms", module)
-//     .addDecorator(withKnobs)
-//     .addDecorator(WithGlobalStyles)
-//     .addDecorator(Container("600px"))
-//     .addDecorator(Spacing)
-//     .addDecorator(NeutralBackground);
-//
-// stories.add("Input", () => {
-//     return {
-//         components: { Input },
-//         template: `<Input placeholder="Custom placeholder"/>`
-//     };
-// });
-//
-// stories.add("FormGroup|Input", () => {
-//     return {
-//         components: { Input, FormGroup },
-//         template: `
-//             <section>
-//                 <FormGroup label="Normal input"><Input placeholder="Custom placeholder"/></FormGroup>
-//                 <FormGroup label="Has errors" :has-error="hasError"><Input placeholder="Custom placeholder"/></FormGroup>
-//             </section>
-//         `,
-//         data: () => ({
-//             hasError: boolean('hasError', false)
-//         })
-//     };
-// });
-
 import { addDecorator } from "@storybook/vue";
 import {
     Container,
@@ -47,46 +7,65 @@ import {
 } from "@/stories/decorators";
 import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 import Input from "@/components/Forms/Input.vue";
+import Select from "@/components/Forms/Select.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 
 export default {
-    title: "Components/Forms"
+    title: "Components/Forms",
+    decorators: [
+        withKnobs,
+        WithGlobalStyles,
+        Container("600px"),
+        Spacing,
+        NeutralBackground
+    ]
 };
 
-addDecorator(withKnobs);
-addDecorator(WithGlobalStyles);
-addDecorator(Container("600px"));
-addDecorator(Spacing);
-addDecorator(NeutralBackground);
-
 export const BasicInput = () => ({
-    components: { Input },
-    template: `<div>
-        <Input :placeholder="placeholder" v-model="value"/>
-        <pre>{{ value }}</pre>
-    </div>`,
-    props: {
-        placeholder: {
-            type: String,
-            default: text('Some', 'Custom placeholder')
-        }
-    },
-    data: () => ({
-        value: 'weeeel'
-    })
-});
-
-export const FormGroup_Input = () => ({
     components: { Input, FormGroup },
-    template: `<FormGroup :label="label" :invalid="hasError"><Input /></FormGroup>`,
+    template: `<FormGroup :label="label" :invalid="hasError"><Input v-model="value" /></FormGroup>`,
     props: {
         label: {
             type: String,
-            default: text('label', 'Just an input')
+            default: text("label", "Just an input")
         },
         hasError: {
             type: Boolean,
-            default: boolean('invalid', false)
+            default: boolean("invalid", false)
         }
-    }
-})
+    },
+    data: () => ({
+        value: ""
+    })
+});
+
+export const BasicSelect = () => ({
+    components: { Select, FormGroup },
+    template: `
+        <FormGroup :label="label" :invalid="hasError">
+            <Select v-model="value">
+                <option v-for="option in options" :value="option.id">{{ option.text }}</option>
+            </Select>
+        </FormGroup>`,
+    props: {
+        label: {
+            type: String,
+            default: text("label", "Just a select")
+        },
+        hasError: {
+            type: Boolean,
+            default: boolean("invalid", false)
+        },
+        options: {
+            default: [
+                { id: 1, text: "Option 1" },
+                { id: 2, text: "Option 2" },
+                { id: 3, text: "Option 3" },
+                { id: 4, text: "Option 4" },
+            ]
+        }
+    },
+    data: () => ({
+        value: null,
+    })
+});

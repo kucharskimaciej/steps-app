@@ -12,6 +12,7 @@
     "typecheck": "tsc -p . --noEmit"
   },
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.1.0",
     "core-js": "^2.6.5",
     "firebase": "^6.3.5",
     "material-design-icons-iconfont": "^5.0.1",
