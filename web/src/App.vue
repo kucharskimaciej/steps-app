@@ -1,5 +1,7 @@
 <template>
-    <div>{{ loginStatus }} {{ uid }}</div>
+    <GlobalStyles>
+        <router-view></router-view>
+    </GlobalStyles>
 </template>
 
 <script lang="ts">
@@ -10,6 +12,7 @@ import { getModule } from "vuex-module-decorators";
 import { AuthModule } from "@/store/modules/auth";
 import { Container } from "typedi";
 import { FirebaseService } from "@/lib/firebase.service";
+import { StepsModule } from "@/store/modules/steps";
 
 @Component({
     components: {
@@ -18,11 +21,8 @@ import { FirebaseService } from "@/lib/firebase.service";
 })
 export default class App extends Vue implements ComponentOptions<Vue> {
     private auth = getModule(AuthModule, this.$store);
+    private steps = getModule(StepsModule, this.$store);
     private firebase = Container.get(FirebaseService);
-
-    get loginStatus() {
-        return this.auth.status;
-    }
 
     get uid() {
         return this.auth.uid;
@@ -40,6 +40,8 @@ export default class App extends Vue implements ComponentOptions<Vue> {
 
             if (!user) {
                 await this.firebase.authenticate();
+            } else {
+                await this.steps.fetchAllSteps();
             }
         });
     }

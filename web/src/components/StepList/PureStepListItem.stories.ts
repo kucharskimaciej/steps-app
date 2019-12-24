@@ -5,22 +5,18 @@ import {
     Spacing,
     WithGlobalStyles
 } from "@/stories/decorators";
-import { Step } from "../../../../types/Step";
-import { TagTypes } from "../../../../types/Tag";
+import { Step } from "../../../../common/types/Step";
+import { TagTypes } from "../../../../common/types/Tag";
 import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
+import { action } from "@storybook/addon-actions";
 
 const stepPrototype: Step = {
-    document_id: "fake-id",
+    id: "fake-id",
     owner_uid: "fake-id",
-    id: 12,
+    identifier: 12,
     name: "Męska grande-saida z zatrzymaniem partnerki",
-    media: [
-        {
-            source: "google_photos",
-            url:
-                "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
-        }
-    ],
+    url:
+        "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
     tags: [
         { text: "Grande saida" },
         { type: TagTypes.DANCE, text: "Fusion" },
@@ -41,10 +37,14 @@ stories.add("Basic display", () => {
 
     return {
         components: { PureStepListItem },
-        template: '<PureStepListItem :step="step"/>',
+        template: '<PureStepListItem :step="step" @edit="handleEdit" @select="handleSelect"/>',
         data: () => ({
             step
-        })
+        }),
+        methods: {
+            handleEdit: action("EDIT"),
+            handleSelect: action("SELECT")
+        }
     };
 });
 

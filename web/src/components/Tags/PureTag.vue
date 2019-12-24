@@ -7,7 +7,7 @@
 
 <script lang="ts">
     import { Component, Prop, Vue } from "vue-property-decorator";
-    import { Tag as TagType } from "../../../../types/Tag";
+    import { Tag as TagType } from "../../../../common/types/Tag";
 
     @Component
     export default class PureTag extends Vue {

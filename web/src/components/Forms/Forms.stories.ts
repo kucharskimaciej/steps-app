@@ -9,6 +9,8 @@ import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 import Input from "@/components/Forms/Input.vue";
 import Select from "@/components/Forms/Select.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
+import PureCheckbox from "@/components/Forms/PureCheckbox.vue";
+import Checklist from "@/components/Forms/Checklist.vue";
 
 export default {
     title: "Components/Forms",
@@ -61,11 +63,65 @@ export const BasicSelect = () => ({
                 { id: 1, text: "Option 1" },
                 { id: 2, text: "Option 2" },
                 { id: 3, text: "Option 3" },
-                { id: 4, text: "Option 4" },
+                { id: 4, text: "Option 4" }
             ]
         }
     },
     data: () => ({
-        value: null,
+        value: null
+    })
+});
+
+export const Checkbox = () => ({
+    components: { PureCheckbox, FormGroup },
+    template: `
+        <section>
+            <FormGroup :invalid="hasError">
+                <PureCheckbox v-model="value" type="checkbox">
+                    {{ label }}
+                </PureCheckbox>
+            </FormGroup>
+
+            value: {{ value }}
+        </section>`,
+    props: {
+        hasError: {
+            type: Boolean,
+            default: boolean("invalid", false)
+        }
+    },
+    data: () => ({
+        value: true
+    })
+});
+
+export const ListOfCheckboxes = () => ({
+    components: { Checklist, FormGroup },
+    template: `
+        <section>
+            <FormGroup :invalid="hasError">
+                <Checklist v-model="values" :options="options" #default="{ option }">
+                    {{ option }}
+                </Checklist>
+            </FormGroup>
+
+            value: {{ values }}
+        </section>`,
+    props: {
+        label: {
+            type: String,
+            default: text("label", "Just a select")
+        },
+        options: {
+            type: String,
+            default: ['a', 'b', 'c']
+        },
+        hasError: {
+            type: Boolean,
+            default: boolean("invalid", false)
+        }
+    },
+    data: () => ({
+        values: []
     })
 });

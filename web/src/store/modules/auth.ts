@@ -1,23 +1,21 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { AuthState } from "@/store/types";
+import store from "../index";
 
-export type UserStatus = "AUTHENTICATED" | "NO_AUTH";
-
-@Module({ name: "auth" })
+@Module({ name: "auth", namespaced: true, dynamic: true, store })
 export class AuthModule extends VuexModule implements AuthState {
-
-    get status(): UserStatus {
-        return this.uid ? "AUTHENTICATED" : "NO_AUTH";
-    }
     public uid: string = "";
 
-    @Action({ commit: "setUid" })
-    public handleAuthStateChange(uid: string) {
-        return uid;
+    @Action({rawError:true})
+    public async handleAuthStateChange(uid: string) {
+        this.context.commit("SET_UID", uid);
+        await this.context.dispatch("currentUser/fetchUser", uid, {
+            root: true
+        });
     }
 
     @Mutation
-    private setUid(uid: string) {
+    private SET_UID(uid: string) {
         this.uid = uid;
     }
 }

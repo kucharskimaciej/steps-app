@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
+    "@types/lodash": "^4.14.149",
     "core-js": "^2.6.5",
     "firebase": "^6.3.5",
+    "lodash": "^4.17.15",
     "material-design-icons-iconfont": "^5.0.1",
     "moment": "^2.24.0",
     "reflect-metadata": "^0.1.13",

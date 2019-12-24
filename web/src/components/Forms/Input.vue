@@ -1,11 +1,11 @@
 <script lang="ts">
-    import {
-        Vue,
-        Component,
-        Prop,
-        Emit,
-        InjectReactive
-    } from "vue-property-decorator";
+import {
+    Vue,
+    Component,
+    Prop,
+    Emit,
+    InjectReactive
+} from "vue-property-decorator";
 
 @Component
 export default class Input extends Vue {
@@ -16,7 +16,7 @@ export default class Input extends Vue {
         return (event.target as HTMLInputElement).value;
     }
 
-    @InjectReactive({ from: 'hasError', default: false }) hasError!: boolean;
+    @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
 
     get validityClasses() {
         return this.hasError

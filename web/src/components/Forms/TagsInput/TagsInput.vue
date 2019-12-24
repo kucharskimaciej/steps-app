@@ -7,7 +7,7 @@ import {
     InjectReactive
 } from "vue-property-decorator";
 import VueTagsInput from "@johmun/vue-tags-input";
-import { Tag, TagTypes } from "../../../../../types/Tag";
+import { Tag, TagTypes } from "../../../../../common/types/Tag";
 
 @Component({
     components: {
@@ -17,7 +17,7 @@ import { Tag, TagTypes } from "../../../../../types/Tag";
 export default class TagsInput extends Vue {
     @Prop() private readonly value!: Tag[];
     @Prop() private readonly tagType!: TagTypes;
-    @Prop() private readonly autocomplete!: Tag[];
+    @Prop({ default: () => [] }) private readonly autocomplete!: Tag[];
     @Prop({ default: true }) private allowNew!: boolean;
 
     inputValue: string = "";
@@ -104,7 +104,7 @@ export default class TagsInput extends Vue {
     }
 
     .ti-autocomplete {
-        @apply -ml-3 mt-3 border-0 shadow rounded w-1/2;
+        @apply -ml-3 mt-3 border-0 shadow rounded;
 
         .ti-item {
             @apply px-3 py-1 rounded;

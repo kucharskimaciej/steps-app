@@ -1,5 +1,5 @@
 <template>
-    <div class="font-primary text-wood-bark text-light"><slot></slot></div>
+    <div class="min-h-screen font-primary text-wood-bark font-light bg-gray-100"><slot></slot></div>
 </template>
 
 <script>
@@ -14,8 +14,4 @@
 
     @import '../vendor/material-design-icons';
     @import url('https://fonts.googleapis.com/css?family=Proza+Libre:300,400,600|Roboto:100,300,500&display=swap&subset=latin-ext');
-
-    html {
-        font-weight: 300;
-    }
 </style>

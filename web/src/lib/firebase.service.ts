@@ -11,6 +11,8 @@ const FIREBASE_CONFIG = {
     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGE_SENDER_ID
 };
 
+export const Timestamp  = firebase.firestore.Timestamp;
+
 @Service()
 export class FirebaseService {
     private readonly firebaseApp: firebase.app.App;

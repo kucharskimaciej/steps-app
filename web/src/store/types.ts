@@ -1,21 +1,24 @@
-import { Step } from "../../../types/Step";
+import { Step } from "../../../common/types/Step";
+import { User } from "../../../common/types/User";
 
 export interface AuthState {
     uid: string;
 }
 
 export interface StepsState {
-    steps: Step[];
+    rawSteps: Step[];
     query: string;
 }
 
-
-export interface PracticeState {
-    steps: string[];
+export interface CurrentUserState {
+    user: User;
+    getters: {
+        practiceSteps: Record<string, boolean>;
+    };
 }
 
 export interface RootState {
     auth: AuthState;
     steps: StepsState;
-    practice: PracticeState;
+    currentUser: CurrentUserState;
 }

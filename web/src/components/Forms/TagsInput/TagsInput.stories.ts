@@ -7,7 +7,7 @@ import {
 } from "@/stories/decorators";
 import { Component } from "vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { Tag, TagTypes } from "../../../../../types/Tag";
+import { Tag, TagTypes } from "../../../../../common/types/Tag";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 
 export default {

@@ -12,7 +12,7 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
     components: { PureIcon }
 })
 export default class Select extends Vue {
-    @Prop() private value!: string;
+    @Prop({ type: [String, Number] }) private value!: string | number;
 
     @Emit("input")
     handleValueChange(event: InputEvent) {

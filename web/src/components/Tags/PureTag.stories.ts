@@ -4,7 +4,7 @@ import {
     NeutralBackground,
     Spacing
 } from "@/stories/decorators";
-import { Tag as TagType, TagTypes } from "../../../../types/Tag";
+import { Tag as TagType, TagTypes } from "../../../../common/types/Tag";
 import PureTag from "@/components/Tags/PureTag.vue";
 
 const tagStories = storiesOf("Components/Tags/PureTag", module)
