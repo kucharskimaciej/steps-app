@@ -27,11 +27,18 @@
                     </a>
                 </h2>
 
-                <!--                <aside class="flex flex-shrink-0 ml-4">-->
-                <!--                    <PureButton feel="ghost" kind="primary" class="mr-2" @click.native="edit()">-->
-                <!--                        <PureIcon type="edit" /> Edit-->
-                <!--                    </PureButton>-->
-                <!--                </aside>-->
+                <aside class="flex flex-shrink-0 ml-4">
+                    <router-link :to="`/edit/${step.id}`" v-slot="{ navigate }">
+                        <PureButton
+                            feel="ghost"
+                            kind="primary"
+                            class="mr-2"
+                            @click.native="navigate"
+                        >
+                            <PureIcon type="edit" /> Edit
+                        </PureButton>
+                    </router-link>
+                </aside>
             </header>
             <section class="mt-4 flex">
                 <div class="w-1/2">

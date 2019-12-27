@@ -1,11 +1,15 @@
 import { Service } from "typedi";
-import { FirebaseService } from "@/lib/firebase.service";
+import { FirebaseService, DocumentSnapshot } from "@/lib/firebase.service";
 import { RawStep } from "../../../common/types/Step";
+
+type EditableFields = "dance" | "difficulty" | "url" | "name" | "tags";
 
 export type CreateParams = Pick<
     RawStep,
-    "identifier" | "dance" | "difficulty" | "url" | "name" | "tags" | "owner_uid"
+    EditableFields | "owner_uid" | "identifier"
 >;
+
+export type UpdateParams = Partial<Pick<RawStep, EditableFields>>;
 
 @Service()
 export class StepsResource {
@@ -15,10 +19,7 @@ export class StepsResource {
 
     public async query(query?: any): Promise<RawStep[]> {
         const querySnapshot = await this.collection.get(query);
-        return querySnapshot.docs.map(d => ({
-            ...d.data(),
-            id: d.id
-        } as RawStep));
+        return querySnapshot.docs.map(this.toDocument);
     }
 
     public async create(params: CreateParams): Promise<RawStep> {
@@ -28,9 +29,20 @@ export class StepsResource {
         };
 
         const documentRef = await this.collection.add(stepToSave);
-        return documentRef.get().then(result => ({
-            ...result.data(),
-            id: documentRef.id
-        } as RawStep));
+        return documentRef.get().then(this.toDocument);
+    }
+
+    public async update(id: string, update: UpdateParams): Promise<RawStep> {
+        const documentRef = this.collection.doc(id);
+
+        await documentRef.set(update, { merge: true });
+        return documentRef.get().then(this.toDocument);
+    }
+
+    private toDocument(snapshot: DocumentSnapshot): RawStep {
+        return {
+            ...snapshot.data(),
+            id: snapshot.id
+        } as RawStep;
     }
 }

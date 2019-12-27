@@ -9,6 +9,14 @@ import { Step } from "../../../../common/types/Step";
 import { TagTypes } from "../../../../common/types/Tag";
 import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { action } from "@storybook/addon-actions";
+import StoryRouter from "storybook-vue-router";
+
+const stories = storiesOf("Components/PureStepListItem", module)
+    .addDecorator((StoryRouter as any)())
+    .addDecorator(Container("800px"))
+    .addDecorator(Spacing)
+    .addDecorator(WithGlobalStyles)
+    .addDecorator(NeutralBackground);
 
 const stepPrototype: Step = {
     id: "fake-id",
@@ -25,12 +33,6 @@ const stepPrototype: Step = {
     created_at: Date.now(),
     last_practiced_at: Date.now()
 };
-
-const stories = storiesOf("Components/PureStepListItem", module)
-    .addDecorator(WithGlobalStyles)
-    .addDecorator(Container("1000px"))
-    .addDecorator(Spacing)
-    .addDecorator(NeutralBackground);
 
 stories.add("Basic display", () => {
     const step = { ...stepPrototype };

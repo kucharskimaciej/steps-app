@@ -2,7 +2,7 @@ import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { StepsState } from "@/store/types";
 import { RawStep, Step } from "../../../../common/types/Step";
 import { Container } from "typedi";
-import { CreateParams, StepsResource } from "@/lib/steps.resource";
+import { CreateParams, StepsResource, UpdateParams } from "@/lib/steps.resource";
 import { Tag, TagTypes } from "../../../../common/types/Tag";
 import { orderBy, uniqBy, maxBy } from "lodash";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
@@ -25,6 +25,11 @@ export class StepsModule extends VuexModule implements StepsState {
         this.rawSteps = [...this.rawSteps, step];
     }
 
+    @Mutation
+    private UPDATE_STEP(updatedStep: RawStep) {
+        this.rawSteps = this.rawSteps.map(step => step.id === updatedStep.id ? updatedStep : step);
+    }
+
     @Action({ commit: "SET_STEPS" })
     public async fetchAllSteps() {
         return stepsResource.query();
@@ -33,6 +38,11 @@ export class StepsModule extends VuexModule implements StepsState {
     @Action({ commit: "ADD_STEP" })
     public async createStep(params: CreateParams) {
         return stepsResource.create(params);
+    }
+
+    @Action({ commit: "UPDATE_STEP" })
+    public async updateStep([stepId, params]: [string, UpdateParams]){
+        return stepsResource.update(stepId, params);
     }
 
     get steps() {

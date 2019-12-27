@@ -1,14 +1,13 @@
 <script lang="ts">
-import { Vue, Component, Emit, Prop } from "vue-property-decorator";
+    import { Vue, Component, Emit, Prop, Watch } from "vue-property-decorator";
 import { Tag } from "../../../../common/types/Tag";
-import { Dance, StepDifficulty } from "../../../../common/types/Step";
+import { Dance, RawStep, Step } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Input from "@/components/Forms/Input.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import { pick, keys } from "lodash";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 
@@ -24,20 +23,22 @@ import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 })
 export default class StepForm extends Vue implements StepFormApi {
     @Prop({ default: () => [] }) private existingTags!: Tag[];
+    @Prop() private step!: RawStep;
 
     @Emit("save-step")
     handleSubmit(): StepFormData {
-        return pick(this, "name", "url", "difficulty", "tags", "dance");
+        return this.data;
     }
 
-    url: string = "";
-    name: string = "";
-    difficulty: StepDifficulty = 1;
-    tags: Tag[] = [];
-    dance: Dance[] = [];
+    data: StepFormData = this.getDataObject(this.step);
+
+    @Watch('step')
+    handleStepChange(step: RawStep) {
+        this.data = this.getDataObject(step);
+    }
 
     get danceValues(): Dance[] {
-        return keys(DANCES) as Dance[];
+        return Object.keys(DANCES) as Dance[];
     }
 
     danceLabel(dance: Dance): string {
@@ -49,11 +50,25 @@ export default class StepForm extends Vue implements StepFormApi {
     }
 
     reset(): void {
-        this.url = "";
-        this.name = "";
-        this.difficulty = 1;
-        this.tags = [];
-        this.dance = [];
+        this.data = this.getDataObject();
+    }
+
+    private getDataObject(step: Partial<RawStep> = {}): StepFormData {
+        const {
+            url = "",
+            name = "",
+            difficulty = 1,
+            dance = [],
+            tags = []
+        } = step;
+
+        return {
+            url,
+            name,
+            difficulty,
+            dance,
+            tags
+        };
     }
 }
 </script>
@@ -62,16 +77,16 @@ export default class StepForm extends Vue implements StepFormApi {
     <form @submit.prevent="handleSubmit()">
         <main>
             <FormGroup label="Video url">
-                <Input type="url" v-model="url" />
+                <Input type="url" v-model="data.url" />
             </FormGroup>
 
             <FormGroup label="Name">
-                <Input v-model="name" />
+                <Input v-model="data.name" />
             </FormGroup>
 
             <section class="flex">
                 <FormGroup class="w-1/2 pr-2" label="Difficulty">
-                    <Select v-model.number="difficulty">
+                    <Select v-model.number="data.difficulty">
                         <option
                             v-for="(label, value) in stepDifficulties"
                             :value="value"
@@ -81,7 +96,7 @@ export default class StepForm extends Vue implements StepFormApi {
                 </FormGroup>
                 <FormGroup class="w-1/2 pl-2" label="Dance">
                     <Checklist
-                        v-model="dance"
+                        v-model="data.dance"
                         :options="danceValues"
                         #default="{option}"
                     >
@@ -91,7 +106,7 @@ export default class StepForm extends Vue implements StepFormApi {
             </section>
 
             <FormGroup label="Tags">
-                <TagsInput v-model="tags" :autocomplete="existingTags" />
+                <TagsInput v-model="data.tags" :autocomplete="existingTags" />
             </FormGroup>
         </main>
         <footer class="mt-8 text-right">

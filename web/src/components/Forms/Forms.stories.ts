@@ -10,7 +10,6 @@ import Input from "@/components/Forms/Input.vue";
 import Select from "@/components/Forms/Select.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import PureCheckbox from "@/components/Forms/PureCheckbox.vue";
-import Checklist from "@/components/Forms/Checklist.vue";
 
 export default {
     title: "Components/Forms",
@@ -92,36 +91,5 @@ export const Checkbox = () => ({
     },
     data: () => ({
         value: true
-    })
-});
-
-export const ListOfCheckboxes = () => ({
-    components: { Checklist, FormGroup },
-    template: `
-        <section>
-            <FormGroup :invalid="hasError">
-                <Checklist v-model="values" :options="options" #default="{ option }">
-                    {{ option }}
-                </Checklist>
-            </FormGroup>
-
-            value: {{ values }}
-        </section>`,
-    props: {
-        label: {
-            type: String,
-            default: text("label", "Just a select")
-        },
-        options: {
-            type: String,
-            default: ['a', 'b', 'c']
-        },
-        hasError: {
-            type: Boolean,
-            default: boolean("invalid", false)
-        }
-    },
-    data: () => ({
-        values: []
     })
 });

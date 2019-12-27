@@ -12,6 +12,7 @@ const FIREBASE_CONFIG = {
 };
 
 export const Timestamp  = firebase.firestore.Timestamp;
+export type DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 @Service()
 export class FirebaseService {
