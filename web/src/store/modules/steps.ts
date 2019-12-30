@@ -8,10 +8,10 @@ import { orderBy, uniqBy, maxBy } from "lodash";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
 import store from "../index";
 
-const stepsResource = Container.get(StepsResource);
-
 @Module({ name: "steps", dynamic: true, store, namespaced: true })
 export class StepsModule extends VuexModule implements StepsState {
+    private readonly stepsResource = Container.get(StepsResource);
+
     public rawSteps: RawStep[] = [];
     public query: string = "";
 
@@ -32,17 +32,17 @@ export class StepsModule extends VuexModule implements StepsState {
 
     @Action({ commit: "SET_STEPS" })
     public async fetchAllSteps() {
-        return stepsResource.query();
+        return this.stepsResource.query();
     }
 
     @Action({ commit: "ADD_STEP" })
     public async createStep(params: CreateParams) {
-        return stepsResource.create(params);
+        return this.stepsResource.create(params);
     }
 
     @Action({ commit: "UPDATE_STEP" })
     public async updateStep([stepId, params]: [string, UpdateParams]){
-        return stepsResource.update(stepId, params);
+        return this.stepsResource.update(stepId, params);
     }
 
     get steps() {

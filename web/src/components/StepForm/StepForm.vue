@@ -13,6 +13,9 @@ import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
 import { minLength, required, url } from "vuelidate/lib/validators";
 import { oneOf } from "@/lib/validators/oneOf";
+import { duplicate } from "@/lib/validators/duplicate";
+import { Container } from "typedi";
+import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 
 @Component({
     components: {
@@ -24,26 +27,31 @@ import { oneOf } from "@/lib/validators/oneOf";
         Checklist
     },
     mixins: [validationMixin],
-    validations: {
-        formData: {
-            url: {
-                required,
-                url
-            },
-            name: {
-                required
-            },
-            difficulty: {
-                required,
-                oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
-            },
-            dance: {
-                required,
-                minLength: minLength(1)
-            },
-            tags: {
-                required,
-                minLength: minLength(1)
+    validations(this: StepForm) {
+        return {
+            formData: {
+                url: {
+                    required,
+                    url,
+                    duplicate: duplicate(
+                        this.duplicateLocator
+                    )
+                },
+                name: {
+                    required
+                },
+                difficulty: {
+                    required,
+                    oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
+                },
+                dance: {
+                    required,
+                    minLength: minLength(1)
+                },
+                tags: {
+                    required,
+                    minLength: minLength(1)
+                }
             }
         }
     }
@@ -51,6 +59,8 @@ import { oneOf } from "@/lib/validators/oneOf";
 export default class StepForm extends Vue implements StepFormApi {
     @Prop({ default: () => [] }) private existingTags!: Tag[];
     @Prop() private step!: RawStep;
+
+    private readonly duplicateLocator = Container.get(StepsByUrlDuplicateLocatorToken);
 
     handleSubmit() {
         this.$v.$touch();
@@ -104,6 +114,10 @@ export default class StepForm extends Vue implements StepFormApi {
     get form() {
         return this.$v.formData;
     }
+
+    get duplicateStep()  {
+        return this.duplicateLocator.getDuplicate(this.formData.url);
+    }
 }
 </script>
 
@@ -111,7 +125,10 @@ export default class StepForm extends Vue implements StepFormApi {
     <form @submit.prevent="handleSubmit()" novalidate>
         <main>
             <FormGroup label="Video url" :validation="form.url">
-                <Input type="url" v-model.trim="form.url.$model" />
+                <Input type="url" v-model.trim.lazy="form.url.$model" />
+                <template #help v-if="duplicateStep">
+                    <strong>Duplicate of</strong> {{ duplicateStep.name }}
+                </template>
             </FormGroup>
 
             <FormGroup label="Name" :validation="form.name">

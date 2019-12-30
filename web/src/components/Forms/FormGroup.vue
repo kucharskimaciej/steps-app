@@ -5,7 +5,8 @@ import ValidationHint from "@/components/Forms/ValidationHint.vue";
 
 @Component({
     components: { ValidationHint },
-    inject: [] })
+    inject: []
+})
 export default class FormGroup extends Vue {
     @Prop() private label!: string;
     @Prop() private invalid!: boolean;
@@ -18,15 +19,25 @@ export default class FormGroup extends Vue {
 </script>
 
 <template>
-    <section class="mb-5">
-        <label
-            class="block ml-3 mb-1 text-sm font-bold "
-            :class="{
-                'text-gray-700': !hasError,
-                'text-red-lighter': hasError
-            }"
-            >{{ label }}<ValidationHint :validation="validation" v-if="label && validation" /></label
-        >
-        <slot></slot>
+    <section
+        class="mb-5"
+        :class="{
+            'text-gray-700': !hasError,
+            'text-red-lighter': hasError
+        }"
+    >
+        <label class="block ml-3 mb-1 text-sm font-bold "
+            >{{ label
+            }}<ValidationHint
+                :validation="validation"
+                v-if="label && validation"
+        /></label>
+        <main class="mb-1">
+            <slot></slot>
+        </main>
+
+        <footer class="pl-3 text-2xs">
+            <slot name="help"></slot>
+        </footer>
     </section>
 </template>
