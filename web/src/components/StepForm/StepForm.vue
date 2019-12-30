@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Vue, Component, Emit, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { Tag } from "../../../../common/types/Tag";
-import { Dance, RawStep, Step } from "../../../../common/types/Step";
+import { Dance, RawStep } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Input from "@/components/Forms/Input.vue";
 import Select from "@/components/Forms/Select.vue";
@@ -10,6 +10,9 @@ import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
+import { validationMixin } from "vuelidate";
+import { minLength, required, url } from "vuelidate/lib/validators";
+import { oneOf } from "@/lib/validators/oneOf";
 
 @Component({
     components: {
@@ -19,22 +22,49 @@ import { StepFormApi, StepFormData } from "@/components/StepForm/types";
         TagsInput,
         PureButton,
         Checklist
+    },
+    mixins: [validationMixin],
+    validations: {
+        formData: {
+            url: {
+                required,
+                url
+            },
+            name: {
+                required
+            },
+            difficulty: {
+                required,
+                oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
+            },
+            dance: {
+                required,
+                minLength: minLength(1)
+            },
+            tags: {
+                required,
+                minLength: minLength(1)
+            }
+        }
     }
 })
 export default class StepForm extends Vue implements StepFormApi {
     @Prop({ default: () => [] }) private existingTags!: Tag[];
     @Prop() private step!: RawStep;
 
-    @Emit("save-step")
-    handleSubmit(): StepFormData {
-        return this.data;
+    handleSubmit() {
+        this.$v.$touch();
+
+        if (!this.$v.$invalid) {
+            this.$emit("save-step", this.formData);
+        }
     }
 
-    data: StepFormData = this.getDataObject(this.step);
+    formData: StepFormData = this.getDataObject(this.step);
 
-    @Watch('step')
+    @Watch("step")
     handleStepChange(step: RawStep) {
-        this.data = this.getDataObject(step);
+        this.formData = this.getDataObject(step);
     }
 
     get danceValues(): Dance[] {
@@ -50,7 +80,7 @@ export default class StepForm extends Vue implements StepFormApi {
     }
 
     reset(): void {
-        this.data = this.getDataObject();
+        this.formData = this.getDataObject();
     }
 
     private getDataObject(step: Partial<RawStep> = {}): StepFormData {
@@ -70,23 +100,31 @@ export default class StepForm extends Vue implements StepFormApi {
             tags
         };
     }
+
+    get form() {
+        return this.$v.formData;
+    }
 }
 </script>
 
 <template>
-    <form @submit.prevent="handleSubmit()">
+    <form @submit.prevent="handleSubmit()" novalidate>
         <main>
-            <FormGroup label="Video url">
-                <Input type="url" v-model="data.url" />
+            <FormGroup label="Video url" :validation="form.url">
+                <Input type="url" v-model.trim="form.url.$model" />
             </FormGroup>
 
-            <FormGroup label="Name">
-                <Input v-model="data.name" />
+            <FormGroup label="Name" :validation="form.name">
+                <Input v-model.trim="form.name.$model" />
             </FormGroup>
 
             <section class="flex">
-                <FormGroup class="w-1/2 pr-2" label="Difficulty">
-                    <Select v-model.number="data.difficulty">
+                <FormGroup
+                    class="w-1/2 pr-2"
+                    label="Difficulty"
+                    :validation="form.difficulty"
+                >
+                    <Select v-model.number="form.difficulty.$model">
                         <option
                             v-for="(label, value) in stepDifficulties"
                             :value="value"
@@ -94,9 +132,13 @@ export default class StepForm extends Vue implements StepFormApi {
                         >
                     </Select>
                 </FormGroup>
-                <FormGroup class="w-1/2 pl-2" label="Dance">
+                <FormGroup
+                    class="w-1/2 pl-2"
+                    label="Dance"
+                    :validation="form.dance"
+                >
                     <Checklist
-                        v-model="data.dance"
+                        v-model="form.dance.$model"
                         :options="danceValues"
                         #default="{option}"
                     >
@@ -105,8 +147,11 @@ export default class StepForm extends Vue implements StepFormApi {
                 </FormGroup>
             </section>
 
-            <FormGroup label="Tags">
-                <TagsInput v-model="data.tags" :autocomplete="existingTags" />
+            <FormGroup label="Tags" :validation="form.tags">
+                <TagsInput
+                    v-model="form.tags.$model"
+                    :autocomplete="existingTags"
+                />
             </FormGroup>
         </main>
         <footer class="mt-8 text-right">

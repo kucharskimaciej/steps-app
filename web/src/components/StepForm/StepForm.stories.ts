@@ -15,9 +15,9 @@ export default {
     title: "Components/StepForm",
     decorators: [
         withKnobs,
-        WithGlobalStyles,
         Container("600px"),
         Spacing,
+        WithGlobalStyles,
         NeutralBackground
     ]
 };

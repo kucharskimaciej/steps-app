@@ -1,13 +1,18 @@
 <script lang="ts">
-    import { Vue, Component, Prop, ProvideReactive } from "vue-property-decorator";
+import { Vue, Component, Prop, ProvideReactive } from "vue-property-decorator";
+import { Validation } from "vuelidate";
+import ValidationHint from "@/components/Forms/ValidationHint.vue";
 
-@Component({ inject: [] })
+@Component({
+    components: { ValidationHint },
+    inject: [] })
 export default class FormGroup extends Vue {
     @Prop() private label!: string;
     @Prop() private invalid!: boolean;
+    @Prop() private validation!: Validation;
 
-    @ProvideReactive('hasError') get hasError() {
-        return this.invalid;
+    @ProvideReactive("hasError") get hasError() {
+        return this.invalid || (this.validation && this.validation.$anyError);
     }
 }
 </script>
@@ -20,7 +25,7 @@ export default class FormGroup extends Vue {
                 'text-gray-700': !hasError,
                 'text-red-lighter': hasError
             }"
-            >{{ label }}</label
+            >{{ label }}<ValidationHint :validation="validation" v-if="label && validation" /></label
         >
         <slot></slot>
     </section>
