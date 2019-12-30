@@ -1,4 +1,4 @@
 export interface DuplicateLocator<ElementType, KeyType> {
-    isDuplicate(key: KeyType): boolean;
-    getDuplicate(key: KeyType): ElementType | void;
+    isDuplicate(key: KeyType, ignoreId?: string): boolean;
+    getDuplicate(key: KeyType, ignoreId?: string): ElementType | void;
 }

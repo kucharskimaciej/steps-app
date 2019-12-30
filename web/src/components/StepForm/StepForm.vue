@@ -34,7 +34,8 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
                     required,
                     url,
                     duplicate: duplicate(
-                        this.duplicateLocator
+                        this.duplicateLocator,
+                        this.step && this.step.id
                     )
                 },
                 name: {
@@ -116,7 +117,7 @@ export default class StepForm extends Vue implements StepFormApi {
     }
 
     get duplicateStep()  {
-        return this.duplicateLocator.getDuplicate(this.formData.url);
+        return this.duplicateLocator.getDuplicate(this.formData.url, this.step && this.step.id);
     }
 }
 </script>
