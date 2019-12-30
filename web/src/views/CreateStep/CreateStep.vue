@@ -6,6 +6,7 @@ import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";
 import { AuthModule } from "@/store/modules/auth";
+import "@/lib/stepsByUrlDuplicateLocator";
 
 @Component({
     components: {
@@ -16,8 +17,8 @@ import { AuthModule } from "@/store/modules/auth";
 export default class CreateStep extends Vue {
     @Ref("form") readonly form!: StepFormApi;
 
-    private steps = getModule(StepsModule);
-    private auth = getModule(AuthModule);
+    private steps = getModule(StepsModule, this.$store);
+    private auth = getModule(AuthModule, this.$store);
 
     async handleSaveStep(data: StepFormData) {
         try {

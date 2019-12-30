@@ -13,8 +13,8 @@ import { CurrentUserModule } from "@/store/modules/currentUser";
     }
 })
 export default class Steps extends Vue {
-    steps = getModule(StepsModule);
-    currentUser = getModule(CurrentUserModule);
+    steps = getModule(StepsModule, this.$store);
+    currentUser = getModule(CurrentUserModule, this.$store);
 
     isSelected = (stepId: string) => stepId in this.currentUser.practiceSteps;
 

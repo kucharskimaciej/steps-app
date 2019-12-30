@@ -6,6 +6,7 @@ import { StepFormData } from "@/components/StepForm/types";
 import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";
 import { RawStep } from "../../../../common/types/Step";
+import "@/lib/stepsByUrlDuplicateLocator";
 
 @Component({
     components: {
@@ -14,7 +15,7 @@ import { RawStep } from "../../../../common/types/Step";
     }
 })
 export default class EditStep extends Vue {
-    private steps = getModule(StepsModule);
+    private steps = getModule(StepsModule, this.$store);
 
     async handleSaveStep(data: StepFormData) {
         try {

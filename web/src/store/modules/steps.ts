@@ -6,12 +6,10 @@ import { CreateParams, StepsResource, UpdateParams } from "@/lib/steps.resource"
 import { Tag, TagTypes } from "../../../../common/types/Tag";
 import { orderBy, uniqBy, maxBy } from "lodash";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
-import store from "../index";
 
-@Module({ name: "steps", dynamic: true, store, namespaced: true })
+const stepsResource = Container.get(StepsResource);
+@Module({ name: "steps", namespaced: true })
 export class StepsModule extends VuexModule implements StepsState {
-    private readonly stepsResource = Container.get(StepsResource);
-
     public rawSteps: RawStep[] = [];
     public query: string = "";
 
@@ -32,17 +30,17 @@ export class StepsModule extends VuexModule implements StepsState {
 
     @Action({ commit: "SET_STEPS" })
     public async fetchAllSteps() {
-        return this.stepsResource.query();
+        return stepsResource.query();
     }
 
     @Action({ commit: "ADD_STEP" })
     public async createStep(params: CreateParams) {
-        return this.stepsResource.create(params);
+        return stepsResource.create(params);
     }
 
     @Action({ commit: "UPDATE_STEP" })
     public async updateStep([stepId, params]: [string, UpdateParams]){
-        return this.stepsResource.update(stepId, params);
+        return stepsResource.update(stepId, params);
     }
 
     get steps() {

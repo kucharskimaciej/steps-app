@@ -3,12 +3,11 @@ import { Container } from "typedi";
 import { UserResource } from "@/lib/user.resource";
 import { User } from "../../../../common/types/User";
 import { without } from "lodash";
-import store from "../index";
 import { CurrentUserState } from "@/store/types";
 
 const usersResource = Container.get(UserResource);
 
-@Module({ name: "currentUser", dynamic: true, store, namespaced: true })
+@Module({ name: "currentUser", namespaced: true })
 export class CurrentUserModule extends VuexModule {
     user: User = { practice: [] };
 

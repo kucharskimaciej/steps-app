@@ -13,6 +13,7 @@ import { AuthModule } from "@/store/modules/auth";
 import { Container } from "typedi";
 import { FirebaseService } from "@/lib/firebase.service";
 import { StepsModule } from "@/store/modules/steps";
+import { CurrentUserModule } from "@/store/modules/currentUser";
 
 @Component({
     components: {
@@ -20,6 +21,7 @@ import { StepsModule } from "@/store/modules/steps";
     }
 })
 export default class App extends Vue implements ComponentOptions<Vue> {
+    private currentUser = getModule(CurrentUserModule, this.$store);
     private auth = getModule(AuthModule, this.$store);
     private steps = getModule(StepsModule, this.$store);
     private firebase = Container.get(FirebaseService);
@@ -32,11 +34,11 @@ export default class App extends Vue implements ComponentOptions<Vue> {
         await this.firebase.setup();
 
         if (this.firebase.currentUser) {
-            this.auth.handleAuthStateChange(this.firebase.currentUser.uid);
+            await this.auth.handleAuthStateChange(this.firebase.currentUser.uid);
         }
 
         this.firebase.onAuthStateChange(async user => {
-            this.auth.handleAuthStateChange(user ? user.uid : "");
+            await this.auth.handleAuthStateChange(user ? user.uid : "");
 
             if (!user) {
                 await this.firebase.authenticate();
