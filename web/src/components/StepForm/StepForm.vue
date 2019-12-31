@@ -123,11 +123,11 @@ export default class StepForm extends Vue implements StepFormApi {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit()" novalidate>
+  <form novalidate @submit.prevent="handleSubmit()">
     <main>
       <FormGroup label="Video url" :validation="form.url">
-        <Input type="url" v-model.trim.lazy="form.url.$model" />
-        <template #help v-if="duplicateStep">
+        <Input v-model.trim.lazy="form.url.$model" type="url" />
+        <template v-if="duplicateStep" #help>
           <strong>Duplicate of</strong> {{ duplicateStep.name }}
         </template>
       </FormGroup>
@@ -143,16 +143,19 @@ export default class StepForm extends Vue implements StepFormApi {
           :validation="form.difficulty"
         >
           <Select v-model.number="form.difficulty.$model">
-            <option v-for="(label, value) in stepDifficulties" :value="value">{{
-              label
-            }}</option>
+            <option
+              v-for="(label, value) in stepDifficulties"
+              :key="value"
+              :value="value"
+              >{{ label }}</option
+            >
           </Select>
         </FormGroup>
         <FormGroup class="w-1/2 pl-2" label="Dance" :validation="form.dance">
           <Checklist
+            #default="{option}"
             v-model="form.dance.$model"
             :options="danceValues"
-            #default="{option}"
           >
             {{ danceLabel(option) }}
           </Checklist>

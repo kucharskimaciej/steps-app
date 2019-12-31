@@ -19,6 +19,8 @@ module.exports = {
     "prettier/@typescript-eslint"
   ],
   rules: {
-    "@typescript-eslint/explicit-function-return-type": 0
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "vue/max-attributes-per-line": 0,
+    "vue/html-indent": 0
   }
 };
