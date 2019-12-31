@@ -30,7 +30,7 @@ export default class CreateStep extends Vue {
 
             this.form.reset();
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 }

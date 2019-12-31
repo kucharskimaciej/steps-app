@@ -20,7 +20,7 @@ export default class TagsInput extends Vue {
     @Prop({ default: () => [] }) private readonly autocomplete!: Tag[];
     @Prop({ default: true }) private allowNew!: boolean;
 
-    inputValue: string = "";
+    inputValue = "";
 
     @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
 

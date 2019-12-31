@@ -34,7 +34,9 @@ export default class App extends Vue implements ComponentOptions<Vue> {
         await this.firebase.setup();
 
         if (this.firebase.currentUser) {
-            await this.auth.handleAuthStateChange(this.firebase.currentUser.uid);
+            await this.auth.handleAuthStateChange(
+                this.firebase.currentUser.uid
+            );
         }
 
         this.firebase.onAuthStateChange(async user => {

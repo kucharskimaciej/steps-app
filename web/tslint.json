@@ -25,8 +25,7 @@
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "triple-equals": [true, "allow-null-check"],
     "variable-name": [true, "ban-keywords"],
-    "no-console": [true, "log", "error", "debug", "group", "groupEnd"],
-    "no-floating-promises": true
+    "no-console": [true, "log", "debug", "group", "groupEnd"]
   },
   "linterOptions": {
     "exclude": ["node_modules/**"]

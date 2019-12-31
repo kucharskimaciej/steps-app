@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "husky": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "(cd web && npm run typecheck && npm run lint -- --fix)"
+    }
+  }
+}

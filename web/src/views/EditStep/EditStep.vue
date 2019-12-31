@@ -22,7 +22,7 @@ export default class EditStep extends Vue {
             await this.steps.updateStep([this.step.id, data]);
             await this.$router.back();
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 

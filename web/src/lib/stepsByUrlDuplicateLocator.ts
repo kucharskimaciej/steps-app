@@ -8,18 +8,18 @@ import store from "@/store";
 
 @Service(StepsByUrlDuplicateLocatorToken)
 export class StepsByUrlDuplicateLocator
-    implements DuplicateLocator<RawStep, string> {
-    private readonly steps = getModule(StepsModule, store);
+  implements DuplicateLocator<RawStep, string> {
+  private readonly steps = getModule(StepsModule, store);
 
-    isDuplicate(url: string, ignoreId?: string): boolean {
-        return this.steps.rawSteps.some(
-            step => step.url === url && ignoreId !== step.id
-        );
-    }
+  isDuplicate(url: string, ignoreId?: string): boolean {
+    return this.steps.rawSteps.some(
+      step => step.url === url && ignoreId !== step.id
+    );
+  }
 
-    getDuplicate(url: string, ignoreId: string) {
-        return this.steps.rawSteps.find(
-            step => step.url === url && ignoreId !== step.id
-        );
-    }
+  getDuplicate(url: string, ignoreId: string) {
+    return this.steps.rawSteps.find(
+      step => step.url === url && ignoreId !== step.id
+    );
+  }
 }

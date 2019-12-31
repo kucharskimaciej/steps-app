@@ -11,7 +11,7 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
-import { minLength, required, url } from "vuelidate/lib/validators";
+import { minLength, required, url as urlValidator } from "vuelidate/lib/validators";
 import { oneOf } from "@/lib/validators/oneOf";
 import { duplicate } from "@/lib/validators/duplicate";
 import { Container } from "typedi";
@@ -32,7 +32,7 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
             formData: {
                 url: {
                     required,
-                    url,
+                    url: urlValidator,
                     duplicate: duplicate(
                         this.duplicateLocator,
                         this.step && this.step.id
@@ -54,7 +54,7 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
                     minLength: minLength(1)
                 }
             }
-        }
+        };
     }
 })
 export default class StepForm extends Vue implements StepFormApi {

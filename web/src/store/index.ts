@@ -8,9 +8,9 @@ import { AuthModule } from "@/store/modules/auth";
 Vue.use(Vuex);
 
 export default new Vuex.Store<RootState>({
-    modules: {
-        auth: AuthModule,
-        steps: StepsModule,
-        currentUser: CurrentUserModule
-    }
+  modules: {
+    auth: AuthModule,
+    steps: StepsModule,
+    currentUser: CurrentUserModule
+  }
 });
