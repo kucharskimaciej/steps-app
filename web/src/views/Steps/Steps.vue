@@ -7,29 +7,29 @@ import Container from "@/components/Layout/Container.vue";
 import { CurrentUserModule } from "@/store/modules/currentUser";
 
 @Component({
-    components: {
-        Container,
-        PureStepList
-    }
+  components: {
+    Container,
+    PureStepList
+  }
 })
 export default class Steps extends Vue {
-    steps = getModule(StepsModule, this.$store);
-    currentUser = getModule(CurrentUserModule, this.$store);
+  steps = getModule(StepsModule, this.$store);
+  currentUser = getModule(CurrentUserModule, this.$store);
 
-    isSelected = (stepId: string) => stepId in this.currentUser.practiceSteps;
+  isSelected = (stepId: string) => stepId in this.currentUser.practiceSteps;
 
-    async handleStepSelected(stepId: string) {
-        await this.currentUser.toggleStepPractice(stepId);
-    }
+  async handleStepSelected(stepId: string) {
+    await this.currentUser.toggleStepPractice(stepId);
+  }
 }
 </script>
 
 <template>
-    <Container>
-        <PureStepList
-            :steps="steps.steps"
-            :is-selected="isSelected"
-            @select="handleStepSelected"
-        />
-    </Container>
+  <Container>
+    <PureStepList
+      :steps="steps.steps"
+      :is-selected="isSelected"
+      @select="handleStepSelected"
+    />
+  </Container>
 </template>

@@ -3,18 +3,18 @@ import { AuthState } from "@/store/types";
 
 @Module({ name: "auth", namespaced: true })
 export class AuthModule extends VuexModule implements AuthState {
-    public uid: string = "";
+  public uid: string = "";
 
-    @Action
-    public async handleAuthStateChange(uid: string) {
-        this.context.commit("SET_UID", uid);
-        await this.context.dispatch("currentUser/fetchUser", uid, {
-            root: true
-        });
-    }
+  @Action
+  public async handleAuthStateChange(uid: string) {
+    this.context.commit("SET_UID", uid);
+    await this.context.dispatch("currentUser/fetchUser", uid, {
+      root: true
+    });
+  }
 
-    @Mutation
-    private SET_UID(uid: string) {
-        this.uid = uid;
-    }
+  @Mutation
+  private SET_UID(uid: string) {
+    this.uid = uid;
+  }
 }

@@ -4,35 +4,35 @@ import PureCheckbox from "./PureCheckbox.vue";
 import { without, sortBy } from "lodash";
 
 @Component({
-    components: {
-        PureCheckbox
-    }
+  components: {
+    PureCheckbox
+  }
 })
 export default class Checklist extends Vue {
-    @Prop({ default: () => [] }) private value!: string[];
-    @Prop({ default: () => [] }) private options!: any[];
+  @Prop({ default: () => [] }) private value!: string[];
+  @Prop({ default: () => [] }) private options!: any[];
 
-    @Emit("input")
-    handleChange(option: string) {
-        return this.value.includes(option)
-            ? without(this.value, option)
-            : sortBy([...this.value, option], el => this.options.indexOf(el));
-    }
+  @Emit("input")
+  handleChange(option: string) {
+    return this.value.includes(option)
+      ? without(this.value, option)
+      : sortBy([...this.value, option], el => this.options.indexOf(el));
+  }
 
-    isChecked(option: string): boolean {
-        return this.value.includes(option);
-    }
+  isChecked(option: string): boolean {
+    return this.value.includes(option);
+  }
 }
 </script>
 
 <template>
-    <div>
-        <PureCheckbox
-            v-for="option of options"
-            :value="isChecked(option)"
-            @input="() => handleChange(option)"
-        >
-            <slot :option="option"></slot>
-        </PureCheckbox>
-    </div>
+  <div>
+    <PureCheckbox
+      v-for="option of options"
+      :value="isChecked(option)"
+      @input="() => handleChange(option)"
+    >
+      <slot :option="option"></slot>
+    </PureCheckbox>
+  </div>
 </template>

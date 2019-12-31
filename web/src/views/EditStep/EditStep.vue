@@ -9,37 +9,37 @@ import { RawStep } from "../../../../common/types/Step";
 import "@/lib/stepsByUrlDuplicateLocator";
 
 @Component({
-    components: {
-        Container,
-        StepForm
-    }
+  components: {
+    Container,
+    StepForm
+  }
 })
 export default class EditStep extends Vue {
-    private steps = getModule(StepsModule, this.$store);
+  private steps = getModule(StepsModule, this.$store);
 
-    async handleSaveStep(data: StepFormData) {
-        try {
-            await this.steps.updateStep([this.step.id, data]);
-            await this.$router.back();
-        } catch (err) {
-            console.error(err);
-        }
+  async handleSaveStep(data: StepFormData) {
+    try {
+      await this.steps.updateStep([this.step.id, data]);
+      await this.$router.back();
+    } catch (err) {
+      console.error(err);
     }
+  }
 
-    get step(): RawStep {
-        return this.steps.rawSteps.find(
-            step => this.$route.params.stepId === step.id
-        )!;
-    }
+  get step(): RawStep {
+    return this.steps.rawSteps.find(
+      step => this.$route.params.stepId === step.id
+    )!;
+  }
 }
 </script>
 
 <template>
-    <Container>
-        <StepForm
-            @save-step="handleSaveStep"
-            :existing-tags="steps.existingTags"
-            :step="step"
-        />
-    </Container>
+  <Container>
+    <StepForm
+      @save-step="handleSaveStep"
+      :existing-tags="steps.existingTags"
+      :step="step"
+    />
+  </Container>
 </template>

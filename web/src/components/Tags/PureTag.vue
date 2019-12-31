@@ -1,12 +1,10 @@
 <template>
-    <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm text-xs">
-        <span
-            v-if="tag.type"
-            class="text-gray-600 font-hairline text-2xs mr-1"
-            >{{ tag.type }}</span
-        >
-        {{ tag.text }}
-    </span>
+  <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm text-xs">
+    <span v-if="tag.type" class="text-gray-600 font-hairline text-2xs mr-1">{{
+      tag.type
+    }}</span>
+    {{ tag.text }}
+  </span>
 </template>
 
 <script lang="ts">
@@ -15,6 +13,6 @@ import { Tag as TagType } from "../../../../common/types/Tag";
 
 @Component
 export default class PureTag extends Vue {
-    @Prop() private readonly tag!: TagType;
+  @Prop() private readonly tag!: TagType;
 }
 </script>

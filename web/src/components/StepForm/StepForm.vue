@@ -11,176 +11,162 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
-import { minLength, required, url as urlValidator } from "vuelidate/lib/validators";
+import {
+  minLength,
+  required,
+  url as urlValidator
+} from "vuelidate/lib/validators";
 import { oneOf } from "@/lib/validators/oneOf";
 import { duplicate } from "@/lib/validators/duplicate";
 import { Container } from "typedi";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 
 @Component({
-    components: {
-        FormGroup,
-        Input,
-        Select,
-        TagsInput,
-        PureButton,
-        Checklist
-    },
-    mixins: [validationMixin],
-    validations(this: StepForm) {
-        return {
-            formData: {
-                url: {
-                    required,
-                    url: urlValidator,
-                    duplicate: duplicate(
-                        this.duplicateLocator,
-                        this.step && this.step.id
-                    )
-                },
-                name: {
-                    required
-                },
-                difficulty: {
-                    required,
-                    oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
-                },
-                dance: {
-                    required,
-                    minLength: minLength(1)
-                },
-                tags: {
-                    required,
-                    minLength: minLength(1)
-                }
-            }
-        };
-    }
+  components: {
+    FormGroup,
+    Input,
+    Select,
+    TagsInput,
+    PureButton,
+    Checklist
+  },
+  mixins: [validationMixin],
+  validations(this: StepForm) {
+    return {
+      formData: {
+        url: {
+          required,
+          url: urlValidator,
+          duplicate: duplicate(this.duplicateLocator, this.step && this.step.id)
+        },
+        name: {
+          required
+        },
+        difficulty: {
+          required,
+          oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
+        },
+        dance: {
+          required,
+          minLength: minLength(1)
+        },
+        tags: {
+          required,
+          minLength: minLength(1)
+        }
+      }
+    };
+  }
 })
 export default class StepForm extends Vue implements StepFormApi {
-    @Prop({ default: () => [] }) private existingTags!: Tag[];
-    @Prop() private step!: RawStep;
+  @Prop({ default: () => [] }) private existingTags!: Tag[];
+  @Prop() private step!: RawStep;
 
-    private readonly duplicateLocator = Container.get(StepsByUrlDuplicateLocatorToken);
+  private readonly duplicateLocator = Container.get(
+    StepsByUrlDuplicateLocatorToken
+  );
 
-    handleSubmit() {
-        this.$v.$touch();
+  handleSubmit() {
+    this.$v.$touch();
 
-        if (!this.$v.$invalid) {
-            this.$emit("save-step", this.formData);
-        }
+    if (!this.$v.$invalid) {
+      this.$emit("save-step", this.formData);
     }
+  }
 
-    formData: StepFormData = this.getDataObject(this.step);
+  formData: StepFormData = this.getDataObject(this.step);
 
-    @Watch("step")
-    handleStepChange(step: RawStep) {
-        this.formData = this.getDataObject(step);
-    }
+  @Watch("step")
+  handleStepChange(step: RawStep) {
+    this.formData = this.getDataObject(step);
+  }
 
-    get danceValues(): Dance[] {
-        return Object.keys(DANCES) as Dance[];
-    }
+  get danceValues(): Dance[] {
+    return Object.keys(DANCES) as Dance[];
+  }
 
-    danceLabel(dance: Dance): string {
-        return DANCES[dance];
-    }
+  danceLabel(dance: Dance): string {
+    return DANCES[dance];
+  }
 
-    get stepDifficulties() {
-        return STEP_DIFFICULTIES;
-    }
+  get stepDifficulties() {
+    return STEP_DIFFICULTIES;
+  }
 
-    reset(): void {
-        this.formData = this.getDataObject();
-    }
+  reset(): void {
+    this.formData = this.getDataObject();
+  }
 
-    private getDataObject(step: Partial<RawStep> = {}): StepFormData {
-        const {
-            url = "",
-            name = "",
-            difficulty = 1,
-            dance = [],
-            tags = []
-        } = step;
+  private getDataObject(step: Partial<RawStep> = {}): StepFormData {
+    const { url = "", name = "", difficulty = 1, dance = [], tags = [] } = step;
 
-        return {
-            url,
-            name,
-            difficulty,
-            dance,
-            tags
-        };
-    }
+    return {
+      url,
+      name,
+      difficulty,
+      dance,
+      tags
+    };
+  }
 
-    get form() {
-        return this.$v.formData;
-    }
+  get form() {
+    return this.$v.formData;
+  }
 
-    get duplicateStep()  {
-        return this.duplicateLocator.getDuplicate(this.formData.url, this.step && this.step.id);
-    }
+  get duplicateStep() {
+    return this.duplicateLocator.getDuplicate(
+      this.formData.url,
+      this.step && this.step.id
+    );
+  }
 }
 </script>
 
 <template>
-    <form @submit.prevent="handleSubmit()" novalidate>
-        <main>
-            <FormGroup label="Video url" :validation="form.url">
-                <Input type="url" v-model.trim.lazy="form.url.$model" />
-                <template #help v-if="duplicateStep">
-                    <strong>Duplicate of</strong> {{ duplicateStep.name }}
-                </template>
-            </FormGroup>
+  <form @submit.prevent="handleSubmit()" novalidate>
+    <main>
+      <FormGroup label="Video url" :validation="form.url">
+        <Input type="url" v-model.trim.lazy="form.url.$model" />
+        <template #help v-if="duplicateStep">
+          <strong>Duplicate of</strong> {{ duplicateStep.name }}
+        </template>
+      </FormGroup>
 
-            <FormGroup label="Name" :validation="form.name">
-                <Input v-model.trim="form.name.$model" />
-            </FormGroup>
+      <FormGroup label="Name" :validation="form.name">
+        <Input v-model.trim="form.name.$model" />
+      </FormGroup>
 
-            <section class="flex">
-                <FormGroup
-                    class="w-1/2 pr-2"
-                    label="Difficulty"
-                    :validation="form.difficulty"
-                >
-                    <Select v-model.number="form.difficulty.$model">
-                        <option
-                            v-for="(label, value) in stepDifficulties"
-                            :value="value"
-                            >{{ label }}</option
-                        >
-                    </Select>
-                </FormGroup>
-                <FormGroup
-                    class="w-1/2 pl-2"
-                    label="Dance"
-                    :validation="form.dance"
-                >
-                    <Checklist
-                        v-model="form.dance.$model"
-                        :options="danceValues"
-                        #default="{option}"
-                    >
-                        {{ danceLabel(option) }}
-                    </Checklist>
-                </FormGroup>
-            </section>
+      <section class="flex">
+        <FormGroup
+          class="w-1/2 pr-2"
+          label="Difficulty"
+          :validation="form.difficulty"
+        >
+          <Select v-model.number="form.difficulty.$model">
+            <option v-for="(label, value) in stepDifficulties" :value="value">{{
+              label
+            }}</option>
+          </Select>
+        </FormGroup>
+        <FormGroup class="w-1/2 pl-2" label="Dance" :validation="form.dance">
+          <Checklist
+            v-model="form.dance.$model"
+            :options="danceValues"
+            #default="{option}"
+          >
+            {{ danceLabel(option) }}
+          </Checklist>
+        </FormGroup>
+      </section>
 
-            <FormGroup label="Tags" :validation="form.tags">
-                <TagsInput
-                    v-model="form.tags.$model"
-                    :autocomplete="existingTags"
-                />
-            </FormGroup>
-        </main>
-        <footer class="mt-8 text-right">
-            <PureButton
-                type="submit"
-                kind="success"
-                spacing="wide"
-                size="large"
-            >
-                Save
-            </PureButton>
-        </footer>
-    </form>
+      <FormGroup label="Tags" :validation="form.tags">
+        <TagsInput v-model="form.tags.$model" :autocomplete="existingTags" />
+      </FormGroup>
+    </main>
+    <footer class="mt-8 text-right">
+      <PureButton type="submit" kind="success" spacing="wide" size="large">
+        Save
+      </PureButton>
+    </footer>
+  </form>
 </template>

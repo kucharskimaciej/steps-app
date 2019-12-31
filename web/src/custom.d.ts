@@ -1,1 +1,1 @@
-declare module '@johmun/vue-tags-input';
+declare module "@johmun/vue-tags-input";

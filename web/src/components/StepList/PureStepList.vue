@@ -4,28 +4,28 @@ import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { Step } from "../../../../common/types/Step";
 
 @Component({
-    components: {
-        PureStepListItem
-    }
+  components: {
+    PureStepListItem
+  }
 })
 export default class PureStepList extends Vue {
-    @Prop() private steps!: Step[];
-    @Prop() private isSelected!: (stepId: string) => boolean;
+  @Prop() private steps!: Step[];
+  @Prop() private isSelected!: (stepId: string) => boolean;
 
-    @Emit()
-    select(stepId: string) {}
+  @Emit()
+  select(stepId: string) {}
 }
 </script>
 
 <template>
-    <section class="h-full overflow-y-auto overflow-x-hidden pr-4">
-        <PureStepListItem
-            class="mb-2"
-            v-for="step in steps"
-            :step="step"
-            :key="step.id"
-            :is-selected="isSelected(step.id)"
-            @select="select(step.id)"
-        />
-    </section>
+  <section class="h-full overflow-y-auto overflow-x-hidden pr-4">
+    <PureStepListItem
+      class="mb-2"
+      v-for="step in steps"
+      :step="step"
+      :key="step.id"
+      :is-selected="isSelected(step.id)"
+      @select="select(step.id)"
+    />
+  </section>
 </template>
