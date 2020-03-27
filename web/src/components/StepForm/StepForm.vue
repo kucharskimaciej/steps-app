@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Tag } from "../../../../common/types/Tag";
+import { Tag, TagTypes } from "../../../../common/types/Tag";
 import { Dance, RawStep } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Input from "@/components/Forms/Input.vue";
@@ -50,6 +50,7 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
           required,
           minLength: minLength(1)
         },
+        artists: {},
         tags: {
           required,
           minLength: minLength(1)
@@ -60,6 +61,7 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 })
 export default class StepForm extends Vue implements StepFormApi {
   @Prop({ default: () => [] }) private existingTags!: Tag[];
+  @Prop({ default: () => [] }) private existingArtists!: string[];
   @Prop() private step!: RawStep;
 
   private readonly duplicateLocator = Container.get(
@@ -98,14 +100,22 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   private getDataObject(step: Partial<RawStep> = {}): StepFormData {
-    const { url = "", name = "", difficulty = 1, dance = [], tags = [] } = step;
+    const {
+      url = "",
+      name = "",
+      difficulty = 1,
+      dance = [],
+      tags = [],
+      artists = []
+    } = step;
 
     return {
       url,
       name,
       difficulty,
       dance,
-      tags
+      tags,
+      artists
     };
   }
 
@@ -118,6 +128,10 @@ export default class StepForm extends Vue implements StepFormApi {
       this.formData.url,
       this.step && this.step.id
     );
+  }
+
+  get artistTagType() {
+    return TagTypes.ARTIST;
   }
 }
 </script>
@@ -137,21 +151,27 @@ export default class StepForm extends Vue implements StepFormApi {
       </FormGroup>
 
       <section class="flex">
-        <FormGroup
-          class="w-1/2 pr-2"
-          label="Difficulty"
-          :validation="form.difficulty"
-        >
-          <Select v-model.number="form.difficulty.$model">
-            <option
-              v-for="(label, value) in stepDifficulties"
-              :key="value"
-              :value="value"
-              >{{ label }}</option
-            >
-          </Select>
-        </FormGroup>
-        <FormGroup class="w-1/2 pl-2" label="Dance" :validation="form.dance">
+        <div class="w-1/2 pr-3">
+          <FormGroup label="Difficulty" :validation="form.difficulty">
+            <Select v-model.number="form.difficulty.$model">
+              <option
+                v-for="(label, value) in stepDifficulties"
+                :key="value"
+                :value="value"
+                >{{ label }}</option
+              >
+            </Select>
+          </FormGroup>
+          <FormGroup label="Artists">
+            <TagsInput
+              v-model="form.artists.$model"
+              :autocomplete="existingArtists"
+              :tag-type="artistTagType"
+            />
+          </FormGroup>
+        </div>
+
+        <FormGroup class="w-1/2 pl-3" label="Dance" :validation="form.dance">
           <Checklist
             #default="{option}"
             v-model="form.dance.$model"

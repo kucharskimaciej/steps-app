@@ -1,4 +1,4 @@
-import { Tag } from "./Tag";
+import { ArtistTag, Tag } from "./Tag";
 import { DatabaseItem } from "./common/DatabaseItem";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
@@ -16,9 +16,10 @@ interface CommonFields extends DatabaseItem {
 }
 
 export interface RawStep extends CommonFields {
-  tags: Tag[];
+  tags: string[];
   difficulty: StepDifficulty;
   dance: Dance[];
+  artists: string[];
 }
 
 export interface Step extends CommonFields {

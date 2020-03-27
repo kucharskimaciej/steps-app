@@ -20,6 +20,7 @@ module.exports = {
   ],
   rules: {
     "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/camelcase": ["error", { properties: "never" }],
     "vue/max-attributes-per-line": 0,
     "vue/html-indent": 0
   }

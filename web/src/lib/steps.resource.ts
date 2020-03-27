@@ -2,7 +2,13 @@ import { Service } from "typedi";
 import { FirebaseService, DocumentSnapshot } from "@/lib/firebase.service";
 import { RawStep } from "../../../common/types/Step";
 
-type EditableFields = "dance" | "difficulty" | "url" | "name" | "tags";
+type EditableFields =
+  | "dance"
+  | "difficulty"
+  | "url"
+  | "name"
+  | "tags"
+  | "artists";
 
 export type CreateParams = Pick<
   RawStep,
@@ -17,15 +23,16 @@ export class StepsResource {
 
   constructor(private firebase: FirebaseService) {}
 
-  public async query(): Promise<RawStep[]> {
-    const querySnapshot = await this.collection.get();
+  public async query(uid: string): Promise<RawStep[]> {
+    const querySnapshot = await this.collection
+      .where("owner_uid", "==", uid)
+      .get();
     return querySnapshot.docs.map(this.toDocument);
   }
 
   public async create(params: CreateParams): Promise<RawStep> {
     const stepToSave: Omit<RawStep, "id"> = {
       ...params,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       created_at: Date.now()
     };
 

@@ -8,8 +8,10 @@ import {
 import { Step } from "../../../../common/types/Step";
 import { TagTypes } from "../../../../common/types/Tag";
 import PureStepList from "@/components/StepList/PureStepList.vue";
+import StoryRouter from "storybook-vue-router";
 
 const stories = storiesOf("Components/PureStepList", module)
+  .addDecorator((StoryRouter as any)())
   .addDecorator(Container("900px", "600px"))
   .addDecorator(WithGlobalStyles)
   .addDecorator(Spacing)
@@ -40,7 +42,8 @@ const steps: Step[] = [
     tags: [
       { text: "Tep" },
       { type: TagTypes.DANCE, text: "Kizomba" },
-      { text: "Przesunięcie nogi" }
+      { text: "Przesunięcie nogi" },
+      { type: TagTypes.ARTIST, text: "Nowak & Majchrowska" }
     ],
     created_at: Date.now()
   },
@@ -64,10 +67,13 @@ stories.add("Basic display", () => {
   const list = [...steps];
   return {
     components: { PureStepList },
-    template: '<PureStepList :steps="list"/>',
+    template: '<PureStepList :steps="list" :is-selected="isSelected"/>',
     data: () => ({
       list
-    })
+    }),
+    methods: {
+      isSelected: () => false
+    }
   };
 });
 
@@ -75,9 +81,12 @@ stories.add("With scroll", () => {
   const list = [...steps, ...steps, ...steps];
   return {
     components: { PureStepList },
-    template: `<PureStepList :steps="list"/>`,
+    template: `<PureStepList :steps="list" :is-selected="isSelected"/>`,
     data: () => ({
       list
-    })
+    }),
+    methods: {
+      isSelected: () => false
+    }
   };
 });

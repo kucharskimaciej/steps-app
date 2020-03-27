@@ -1,4 +1,4 @@
-import { Step } from "../../../common/types/Step";
+import { RawStep } from "../../../common/types/Step";
 import { User } from "../../../common/types/User";
 
 export interface AuthState {
@@ -6,7 +6,7 @@ export interface AuthState {
 }
 
 export interface StepsState {
-  rawSteps: Step[];
+  rawSteps: RawStep[];
   query: string;
 }
 

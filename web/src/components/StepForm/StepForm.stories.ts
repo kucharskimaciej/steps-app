@@ -5,7 +5,7 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles
-} from "../../stories/decorators";
+} from "@/stories/decorators";
 import { Component } from "vue";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { Container as DIContainer } from "typedi";
@@ -24,20 +24,21 @@ class FakeStepLocator implements DuplicateLocator<RawStep, string> {
           name: "Męska grande-saida z zatrzymaniem partnerki",
           url:
             "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
-          tags: [{ text: "Grande saida" }, { text: "Zatrzymanie" }],
+          tags: ["Grande saida", "Zatrzymanie"],
           difficulty: 3,
           dance: ["semba"],
-          created_at: Date.now()
+          created_at: Date.now(),
+          artists: []
         }
       : undefined;
   }
 }
 
-DIContainer.set(StepsByUrlDuplicateLocatorToken, new FakeStepLocator());
 import StepForm from "@/components/StepForm/StepForm.vue";
-import { Tag, TagTypes } from "../../../../common/types/Tag";
+import { ArtistTag, Tag, TagTypes } from "../../../../common/types/Tag";
 import { RawStep } from "../../../../common/types/Step";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
+DIContainer.set(StepsByUrlDuplicateLocatorToken, new FakeStepLocator());
 
 export default {
   title: "Components/StepForm",
@@ -54,19 +55,13 @@ export const EmptyForm: () => Component = () => ({
   components: {
     StepForm
   },
-  template: `<StepForm @save-step="handleSave" :existing-tags="tags" />`,
+  template: `<StepForm @save-step="handleSave" :existing-tags="tags" :existing-artists="artists" />`,
   methods: {
     handleSave: action("HANDLE_SAVE")
   },
   data: () => ({
-    tags: <Tag[]>[
-      { text: "saida" },
-      { type: TagTypes.DANCE, text: "Kizomba fusion" },
-      { type: TagTypes.DANCE, text: "Semba" },
-      { text: "Obrót" },
-      { text: "Zatrzymanie" },
-      { type: TagTypes.DIFFICULTY, text: "Łatwe" }
-    ]
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
+    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"]
   })
 });
 
@@ -74,34 +69,29 @@ export const WithData: () => Component = () => ({
   components: {
     StepForm
   },
-  template: `<StepForm @save-step="handleSave" :step="step" :existing-tags="tags" />`,
+  template: `<StepForm @save-step="handleSave" :step="step" :existing-tags="tags" :existing-artists="artists" />`,
   methods: {
     handleSave: action("HANDLE_SAVE")
   },
   data: () => ({
-    tags: <Tag[]>[
-      { text: "saida" },
-      { type: TagTypes.DANCE, text: "Kizomba fusion" },
-      { type: TagTypes.DANCE, text: "Semba" },
-      { text: "Obrót" },
-      { text: "Zatrzymanie" },
-      { type: TagTypes.DIFFICULTY, text: "Łatwe" }
-    ]
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
+    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"]
   }),
   props: {
     step: {
-      default: <RawStep>{
+      default: {
         id: "fake-id",
         owner_uid: "fake-id",
         identifier: 12,
         name: "Męska grande-saida z zatrzymaniem partnerki",
         url:
           "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
-        tags: [{ text: "Grande saida" }, { text: "Zatrzymanie" }],
+        tags: ["Grande saida", "Zatrzymanie"],
         difficulty: 3,
         dance: ["semba"],
-        created_at: Date.now()
-      }
+        created_at: Date.now(),
+        artists: []
+      } as RawStep
     }
   }
 });

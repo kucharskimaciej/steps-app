@@ -15,9 +15,8 @@ import { Tag, TagTypes } from "../../../../../common/types/Tag";
   }
 })
 export default class TagsInput extends Vue {
-  @Prop() private readonly value!: Tag[];
-  @Prop() private readonly tagType!: TagTypes;
-  @Prop({ default: () => [] }) private readonly autocomplete!: Tag[];
+  @Prop() private readonly value!: string[];
+  @Prop({ default: () => [] }) private readonly autocomplete!: string[];
   @Prop({ default: true }) private allowNew!: boolean;
 
   inputValue = "";
@@ -25,27 +24,21 @@ export default class TagsInput extends Vue {
   @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
 
   @Emit("input")
-  handleTagsChanged(newTags: { text: string }[]) {
-    return this.convertToTags(newTags);
+  handleTagsChanged(tags: Tag[]): string[] {
+    return tags.map(t => t.text);
   }
 
-  private convertToTags(newTags: { text: string }[]): Tag[] {
-    if (this.tagType) {
-      return newTags.map(t => ({ text: t.text, type: this.tagType }));
-    } else {
-      return newTags.map(t => ({ text: t.text }));
-    }
-  }
-
-  get filteredTags(): Tag[] | null {
+  get filteredItems(): string[] | null {
     if (!this.autocomplete) {
       return null;
     }
 
     const query = this.inputValue.toLowerCase();
-    return this.autocomplete.filter(tag =>
-      tag.text.toLowerCase().includes(query)
-    );
+    return this.autocomplete.filter(tag => tag.toLowerCase().includes(query));
+  }
+
+  asTags(items: string[] = []): Tag[] {
+    return items.map(text => ({ text }));
   }
 }
 </script>
@@ -56,8 +49,8 @@ export default class TagsInput extends Vue {
     :class="{ invalid: hasError }"
     v-model="inputValue"
     @tags-changed="handleTagsChanged"
-    :tags="value"
-    :autocomplete-items="filteredTags"
+    :tags="asTags(value)"
+    :autocomplete-items="asTags(filteredItems)"
     :add-only-from-autocomplete="!allowNew"
     placeholder="+ Add tag"
   />
@@ -91,8 +84,12 @@ export default class TagsInput extends Vue {
     @apply m-0 px-0 pb-px pt-1;
   }
 
+  .ti-tags {
+    @apply -mt-1;
+  }
+
   .ti-tag {
-    @apply bg-gray-300 text-gray-700 pl-3 pr-2 py-1 rounded-sm text-xs my-0 mr-2 -ml-1;
+    @apply bg-gray-300 text-gray-700 pl-3 pr-2 py-1 rounded-sm text-xs my-0 mt-1 mr-2 -ml-1;
 
     .ti-content {
       @apply mr-2;

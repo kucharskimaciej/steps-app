@@ -1,12 +1,12 @@
 import { Dance, StepDifficulty } from "../../../../common/types/Step";
-import { Tag } from "../../../../common/types/Tag";
 
 export type StepFormData = {
   url: string;
   name: string;
   difficulty: StepDifficulty;
-  tags: Tag[];
+  tags: string[];
   dance: Dance[];
+  artists: string[];
 };
 
 export interface StepFormApi {

@@ -84,7 +84,7 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 })
 export default class PureStepListItem extends Vue {
   @Prop() private step!: Step;
-  @Prop() private isSelected!: boolean;
+  @Prop({ default: false }) private isSelected!: boolean;
 
   @Emit()
   select() {}

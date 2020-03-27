@@ -15,7 +15,7 @@ const stepsResource = Container.get(StepsResource);
 @Module({ name: "steps", namespaced: true })
 export class StepsModule extends VuexModule implements StepsState {
   public rawSteps: RawStep[] = [];
-  public query: string = "";
+  public query = "";
 
   @Mutation
   private SET_STEPS(steps: RawStep[]) {
@@ -36,7 +36,7 @@ export class StepsModule extends VuexModule implements StepsState {
 
   @Action({ commit: "SET_STEPS" })
   public async fetchAllSteps() {
-    return stepsResource.query();
+    return stepsResource.query(this.context.rootState.auth.uid);
   }
 
   @Action({ commit: "ADD_STEP" })
@@ -60,10 +60,13 @@ export class StepsModule extends VuexModule implements StepsState {
         owner_uid,
         created_at,
         name,
-        url
+        url,
+        artists
       }) => {
         const generatedTags: Tag[] = [
-          ...tags,
+          ...tags.map(tag => ({
+            text: tag
+          })),
           ...dance.map(d => ({
             type: TagTypes.DANCE,
             text: DANCES[d]
@@ -71,7 +74,11 @@ export class StepsModule extends VuexModule implements StepsState {
           {
             type: TagTypes.DIFFICULTY,
             text: STEP_DIFFICULTIES[difficulty]
-          }
+          },
+          ...artists.map(artist => ({
+            type: TagTypes.ARTIST,
+            text: artist
+          }))
         ];
 
         return {
@@ -104,5 +111,9 @@ export class StepsModule extends VuexModule implements StepsState {
 
   get existingTags() {
     return uniqBy(this.rawSteps.map(step => step.tags).flat(), "text");
+  }
+
+  get existingArtists() {
+    return uniqBy(this.rawSteps.map(step => step.artists).flat(), "text");
   }
 }

@@ -46,11 +46,7 @@ export const EditExistingTags: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    value: <Tag[]>[
-      {
-        text: "A tag"
-      }
-    ]
+    value: ["A tag"]
   })
 });
 
@@ -62,14 +58,7 @@ export const Autocomplete: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    tags: <Tag[]>[
-      { text: "saida" },
-      { type: TagTypes.DANCE, text: "Kizomba fusion" },
-      { type: TagTypes.DANCE, text: "Semba" },
-      { text: "Obrót" },
-      { text: "Zatrzymanie" },
-      { type: TagTypes.DIFFICULTY, text: "Łatwe" }
-    ]
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
   })
 });
 
@@ -81,13 +70,6 @@ export const AutocompleteOnly: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    tags: <Tag[]>[
-      { text: "saida" },
-      { type: TagTypes.DANCE, text: "Kizomba fusion" },
-      { type: TagTypes.DANCE, text: "Semba" },
-      { text: "Obrót" },
-      { text: "Zatrzymanie" },
-      { type: TagTypes.DIFFICULTY, text: "Łatwe" }
-    ]
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
   })
 });
