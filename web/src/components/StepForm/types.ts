@@ -1,13 +1,9 @@
-import { Dance, StepDifficulty } from "../../../../common/types/Step";
+import { RawStep } from "../../../../common/types/Step";
 
-export type StepFormData = {
-  url: string;
-  name: string;
-  difficulty: StepDifficulty;
-  tags: string[];
-  dance: Dance[];
-  artists: string[];
-};
+export type StepFormData = Pick<
+  RawStep,
+  "url" | "name" | "difficulty" | "tags" | "dance" | "artists" | "notes"
+>;
 
 export interface StepFormApi {
   reset(): void;

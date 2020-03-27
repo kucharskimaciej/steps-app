@@ -1,4 +1,4 @@
-import { ArtistTag, Tag } from "./Tag";
+import { Tag } from "./Tag";
 import { DatabaseItem } from "./common/DatabaseItem";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
@@ -13,6 +13,7 @@ interface CommonFields extends DatabaseItem {
   last_viewed_at?: number;
   updated_at?: number;
   created_at: number;
+  notes: string;
 }
 
 export interface RawStep extends CommonFields {

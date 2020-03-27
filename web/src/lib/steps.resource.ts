@@ -8,7 +8,8 @@ type EditableFields =
   | "url"
   | "name"
   | "tags"
-  | "artists";
+  | "artists"
+  | "notes";
 
 export type CreateParams = Pick<
   RawStep,

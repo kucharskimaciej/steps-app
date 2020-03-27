@@ -30,7 +30,8 @@ const steps: Step[] = [
       { type: TagTypes.DANCE, text: "Fusion" },
       { text: "Zatrzymanie" }
     ],
-    created_at: Date.now()
+    created_at: Date.now(),
+    notes: ""
   },
   {
     id: "fake-13",
@@ -45,7 +46,8 @@ const steps: Step[] = [
       { text: "Przesunięcie nogi" },
       { type: TagTypes.ARTIST, text: "Nowak & Majchrowska" }
     ],
-    created_at: Date.now()
+    created_at: Date.now(),
+    notes: ""
   },
   {
     id: "fake-14",
@@ -59,7 +61,8 @@ const steps: Step[] = [
       { text: "Obrót" },
       { type: TagTypes.DANCE, text: "Kizomba" }
     ],
-    created_at: Date.now()
+    created_at: Date.now(),
+    notes: ""
   }
 ];
 

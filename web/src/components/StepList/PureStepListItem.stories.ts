@@ -31,7 +31,8 @@ const stepPrototype: Step = {
     { text: "Zatrzymanie" }
   ],
   created_at: Date.now(),
-  last_practiced_at: Date.now()
+  last_practiced_at: Date.now(),
+  notes: ""
 };
 
 stories.add("Basic display", () => {

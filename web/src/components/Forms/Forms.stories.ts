@@ -10,6 +10,7 @@ import Input from "@/components/Forms/Input.vue";
 import Select from "@/components/Forms/Select.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import PureCheckbox from "@/components/Forms/PureCheckbox.vue";
+import Textarea from "@/components/Forms/Textarea.vue";
 
 export default {
   title: "Components/Forms",
@@ -91,5 +92,23 @@ export const Checkbox = () => ({
   },
   data: () => ({
     value: true
+  })
+});
+
+export const BasicTextarea = () => ({
+  components: { Textarea, FormGroup },
+  template: `<FormGroup :label="label" :invalid="hasError"><Textarea v-model="value" /></FormGroup>`,
+  props: {
+    label: {
+      type: String,
+      default: text("label", "Textarea")
+    },
+    hasError: {
+      type: Boolean,
+      default: boolean("invalid", false)
+    }
+  },
+  data: () => ({
+    value: ""
   })
 });

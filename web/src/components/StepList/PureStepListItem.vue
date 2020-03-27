@@ -38,6 +38,9 @@
           </router-link>
         </aside>
       </header>
+      <section class="mt-2" v-if="step.notes">
+        <p>{{ step.notes }}</p>
+      </section>
       <section class="mt-4 flex">
         <div class="w-1/2">
           <PureTag

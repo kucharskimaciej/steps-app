@@ -20,6 +20,7 @@ import { oneOf } from "@/lib/validators/oneOf";
 import { duplicate } from "@/lib/validators/duplicate";
 import { Container } from "typedi";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
+import Textarea from "@/components/Forms/Textarea.vue";
 
 @Component({
   components: {
@@ -28,7 +29,8 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
     Select,
     TagsInput,
     PureButton,
-    Checklist
+    Checklist,
+    Textarea
   },
   mixins: [validationMixin],
   validations(this: StepForm) {
@@ -54,7 +56,8 @@ import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
         tags: {
           required,
           minLength: minLength(1)
-        }
+        },
+        notes: {}
       }
     };
   }
@@ -106,7 +109,8 @@ export default class StepForm extends Vue implements StepFormApi {
       difficulty = 1,
       dance = [],
       tags = [],
-      artists = []
+      artists = [],
+      notes = ""
     } = step;
 
     return {
@@ -115,7 +119,8 @@ export default class StepForm extends Vue implements StepFormApi {
       difficulty,
       dance,
       tags,
-      artists
+      artists,
+      notes
     };
   }
 
@@ -184,6 +189,10 @@ export default class StepForm extends Vue implements StepFormApi {
 
       <FormGroup label="Tags" :validation="form.tags">
         <TagsInput v-model="form.tags.$model" :autocomplete="existingTags" />
+      </FormGroup>
+
+      <FormGroup label="Notes" :validation="form.notes">
+        <Textarea v-model="form.notes.$model" />
       </FormGroup>
     </main>
     <footer class="mt-8 text-right">

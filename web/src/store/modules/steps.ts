@@ -61,7 +61,8 @@ export class StepsModule extends VuexModule implements StepsState {
         created_at,
         name,
         url,
-        artists
+        artists,
+        notes
       }) => {
         const generatedTags: Tag[] = [
           ...tags.map(tag => ({
@@ -87,6 +88,7 @@ export class StepsModule extends VuexModule implements StepsState {
           tags: generatedTags,
           url,
           name,
+          notes,
           created_at,
           owner_uid
         };
