@@ -8,7 +8,7 @@ import {
   UpdateParams
 } from "@/lib/steps.resource";
 import { Tag, TagTypes } from "../../../../common/types/Tag";
-import { orderBy, uniqBy, maxBy } from "lodash";
+import { orderBy, uniq, maxBy } from "lodash";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
 
 const stepsResource = Container.get(StepsResource);
@@ -112,10 +112,10 @@ export class StepsModule extends VuexModule implements StepsState {
   }
 
   get existingTags() {
-    return uniqBy(this.rawSteps.map(step => step.tags).flat(), "text");
+    return uniq(this.rawSteps.map(step => step.tags).flat());
   }
 
   get existingArtists() {
-    return uniqBy(this.rawSteps.map(step => step.artists).flat(), "text");
+    return uniq(this.rawSteps.map(step => step.artists).flat());
   }
 }

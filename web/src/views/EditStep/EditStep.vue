@@ -39,6 +39,7 @@ export default class EditStep extends Vue {
     <StepForm
       @save-step="handleSaveStep"
       :existing-tags="steps.existingTags"
+      :existing-artists="steps.existingArtists"
       :step="step"
     />
   </Container>
