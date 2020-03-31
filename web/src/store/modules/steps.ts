@@ -1,7 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { StepsState } from "@/store/types";
 import { RawStep, Step } from "../../../../common/types/Step";
-import { Container } from "typedi";
+import { Container } from "vue-typedi";
 import {
   CreateParams,
   StepsResource,

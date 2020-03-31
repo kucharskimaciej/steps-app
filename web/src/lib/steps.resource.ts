@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import { Service } from "vue-typedi";
 import { FirebaseService, DocumentSnapshot } from "@/lib/firebase.service";
 import { RawStep } from "../../../common/types/Step";
 
@@ -9,7 +9,9 @@ type EditableFields =
   | "name"
   | "tags"
   | "artists"
-  | "notes";
+  | "notes"
+  | "smart_tags"
+  | "removed_smart_tags";
 
 export type CreateParams = Pick<
   RawStep,

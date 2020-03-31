@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import { Service } from "vue-typedi";
 import { FirebaseService } from "@/lib/firebase.service";
 import { User } from "../../../common/types/User";
 

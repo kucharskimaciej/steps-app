@@ -73,3 +73,15 @@ export const AutocompleteOnly: () => Component = () => ({
     tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
   })
 });
+
+export const RemoveOnly: () => Component = () => ({
+  components: { TagsInput, FormGroup },
+  template: `
+      <FormGroup>
+          <TagsInput v-model="value" :allow-new="false" />
+      </FormGroup>
+  `,
+  data: () => ({
+    value: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
+  })
+});

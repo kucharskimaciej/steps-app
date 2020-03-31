@@ -10,7 +10,7 @@ import { ComponentOptions } from "vue";
 import GlobalStyles from "@/components/GlobalStyles.vue";
 import { getModule } from "vuex-module-decorators";
 import { AuthModule } from "@/store/modules/auth";
-import { Container } from "typedi";
+import { Container } from "vue-typedi";
 import { FirebaseService } from "@/lib/firebase.service";
 import { StepsModule } from "@/store/modules/steps";
 import { CurrentUserModule } from "@/store/modules/currentUser";

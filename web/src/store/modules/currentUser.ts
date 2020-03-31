@@ -1,5 +1,5 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { Container } from "typedi";
+import { Container } from "vue-typedi";
 import { UserResource } from "@/lib/user.resource";
 import { User } from "../../../../common/types/User";
 import { without } from "lodash";

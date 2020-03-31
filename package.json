@@ -4,7 +4,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "(cd web && npm run prettify && npm run typecheck && npm run lint -- --fix)"
+      "pre-commit": "(cd web && npm run prettify && npm run typecheck && npm run lint -- --fix && npm run test:unit)"
     }
   }
 }

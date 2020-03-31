@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import { Service } from "vue-typedi";
 import * as firebase from "firebase";
 
 const FIREBASE_CONFIG = {

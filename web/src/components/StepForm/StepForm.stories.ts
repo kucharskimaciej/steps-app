@@ -8,8 +8,9 @@ import {
 } from "@/stories/decorators";
 import { Component } from "vue";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
-import { Container as DIContainer } from "typedi";
+import { Container as DIContainer, Service } from "vue-typedi";
 
+@Service()
 class FakeStepLocator implements DuplicateLocator<RawStep, string> {
   isDuplicate(key: string): boolean {
     return key === "http://example.com";
@@ -29,17 +30,19 @@ class FakeStepLocator implements DuplicateLocator<RawStep, string> {
           dance: ["semba"],
           created_at: Date.now(),
           artists: [],
-          notes: ""
+          notes: "",
+          smart_tags: [],
+          removed_smart_tags: []
         }
       : undefined;
   }
 }
 
-import StepForm from "@/components/StepForm/StepForm.vue";
-import { ArtistTag, Tag, TagTypes } from "../../../../common/types/Tag";
-import { RawStep } from "../../../../common/types/Step";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 DIContainer.set(StepsByUrlDuplicateLocatorToken, new FakeStepLocator());
+
+import { RawStep } from "../../../../common/types/Step";
+import StepForm from "@/components/StepForm/StepForm.vue";
 
 export default {
   title: "Components/StepForm",
@@ -92,7 +95,9 @@ export const WithData: () => Component = () => ({
         dance: ["semba"],
         created_at: Date.now(),
         artists: [],
-        notes: ""
+        notes: "",
+        smart_tags: [],
+        removed_smart_tags: []
       } as RawStep
     }
   }

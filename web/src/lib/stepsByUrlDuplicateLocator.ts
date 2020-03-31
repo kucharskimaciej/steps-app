@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import { Service } from "vue-typedi";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";

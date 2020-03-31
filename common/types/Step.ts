@@ -21,6 +21,8 @@ export interface RawStep extends CommonFields {
   difficulty: StepDifficulty;
   dance: Dance[];
   artists: string[];
+  smart_tags: string[];
+  removed_smart_tags: string[];
 }
 
 export interface Step extends CommonFields {

@@ -1,4 +1,4 @@
-import { Token } from "typedi";
+import { Token } from "vue-typedi";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { RawStep } from "../../../common/types/Step";
 
