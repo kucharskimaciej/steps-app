@@ -62,10 +62,15 @@ export class StepsModule extends VuexModule implements StepsState {
         name,
         url,
         artists,
-        notes
+        notes,
+        smart_tags
       }) => {
         const generatedTags: Tag[] = [
           ...tags.map(tag => ({
+            text: tag
+          })),
+          ...(smart_tags || []).map(tag => ({
+            type: TagTypes.SMART,
             text: tag
           })),
           ...dance.map(d => ({

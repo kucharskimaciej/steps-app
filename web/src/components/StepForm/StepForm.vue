@@ -58,7 +58,6 @@ import { uniq, head, difference } from "lodash";
         },
         artists: {},
         tags: {
-          required,
           minLength: minLength(1)
         },
         notes: {},
