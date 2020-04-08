@@ -145,7 +145,7 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   get form() {
-    return this.$v.formData!;
+    return this.$v.formData;
   }
 
   get duplicateStep() {
