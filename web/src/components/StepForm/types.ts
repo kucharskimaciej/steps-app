@@ -15,4 +15,6 @@ export type StepFormData = Pick<
 
 export interface StepFormApi {
   reset(): void;
+  validate(): boolean;
+  value: StepFormData;
 }

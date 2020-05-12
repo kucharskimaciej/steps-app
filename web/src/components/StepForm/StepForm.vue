@@ -78,12 +78,17 @@ export default class StepForm extends Vue implements StepFormApi {
   @Inject()
   private readonly smartTags!: SmartTags;
 
-  handleSubmit() {
-    this.$v.$touch();
+  get value() {
+    return this.formData;
+  }
 
-    if (!this.$v.$invalid) {
-      this.$emit("save-step", this.formData);
-    }
+  validate(): boolean {
+    this.$v.$touch();
+    return !this.$v.$invalid;
+  }
+
+  reset(): void {
+    this.formData = this.getDataObject();
   }
 
   formData: StepFormData = this.getDataObject(this.step);
@@ -112,10 +117,6 @@ export default class StepForm extends Vue implements StepFormApi {
 
   get stepDifficulties() {
     return STEP_DIFFICULTIES;
-  }
-
-  reset(): void {
-    this.formData = this.getDataObject();
   }
 
   private getDataObject(step: Partial<RawStep> = {}): StepFormData {
@@ -174,7 +175,7 @@ export default class StepForm extends Vue implements StepFormApi {
 </script>
 
 <template>
-  <form novalidate @submit.prevent="handleSubmit()">
+  <form novalidate>
     <main>
       <FormGroup label="Video url" :validation="form.url">
         <Input v-model.trim.lazy="form.url.$model" type="url" />
@@ -251,10 +252,5 @@ export default class StepForm extends Vue implements StepFormApi {
         <Textarea v-model="form.notes.$model" />
       </FormGroup>
     </main>
-    <footer class="mt-8 text-right">
-      <PureButton type="submit" kind="success" spacing="wide" size="large">
-        Save
-      </PureButton>
-    </footer>
   </form>
 </template>

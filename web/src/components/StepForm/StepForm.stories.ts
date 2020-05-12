@@ -43,6 +43,9 @@ DIContainer.set(StepsByUrlDuplicateLocatorToken, new FakeStepLocator());
 
 import { RawStep } from "../../../../common/types/Step";
 import StepForm from "@/components/StepForm/StepForm.vue";
+import PureButton from "@/components/PureButton/PureButton.vue";
+import { StepFormApi } from "@/components/StepForm/types";
+import Vue from "vue";
 
 export default {
   title: "Components/StepForm",
@@ -57,11 +60,20 @@ export default {
 
 export const EmptyForm: () => Component = () => ({
   components: {
-    StepForm
+    StepForm,
+    PureButton
   },
-  template: `<StepForm @save-step="handleSave" :existing-tags="tags" :existing-artists="artists" />`,
+  template: `<main>
+      <StepForm ref="form" :existing-tags="tags" :existing-artists="artists" />
+      <PureButton @click.native="handleSave" kind="success" spacing="wide" size="large">Save</PureButton>
+  </main>`,
   methods: {
-    handleSave: action("HANDLE_SAVE")
+    handleSave() {
+      const form = ((this as Vue).$refs.form as unknown) as StepFormApi;
+      if (form.validate()) {
+        action("HANDLE_SAVE")(form.value);
+      }
+    }
   },
   data: () => ({
     tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
@@ -71,11 +83,20 @@ export const EmptyForm: () => Component = () => ({
 
 export const WithData: () => Component = () => ({
   components: {
-    StepForm
+    StepForm,
+    PureButton
   },
-  template: `<StepForm @save-step="handleSave" :step="step" :existing-tags="tags" :existing-artists="artists" />`,
+  template: `<main>
+      <StepForm ref="form" :step="step" :existing-tags="tags" :existing-artists="artists" />
+      <PureButton @click.native="handleSave" kind="success" spacing="wide" size="large">Save</PureButton>
+  </main>`,
   methods: {
-    handleSave: action("HANDLE_SAVE")
+    handleSave() {
+      const form = ((this as Vue).$refs.form as unknown) as StepFormApi;
+      if (form.validate()) {
+        action("HANDLE_SAVE")(form.value);
+      }
+    }
   },
   data: () => ({
     tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
