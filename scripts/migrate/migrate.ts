@@ -63,7 +63,7 @@ function getAllMigrations(): Migration[] {
         };
       });
   } catch (err) {
-    colors.bold(colors.red("Error reading migrations"));
+    console.log(colors.bold(colors.red("Error reading migrations")));
     console.error(err);
     process.exit(1);
   }
