@@ -4,6 +4,7 @@ import commander from "commander";
 import colors from "colors/safe";
 import Firebase from "firebase-admin";
 import { Migration, RunFn } from "./types";
+import "reflect-metadata";
 
 const ACCOUNT_CREDENTIALS_PATH = "accountCredentials";
 commander
@@ -63,6 +64,7 @@ function getAllMigrations(): Migration[] {
       });
   } catch (err) {
     colors.bold(colors.red("Error reading migrations"));
+    console.error(err);
     process.exit(1);
   }
 }

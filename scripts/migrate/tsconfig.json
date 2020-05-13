@@ -8,7 +8,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": ["migrate.ts", "migrations/**/*.ts"]
 }
