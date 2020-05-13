@@ -3,7 +3,7 @@ import { range } from "lodash";
 
 @Service()
 export class TokenizeService {
-  static readonly STOP_CHARACTERS: RegExp = /[\s.,:;?!()"'/]+/g;
+  static readonly STOP_CHARACTERS: RegExp = /[\s\d.,:;?!()"'/]+/g;
   static readonly LENGTH_THRESHOLD: number = 2;
   static readonly TOKEN_SIZE_RANGE = range(1, 5); // 1-grams to 4-grams
   static readonly TOKEN_SEPARATOR = "|";
@@ -14,7 +14,7 @@ export class TokenizeService {
       .replace(TokenizeService.STOP_CHARACTERS, " ")
       .replace(
         new RegExp(
-          `(?:${TokenizeService.STOP_CHARACTERS.source}|^).{1,${TokenizeService.LENGTH_THRESHOLD}}(?:${TokenizeService.STOP_CHARACTERS.source}|$)`,
+          `(?:${TokenizeService.STOP_CHARACTERS.source}|^).{1,${TokenizeService.LENGTH_THRESHOLD}}(?=${TokenizeService.STOP_CHARACTERS.source}|$)`,
           "g"
         ),
         " "

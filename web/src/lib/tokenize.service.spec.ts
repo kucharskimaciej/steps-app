@@ -36,6 +36,17 @@ describe("#clean", () => {
     );
   });
 
+  test(`removes consecutive short words (<=${TokenizeService.LENGTH_THRESHOLD} letters) from the text`, () => {
+    expect(service.clean("Test on on test, but test")).toEqual(
+      "test test but test"
+    );
+  });
+
+  test("removes numbers", () => {
+    expect(service.clean("Test 4 test")).toEqual("test test");
+    expect(service.clean("Test test 12")).toEqual("test test");
+  });
+
   test("returns correct output for real usecases", () => {
     expect(service.clean("Zatrzymanie ręką za stopę")).toEqual(
       "zatrzymanie ręką stopę"
