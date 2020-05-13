@@ -11,6 +11,7 @@ export type StepFormData = Pick<
   | "notes"
   | "smart_tags"
   | "removed_smart_tags"
+  | "tokens"
 >;
 
 export interface StepFormApi {

@@ -32,7 +32,8 @@ class FakeStepLocator implements DuplicateLocator<RawStep, string> {
           artists: [],
           notes: "",
           smart_tags: [],
-          removed_smart_tags: []
+          removed_smart_tags: [],
+          tokens: []
         }
       : undefined;
   }
@@ -118,7 +119,8 @@ export const WithData: () => Component = () => ({
         artists: [],
         notes: "",
         smart_tags: [],
-        removed_smart_tags: []
+        removed_smart_tags: [],
+        tokens: []
       } as RawStep
     }
   }

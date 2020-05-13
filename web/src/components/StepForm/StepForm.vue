@@ -25,6 +25,7 @@ import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { SmartTags } from "@/lib/smartTags.service";
 import { DebounceTime } from "@/lib/decorators/debouceTime";
 import { uniq, head, difference } from "lodash";
+import { TokenizeService } from "@/lib/tokenize.service";
 
 @Component({
   components: {
@@ -62,7 +63,8 @@ import { uniq, head, difference } from "lodash";
         },
         notes: {},
         smart_tags: {},
-        removed_smart_tags: {}
+        removed_smart_tags: {},
+        tokens: {}
       }
     };
   }
@@ -77,6 +79,8 @@ export default class StepForm extends Vue implements StepFormApi {
 
   @Inject()
   private readonly smartTags!: SmartTags;
+
+  @Inject() private readonly tokenizer!: TokenizeService;
 
   get value() {
     return this.formData;
@@ -105,6 +109,8 @@ export default class StepForm extends Vue implements StepFormApi {
       this.smartTags.getSmartTags(name),
       this.formData.removed_smart_tags
     );
+
+    this.formData.tokens = this.tokenizer.tokenize(name);
   }
 
   get danceValues(): Dance[] {

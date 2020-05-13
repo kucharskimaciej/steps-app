@@ -23,6 +23,7 @@ export interface RawStep extends CommonFields {
   artists: string[];
   smart_tags: string[];
   removed_smart_tags: string[];
+  tokens: string[];
 }
 
 export interface Step extends CommonFields {

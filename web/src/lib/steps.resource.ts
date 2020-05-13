@@ -11,7 +11,8 @@ type EditableFields =
   | "artists"
   | "notes"
   | "smart_tags"
-  | "removed_smart_tags";
+  | "removed_smart_tags"
+  | "tokens";
 
 export type CreateParams = Pick<
   RawStep,
