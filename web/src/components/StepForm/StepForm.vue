@@ -135,7 +135,8 @@ export default class StepForm extends Vue implements StepFormApi {
       artists = [],
       notes = "",
       smart_tags = [],
-      removed_smart_tags = []
+      removed_smart_tags = [],
+      tokens = []
     } = step;
 
     return {
@@ -147,7 +148,8 @@ export default class StepForm extends Vue implements StepFormApi {
       artists,
       notes,
       smart_tags,
-      removed_smart_tags
+      removed_smart_tags,
+      tokens
     };
   }
 
