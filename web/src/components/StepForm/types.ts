@@ -2,7 +2,7 @@ import { RawStep } from "../../../../common/types/Step";
 
 export type StepFormData = Pick<
   RawStep,
-  | "url"
+  | "videos"
   | "name"
   | "difficulty"
   | "tags"

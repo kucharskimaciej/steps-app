@@ -5,21 +5,32 @@ import { StepsModule } from "@/store/modules/steps";
 import { RawStep } from "../../../common/types/Step";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 import store from "@/store";
+import { partial } from "lodash";
 
 @Service(StepsByUrlDuplicateLocatorToken)
 export class StepsByUrlDuplicateLocator
   implements DuplicateLocator<RawStep, string> {
   private readonly steps = getModule(StepsModule, store);
 
-  isDuplicate(url: string, ignoreId?: string): boolean {
+  isDuplicate(url: string, ignoreId = ""): boolean {
     return this.steps.rawSteps.some(
-      step => step.url === url && ignoreId !== step.id
+      partial(this.isDuplicatePredicate, url, ignoreId)
     );
   }
 
-  getDuplicate(url: string, ignoreId: string) {
+  getDuplicate(url: string, ignoreId = "") {
     return this.steps.rawSteps.find(
-      step => step.url === url && ignoreId !== step.id
+      partial(this.isDuplicatePredicate, url, ignoreId)
+    );
+  }
+
+  private isDuplicatePredicate(
+    url: string,
+    ignoreId: string,
+    step: RawStep
+  ): boolean {
+    return (
+      ignoreId !== step.id && step.videos.some(videoUrl => videoUrl === url)
     );
   }
 }

@@ -23,8 +23,9 @@ const steps: Step[] = [
     owner_uid: "fake-id",
     identifier: 12,
     name: "Męska grande-saida z zatrzymaniem partnerki",
-    url:
-      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
+    videos: [
+      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
+    ],
     tags: [
       { text: "Grande saida" },
       { type: TagTypes.DANCE, text: "Fusion" },
@@ -38,8 +39,9 @@ const steps: Step[] = [
     owner_uid: "fake-13",
     identifier: 13,
     name: "Tepy na 4 kroku saidy damskej + przesunięcie nogi",
-    url:
-      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
+    videos: [
+      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
+    ],
     tags: [
       { text: "Tep" },
       { type: TagTypes.DANCE, text: "Kizomba" },
@@ -54,8 +56,9 @@ const steps: Step[] = [
     owner_uid: "fake-id",
     identifier: 14,
     name: "Płynny obrót z przejściem przez shadow position",
-    url:
-      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
+    videos: [
+      "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
+    ],
     tags: [
       { text: "Shadow position" },
       { text: "Obrót" },

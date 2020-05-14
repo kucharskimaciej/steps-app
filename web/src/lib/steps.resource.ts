@@ -5,7 +5,7 @@ import { RawStep } from "../../../common/types/Step";
 type EditableFields =
   | "dance"
   | "difficulty"
-  | "url"
+  | "videos"
   | "name"
   | "tags"
   | "artists"

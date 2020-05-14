@@ -23,8 +23,9 @@ const stepPrototype: Step = {
   owner_uid: "fake-id",
   identifier: 12,
   name: "Męska grande-saida z zatrzymaniem partnerki",
-  url:
-    "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO",
+  videos: [
+    "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
+  ],
   tags: [
     { text: "Grande saida" },
     { type: TagTypes.DANCE, text: "Fusion" },

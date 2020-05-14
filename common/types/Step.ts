@@ -8,7 +8,7 @@ interface CommonFields extends DatabaseItem {
   identifier: number; // internal, auto-incremented identifier assigned per user
   owner_uid: string;
   name: string;
-  url: string;
+  videos: string[];
   last_practiced_at?: number;
   last_viewed_at?: number;
   updated_at?: number;

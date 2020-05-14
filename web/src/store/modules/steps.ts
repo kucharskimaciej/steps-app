@@ -60,7 +60,7 @@ export class StepsModule extends VuexModule implements StepsState {
         owner_uid,
         created_at,
         name,
-        url,
+        videos,
         artists,
         notes,
         smart_tags
@@ -91,7 +91,7 @@ export class StepsModule extends VuexModule implements StepsState {
           identifier,
           id,
           tags: generatedTags,
-          url,
+          videos,
           name,
           notes,
           created_at,
