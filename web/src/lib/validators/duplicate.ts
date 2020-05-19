@@ -1,8 +1,8 @@
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 
-export function duplicate<T>(
-  locator: DuplicateLocator<T, string>,
+export function duplicate<ElementType, KeyType>(
+  locator: DuplicateLocator<ElementType, KeyType>,
   ignoreId?: string
 ) {
-  return (value: string) => !locator.isDuplicate(value, ignoreId);
+  return (value: KeyType) => !locator.isDuplicate(value, ignoreId);
 }

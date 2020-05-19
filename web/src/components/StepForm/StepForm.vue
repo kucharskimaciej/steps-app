@@ -21,7 +21,7 @@ import { duplicate } from "@/lib/validators/duplicate";
 import { Inject } from "vue-typedi";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 import Textarea from "@/components/Forms/Textarea.vue";
-import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
+import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { SmartTags } from "@/lib/smartTags.service";
 import { DebounceTime } from "@/lib/decorators/debouceTime";
 import { uniq, head, difference } from "lodash";
@@ -75,7 +75,7 @@ export default class StepForm extends Vue implements StepFormApi {
   @Prop() private step!: RawStep;
 
   @Inject(StepsByUrlDuplicateLocatorToken)
-  private readonly duplicateLocator!: DuplicateLocator<RawStep, string>;
+  private readonly duplicateLocator!: StepDuplicateLocator;
 
   @Inject()
   private readonly smartTags!: SmartTags;
@@ -127,7 +127,7 @@ export default class StepForm extends Vue implements StepFormApi {
 
   private getDataObject(step: Partial<RawStep> = {}): StepFormData {
     const {
-      url = "",
+      videos = [],
       name = "",
       difficulty = 1,
       dance = [],
@@ -140,7 +140,7 @@ export default class StepForm extends Vue implements StepFormApi {
     } = step;
 
     return {
-      url,
+      videos,
       name,
       difficulty,
       dance,
@@ -159,7 +159,7 @@ export default class StepForm extends Vue implements StepFormApi {
 
   get duplicateStep() {
     return this.duplicateLocator.getDuplicate(
-      this.formData.url,
+      this.formData.videos,
       this.step && this.step.id
     );
   }

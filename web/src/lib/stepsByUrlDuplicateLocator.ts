@@ -1,36 +1,25 @@
 import { Service } from "vue-typedi";
-import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
+import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";
-import { RawStep } from "../../../common/types/Step";
 import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
 import store from "@/store";
-import { partial } from "lodash";
 
 @Service(StepsByUrlDuplicateLocatorToken)
-export class StepsByUrlDuplicateLocator
-  implements DuplicateLocator<RawStep, string> {
+export class StepsByUrlDuplicateLocator implements StepDuplicateLocator {
   private readonly steps = getModule(StepsModule, store);
 
-  isDuplicate(url: string, ignoreId = ""): boolean {
-    return this.steps.rawSteps.some(
-      partial(this.isDuplicatePredicate, url, ignoreId)
-    );
+  isDuplicate(urls: string[], ignoreId = ""): boolean {
+    return Boolean(this.getDuplicate(urls, ignoreId));
   }
 
-  getDuplicate(url: string, ignoreId = "") {
+  getDuplicate(urls: string[], ignoreId = "") {
     return this.steps.rawSteps.find(
-      partial(this.isDuplicatePredicate, url, ignoreId)
+      step => ignoreId !== step.id && this.hasCommonValue(urls, step.videos)
     );
   }
 
-  private isDuplicatePredicate(
-    url: string,
-    ignoreId: string,
-    step: RawStep
-  ): boolean {
-    return (
-      ignoreId !== step.id && step.videos.some(videoUrl => videoUrl === url)
-    );
+  hasCommonValue(a: string[], b: string[]): boolean {
+    return a.some(url => b.includes(url));
   }
 }
