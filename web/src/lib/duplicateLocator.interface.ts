@@ -7,4 +7,4 @@ export interface DuplicateLocator<ElementType, KeyType> {
 
 export type StepDuplicateLocator<
   T extends RawStep = RawStep
-> = DuplicateLocator<T, string[]>;
+> = DuplicateLocator<T, string>;

@@ -32,6 +32,7 @@
     "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/addon-knobs": "^5.2.8",

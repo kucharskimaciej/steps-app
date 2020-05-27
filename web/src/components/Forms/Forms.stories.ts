@@ -16,10 +16,10 @@ export default {
   title: "Components/Forms",
   decorators: [
     withKnobs,
-    WithGlobalStyles,
     Container("600px"),
     Spacing,
-    NeutralBackground
+    NeutralBackground,
+    WithGlobalStyles
   ]
 };
 
@@ -103,6 +103,26 @@ export const BasicTextarea = () => ({
       type: String,
       default: text("label", "Textarea")
     },
+    hasError: {
+      type: Boolean,
+      default: boolean("invalid", false)
+    }
+  },
+  data: () => ({
+    value: ""
+  })
+});
+
+export const NestedFormGroup = () => ({
+  components: { Input, FormGroup },
+  template: `
+      <FormGroup label="outer" :invalid="hasError">
+        <FormGroup label="inner" :invalid="hasError">
+            <Input v-model="value" />
+        </FormGroup>
+      </FormGroup>
+  `,
+  props: {
     hasError: {
       type: Boolean,
       default: boolean("invalid", false)

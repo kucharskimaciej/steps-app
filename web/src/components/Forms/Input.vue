@@ -6,10 +6,13 @@ import {
   Emit,
   InjectReactive
 } from "vue-property-decorator";
+import { Focusable } from "@/components/Forms/types";
 
 @Component
-export default class Input extends Vue {
+export default class Input extends Vue implements Focusable {
   @Prop() private value!: string;
+
+  focusOnMount = false;
 
   @Emit("input")
   handleValueChange(event: InputEvent) {
@@ -23,14 +26,30 @@ export default class Input extends Vue {
       ? "border-red-light text-red-lighter placeholder-red-darker"
       : "border-gray-200 text-base";
   }
+
+  get inputElement() {
+    return this.$refs.element as HTMLInputElement;
+  }
+
+  focus() {
+    if (this.inputElement) {
+      this.inputElement.focus();
+    }
+  }
 }
 </script>
 
 <template>
-  <input
-    class="w-full font-light bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
-    :value="value"
-    @input="handleValueChange"
-    :class="validityClasses"
-  />
+  <div
+    class="w-full flex font-light bg-gray-200 rounded px-3 py-2 border focus-within:bg-white focus-within:shadow focus-within:border-gray-100"
+  >
+    <input
+      class="outline-none font-light bg-transparent w-full"
+      :value="value"
+      @input="handleValueChange"
+      :class="validityClasses"
+      ref="element"
+    />
+    <slot name="after"></slot>
+  </div>
 </template>

@@ -41,10 +41,17 @@ import { TokenizeService } from "@/lib/tokenize.service";
   validations(this: StepForm) {
     return {
       formData: {
-        url: {
+        videos: {
           required,
-          url: urlValidator,
-          duplicate: duplicate(this.duplicateLocator, this.step && this.step.id)
+          minLength: minLength(1),
+          $each: {
+            required,
+            url: urlValidator,
+            duplicate: duplicate(
+              this.duplicateLocator,
+              this.step && this.step.id
+            )
+          }
         },
         name: {
           required
@@ -154,14 +161,16 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   get form() {
+    console.log(this.$v);
     return this.$v.formData;
   }
 
   get duplicateStep() {
-    return this.duplicateLocator.getDuplicate(
-      this.formData.videos,
-      this.step && this.step.id
-    );
+    // return this.duplicateLocator.getDuplicate(
+    //   this.formData.videos,
+    //   this.step && this.step.id
+    // );
+    return null;
   }
 
   get artistTagType() {
@@ -185,12 +194,12 @@ export default class StepForm extends Vue implements StepFormApi {
 <template>
   <form novalidate>
     <main>
-      <FormGroup label="Video url" :validation="form.url">
-        <Input v-model.trim.lazy="form.url.$model" type="url" />
-        <template v-if="duplicateStep" #help>
-          <strong>Duplicate of</strong> {{ duplicateStep.name }}
-        </template>
-      </FormGroup>
+      <!--      <FormGroup label="Video url" :validation="form.url">-->
+      <!--        <Input v-model.trim.lazy="form.url.$model" type="url" />-->
+      <!--        <template v-if="duplicateStep" #help>-->
+      <!--          <strong>Duplicate of</strong> {{ duplicateStep.name }}-->
+      <!--        </template>-->
+      <!--      </FormGroup>-->
 
       <FormGroup label="Name" :validation="form.name">
         <Input v-model.trim.lazy="form.name.$model" />

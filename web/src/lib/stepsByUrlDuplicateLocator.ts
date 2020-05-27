@@ -9,17 +9,13 @@ import store from "@/store";
 export class StepsByUrlDuplicateLocator implements StepDuplicateLocator {
   private readonly steps = getModule(StepsModule, store);
 
-  isDuplicate(urls: string[], ignoreId = ""): boolean {
-    return Boolean(this.getDuplicate(urls, ignoreId));
+  isDuplicate(url: string, ignoreId = ""): boolean {
+    return Boolean(this.getDuplicate(url, ignoreId));
   }
 
-  getDuplicate(urls: string[], ignoreId = "") {
+  getDuplicate(url: string, ignoreId = "") {
     return this.steps.rawSteps.find(
-      step => ignoreId !== step.id && this.hasCommonValue(urls, step.videos)
+      step => ignoreId !== step.id && step.videos.includes(url)
     );
-  }
-
-  hasCommonValue(a: string[], b: string[]): boolean {
-    return a.some(url => b.includes(url));
   }
 }
