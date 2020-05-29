@@ -20,15 +20,10 @@ import { AuthService } from "@/lib/firebase/auth.service";
   }
 })
 export default class App extends Vue implements ComponentOptions<Vue> {
-  //private currentUser = getModule(CurrentUserModule, this.$store);
   private auth = getModule(AuthModule, this.$store);
   private steps = getModule(StepsModule, this.$store);
 
   @Inject() private firebaseAuth!: AuthService;
-
-  get uid() {
-    return this.auth.uid;
-  }
 
   public async mounted() {
     await this.firebaseAuth.setup();
