@@ -1,6 +1,7 @@
 import { Service } from "vue-typedi";
-import { FirebaseService, DocumentSnapshot } from "@/lib/firebase.service";
 import { RawStep } from "../../../common/types/Step";
+import { FirestoreService } from "@/lib/firebase/firestore.service";
+import { DocumentSnapshot } from "@/lib/firebase/firebase";
 
 type EditableFields =
   | "dance"
@@ -23,9 +24,9 @@ export type UpdateParams = Partial<Pick<RawStep, EditableFields>>;
 
 @Service()
 export class StepsResource {
-  private readonly collection = this.firebase.db.collection("steps");
+  private readonly collection = this.db.collection("steps");
 
-  constructor(private firebase: FirebaseService) {}
+  constructor(private db: FirestoreService) {}
 
   public async query(uid: string): Promise<RawStep[]> {
     const querySnapshot = await this.collection

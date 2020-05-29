@@ -1,12 +1,12 @@
 import { Service } from "vue-typedi";
-import { FirebaseService } from "@/lib/firebase.service";
 import { User } from "../../../common/types/User";
+import { FirestoreService } from "@/lib/firebase/firestore.service";
 
 @Service()
 export class UserResource {
-  private readonly collection = this.firebase.db.collection("users");
+  private readonly collection = this.db.collection("users");
 
-  constructor(private firebase: FirebaseService) {}
+  constructor(private db: FirestoreService) {}
 
   fetch(uid: string): Promise<User> {
     return this.collection

@@ -10,10 +10,9 @@ import { ComponentOptions } from "vue";
 import GlobalStyles from "@/components/GlobalStyles.vue";
 import { getModule } from "vuex-module-decorators";
 import { AuthModule } from "@/store/modules/auth";
-import { Container } from "vue-typedi";
-import { FirebaseService } from "@/lib/firebase.service";
+import { Container, Inject } from "vue-typedi";
 import { StepsModule } from "@/store/modules/steps";
-import { CurrentUserModule } from "@/store/modules/currentUser";
+import { AuthService } from "@/lib/firebase/auth.service";
 
 @Component({
   components: {
@@ -21,27 +20,28 @@ import { CurrentUserModule } from "@/store/modules/currentUser";
   }
 })
 export default class App extends Vue implements ComponentOptions<Vue> {
-  private currentUser = getModule(CurrentUserModule, this.$store);
+  //private currentUser = getModule(CurrentUserModule, this.$store);
   private auth = getModule(AuthModule, this.$store);
   private steps = getModule(StepsModule, this.$store);
-  private firebase = Container.get(FirebaseService);
+
+  @Inject() private firebaseAuth!: AuthService;
 
   get uid() {
     return this.auth.uid;
   }
 
   public async mounted() {
-    await this.firebase.setup();
+    await this.firebaseAuth.setup();
 
-    if (this.firebase.currentUser) {
-      await this.auth.handleAuthStateChange(this.firebase.currentUser.uid);
+    if (this.firebaseAuth.currentUser) {
+      await this.auth.handleAuthStateChange(this.firebaseAuth.currentUser.uid);
     }
 
-    this.firebase.onAuthStateChange(async user => {
+    this.firebaseAuth.onAuthStateChange(async user => {
       await this.auth.handleAuthStateChange(user ? user.uid : "");
 
       if (!user) {
-        await this.firebase.authenticate();
+        await this.firebaseAuth.authenticate();
       } else {
         await this.steps.fetchAllSteps();
       }
