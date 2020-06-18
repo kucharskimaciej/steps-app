@@ -1,4 +1,3 @@
-import { addDecorator } from "@storybook/vue";
 import {
   Container,
   NeutralBackground,

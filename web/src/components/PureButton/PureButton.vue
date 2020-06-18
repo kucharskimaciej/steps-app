@@ -24,6 +24,7 @@ export function buttonColors(kind: ButtonKind, feel: ButtonFeel): string {
                 hover:bg-${primaryColor}-light
                 hover:border-${primaryColor}-light
                 text-white
+                active:shadow-inner focus:shadow
             `;
     case "outline":
       return `
@@ -32,13 +33,15 @@ export function buttonColors(kind: ButtonKind, feel: ButtonFeel): string {
                 text-${primaryColor}-base
                 hover:border-${primaryColor}-light
                 hover:text-${primaryColor}-light
+                active:shadow-inner focus:shadow
             `;
     case "ghost":
       return `
+                text-${primaryColor}-base
                 bg-transparent
                 border-transparent
                 hover:bg-gray-100
-                hover:text-${primaryColor}-base
+                hover:text-${primaryColor}-light
             `;
   }
 }
@@ -66,10 +69,11 @@ export default class PureButton extends Vue {
   @Prop({ default: "regular" }) private feel!: ButtonFeel;
   @Prop({ default: "regular" }) private size!: ButtonSize;
   @Prop({ default: "regular" }) private spacing!: ButtonSpacing;
+  @Prop({ default: "button" }) private tag!: string;
   @Prop() private disabled!: boolean;
 
   get commonClasses(): string {
-    return "font-light rounded align-middle focus:outline-none active:shadow-inner focus:shadow";
+    return "inline-block font-light rounded focus:outline-none";
   }
 
   get sizeClasses(): string {
@@ -87,11 +91,12 @@ export default class PureButton extends Vue {
 </script>
 
 <template>
-  <button
+  <component
+    :is="tag"
     :class="[commonClasses, statusClasses, sizeClasses, colorClasses]"
     v-on="$listeners"
     :disabled="disabled"
   >
     <slot></slot>
-  </button>
+  </component>
 </template>

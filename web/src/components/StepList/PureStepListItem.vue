@@ -15,7 +15,7 @@
       <header class="flex items-start">
         <h2 class="font-secondary text-wood-bark font-light mr-auto">
           <a
-            :href="step.url"
+            :href="firstVideoUrl"
             target="_blank"
             referrerpolicy="no-referrer"
             class="focus:outline-none focus:bg-yellow-base"
@@ -38,7 +38,22 @@
           </router-link>
         </aside>
       </header>
-      <section class="mt-2" v-if="step.notes">
+      <section v-if="hasMoreVideos">
+        <PureButton
+          v-for="(url, index) in restVideoUrls"
+          :key="url"
+          :href="url"
+          target="_blank"
+          referrerpolicy="no-referrer"
+          tag="a"
+          size="small"
+          feel="ghost"
+          class="mr-2"
+        >
+          Video {{ index + 2 }}
+        </PureButton>
+      </section>
+      <section v-if="step.notes" class="mt-2">
         <p>{{ step.notes }}</p>
       </section>
       <section class="mt-4 flex">
@@ -101,6 +116,20 @@ export default class PureStepListItem extends Vue {
 
   get detailIconClasses() {
     return "mr-2 text-lg";
+  }
+
+  get firstVideoUrl(): string {
+    const [firstVideo] = this.step.videos;
+    return firstVideo.url;
+  }
+
+  get restVideoUrls(): string[] {
+    const [, ...restVideos] = this.step.videos;
+    return restVideos.map(video => video.url);
+  }
+
+  get hasMoreVideos(): boolean {
+    return this.restVideoUrls.length > 0;
   }
 }
 </script>

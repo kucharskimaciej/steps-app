@@ -19,13 +19,14 @@ import {
 import { oneOf } from "@/lib/validators/oneOf";
 import { duplicate } from "@/lib/validators/duplicate";
 import { Inject } from "vue-typedi";
-import { StepsByUrlDuplicateLocatorToken } from "@/lib/tokens";
+import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import Textarea from "@/components/Forms/Textarea.vue";
 import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { SmartTags } from "@/lib/smartTags.service";
 import { DebounceTime } from "@/lib/decorators/debouceTime";
 import { uniq, head, difference } from "lodash";
 import { TokenizeService } from "@/lib/tokenize.service";
+import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 
 @Component({
   components: {
@@ -35,7 +36,8 @@ import { TokenizeService } from "@/lib/tokenize.service";
     TagsInput,
     PureButton,
     Checklist,
-    Textarea
+    Textarea,
+    VideoInput
   },
   mixins: [validationMixin],
   validations(this: StepForm) {
@@ -81,7 +83,7 @@ export default class StepForm extends Vue implements StepFormApi {
   @Prop({ default: () => [] }) private existingArtists!: string[];
   @Prop() private step!: RawStep;
 
-  @Inject(StepsByUrlDuplicateLocatorToken)
+  @Inject(StepsDuplicateLocatorToken)
   private readonly duplicateLocator!: StepDuplicateLocator;
 
   @Inject()
@@ -161,16 +163,7 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   get form() {
-    console.log(this.$v);
     return this.$v.formData;
-  }
-
-  get duplicateStep() {
-    // return this.duplicateLocator.getDuplicate(
-    //   this.formData.videos,
-    //   this.step && this.step.id
-    // );
-    return null;
   }
 
   get artistTagType() {
@@ -188,18 +181,47 @@ export default class StepForm extends Vue implements StepFormApi {
       removedTag
     ]);
   }
+
+  private isDuplicateAt(index: number): boolean {
+    return Boolean(
+      this.form?.videos?.$each && this.form?.videos?.$each[index].$error
+    );
+  }
+
+  get duplicateSteps(): Record<string, RawStep> {
+    return this.value.videos.reduce((acc, element, index) => {
+      if (this.isDuplicateAt(index)) {
+        const duplicate = this.duplicateLocator.getDuplicate(
+          element,
+          this.step?.id
+        );
+        if (duplicate) {
+          acc[index] = duplicate;
+        }
+      }
+
+      return acc;
+    }, {} as Record<string, RawStep>);
+  }
 }
 </script>
 
 <template>
   <form novalidate>
     <main>
-      <!--      <FormGroup label="Video url" :validation="form.url">-->
-      <!--        <Input v-model.trim.lazy="form.url.$model" type="url" />-->
-      <!--        <template v-if="duplicateStep" #help>-->
-      <!--          <strong>Duplicate of</strong> {{ duplicateStep.name }}-->
-      <!--        </template>-->
-      <!--      </FormGroup>-->
+      <FormGroup :validation="form.videos" label="Videos">
+        <VideoInput v-model="form.videos.$model">
+          <template
+            v-for="(duplicateStep, index) in duplicateSteps"
+            :slot="`helper-${index}`"
+            class="text-red-lighter"
+          >
+            <span :key="index" class="text-sm">
+              Duplicate of {{ duplicateStep.name }}
+            </span>
+          </template>
+        </VideoInput>
+      </FormGroup>
 
       <FormGroup label="Name" :validation="form.name">
         <Input v-model.trim.lazy="form.name.$model" />
@@ -213,8 +235,9 @@ export default class StepForm extends Vue implements StepFormApi {
                 v-for="(label, value) in stepDifficulties"
                 :key="value"
                 :value="value"
-                >{{ label }}</option
               >
+                {{ label }}
+              </option>
             </Select>
           </FormGroup>
           <FormGroup label="Artists">

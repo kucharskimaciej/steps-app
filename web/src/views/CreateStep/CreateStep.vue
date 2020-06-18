@@ -9,12 +9,15 @@ import { AuthModule } from "@/store/modules/auth";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import "@/lib/stepsByUrlDuplicateLocator";
 import { ROUTES } from "@/routes";
+import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
+import { CurrentUserModule } from "@/store/modules/currentUser";
 
 @Component({
   components: {
     Container,
     StepForm,
-    PureButton
+    PureButton,
+    VideoInput
   }
 })
 export default class CreateStep extends Vue {
@@ -22,6 +25,7 @@ export default class CreateStep extends Vue {
 
   private steps = getModule(StepsModule, this.$store);
   private auth = getModule(AuthModule, this.$store);
+  currentUser = getModule(CurrentUserModule, this.$store);
 
   async saveStep() {
     if (this.form.validate()) {

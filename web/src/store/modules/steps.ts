@@ -10,6 +10,7 @@ import {
 import { Tag, TagTypes } from "../../../../common/types/Tag";
 import { orderBy, uniq, maxBy } from "lodash";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
+import { convertToStep } from "@/lib/rawStepHelpers";
 
 const stepsResource = Container.get(StepsResource);
 @Module({ name: "steps", namespaced: true })
@@ -50,58 +51,8 @@ export class StepsModule extends VuexModule implements StepsState {
   }
 
   get steps() {
-    const unorderedSteps: Step[] = this.rawSteps.map(
-      ({
-        identifier,
-        id,
-        tags,
-        dance,
-        difficulty,
-        owner_uid,
-        created_at,
-        name,
-        videos,
-        artists,
-        notes,
-        smart_tags
-      }) => {
-        const generatedTags: Tag[] = [
-          ...tags.map(tag => ({
-            text: tag
-          })),
-          ...(smart_tags || []).map(tag => ({
-            type: TagTypes.SMART,
-            text: tag
-          })),
-          ...dance.map(d => ({
-            type: TagTypes.DANCE,
-            text: DANCES[d]
-          })),
-          {
-            type: TagTypes.DIFFICULTY,
-            text: STEP_DIFFICULTIES[difficulty]
-          },
-          ...artists.map(artist => ({
-            type: TagTypes.ARTIST,
-            text: artist
-          }))
-        ];
-
-        return {
-          identifier,
-          id,
-          tags: generatedTags,
-          videos,
-          name,
-          notes,
-          created_at,
-          owner_uid
-        };
-      }
-    );
-
     return orderBy(
-      unorderedSteps,
+      this.rawSteps.map(convertToStep),
       [
         step =>
           step.id in this.context.rootGetters["currentUser/practiceSteps"],

@@ -12,8 +12,12 @@ export default class FormGroup extends Vue {
   @Prop() private invalid!: boolean;
   @Prop() private validation!: Validation;
 
-  @ProvideReactive("hasError") get hasError() {
+  @ProvideReactive("hasError") get hasError(): boolean {
     return this.invalid || (this.validation && this.validation.$anyError);
+  }
+
+  @ProvideReactive("validation") get validationProvider(): Validation {
+    return this.validation;
   }
 }
 </script>

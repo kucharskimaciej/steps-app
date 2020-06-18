@@ -12,8 +12,6 @@ import { Focusable } from "@/components/Forms/types";
 export default class Input extends Vue implements Focusable {
   @Prop() private value!: string;
 
-  focusOnMount = false;
-
   @Emit("input")
   handleValueChange(event: InputEvent) {
     return (event.target as HTMLInputElement).value;
@@ -44,6 +42,7 @@ export default class Input extends Vue implements Focusable {
     class="w-full flex font-light bg-gray-200 rounded px-3 py-2 border focus-within:bg-white focus-within:shadow focus-within:border-gray-100"
   >
     <input
+      v-bind="$attrs"
       class="outline-none font-light bg-transparent w-full"
       :value="value"
       @input="handleValueChange"

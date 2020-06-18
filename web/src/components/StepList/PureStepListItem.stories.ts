@@ -10,6 +10,7 @@ import { TagTypes } from "../../../../common/types/Tag";
 import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { action } from "@storybook/addon-actions";
 import StoryRouter from "storybook-vue-router";
+import { stepFactory } from "@/stories/fixtures/steps";
 
 const stories = storiesOf("Components/PureStepListItem", module)
   .addDecorator((StoryRouter as any)())
@@ -18,23 +19,7 @@ const stories = storiesOf("Components/PureStepListItem", module)
   .addDecorator(WithGlobalStyles)
   .addDecorator(NeutralBackground);
 
-const stepPrototype: Step = {
-  id: "fake-id",
-  owner_uid: "fake-id",
-  identifier: 12,
-  name: "Męska grande-saida z zatrzymaniem partnerki",
-  videos: [
-    "https://photos.google.com/album/AF1QipNTAEGC9YX061avn20xbsScj96oNJ9aftjWl6HV/photo/AF1QipO5CoOhRC6xNRncPGfxWjb-o28QuuBTGoVoPSKO"
-  ],
-  tags: [
-    { text: "Grande saida" },
-    { type: TagTypes.DANCE, text: "Fusion" },
-    { text: "Zatrzymanie" }
-  ],
-  created_at: Date.now(),
-  last_practiced_at: Date.now(),
-  notes: ""
-};
+const stepPrototype: Step = stepFactory();
 
 stories.add("Basic display", () => {
   const step = { ...stepPrototype };
@@ -102,5 +87,30 @@ stories.add("Multiple Tags", () => {
     data: () => ({
       step
     })
+  };
+});
+
+stories.add("Multiple videos", () => {
+  const step = {
+    ...stepPrototype,
+    videos: [
+      { hash: "hash-1", url: "http://example.com/videos/1" },
+      { hash: "hash-2", url: "http://example.com/videos/2" },
+      { hash: "hash-3", url: "http://example.com/videos/3" },
+      { hash: "hash-4", url: "http://example.com/videos/4" }
+    ]
+  };
+
+  return {
+    components: { PureStepListItem },
+    template:
+      '<PureStepListItem :step="step" @edit="handleEdit" @select="handleSelect"/>',
+    data: () => ({
+      step
+    }),
+    methods: {
+      handleEdit: action("EDIT"),
+      handleSelect: action("SELECT")
+    }
   };
 });
