@@ -191,12 +191,12 @@ export default class StepForm extends Vue implements StepFormApi {
   get duplicateSteps(): Record<string, RawStep> {
     return this.value.videos.reduce((acc, element, index) => {
       if (this.isDuplicateAt(index)) {
-        const duplicate = this.duplicateLocator.getDuplicate(
+        const duplicateStep = this.duplicateLocator.getDuplicate(
           element,
           this.step?.id
         );
-        if (duplicate) {
-          acc[index] = duplicate;
+        if (duplicateStep) {
+          acc[index] = duplicateStep;
         }
       }
 
