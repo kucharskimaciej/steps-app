@@ -1,5 +1,6 @@
 <template>
   <article
+    :id="`step-${step.identifier}`"
     class="p-4 bg-white rounded flex items-start"
     :class="{
       'border-white border': !isSelected,
