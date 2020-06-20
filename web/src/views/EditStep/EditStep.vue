@@ -6,7 +6,7 @@ import { StepFormApi } from "@/components/StepForm/types";
 import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";
 import { RawStep } from "../../../../common/types/Step";
-import "@/lib/stepsByUrlDuplicateLocator";
+import "@/lib/stepsByHashDuplicateLocator";
 import { ROUTES } from "@/routes";
 import PureButton from "@/components/PureButton/PureButton.vue";
 

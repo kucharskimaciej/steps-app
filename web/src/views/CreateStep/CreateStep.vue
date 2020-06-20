@@ -7,7 +7,7 @@ import { getModule } from "vuex-module-decorators";
 import { StepsModule } from "@/store/modules/steps";
 import { AuthModule } from "@/store/modules/auth";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import "@/lib/stepsByUrlDuplicateLocator";
+import "@/lib/rawStepHelpers";
 import { ROUTES } from "@/routes";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 import { CurrentUserModule } from "@/store/modules/currentUser";
