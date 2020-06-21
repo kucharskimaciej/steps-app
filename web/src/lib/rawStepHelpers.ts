@@ -53,7 +53,9 @@ export function convertToStep(
   ];
 
   const variations = variationKey
-    ? variationsByKey[variationKey].map(convertToStepRef)
+    ? variationsByKey[variationKey]
+        .map(convertToStepRef)
+        .filter(ref => ref.id !== raw.id)
     : [];
 
   return {

@@ -81,6 +81,17 @@
           </li>
         </ul>
       </section>
+      <section v-if="hasVariations" class="text-sm text-gray-700 mt-3">
+        <h2 class="font-semibold">Variations</h2>
+        <a
+          v-for="variation in step.variations"
+          :key="variation.id"
+          :href="`#step-${variation.identifier}`"
+          class="block"
+        >
+          <strong>#{{ variation.identifier }}</strong> {{ variation.name }}
+        </a>
+      </section>
     </main>
   </article>
 </template>
@@ -131,6 +142,10 @@ export default class PureStepListItem extends Vue {
 
   get hasMoreVideos(): boolean {
     return this.restVideoUrls.length > 0;
+  }
+
+  get hasVariations(): boolean {
+    return this.step.variations.length > 0;
   }
 }
 </script>
