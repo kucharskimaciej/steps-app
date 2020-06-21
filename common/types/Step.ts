@@ -25,8 +25,13 @@ export interface RawStep extends CommonFields {
   smart_tags: string[];
   removed_smart_tags: string[];
   tokens: string[];
+  variationKey?: string;
 }
 
 export interface Step extends CommonFields {
   tags: Tag[];
+  variations: StepRef[];
 }
+
+export interface StepRef
+  extends Pick<CommonFields, "identifier" | "name" | "id"> {}

@@ -1,8 +1,19 @@
-import { RawStep, Step } from "../../../common/types/Step";
+import { RawStep, Step, StepRef } from "../../../common/types/Step";
 import { Tag, TagTypes } from "../../../common/types/Tag";
 import { DANCES, STEP_DIFFICULTIES } from "../../../common/constants";
 
-export function convertToStep(raw: RawStep): Step {
+export function convertToStepRef({
+  name,
+  id,
+  identifier
+}: Step | RawStep): StepRef {
+  return { name, id, identifier };
+}
+
+export function convertToStep(
+  variationsByKey: Record<string, RawStep[]>,
+  raw: RawStep
+): Step {
   const {
     identifier,
     id,
@@ -15,7 +26,8 @@ export function convertToStep(raw: RawStep): Step {
     videos,
     artists,
     notes,
-    smart_tags
+    smart_tags,
+    variationKey
   } = raw;
 
   const generatedTags: Tag[] = [
@@ -40,6 +52,10 @@ export function convertToStep(raw: RawStep): Step {
     }))
   ];
 
+  const variations = variationKey
+    ? variationsByKey[variationKey].map(convertToStepRef)
+    : [];
+
   return {
     identifier,
     id,
@@ -48,6 +64,7 @@ export function convertToStep(raw: RawStep): Step {
     name,
     notes,
     created_at,
-    owner_uid
+    owner_uid,
+    variations
   };
 }

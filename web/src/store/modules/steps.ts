@@ -1,15 +1,13 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { StepsState } from "@/store/types";
-import { RawStep, Step } from "../../../../common/types/Step";
+import { RawStep } from "../../../../common/types/Step";
 import { Container } from "vue-typedi";
 import {
   CreateParams,
   StepsResource,
   UpdateParams
 } from "@/lib/steps.resource";
-import { Tag, TagTypes } from "../../../../common/types/Tag";
-import { orderBy, uniq, maxBy } from "lodash";
-import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
+import { orderBy, uniq, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
 
 const stepsResource = Container.get(StepsResource);
@@ -52,7 +50,7 @@ export class StepsModule extends VuexModule implements StepsState {
 
   get steps() {
     return orderBy(
-      this.rawSteps.map(convertToStep),
+      this.rawSteps.map(partial(convertToStep, this.variationsByKey)),
       [
         step =>
           step.id in this.context.rootGetters["currentUser/practiceSteps"],
@@ -60,6 +58,10 @@ export class StepsModule extends VuexModule implements StepsState {
       ],
       ["desc", "desc"]
     );
+  }
+
+  get variationsByKey(): Record<string, RawStep[]> {
+    return groupBy(this.rawSteps, "variationKey");
   }
 
   get nextIdentifier() {

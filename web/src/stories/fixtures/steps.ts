@@ -1,5 +1,6 @@
 import { RawStep, Step } from "../../../../common/types/Step";
 import { convertToStep } from "@/lib/rawStepHelpers";
+import { groupBy, partial } from "lodash";
 
 export function rawStepsFactory(): RawStep[] {
   return [
@@ -22,7 +23,8 @@ export function rawStepsFactory(): RawStep[] {
       notes: "",
       smart_tags: [],
       removed_smart_tags: [],
-      tokens: []
+      tokens: [],
+      variationKey: "A"
     },
     {
       id: "step-id-2",
@@ -43,7 +45,8 @@ export function rawStepsFactory(): RawStep[] {
       notes: "",
       smart_tags: [],
       removed_smart_tags: [],
-      tokens: []
+      tokens: [],
+      variationKey: "A"
     },
     {
       id: "step-id-3",
@@ -74,9 +77,10 @@ export function rawStepFactory(n = 0): RawStep {
 }
 
 export function stepsFactory(rawSteps: RawStep[] = rawStepsFactory()): Step[] {
-  return rawSteps.map(convertToStep);
+  const variationsByKey = groupBy(rawSteps, "variationKey");
+  return rawSteps.map(partial(convertToStep, variationsByKey));
 }
 
 export function stepFactory(n = 0): Step {
-  return convertToStep(rawStepFactory(n));
+  return stepsFactory()[n];
 }
