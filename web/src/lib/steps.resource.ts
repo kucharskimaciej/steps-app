@@ -59,7 +59,7 @@ export class StepsResource {
 
     const batch = this.firestore.db.batch();
 
-    await batch.set(documentRef, stepToSave);
+    batch.set(documentRef, stepToSave);
 
     documentsToUpdate.forEach(document => {
       batch.update(document.ref, { variationKey });
