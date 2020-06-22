@@ -38,9 +38,13 @@ export class StepsModule extends VuexModule implements StepsState {
     return stepsResource.query(this.context.rootState.auth.uid);
   }
 
-  @Action({ commit: "ADD_STEP" })
-  public async createStep(params: CreateParams) {
-    return stepsResource.create(params);
+  @Action({ commit: "SET_STEPS" })
+  public async createStep(payload: {
+    params: CreateParams;
+    selectedVariations: string[];
+  }) {
+    await stepsResource.create(payload.params, payload.selectedVariations);
+    return stepsResource.query(this.context.rootState.auth.uid);
   }
 
   @Action({ commit: "UPDATE_STEP" })
@@ -58,6 +62,14 @@ export class StepsModule extends VuexModule implements StepsState {
       ],
       ["desc", "desc"]
     );
+  }
+
+  get rawStepsById() {
+    return keyBy(this.rawSteps, "id");
+  }
+
+  get stepsById() {
+    return keyBy(this.steps, "id");
   }
 
   get variationsByKey(): Record<string, RawStep[]> {

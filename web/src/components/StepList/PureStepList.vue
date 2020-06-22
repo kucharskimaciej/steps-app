@@ -10,7 +10,9 @@ import { Step } from "../../../../common/types/Step";
 })
 export default class PureStepList extends Vue {
   @Prop() private steps!: Step[];
-  @Prop() private isSelected!: (stepId: string) => boolean;
+  @Prop({ default: () => false }) private isSelected!: (
+    stepId: string
+  ) => boolean;
 
   @Emit()
   select(stepId: string) {}

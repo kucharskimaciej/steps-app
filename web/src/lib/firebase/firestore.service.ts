@@ -8,4 +8,8 @@ export class FirestoreService {
   collection(name: string): CollectionRef {
     return this.firestore.collection(name);
   }
+
+  get db() {
+    return this.firestore;
+  }
 }

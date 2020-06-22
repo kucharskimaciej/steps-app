@@ -67,7 +67,8 @@ export function rawStepsFactory(): RawStep[] {
       notes: "",
       smart_tags: ["Shadow position"],
       removed_smart_tags: ["Obrót"],
-      tokens: []
+      tokens: [],
+      variationKey: "B"
     }
   ];
 }

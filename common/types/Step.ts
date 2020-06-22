@@ -15,6 +15,7 @@ interface CommonFields extends DatabaseItem {
   updated_at?: number;
   created_at: number;
   notes: string;
+  variationKey: string;
 }
 
 export interface RawStep extends CommonFields {
@@ -25,7 +26,6 @@ export interface RawStep extends CommonFields {
   smart_tags: string[];
   removed_smart_tags: string[];
   tokens: string[];
-  variationKey?: string;
 }
 
 export interface Step extends CommonFields {

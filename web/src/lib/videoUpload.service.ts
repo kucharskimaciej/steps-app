@@ -14,6 +14,7 @@ export class VideoUploadService implements Uploader {
   private readonly auth = getModule(AuthModule, store);
 
   async upload(file: File, hash: string): Promise<string> {
+    console.log("upload", hash);
     if (await this.exists(hash)) {
       return this.storage.getPublicUrl(this.getVideoUploadPath(hash));
     }

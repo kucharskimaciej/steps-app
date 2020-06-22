@@ -48,7 +48,6 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
           minLength: minLength(1),
           $each: {
             required,
-            url: urlValidator,
             duplicate: duplicate(
               this.duplicateLocator,
               this.step && this.step.id
@@ -224,7 +223,7 @@ export default class StepForm extends Vue implements StepFormApi {
       </FormGroup>
 
       <FormGroup label="Name" :validation="form.name">
-        <Input v-model.trim.lazy="form.name.$model" />
+        <Input v-model.lazy="form.name.$model" />
       </FormGroup>
 
       <section class="flex">

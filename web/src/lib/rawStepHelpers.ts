@@ -67,6 +67,7 @@ export function convertToStep(
     notes,
     created_at,
     owner_uid,
-    variations
+    variations,
+    variationKey
   };
 }

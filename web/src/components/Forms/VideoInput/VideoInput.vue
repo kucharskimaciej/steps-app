@@ -42,7 +42,6 @@ export default class VideoInput extends Vue {
     if (this.fileAlreadySelected(hash)) {
       return;
     }
-
     const url = await this.videoUpload.upload(file, hash);
 
     this.value.push({
