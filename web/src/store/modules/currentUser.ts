@@ -1,56 +1,79 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { Container } from "vue-typedi";
 import { UserResource } from "@/lib/user.resource";
 import { User } from "../../../../common/types/User";
 import { without } from "lodash";
-import { CurrentUserState } from "@/store/types";
+import { CurrentUserState, RootState } from "@/store/types";
+import { ActionContext } from "vuex";
+import { getStoreAccessors } from "typesafe-vuex";
 
-const usersResource = Container.get(UserResource);
+type CurrentUserContext = ActionContext<CurrentUserState, RootState>;
 
-@Module({ name: "currentUser", namespaced: true })
-export class CurrentUserModule extends VuexModule {
-  user: User = { practice: [] };
+export const currentUser = {
+  namespaced: true,
+  state: {
+    user: { practice: [] }
+  } as CurrentUserState,
+  getters: {
+    practiceSteps(state: CurrentUserState): Record<string, boolean> {
+      if (state.user) {
+        return (state.user.practice || []).reduce(
+          ($, stepId) => ({
+            ...$,
+            [stepId]: true
+          }),
+          {}
+        );
+      }
 
-  @Mutation
-  SET_DATA(user: User) {
-    this.user = user;
-  }
-
-  @Action({ commit: "SET_DATA" })
-  updateUser(data: Partial<User>) {
-    return usersResource.upsert(this.context.rootState.auth.uid, data);
-  }
-
-  @Action({ commit: "SET_DATA" })
-  fetchUser() {
-    return usersResource.fetch(this.context.rootState.auth.uid);
-  }
-
-  @Action
-  toggleStepPractice(stepId: string) {
-    const { getters, dispatch, state } = this.context;
-    if (stepId in getters["practiceSteps"]) {
-      return dispatch("updateUser", {
-        practice: without((state as CurrentUserState).user.practice, stepId)
-      });
-    } else {
-      return dispatch("updateUser", {
-        practice: [...(state as CurrentUserState).user.practice, stepId]
-      });
-    }
-  }
-
-  get practiceSteps(): Record<string, boolean> {
-    if (this.user) {
-      return (this.user.practice || []).reduce(
-        ($, stepId) => ({
-          ...$,
-          [stepId]: true
-        }),
-        {}
-      );
-    } else {
       return {};
     }
+  },
+  mutations: {
+    setUser(state: CurrentUserState, user: User) {
+      state.user = user;
+    }
+  },
+  actions: {
+    async updateUser(context: CurrentUserContext, payload: Partial<User>) {
+      const usersResource = Container.get(UserResource);
+      const updatedUser = await usersResource.upsert(
+        context.rootState.auth.uid,
+        payload
+      );
+      commitSetUser(context, updatedUser);
+    },
+    async fetchUser(context: CurrentUserContext) {
+      const usersResource = Container.get(UserResource);
+      const user = await usersResource.fetch(context.rootState.auth.uid);
+      commitSetUser(context, user);
+    },
+    async toggleStepPractice(context: CurrentUserContext, stepId: string) {
+      if (stepId in practiceSteps(context)) {
+        await dispatchUpdateUser(context, {
+          practice: without(context.state.user.practice, stepId)
+        });
+      } else {
+        await dispatchUpdateUser(context, {
+          practice: [...context.state.user.practice, stepId]
+        });
+      }
+    }
   }
-}
+};
+
+const { getters, mutations, actions } = currentUser;
+const { commit, read, dispatch } = getStoreAccessors<
+  CurrentUserState,
+  RootState
+>("currentUser");
+
+// MUTATIONS
+const commitSetUser = commit(mutations.setUser);
+
+// GETTERS
+export const practiceSteps = read(getters.practiceSteps);
+
+// ACTIONS
+export const dispatchUpdateUser = dispatch(actions.updateUser);
+export const dispatchFetchUser = dispatch(actions.fetchUser);
+export const dispatchToggleStepPractice = dispatch(actions.toggleStepPractice);

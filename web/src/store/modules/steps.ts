@@ -1,5 +1,4 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { StepsState } from "@/store/types";
+import { RootState, StepsState } from "@/store/types";
 import { RawStep } from "../../../../common/types/Step";
 import { Container } from "vue-typedi";
 import {
@@ -9,83 +8,102 @@ import {
 } from "@/lib/steps.resource";
 import { orderBy, uniq, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
+import { ActionContext } from "vuex";
+import { practiceSteps, provideStore } from "@/store";
+import { getStoreAccessors } from "typesafe-vuex";
 
-const stepsResource = Container.get(StepsResource);
-@Module({ name: "steps", namespaced: true })
-export class StepsModule extends VuexModule implements StepsState {
-  public rawSteps: RawStep[] = [];
-  public query = "";
+type StepsContext = ActionContext<StepsState, RootState>;
 
-  @Mutation
-  private SET_STEPS(steps: RawStep[]) {
-    this.rawSteps = steps;
+export const steps = {
+  namespaced: true,
+  state: {
+    rawSteps: []
+  },
+  getters: {
+    getVariationsByKey(state: StepsState): Record<string, RawStep[]> {
+      return groupBy(state.rawSteps, "variationKey");
+    },
+    getSteps(state: StepsState) {
+      return orderBy(
+        state.rawSteps.map(
+          partial(convertToStep, getVariationsByKey(provideStore()))
+        ),
+        [step => step.id in practiceSteps(provideStore()), "created_at"],
+        ["desc", "desc"]
+      );
+    },
+    nextIdentifier(state: StepsState) {
+      const step = maxBy(state.rawSteps, "identifier");
+      return step ? step.identifier + 1 : 1;
+    },
+    stepsById() {
+      return keyBy(getSteps(provideStore()), "id");
+    },
+    existingArtists(state: StepsState) {
+      return uniq(state.rawSteps.map(step => step.artists).flat());
+    },
+    existingTags(state: StepsState) {
+      return uniq(state.rawSteps.map(step => step.tags).flat());
+    }
+  },
+  mutations: {
+    setSteps(state: StepsState, payload: RawStep[]) {
+      state.rawSteps = payload;
+    },
+    updateStep(state: StepsState, payload: RawStep) {
+      state.rawSteps = state.rawSteps.map(step =>
+        step.id === payload.id ? payload : step
+      );
+    }
+  },
+  actions: {
+    async fetchAllSteps(context: StepsContext) {
+      const stepsResource = Container.get(StepsResource);
+      const result = await stepsResource.query(context.rootState.auth.uid);
+      commitSetSteps(context, result);
+    },
+    async createStep(
+      context: StepsContext,
+      payload: {
+        params: CreateParams;
+        selectedVariations: string[];
+      }
+    ) {
+      const stepsResource = Container.get(StepsResource);
+      await stepsResource.create(payload.params, payload.selectedVariations);
+      const result = await stepsResource.query(context.rootState.auth.uid);
+      commitSetSteps(context, result);
+    },
+    async updateStep(
+      context: StepsContext,
+      [stepId, params]: [string, UpdateParams]
+    ) {
+      const stepsResource = Container.get(StepsResource);
+      const updatedStep = await stepsResource.update(stepId, params);
+      commitUpdateStep(context, updatedStep);
+    }
   }
+};
 
-  @Mutation
-  private ADD_STEP(step: RawStep) {
-    this.rawSteps = [...this.rawSteps, step];
-  }
+const { commit, read, dispatch } = getStoreAccessors<StepsState, RootState>(
+  "steps"
+);
 
-  @Mutation
-  private UPDATE_STEP(updatedStep: RawStep) {
-    this.rawSteps = this.rawSteps.map(step =>
-      step.id === updatedStep.id ? updatedStep : step
-    );
-  }
+const { getters, mutations, actions } = steps;
 
-  @Action({ commit: "SET_STEPS" })
-  public async fetchAllSteps() {
-    return stepsResource.query(this.context.rootState.auth.uid);
-  }
+// MUTATIONS
+const commitSetSteps = commit(mutations.setSteps);
+const commitUpdateStep = commit(mutations.updateStep);
 
-  @Action({ commit: "SET_STEPS" })
-  public async createStep(payload: {
-    params: CreateParams;
-    selectedVariations: string[];
-  }) {
-    await stepsResource.create(payload.params, payload.selectedVariations);
-    return stepsResource.query(this.context.rootState.auth.uid);
-  }
+// GETTERS
+export const getVariationsByKey = read(getters.getVariationsByKey);
+export const getSteps = read(getters.getSteps);
+export const nextIdentifier = read(getters.nextIdentifier);
+export const stepsById = read(getters.stepsById);
+export const existingArtists = read(getters.existingArtists);
+export const existingTags = read(getters.existingTags);
 
-  @Action({ commit: "UPDATE_STEP" })
-  public async updateStep([stepId, params]: [string, UpdateParams]) {
-    return stepsResource.update(stepId, params);
-  }
-
-  get steps() {
-    return orderBy(
-      this.rawSteps.map(partial(convertToStep, this.variationsByKey)),
-      [
-        step =>
-          step.id in this.context.rootGetters["currentUser/practiceSteps"],
-        "created_at"
-      ],
-      ["desc", "desc"]
-    );
-  }
-
-  get rawStepsById() {
-    return keyBy(this.rawSteps, "id");
-  }
-
-  get stepsById() {
-    return keyBy(this.steps, "id");
-  }
-
-  get variationsByKey(): Record<string, RawStep[]> {
-    return groupBy(this.rawSteps, "variationKey");
-  }
-
-  get nextIdentifier() {
-    const step = maxBy(this.rawSteps, "identifier");
-    return step ? step.identifier + 1 : 1;
-  }
-
-  get existingTags() {
-    return uniq(this.rawSteps.map(step => step.tags).flat());
-  }
-
-  get existingArtists() {
-    return uniq(this.rawSteps.map(step => step.artists).flat());
-  }
-}
+// ACTIONS
+export const dispatchFetchAllSteps = dispatch(actions.fetchAllSteps);
+export const dispatchCreateStep = dispatch(actions.createStep);
+export const dispatchUpdateStep = dispatch(actions.updateStep);

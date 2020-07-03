@@ -24,6 +24,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": 0,
     camelcase: "off",
     "@typescript-eslint/camelcase": ["off", { properties: "never" }],
+    "@typescript-eslint/no-use-before-define": 0,
     "vue/max-attributes-per-line": 0,
     "vue/html-indent": 0
   }

@@ -1,8 +1,6 @@
-import { getModule } from "vuex-module-decorators";
 import { Inject, Service } from "vue-typedi";
-import { AuthModule } from "@/store/modules/auth";
 import { StorageService } from "@/lib/firebase/storage.service";
-import store from "@/store";
+import { provideStore } from "@/store";
 import { Uploader } from "@/lib/uploader.interface";
 import { VideoUploaderToken } from "@/lib/tokens";
 
@@ -11,10 +9,7 @@ export class VideoUploadService implements Uploader {
   @Inject()
   private readonly storage!: StorageService;
 
-  private readonly auth = getModule(AuthModule, store);
-
   async upload(file: File, hash: string): Promise<string> {
-    console.log("upload", hash);
     if (await this.exists(hash)) {
       return this.storage.getPublicUrl(this.getVideoUploadPath(hash));
     }
@@ -32,6 +27,6 @@ export class VideoUploadService implements Uploader {
   }
 
   getVideoUploadPath(hash: string): string {
-    return `videos/${this.auth.uid}/${hash}`;
+    return `videos/${provideStore().state.auth.uid}/${hash}`;
   }
 }

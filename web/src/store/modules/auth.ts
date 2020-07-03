@@ -1,22 +1,33 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { AuthState } from "@/store/types";
+import { ActionContext } from "vuex";
+import { AuthState, RootState } from "@/store/types";
+import { getStoreAccessors } from "typesafe-vuex";
 
-@Module({ name: "auth", namespaced: true })
-export class AuthModule extends VuexModule implements AuthState {
-  public uid = "";
+type AuthContext = ActionContext<AuthState, RootState>;
 
-  @Action
-  public async handleAuthStateChange(uid: string) {
-    this.context.commit("SET_UID", uid);
-    if (uid) {
-      await this.context.dispatch("currentUser/fetchUser", uid, {
-        root: true
-      });
+export const auth = {
+  namespaced: true,
+  state: {
+    uid: ""
+  } as AuthState,
+  actions: {
+    async handleAuthStateChange(context: AuthContext, uid: string) {
+      commitSetUid(context, uid);
     }
-  }
+  },
+  mutations: {
+    setUid(state: AuthState, uid: string) {
+      state.uid = uid;
+    }
+  },
+  getters: {}
+};
 
-  @Mutation
-  private SET_UID(uid: string) {
-    this.uid = uid;
-  }
-}
+const { commit, dispatch } = getStoreAccessors<AuthState, RootState>("auth");
+
+// MUTATIONS
+const commitSetUid = commit(auth.mutations.setUid);
+
+// ACTIONS
+export const dispatchHandleAuthStateChange = dispatch(
+  auth.actions.handleAuthStateChange
+);

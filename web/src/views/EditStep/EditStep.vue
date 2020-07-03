@@ -1,14 +1,14 @@
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
 import StepForm from "@/components/StepForm/StepForm.vue";
 import Container from "@/components/Layout/Container.vue";
 import { StepFormApi } from "@/components/StepForm/types";
-import { getModule } from "vuex-module-decorators";
-import { StepsModule } from "@/store/modules/steps";
 import { RawStep } from "../../../../common/types/Step";
 import "@/lib/stepsByHashDuplicateLocator";
 import { ROUTES } from "@/routes";
 import PureButton from "@/components/PureButton/PureButton.vue";
+import { dispatchUpdateStep } from "@/store";
+import { VueWithStore } from "@/lib/vueWithStore";
 
 @Component({
   components: {
@@ -17,13 +17,12 @@ import PureButton from "@/components/PureButton/PureButton.vue";
     PureButton
   }
 })
-export default class EditStep extends Vue {
+export default class EditStep extends VueWithStore {
   @Ref("form") readonly form!: StepFormApi;
-  private steps = getModule(StepsModule, this.$store);
 
   async saveStep() {
     if (this.form.validate()) {
-      await this.steps.updateStep([this.step.id, this.form.value]);
+      await dispatchUpdateStep(this.$store, [this.step.id, this.form.value]);
     }
   }
 
@@ -37,7 +36,7 @@ export default class EditStep extends Vue {
   }
 
   get step(): RawStep {
-    return this.steps.rawSteps.find(
+    return this.$store.state.steps.rawSteps.find(
       step => this.$route.params.stepId === step.id
     )!;
   }

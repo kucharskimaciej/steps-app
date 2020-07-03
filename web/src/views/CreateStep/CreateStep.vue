@@ -1,15 +1,11 @@
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
 import StepForm from "@/components/StepForm/StepForm.vue";
 import { StepFormApi } from "@/components/StepForm/types";
-import { getModule } from "vuex-module-decorators";
-import { StepsModule } from "@/store/modules/steps";
-import { AuthModule } from "@/store/modules/auth";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import "@/lib/rawStepHelpers";
 import { ROUTES } from "@/routes";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
-import { CurrentUserModule } from "@/store/modules/currentUser";
 import "@/lib/stepsByHashDuplicateLocator";
 import "@/lib/videoUpload.service";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
@@ -17,6 +13,15 @@ import PureStepList from "@/components/StepList/PureStepList.vue";
 import { without, sortBy } from "lodash";
 import { Step } from "../../../../common/types/Step";
 import { getStepScore } from "@/lib/variations/variationStepScore";
+import {
+  dispatchCreateStep,
+  existingTags,
+  existingArtists,
+  getSteps,
+  nextIdentifier,
+  stepsById
+} from "@/store";
+import { VueWithStore } from "@/lib/vueWithStore";
 
 @Component({
   components: {
@@ -27,20 +32,16 @@ import { getStepScore } from "@/lib/variations/variationStepScore";
     PureStepList
   }
 })
-export default class CreateStep extends Vue {
+export default class CreateStep extends VueWithStore {
   @Ref("form") readonly form!: StepFormApi;
-
-  private steps = getModule(StepsModule, this.$store);
-  private auth = getModule(AuthModule, this.$store);
-  currentUser = getModule(CurrentUserModule, this.$store);
   selectedVariations: string[] = [];
 
   async saveStep() {
-    await this.steps.createStep({
+    await dispatchCreateStep(this.$store, {
       params: {
         ...this.form.value,
-        owner_uid: this.auth.uid,
-        identifier: this.steps.nextIdentifier
+        owner_uid: this.$store.state.auth.uid,
+        identifier: nextIdentifier(this.$store)
       },
       selectedVariations: this.selectedVariations
     });
@@ -69,7 +70,7 @@ export default class CreateStep extends Vue {
   }
 
   toggleVariationSelected(stepId: string): void {
-    const step = this.steps.stepsById[stepId];
+    const step = stepsById(this.$store)[stepId];
     if (!step) {
       return;
     }
@@ -85,7 +86,7 @@ export default class CreateStep extends Vue {
   }
 
   isPartOfSelectedVariation(stepId: string): boolean {
-    const step = this.steps.stepsById[stepId];
+    const step = stepsById(this.$store)[stepId];
     if (!step) {
       return false;
     }
@@ -94,17 +95,30 @@ export default class CreateStep extends Vue {
   }
 
   get stepsByScore(): Step[] {
-    const scoringResults = this.steps.rawSteps.reduce((acc, step) => {
-      acc[step.id] = this.form?.value ? getStepScore(step, this.form.value) : 0;
-      return acc;
-    }, {} as Record<string, number>);
+    const scoringResults = this.$store.state.steps.rawSteps.reduce(
+      (acc, step) => {
+        acc[step.id] = this.form?.value
+          ? getStepScore(step, this.form.value)
+          : 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
-    return sortBy(this.steps.steps, step => -scoringResults[step.id]);
+    return sortBy(getSteps(this.$store), step => -scoringResults[step.id]);
   }
 
   reset() {
     this.form.reset();
     this.selectedVariations = [];
+  }
+
+  get existingTags() {
+    return existingTags(this.$store);
+  }
+
+  get existingArtists() {
+    return existingArtists(this.$store);
   }
 }
 </script>
@@ -112,8 +126,8 @@ export default class CreateStep extends Vue {
 <template>
   <WideWithSidebarRight class="max-h-screen">
     <StepForm
-      :existing-tags="steps.existingTags"
-      :existing-artists="steps.existingArtists"
+      :existing-tags="existingTags"
+      :existing-artists="existingArtists"
       ref="form"
     />
     <footer class="mt-8 text-right">

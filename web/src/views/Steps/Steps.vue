@@ -1,10 +1,8 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { getModule } from "vuex-module-decorators";
-import { StepsModule } from "@/store/modules/steps";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import Container from "@/components/Layout/Container.vue";
-import { CurrentUserModule } from "@/store/modules/currentUser";
+import { dispatchToggleStepPractice, getSteps, practiceSteps } from "@/store";
 
 @Component({
   components: {
@@ -13,13 +11,14 @@ import { CurrentUserModule } from "@/store/modules/currentUser";
   }
 })
 export default class Steps extends Vue {
-  steps = getModule(StepsModule, this.$store);
-  currentUser = getModule(CurrentUserModule, this.$store);
-
-  isSelected = (stepId: string) => stepId in this.currentUser.practiceSteps;
+  isSelected = (stepId: string) => stepId in practiceSteps(this.$store);
 
   async handleStepSelected(stepId: string) {
-    await this.currentUser.toggleStepPractice(stepId);
+    await dispatchToggleStepPractice(this.$store, stepId);
+  }
+
+  get steps() {
+    return getSteps(this.$store);
   }
 }
 </script>
@@ -27,7 +26,7 @@ export default class Steps extends Vue {
 <template>
   <Container>
     <PureStepList
-      :steps="steps.steps"
+      :steps="steps"
       :is-selected="isSelected"
       @select="handleStepSelected"
     />

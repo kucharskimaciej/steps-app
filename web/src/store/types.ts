@@ -12,9 +12,6 @@ export interface StepsState {
 
 export interface CurrentUserState {
   user: User;
-  getters: {
-    practiceSteps: Record<string, boolean>;
-  };
 }
 
 export interface RootState {
