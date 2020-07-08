@@ -19,6 +19,10 @@ export const NeutralBackground: DecoratorFunction<any> = story => ({
   template: `<div class="w-screen min-h-screen bg-gray-100"><story/></div>`
 });
 
+export const DarkBackground: DecoratorFunction<any> = story => ({
+  template: `<div class="w-screen min-h-screen bg-black"><story/></div>`
+});
+
 export const Container: (
   w: string | number,
   h?: string | number
