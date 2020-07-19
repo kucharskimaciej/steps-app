@@ -15,5 +15,5 @@ export default class GlobalStyles extends Vue {}
 $material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
 
 @import "../vendor/material-design-icons";
-@import url("https://fonts.googleapis.com/css?family=Proza+Libre:300,400,600|Roboto:100,300,500&display=swap&subset=latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Proza+Libre:300,400,600|Roboto:100,300,400,500&display=swap&subset=latin-ext");
 </style>

@@ -142,7 +142,7 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative">
+  <main class="relative bg-black">
     <video
       ref="video"
       :muted="muted"
@@ -154,6 +154,7 @@ export default class VideoPlayer extends Vue {
       @volumechange="handleVolumeChange"
       @play="handlePlayingChange(true)"
       @pause="handlePlayingChange(false)"
+      class="w-full"
     />
 
     <aside
