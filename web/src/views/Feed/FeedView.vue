@@ -5,24 +5,37 @@ import { Inject } from "vue-typedi";
 import { FeedService } from "@/views/Feed/feed.service";
 import Feed from "@/components/Feed/Feed.vue";
 import Container from "@/components/Layout/Container.vue";
+import { Step } from "../../../../common/types/Step";
+import PureButton from "@/components/PureButton/PureButton.vue";
+import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 @Component({
   components: {
     Container,
-    Feed
+    Feed,
+    PureButton,
+    PureIcon
   }
 })
 export default class FeedView extends VueWithStore {
   @Inject() private readonly feedService!: FeedService;
 
-  get steps() {
-    return this.feedService.getStepsForFeed();
+  steps: Step[] = this.feedService.getStepsForFeed();
+
+  refresh() {
+    this.steps = this.feedService.getStepsForFeed();
+    window.scrollTo(0, 0);
   }
 }
 </script>
 
 <template>
-  <Container class="py-5">
+  <Container class="pt-5 pb-10">
     <Feed :steps="steps" />
+    <footer class="text-center mt-5">
+      <PureButton spacing="wide" size="large" @click="refresh">
+        <PureIcon type="refresh" /> Refresh
+      </PureButton>
+    </footer>
   </Container>
 </template>
