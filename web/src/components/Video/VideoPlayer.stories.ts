@@ -17,6 +17,6 @@ export const Default: () => Component = () => ({
     VideoPlayer
   },
   template: `
-        <VideoPlayer url="https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1280_10MG.mp4"/>
+        <VideoPlayer url="https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1280_10MG.mp4"/>
     `
 });

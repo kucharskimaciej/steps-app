@@ -1,9 +1,17 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { pick } from "lodash";
 import MuteControl from "@/components/Video/MuteControl.vue";
 import SizeControl from "@/components/Video/SizeControl.vue";
 import PlayControl from "@/components/Video/PlayControl.vue";
+import ForwardOne from "@/components/Video/ForwardOne.vue";
+import BackOne from "@/components/Video/BackOne.vue";
+import ForwardFive from "@/components/Video/ForwardFive.vue";
+import BackFive from "@/components/Video/BackFive.vue";
+import PlayFromStart from "@/components/Video/PlayFromStart.vue";
+import SlowControl from "@/components/Video/SlowControl.vue";
+import Progress from "@/components/Video/Progress.vue";
+import { ThrottleTime } from "@/lib/decorators/throttleTime";
 
 const mediaEvents = [
   "abort",
@@ -38,46 +46,97 @@ const mediaEvents = [
   components: {
     PlayControl,
     SizeControl,
-    MuteControl
+    MuteControl,
+    ForwardOne,
+    ForwardFive,
+    BackFive,
+    BackOne,
+    PlayFromStart,
+    SlowControl,
+    Progress
   }
 })
 export default class VideoPlayer extends Vue {
   @Prop({ required: true }) private url!: string;
 
+  static readonly FULL_SPEED = 1;
+  static readonly SLOW_SPEED = 0.5;
+
   muted = true;
   playing = false;
+  speed = VideoPlayer.FULL_SPEED;
+  currentTime = 0;
 
   get videoEventListeners() {
     return pick(this.$listeners, mediaEvents);
   }
 
-  get videoElement() {
+  provideVideoElement(): HTMLVideoElement {
     return this.$refs.video as HTMLVideoElement;
   }
 
   toggleMuted(value = !this.muted) {
     this.muted = value;
-    this.videoElement.muted = value;
+    this.provideVideoElement().muted = value;
   }
 
   toggleSize() {
-    this.videoElement.requestFullscreen();
+    this.provideVideoElement().requestFullscreen();
   }
 
   play() {
     this.playing = !this.playing;
     if (this.playing) {
-      this.videoElement.play();
+      this.provideVideoElement().play();
     } else {
-      this.videoElement.pause();
+      this.provideVideoElement().pause();
     }
+  }
+
+  seek(delta: number) {
+    const totalLength = this.provideVideoElement().duration;
+    const currentTime = this.provideVideoElement().currentTime;
+
+    if (!currentTime) {
+      return;
+    }
+
+    this.provideVideoElement().currentTime = Math.min(
+      Math.max(0, currentTime + delta),
+      totalLength
+    );
+  }
+
+  toggleSlowSpeed() {
+    this.provideVideoElement().playbackRate = this.speed =
+      this.speed < VideoPlayer.FULL_SPEED
+        ? VideoPlayer.FULL_SPEED
+        : VideoPlayer.SLOW_SPEED;
+  }
+
+  playFromStart() {
+    this.provideVideoElement().currentTime = 0;
   }
 
   handlePlayingChange(value: boolean) {
     this.playing = value;
   }
+
   handleVolumeChange() {
-    this.toggleMuted(this.videoElement.muted);
+    if (this.provideVideoElement()) {
+      this.toggleMuted(this.provideVideoElement().muted);
+    }
+  }
+
+  @ThrottleTime(500)
+  handleTimeUpdate() {
+    if (this.provideVideoElement()) {
+      this.currentTime = this.provideVideoElement().currentTime;
+    }
+  }
+
+  get isSlow() {
+    return this.speed < 1;
   }
 }
 </script>
@@ -91,6 +150,7 @@ export default class VideoPlayer extends Vue {
       loop
       playsinline
       v-on="videoEventListeners"
+      @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"
       @play="handlePlayingChange(true)"
       @pause="handlePlayingChange(false)"
@@ -105,7 +165,25 @@ export default class VideoPlayer extends Vue {
 
     <aside class="absolute top-0 right-0 m-2 flex flex-col">
       <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
-      <SizeControl :enabled="false" @toggle="toggleSize" />
+      <!--      <SizeControl :enabled="false" @toggle="toggleSize" />-->
+    </aside>
+
+    <aside class="absolute bottom-0 right-0 m-2 flex">
+      <ForwardOne class="mr-1" @click="seek(1)" />
+      <BackFive class="mr-1" @click="seek(-5)" />
+      <BackOne class="mr-1" @click="seek(-1)" />
+      <PlayFromStart class="mr-1" @click="playFromStart()" />
+      <SlowControl class="ml-5" :enabled="isSlow" @toggle="toggleSlowSpeed()" />
+    </aside>
+
+    <aside
+      class="absolute bottom-0 right-0 left-0"
+      v-if="provideVideoElement()"
+    >
+      <Progress
+        :current="currentTime"
+        :total="provideVideoElement().duration"
+      />
     </aside>
   </main>
 </template>

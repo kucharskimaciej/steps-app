@@ -13,14 +13,9 @@ export default class PlayControl extends Vue {}
 </script>
 
 <template>
-  <div
-    class="text-6xl text-white leading-none
-        px-2 py-1 inline-flex rounded
-        cursor-pointer select-none outline-none"
-    v-on="$listeners"
-  >
+  <Control class="text-6xl" v-on="$listeners">
     <PureIcon type="play_circle_outline" />
-  </div>
+  </Control>
 </template>
 
 <style lang="scss" scoped>
