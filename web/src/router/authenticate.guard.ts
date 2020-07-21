@@ -1,11 +1,7 @@
 import { Container } from "vue-typedi";
 import { NavigationGuard } from "vue-router";
 import { AuthService } from "@/lib/firebase/auth.service";
-import {
-  dispatchFetchAllSteps,
-  dispatchHandleAuthStateChange,
-  provideStore
-} from "@/store";
+import { dispatchHandleAuthStateChange, provideStore } from "@/store";
 
 export const authenticate: NavigationGuard = async (to, from, next) => {
   if (to.meta.public) {

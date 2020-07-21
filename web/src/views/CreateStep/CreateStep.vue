@@ -22,6 +22,7 @@ import {
   stepsById
 } from "@/store";
 import { VueWithStore } from "@/lib/vueWithStore";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider.vue";
 
 @Component({
   components: {
@@ -29,7 +30,8 @@ import { VueWithStore } from "@/lib/vueWithStore";
     StepForm,
     PureButton,
     VideoInput,
-    PureStepList
+    PureStepList,
+    AllStepsProvider
   }
 })
 export default class CreateStep extends VueWithStore {
@@ -95,6 +97,7 @@ export default class CreateStep extends VueWithStore {
   }
 
   get stepsByScore(): Step[] {
+    console.log("steps by score");
     const scoringResults = this.$store.state.steps.rawSteps.reduce(
       (acc, step) => {
         acc[step.id] = this.form?.value
@@ -153,12 +156,14 @@ export default class CreateStep extends VueWithStore {
     </footer>
 
     <template #sidebar>
-      <PureStepList
-        :steps="stepsByScore"
-        :is-selected="isPartOfSelectedVariation"
-        class="max-h-full"
-        @select="toggleVariationSelected"
-      />
+      <AllStepsProvider>
+        <PureStepList
+          :steps="stepsByScore"
+          :is-selected="isPartOfSelectedVariation"
+          class="max-h-full"
+          @select="toggleVariationSelected"
+        />
+      </AllStepsProvider>
     </template>
   </WideWithSidebarRight>
 </template>

@@ -1,13 +1,15 @@
 import { RawStep } from "../../../common/types/Step";
 import { User } from "../../../common/types/User";
 
+export type Status = "clean" | "pending" | "dirty";
+
 export interface AuthState {
   uid: string;
 }
 
 export interface StepsState {
   rawSteps: RawStep[];
-  query: string;
+  status: Status;
 }
 
 export interface CurrentUserState {

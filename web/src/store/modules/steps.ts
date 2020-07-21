@@ -1,4 +1,4 @@
-import { RootState, StepsState } from "@/store/types";
+import { RootState, Status, StepsState } from "@/store/types";
 import { RawStep } from "../../../../common/types/Step";
 import { Container } from "vue-typedi";
 import {
@@ -17,7 +17,8 @@ type StepsContext = ActionContext<StepsState, RootState>;
 export const steps = {
   namespaced: true,
   state: {
-    rawSteps: []
+    rawSteps: [],
+    status: "clean"
   },
   getters: {
     getVariationsByKey(state: StepsState): Record<string, RawStep[]> {
@@ -54,13 +55,18 @@ export const steps = {
       state.rawSteps = state.rawSteps.map(step =>
         step.id === payload.id ? payload : step
       );
+    },
+    updateStatus(state: StepsState, payload: Status) {
+      state.status = payload;
     }
   },
   actions: {
     async fetchAllSteps(context: StepsContext) {
+      commitUpdateStatus(context, "pending");
       const stepsResource = Container.get(StepsResource);
       const result = await stepsResource.query(context.rootState.auth.uid);
       commitSetSteps(context, result);
+      commitUpdateStatus(context, "dirty");
     },
     async createStep(
       context: StepsContext,
@@ -94,6 +100,7 @@ const { getters, mutations, actions } = steps;
 // MUTATIONS
 const commitSetSteps = commit(mutations.setSteps);
 const commitUpdateStep = commit(mutations.updateStep);
+const commitUpdateStatus = commit(mutations.updateStatus);
 
 // GETTERS
 export const getVariationsByKey = read(getters.getVariationsByKey);

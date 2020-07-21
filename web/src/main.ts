@@ -5,7 +5,7 @@ import Vuex from "vuex";
 import { provideStore } from "@/store";
 import "./main.scss";
 import App from "./App.vue";
-import router from "./router/router";
+import router from "./router";
 import "./filters";
 
 Vue.config.productionTip = false;
