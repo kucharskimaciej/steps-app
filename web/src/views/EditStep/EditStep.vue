@@ -5,7 +5,7 @@ import Container from "@/components/Layout/Container.vue";
 import { StepFormApi } from "@/components/StepForm/types";
 import { RawStep } from "../../../../common/types/Step";
 import "@/lib/stepsByHashDuplicateLocator";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/router/routes";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import { dispatchUpdateStep } from "@/store";
 import { VueWithStore } from "@/lib/vueWithStore";

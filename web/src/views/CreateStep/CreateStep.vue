@@ -4,7 +4,7 @@ import StepForm from "@/components/StepForm/StepForm.vue";
 import { StepFormApi } from "@/components/StepForm/types";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import "@/lib/rawStepHelpers";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/router/routes";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 import "@/lib/stepsByHashDuplicateLocator";
 import "@/lib/videoUpload.service";

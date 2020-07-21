@@ -3,10 +3,9 @@ import Vue from "vue";
 import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
 import { provideStore } from "@/store";
-import "./registerServiceWorker";
 import "./main.scss";
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/router";
 import "./filters";
 
 Vue.config.productionTip = false;
@@ -19,3 +18,5 @@ new Vue({
   store: provideStore(),
   render: h => h(App)
 }).$mount("#app");
+
+// import "./registerServiceWorker";

@@ -1,19 +1,21 @@
-import Vue from "vue";
 import Router from "vue-router";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/router/routes";
 import CreateStep from "@/views/CreateStep/CreateStep.vue";
 import Steps from "@/views/Steps/Steps.vue";
 import FeedView from "@/views/Feed/FeedView.vue";
-
-Vue.use(Router);
+import PublicStep from "@/views/PublicStep/PublicStep.vue";
 
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      name: ROUTES.STEP_LIST,
       path: "/",
+      redirect: "/feed"
+    },
+    {
+      name: ROUTES.STEP_LIST,
+      path: "/list",
       component: Steps
     },
     {
@@ -25,6 +27,14 @@ export default new Router({
       name: ROUTES.FEED,
       path: "/feed",
       component: FeedView
+    },
+    {
+      name: ROUTES.PUBLIC_STEP,
+      path: "/s/:stepId",
+      component: PublicStep,
+      meta: {
+        public: true
+      }
     }
     // {
     //   name: ROUTES.EDIT_STEP,
