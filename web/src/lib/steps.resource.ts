@@ -36,6 +36,11 @@ export class StepsResource {
     return querySnapshot.docs.map(this.toDocument);
   }
 
+  public async fetch(id: string): Promise<RawStep> {
+    const snapshot = await this.collection.doc(id).get();
+    return this.toDocument(snapshot);
+  }
+
   public async create(
     params: CreateParams,
     variationsToMerge?: string[]

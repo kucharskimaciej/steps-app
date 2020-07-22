@@ -34,7 +34,8 @@ export default new Router({
       component: PublicStep,
       meta: {
         public: true
-      }
+      },
+      props: true
     }
     // {
     //   name: ROUTES.EDIT_STEP,

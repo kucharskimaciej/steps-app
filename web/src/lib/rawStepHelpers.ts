@@ -11,7 +11,7 @@ export function convertToStepRef({
 }
 
 export function convertToStep(
-  variationsByKey: Record<string, RawStep[]>,
+  variationsByKey: Record<string, RawStep[]> | null,
   raw: RawStep
 ): Step {
   const {
@@ -52,11 +52,12 @@ export function convertToStep(
     }))
   ];
 
-  const variations = variationKey
-    ? variationsByKey[variationKey]
-        .map(convertToStepRef)
-        .filter(ref => ref.id !== raw.id)
-    : [];
+  const variations =
+    variationsByKey && variationsByKey[variationKey] && variationKey
+      ? variationsByKey[variationKey]
+          .map(convertToStepRef)
+          .filter(ref => ref.id !== raw.id)
+      : [];
 
   return {
     identifier,

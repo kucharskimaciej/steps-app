@@ -1,11 +1,27 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { VueWithStore } from "../../lib/vueWithStore";
+import { Component, Prop } from "vue-property-decorator";
+import { VueWithStore } from "@/lib/vueWithStore";
+import StepProvider from "@/components/Providers/StepProvider.vue";
+import { getCurrentStep } from "@/store";
 
-@Component
-export default class PublicStep extends VueWithStore {}
+@Component({
+  components: {
+    StepProvider
+  }
+})
+export default class PublicStep extends VueWithStore {
+  @Prop() private stepId!: string;
+
+  get step() {
+    return getCurrentStep(this.$store)!;
+  }
+}
 </script>
 
 <template>
-  <p>hello, public</p>
+  <StepProvider :step-id="stepId">
+    <template #default>
+      <p>hello, public {{ step.name }}</p>
+    </template>
+  </StepProvider>
 </template>
