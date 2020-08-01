@@ -13,6 +13,7 @@ const kindToColorMap: Record<ButtonKind, string> = {
   warning: "yellow"
 };
 
+// CHANGES HERE NEED TO BE PROPAGATED IN THE POST CSS PURGE WHITELIST
 export function buttonColors(kind: ButtonKind, feel: ButtonFeel): string {
   const primaryColor = kindToColorMap[kind];
 
