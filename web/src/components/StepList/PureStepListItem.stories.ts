@@ -11,9 +11,22 @@ import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { action } from "@storybook/addon-actions";
 import StoryRouter from "storybook-vue-router";
 import { stepFactory } from "@/stories/fixtures/steps";
+import { ROUTES } from "@/router/routes";
 
 const stories = storiesOf("Components/PureStepListItem", module)
-  .addDecorator((StoryRouter as any)())
+  .addDecorator(
+    (StoryRouter as any)(
+      {},
+      {
+        routes: [
+          {
+            name: ROUTES.PUBLIC_STEP,
+            path: "/s/:stepId"
+          }
+        ]
+      }
+    )
+  )
   .addDecorator(Container("800px"))
   .addDecorator(Spacing)
   .addDecorator(WithGlobalStyles)

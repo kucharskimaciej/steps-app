@@ -3,14 +3,8 @@ import { Container, Spacing, WithGlobalStyles } from "@/stories/decorators";
 import Vue, { Component } from "vue";
 
 export default {
-  title: "Components/Providers",
-  decorators: [
-    withKnobs,
-    Container("600px"),
-    Spacing,
-    // DarkBackground,
-    WithGlobalStyles
-  ]
+  title: "Components/",
+  decorators: [withKnobs, Container("600px"), Spacing, WithGlobalStyles]
 };
 
 export const Base: () => Component = () =>

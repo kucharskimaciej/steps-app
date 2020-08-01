@@ -1,0 +1,59 @@
+<script lang="ts">
+export default {};
+</script>
+
+<template>
+  <div class="wrapper">
+    <div class="loader" />
+  </div>
+</template>
+
+<style scoped>
+.wrapper {
+  overflow: hidden;
+}
+
+.loader,
+.loader:before,
+.loader:after {
+  @apply bg-green-light;
+  animation: load1 1s infinite ease-in-out;
+  width: 1em;
+  height: 4em;
+}
+.loader {
+  @apply bg-green-light;
+  text-indent: -9999em;
+  margin: 88px auto;
+  position: relative;
+  font-size: 11px;
+  transform: translateZ(0);
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: "";
+}
+.loader:before {
+  left: -1.5em;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 1.5em;
+}
+
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 theme("colors.green.light");
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em theme("colors.green.light");
+    height: 5em;
+  }
+}
+</style>

@@ -14,7 +14,7 @@
     />
     <main class="w-full">
       <header class="flex items-start">
-        <h2 class="font-secondary text-wood-bark font-light mr-auto">
+        <h2 class="font-heading text-wood-bark font-light mr-auto">
           <a
             :href="firstVideoUrl"
             target="_blank"
@@ -27,7 +27,7 @@
         </h2>
 
         <aside class="flex flex-shrink-0 ml-4">
-          <router-link :to="`/edit/${step.id}`" v-slot="{ navigate }">
+          <router-link v-slot="{ navigate }" :to="`/edit/${step.id}`">
             <PureButton
               feel="ghost"
               kind="primary"
@@ -92,6 +92,10 @@
           <strong>#{{ variation.identifier }}</strong> {{ variation.name }}
         </a>
       </section>
+
+      <section class="mt-3 text-sm">
+        Shortlink: <CopyToClipboard :value="step | shortLink($router)" />
+      </section>
     </main>
   </article>
 </template>
@@ -103,13 +107,15 @@ import PureTag from "@/components/Tags/PureTag.vue";
 import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
 
 @Component({
   components: {
     PureTag,
     PureToggleButton,
     PureButton,
-    PureIcon
+    PureIcon,
+    CopyToClipboard
   }
 })
 export default class PureStepListItem extends Vue {

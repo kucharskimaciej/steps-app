@@ -30,7 +30,8 @@ export function rawStepsFactory(): RawStep[] {
       id: "step-id-2",
       owner_uid: "owner-id-1",
       identifier: 2,
-      name: "Tepy na 4 kroku saidy damskej + przesunięcie nogi",
+      name:
+        "Tepy na 4 kroku saidy damskej + przesunięcie nogi, a potem dodatkowe przejścia",
       videos: [
         {
           url: "https://example.com/videos/hash-2",

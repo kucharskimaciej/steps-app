@@ -59,8 +59,8 @@ module.exports = {
       black: "#000"
     },
     fontFamily: {
-      primary: ["Roboto", "sans-serif"],
-      secondary: ["Proza Libre", "sans-serif"]
+      primary: ["Cabin", "sans-serif"],
+      heading: ["Roboto Condensed", "sans-serif"]
     },
     fontSize: {
       "2xs": ".675rem",
