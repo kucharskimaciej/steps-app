@@ -97,7 +97,6 @@ export default class CreateStep extends VueWithStore {
   }
 
   get stepsByScore(): Step[] {
-    console.log("steps by score");
     const scoringResults = this.$store.state.steps.rawSteps.reduce(
       (acc, step) => {
         acc[step.id] = this.form?.value
