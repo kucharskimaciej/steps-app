@@ -50,6 +50,7 @@ const BASE_COLORS = {
 };
 
 module.exports = {
+  purge: false,
   theme: {
     extend: {},
     colors: {
