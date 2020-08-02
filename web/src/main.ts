@@ -4,9 +4,11 @@ import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
 import { provideStore } from "@/store";
 import "./main.scss";
-import App from "./App.vue";
 import router from "./router";
 import "./filters";
+import "./plugins";
+
+import App from "./App.vue";
 
 Vue.config.productionTip = false;
 

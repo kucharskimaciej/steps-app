@@ -19,25 +19,25 @@ export default class ReadonlyStep extends Vue {
 </script>
 
 <template>
-  <article class="sm:p-2 flex flex-col">
-    <header class=" px-2 sm:px-0">
+  <article class="desktop:p-2 flex flex-col">
+    <header class=" px-2 desktop:px-0">
       <h1
-        class="text-lg md:text-2xl font-heading font-bold leading-tight mt-3 sm:mt-0"
+        class="text-lg desktop:text-2xl font-heading font-bold leading-tight mt-3 desktop:mt-0"
       >
         {{ step.name }}
       </h1>
     </header>
 
     <main
-      class="order-first sm:order-none sm:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex sm:h-auto"
+      class="order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto"
     >
       <VideoPlayer
-        class="shadow-lg sm:rounded w-full m-auto"
+        class="shadow-lg desktop:rounded w-full m-auto"
         :url="primaryVideo.url"
       />
     </main>
 
-    <footer class="mt-2 px-2 sm:px-0 pb-2">
+    <footer class="mt-2 px-2 desktop:px-0 pb-2">
       <PureTag
         v-for="tag in step.tags"
         :key="tag.text"
