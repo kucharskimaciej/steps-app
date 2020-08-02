@@ -10,7 +10,7 @@ import { stepFactory } from "@/stories/fixtures/steps";
 
 export default {
   title: "Components/Step/ReadonlyStep",
-  decorators: [Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
 };
 
 export const Default: () => Component = () => ({

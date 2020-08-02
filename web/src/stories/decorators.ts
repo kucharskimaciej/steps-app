@@ -27,6 +27,6 @@ export const Container: (
   w: string | number,
   h?: string | number
 ) => DecoratorFunction<any> = (w, h = "auto") => story => ({
-  template: `<div style="width: ${w}; height: ${h}"><story/></div>`
+  template: `<div style="width: ${w}; height: ${h}; max-width: 100vw;"><story/></div>`
 });
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars */
