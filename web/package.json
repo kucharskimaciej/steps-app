@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && cp _redirects dist/_redirects",
+    "build": "vue-cli-service build --modern && cp _redirects dist/_redirects",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "lint": "eslint src/**/*.{vue,ts}",
