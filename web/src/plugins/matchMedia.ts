@@ -1,13 +1,15 @@
 import Vue from "vue";
 
-export default function MatchMediaPlugin() {
-  const defaultMatchers = {
-    desktop: "(min-width: 75rem)"
-  };
+const defaultMatchers = {
+  desktop: "(min-width: 75rem)",
+  portrait: "(orientation: portrait)",
+  landscape: "(orientation: landscape)"
+};
 
-  Vue.prototype.$match = function $match<
-    K extends keyof typeof defaultMatchers
-  >(matcher: K) {
+export type Matchers = keyof typeof defaultMatchers;
+
+export default function MatchMediaPlugin() {
+  Vue.prototype.$match = function $match(matcher: Matchers) {
     const breakpoints = {
       ...defaultMatchers,
       ...this.$options.customMatchers

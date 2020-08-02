@@ -34,6 +34,7 @@ export default class ReadonlyStep extends Vue {
       <VideoPlayer
         class="shadow-lg desktop:rounded w-full m-auto"
         :url="primaryVideo.url"
+        :autoplay="!$match('desktop')"
       />
     </main>
 

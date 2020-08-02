@@ -58,6 +58,7 @@ const mediaEvents = [
 })
 export default class VideoPlayer extends Vue {
   @Prop({ required: true }) private url!: string;
+  @Prop({ default: false }) private autoplay!: boolean;
 
   static readonly FULL_SPEED = 1;
   static readonly SLOW_SPEED = 0.5;
@@ -149,6 +150,7 @@ export default class VideoPlayer extends Vue {
       :src="url"
       loop
       playsinline
+      :autoplay="autoplay"
       v-on="videoEventListeners"
       @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"

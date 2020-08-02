@@ -1,4 +1,5 @@
 import "vuelidate";
+import { Matchers } from "@/plugins/matchMedia";
 
 declare module "vuelidate" {
   interface Validation {
@@ -6,5 +7,11 @@ declare module "vuelidate" {
       [index: number]: Validation;
       $iter: Validation;
     };
+  }
+}
+
+declare module "vue/types/vue" {
+  interface Vue {
+    $match(matcher: Matchers): boolean;
   }
 }
