@@ -1,8 +1,7 @@
 import { Service } from "vue-typedi";
 import { RawStep } from "../../../common/types/Step";
-import { FirestoreService } from "@/lib/firebase/firestore.service";
-import { DocumentSnapshot } from "@/lib/firebase/firebase";
 import { createVariationId } from "@/lib/variations/variationId";
+import { Resource } from "@/lib/resource.class";
 
 type EditableFields =
   | "dance"
@@ -24,22 +23,12 @@ export type CreateParams = Pick<
 export type UpdateParams = Partial<Pick<RawStep, EditableFields>>;
 
 @Service()
-export class StepsResource {
-  private readonly collection = this.firestore.collection("steps");
-
-  constructor(private firestore: FirestoreService) {}
-
-  public async query(uid: string): Promise<RawStep[]> {
-    const querySnapshot = await this.collection
-      .where("owner_uid", "==", uid)
-      .get();
-    return querySnapshot.docs.map(this.toDocument);
-  }
-
-  public async fetch(id: string): Promise<RawStep> {
-    const snapshot = await this.collection.doc(id).get();
-    return this.toDocument(snapshot);
-  }
+export class StepsResource extends Resource<
+  RawStep,
+  CreateParams,
+  UpdateParams
+> {
+  protected readonly collection = this.firestore.collection("steps");
 
   public async create(
     params: CreateParams,
@@ -73,19 +62,5 @@ export class StepsResource {
     await batch.commit();
 
     return documentRef.get().then(this.toDocument);
-  }
-
-  public async update(id: string, update: UpdateParams): Promise<RawStep> {
-    const documentRef = this.collection.doc(id);
-
-    await documentRef.set(update, { merge: true });
-    return documentRef.get().then(this.toDocument);
-  }
-
-  private toDocument(snapshot: DocumentSnapshot): RawStep {
-    return {
-      ...snapshot.data(),
-      id: snapshot.id
-    } as RawStep;
   }
 }

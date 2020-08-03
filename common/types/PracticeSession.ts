@@ -15,5 +15,6 @@ type SessionStatus = OpenSession | ClosedSession;
 export type PracticeSession = SessionStatus &
   DatabaseItem &
   Owned & {
+    name: string;
     steps: string[];
   };
