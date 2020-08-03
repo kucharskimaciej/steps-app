@@ -1,13 +1,13 @@
 import { Tag } from "./Tag";
 import { DatabaseItem } from "./common/DatabaseItem";
 import { VideoObject } from "./VideoObject";
+import { Owned } from "./common/Owned";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
 export type Dance = "semba" | "kizomba" | "fusion" | "tarraxa" | "urban";
 
-interface CommonFields extends DatabaseItem {
+interface CommonFields extends DatabaseItem, Owned {
   identifier: number; // internal, auto-incremented identifier assigned per user
-  owner_uid: string;
   name: string;
   videos: VideoObject[];
   last_practiced_at?: number;
