@@ -29,10 +29,10 @@ export default class ReadonlyStep extends Vue {
     </header>
 
     <main
-      class="order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto"
+      class="video-container order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto"
     >
       <VideoPlayer
-        class="shadow-lg desktop:rounded w-full m-auto"
+        class="video shadow-lg desktop:rounded w-full m-auto"
         :url="primaryVideo.url"
         :autoplay="!$match('desktop')"
       />
@@ -48,3 +48,11 @@ export default class ReadonlyStep extends Vue {
     </footer>
   </article>
 </template>
+
+<style scoped>
+@media screen and (min-width: theme("screens.desktop")) {
+  .video-container {
+    height: 800px;
+  }
+}
+</style>

@@ -143,7 +143,7 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative bg-black">
+  <main class="relative bg-black w-full h-full">
     <video
       ref="video"
       :muted="muted"
@@ -156,7 +156,7 @@ export default class VideoPlayer extends Vue {
       @volumechange="handleVolumeChange"
       @play="handlePlayingChange(true)"
       @pause="handlePlayingChange(false)"
-      class="w-full"
+      class="w-full max-h-full absolute inset-x-0"
     />
 
     <aside
@@ -190,3 +190,10 @@ export default class VideoPlayer extends Vue {
     </aside>
   </main>
 </template>
+
+<style scoped>
+video {
+  top: 50%;
+  transform: translateY(-50%);
+}
+</style>

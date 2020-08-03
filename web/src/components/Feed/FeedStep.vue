@@ -29,7 +29,7 @@ export default class FeedStep extends Vue {
 
 <template>
   <article :id="anchor" class="bg-white rounded shadow overflow-hidden">
-    <main class="mb-2">
+    <main class="video-container mb-2">
       <VideoPlayer :url="primaryVideo.url" />
     </main>
     <header class="px-2 mb-1 flex">
@@ -54,3 +54,9 @@ export default class FeedStep extends Vue {
     </footer>
   </article>
 </template>
+
+<style scoped>
+.video-container {
+  height: 500px;
+}
+</style>
