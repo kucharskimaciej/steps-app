@@ -41,7 +41,9 @@ module.exports = {
             ..."px-4 py-1 border text-2xs".split(" "),
             ..."px-2 py-1 border text-2xs".split(" "),
             ..."px-10 py-1 border-2 text-xl".split(" "),
-            ..."px-4 py-1 border-2 text-xl".split(" ")
+            ..."px-4 py-1 border-2 text-xl".split(" "),
+            "body",
+            "html"
           ],
           extractors: [
             {
