@@ -7,14 +7,9 @@
       'border-green-base border-2': isSelected
     }"
   >
-    <PureToggleButton
-      :toggled="isSelected"
-      class="mr-4"
-      @click.native="select()"
-    />
     <main class="w-full">
       <header class="flex items-start">
-        <h2 class="font-heading text-wood-bark font-light mr-auto">
+        <h2 class="font-heading text-wood-bark font-normal mr-auto">
           <a
             :href="firstVideoUrl"
             target="_blank"

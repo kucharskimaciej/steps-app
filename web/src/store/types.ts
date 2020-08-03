@@ -26,6 +26,5 @@ export interface CurrentStepState extends WithStatus {
 export interface RootState {
   auth: AuthState;
   steps: StepsState;
-  currentUser: CurrentUserState;
   currentStep: CurrentStepState;
 }

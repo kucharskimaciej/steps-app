@@ -9,7 +9,7 @@ import {
 import { orderBy, uniq, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { ActionContext } from "vuex";
-import { practiceSteps, provideStore } from "@/store";
+import { provideStore } from "@/store";
 import { getStoreAccessors } from "typesafe-vuex";
 
 type StepsContext = ActionContext<StepsState, RootState>;
@@ -29,7 +29,7 @@ export const steps = {
         state.rawSteps.map(
           partial(convertToStep, getVariationsByKey(provideStore()))
         ),
-        [step => step.id in practiceSteps(provideStore()), "created_at"],
+        "created_at",
         ["desc", "desc"]
       );
     },

@@ -1,3 +1,1 @@
-export interface User {
-    practice: string[];
-}
+export interface User {}
