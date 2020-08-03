@@ -6,5 +6,11 @@ service cloud.firestore {
       allow create: if request.auth.uid != null;
       allow get: if true;
     }
+
+    match /practice-sessions/{document=**} {
+      allow list, write: if request.auth.uid == resource.data.owner_uid;
+      allow create: if request.auth.uid != null;
+      allow get: if true;
+    }
   }
 }
