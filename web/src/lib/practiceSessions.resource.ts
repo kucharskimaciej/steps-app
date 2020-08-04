@@ -4,7 +4,8 @@ import { Resource } from "@/lib/resource.class";
 import { DateFilter } from "@/filters/date";
 
 type EditableFields = "name" | "steps" | "status";
-export type CreateParams = Pick<PracticeSession, "owner_uid">;
+export type CreateParams = Pick<PracticeSession, "owner_uid"> &
+  Partial<Pick<PracticeSession, "name" | "steps">>;
 export type UpdateParams = Partial<Pick<PracticeSession, EditableFields>>;
 
 @Service()
@@ -19,10 +20,10 @@ export class PracticeSessionsResource extends Resource<
 
   async create(params: CreateParams): Promise<PracticeSession> {
     const stepToSave: Omit<PracticeSession, "id"> = {
-      ...params,
       status: "open",
       steps: [],
-      name: `Practice ${DateFilter(Date.now())}`
+      name: `Practice ${DateFilter(Date.now())}`,
+      ...params
     };
 
     const documentRef = await this.collection.add(stepToSave);

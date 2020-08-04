@@ -19,10 +19,16 @@ export const auth = {
       state.uid = uid;
     }
   },
-  getters: {}
+  getters: {
+    getUid(state: AuthState): string {
+      return state.uid;
+    }
+  }
 };
 
-const { commit, dispatch } = getStoreAccessors<AuthState, RootState>("auth");
+const { read, commit, dispatch } = getStoreAccessors<AuthState, RootState>(
+  "auth"
+);
 
 // MUTATIONS
 const commitSetUid = commit(auth.mutations.setUid);
@@ -31,3 +37,6 @@ const commitSetUid = commit(auth.mutations.setUid);
 export const dispatchHandleAuthStateChange = dispatch(
   auth.actions.handleAuthStateChange
 );
+
+// GETTERS
+export const getUid = read(auth.getters.getUid);

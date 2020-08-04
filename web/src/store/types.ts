@@ -1,4 +1,5 @@
 import { RawStep } from "../../../common/types/Step";
+import { PracticeSession } from "../../../common/types/PracticeSession";
 
 export type Status = "clean" | "pending" | "dirty";
 
@@ -16,6 +17,10 @@ export interface StepsState extends WithStatus {
 
 export interface CurrentStepState extends WithStatus {
   raw: RawStep | null;
+}
+
+export interface PracticeSessionsState extends WithStatus {
+  sessions: PracticeSession[];
 }
 
 export interface RootState {
