@@ -4,6 +4,7 @@ import CreateStep from "@/views/CreateStep/CreateStep.vue";
 import Steps from "@/views/Steps/Steps.vue";
 import FeedView from "@/views/Feed/FeedView.vue";
 import PublicStep from "@/views/PublicStep/PublicStep.vue";
+import SessionsView from "@/views/Sessions/SessionsView.vue";
 
 export default new Router({
   mode: "history",
@@ -36,6 +37,11 @@ export default new Router({
         public: true
       },
       props: true
+    },
+    {
+      name: ROUTES.SESSIONS,
+      path: "/sessions",
+      component: SessionsView
     }
     // {
     //   name: ROUTES.EDIT_STEP,

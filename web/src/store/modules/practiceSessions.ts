@@ -10,6 +10,7 @@ import {
   PracticeSessionsResource
 } from "@/lib/practiceSessions.resource";
 import { getUid, provideStore } from "@/store";
+import router, { ROUTES } from "@/router";
 
 type Context = ActionContext<PracticeSessionsState, RootState>;
 
@@ -41,8 +42,9 @@ export const practiceSessions = createModule(
       },
       async createSession(context: Context, payload: CreateParams) {
         const resource = Container.get(PracticeSessionsResource);
-        await resource.create(payload);
-        await dispatchFetchAllSessions(context);
+        const newSession = await resource.create(payload);
+        commitAddSessions(context, newSession);
+        await router.push(ROUTES.SESSIONS);
       },
       async duplicateSession(context: Context, payload: string) {
         const sessionToDuplicate = context.state.sessions.find(
@@ -80,6 +82,7 @@ const { getters, mutations, actions } = practiceSessions;
 
 const commitUpdateStatus = commit(mutations.updateStatus);
 const commitSetSessions = commit(mutations.setSessions);
+const commitAddSessions = commit(mutations.addSession);
 
 export const getSessions = read(getters.getSessions);
 

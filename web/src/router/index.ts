@@ -7,3 +7,4 @@ Vue.use(Router);
 router.beforeEach(authenticate);
 
 export default router;
+export * from "@/router/routes";
