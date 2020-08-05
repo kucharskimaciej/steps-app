@@ -17,4 +17,5 @@ export type PracticeSession = SessionStatus &
   Owned & {
     name: string;
     steps: string[];
+    created_at: number;
   };

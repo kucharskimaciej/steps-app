@@ -23,6 +23,7 @@ export class PracticeSessionsResource extends Resource<
       status: "open",
       steps: [],
       name: `Practice ${DateFilter(Date.now())}`,
+      created_at: Date.now(),
       ...params
     };
 
