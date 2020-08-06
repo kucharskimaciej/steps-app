@@ -12,15 +12,15 @@ export function sessionsFactory(): PracticeSession[] {
       status: "open",
       name: "Pusta sesja",
       steps: [],
-      created_at: Date.now()
+      created_at: Date.now() - 10
     },
     {
-      id: "session-1",
+      id: "session-5",
       owner_uid: "user-1",
       status: "open",
       name: "A practice session",
       steps: ["step-1", "step-2", "step-3"],
-      created_at: Date.now()
+      created_at: Date.now() - 9
     },
     {
       id: "session-2",
@@ -28,7 +28,7 @@ export function sessionsFactory(): PracticeSession[] {
       status: "open",
       name: "Tepy",
       steps: ["step-1", "step-2", "step-3", "step-4"],
-      created_at: Date.now()
+      created_at: Date.now() - 8
     },
     {
       id: "session-3",
@@ -36,7 +36,7 @@ export function sessionsFactory(): PracticeSession[] {
       status: "open",
       name: "Prywatna z nowaczkami 23/03",
       steps: ["step-1", "step-2", "step-3", "step-4"],
-      created_at: Date.now()
+      created_at: Date.now() - 7
     },
     {
       id: "session-4",
@@ -45,7 +45,7 @@ export function sessionsFactory(): PracticeSession[] {
       closed_at: Date.now(),
       name: "Another practice session",
       steps: ["step-1", "step-2", "step-3"],
-      created_at: Date.now()
+      created_at: Date.now() - 6
     }
   ];
 }
