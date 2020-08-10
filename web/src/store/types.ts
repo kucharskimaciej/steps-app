@@ -27,4 +27,5 @@ export interface RootState {
   auth: AuthState;
   steps: StepsState;
   currentStep: CurrentStepState;
+  practiceSessions: PracticeSessionsState;
 }

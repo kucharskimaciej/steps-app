@@ -14,12 +14,12 @@ export default class Sessions extends Vue {
 </script>
 
 <template>
-  <main class="flex flex-wrap items-stretch">
+  <main class="flex flex-wrap items-stretch desktop:-mx-2">
     <SessionCard
       v-for="session in sessions"
       :key="session.id"
       :session="session"
-      class="mx-3 mb-3 w-full sm:w-4/12"
+      class="desktop:mx-2 mb-2 w-full desktop:w-4/12"
     />
   </main>
 </template>

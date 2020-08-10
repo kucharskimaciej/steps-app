@@ -11,6 +11,7 @@ import {
 } from "@/lib/practiceSessions.resource";
 import { getUid, provideStore } from "@/store";
 import router, { ROUTES } from "@/router";
+import { sortBy } from "lodash";
 
 type Context = ActionContext<PracticeSessionsState, RootState>;
 
@@ -40,9 +41,12 @@ export const practiceSessions = createModule(
         commitSetSessions(context, result);
         commitUpdateStatus(context, "dirty");
       },
-      async createSession(context: Context, payload: CreateParams) {
+      async createSession(context: Context, payload?: CreateParams) {
         const resource = Container.get(PracticeSessionsResource);
-        const newSession = await resource.create(payload);
+        const newSession = await resource.create({
+          ...payload,
+          owner_uid: getUid(provideStore())
+        });
         commitAddSessions(context, newSession);
         await router.push(ROUTES.SESSIONS);
       },
@@ -63,7 +67,7 @@ export const practiceSessions = createModule(
     },
     getters: {
       getSessions(state: PracticeSessionsState): PracticeSession[] {
-        return state.sessions;
+        return sortBy(state.sessions, "status", "-created_at");
       }
     }
   },
