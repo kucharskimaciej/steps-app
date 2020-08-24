@@ -23,9 +23,14 @@ export interface PracticeSessionsState extends WithStatus {
   sessions: PracticeSession[];
 }
 
+export interface SelectedSessionState extends WithStatus {
+  session: PracticeSession | null;
+}
+
 export interface RootState {
   auth: AuthState;
   steps: StepsState;
   currentStep: CurrentStepState;
   practiceSessions: PracticeSessionsState;
+  selectedSession: SelectedSessionState;
 }

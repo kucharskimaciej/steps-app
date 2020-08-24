@@ -25,13 +25,11 @@ export const steps = {
       return groupBy(state.rawSteps, "variationKey");
     },
     getSteps(state: StepsState) {
-      return orderBy(
-        state.rawSteps.map(
-          partial(convertToStep, getVariationsByKey(provideStore()))
-        ),
-        "created_at",
-        ["desc", "desc"]
+      const convertedSteps = state.rawSteps.map(
+        partial(convertToStep, getVariationsByKey(provideStore()))
       );
+
+      return orderBy(convertedSteps, "created_at", ["desc", "desc"]);
     },
     nextIdentifier(state: StepsState) {
       const step = maxBy(state.rawSteps, "identifier");

@@ -20,7 +20,7 @@ export default class PureStepList extends Vue {
 </script>
 
 <template>
-  <section class="h-full overflow-y-auto overflow-x-hidden pr-4">
+  <section class="h-full overflow-y-auto overflow-x-hidden">
     <PureStepListItem
       class="mb-2"
       v-for="step in steps"

@@ -19,7 +19,7 @@ export default class PublicStep extends VueWithStore {
   @Prop() private stepId!: string;
 
   get step() {
-    return getCurrentStep(this.$store)!;
+    return getCurrentStep(this.$store);
   }
 }
 </script>

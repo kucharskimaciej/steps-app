@@ -23,7 +23,7 @@ export default class CopyToClipboard extends Vue {
   >
     <slot>
       <span class="hover:underline">{{ value }}</span>
-      <PureIcon class="self-center ml-1" type="content_copy"
-    /></slot>
+      <PureIcon class="self-center ml-1" type="content_copy" />
+    </slot>
   </article>
 </template>

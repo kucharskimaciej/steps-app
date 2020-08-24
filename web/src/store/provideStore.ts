@@ -4,6 +4,7 @@ import { auth } from "@/store/modules/auth";
 import { steps } from "@/store/modules/steps";
 import { currentStep } from "@/store/modules/currentStep";
 import { practiceSessions } from "@/store/modules/practiceSessions";
+import { selectedSession } from "@/store/modules/selectedSession";
 
 let store: Store<RootState>;
 export function provideStore() {
@@ -13,7 +14,8 @@ export function provideStore() {
         auth,
         steps,
         currentStep,
-        practiceSessions
+        practiceSessions,
+        selectedSession
       }
     });
   }
