@@ -15,6 +15,10 @@ export default class Feed extends Vue {
 
 <template>
   <main>
-    <FeedStep v-for="step in steps" :key="step.id" :step="step" class="mb-4" />
+    <FeedStep v-for="step in steps" :key="step.id" :step="step" class="mb-4">
+      <template #actions="slotScope">
+        <slot name="stepActions" v-bind="slotScope" />
+      </template>
+    </FeedStep>
   </main>
 </template>
