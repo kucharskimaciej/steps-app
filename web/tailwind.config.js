@@ -52,7 +52,11 @@ const BASE_COLORS = {
 module.exports = {
   purge: false,
   theme: {
-    extend: {},
+    extend: {
+      lineHeight: {
+        "0": 0
+      }
+    },
     colors: {
       ...BASE_COLORS,
       transparent: "transparent",

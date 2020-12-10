@@ -15,7 +15,11 @@ export default class SessionProvider extends VueWithStore {
   }
 
   get loading() {
-    return this.$store.state.practiceSessions.status === "pending";
+    return this.$store.state.selectedSession.status === "pending";
+  }
+
+  get session() {
+    return this.$store.state.selectedSession.session;
   }
 
   async load(id: string) {

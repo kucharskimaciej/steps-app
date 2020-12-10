@@ -21,7 +21,7 @@ export const selectedSession = createModule(
         const resource = Container.get(PracticeSessionsResource);
         const result = await resource.fetch(sessionId);
         commitSetSession(context, result);
-        commitUpdateStatus(context, "pending");
+        commitUpdateStatus(context, "dirty");
       },
       async addStep(context: SelectedSessionContext, stepId: string) {
         if (!context.state.session) {

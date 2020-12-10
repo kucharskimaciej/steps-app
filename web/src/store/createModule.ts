@@ -6,9 +6,9 @@ export type ModuleWithState<T> = {
 };
 
 export type Accessors = {
-  getters: any;
-  mutations: any;
-  actions: any;
+  getters: unknown;
+  mutations: unknown;
+  actions: unknown;
 };
 
 export function createModule<StateType, AccessorType extends Accessors>(

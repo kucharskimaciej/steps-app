@@ -5,8 +5,10 @@ import { steps } from "@/store/modules/steps";
 import { currentStep } from "@/store/modules/currentStep";
 import { practiceSessions } from "@/store/modules/practiceSessions";
 import { selectedSession } from "@/store/modules/selectedSession";
+import { uiModals } from "@/store/modules/uiModals";
 
 let store: Store<RootState>;
+
 export function provideStore() {
   if (!store) {
     store = new Vuex.Store<RootState>({
@@ -15,7 +17,8 @@ export function provideStore() {
         steps,
         currentStep,
         practiceSessions,
-        selectedSession
+        selectedSession,
+        uiModals
       }
     });
   }
