@@ -9,7 +9,7 @@ export class SmartTags {
     ["Saida damska", ["said[ay] damsk(a|iej)"]],
     ["Saida męska", ["said[ay] męsk(a|iej)"]],
     ["Shadow position", ["shadow position", "shadow"]],
-    ["Tep", ["tep", "tepy"]],
+    ["Tep", ["tep", "tep(y|ami|em)"]],
     ["Virgula", ["virgul[ai]"]],
     ["Monkey Virgula", ["monkey virgul[ai]"]],
     ["Otwarcie", ["otwarci(e|a|u)"]],
