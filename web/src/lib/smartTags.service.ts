@@ -25,7 +25,8 @@ export class SmartTags {
     ["Obrót", ["obrót", "obrot(u|em)"]],
     ["Clockwise", ["clockwise"]],
     ["Skorpion", ["skorpion"]],
-    ["Napasada", ["napasad(a|zie)"]]
+    ["Napasada", ["napasad(a|zie)"]],
+    ["Cross", ["kross", "cross", "cros(sem|sie)"]]
   ];
 
   private matchers: Matchers = SmartTags.MATCHERS.reduce(
