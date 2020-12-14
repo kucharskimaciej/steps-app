@@ -19,47 +19,30 @@ export const Default: () => Component = () => ({
     StepList
   },
   template: `
-    <StepList :steps="steps" @step-click="handleStepClick" :is-selected="isSelected" :is-active="isActive"/>
+    <StepList :steps="steps" @active-step-change="changeActiveStep" @toggle="handleToggle" :is-selected="isSelected" :is-active="isActive"/>
   `,
   methods: {
-    handleStepClick(stepId: string) {
+    changeActiveStep(stepId: string) {
       (this as any).activeStepId = stepId;
+    },
+    handleToggle(stepId: string) {
+      if (this.selectedSteps.includes(stepId)) {
+        this.selectedSteps = this.selectedSteps.filter(id => id !== stepId);
+      } else {
+        this.selectedSteps.push(stepId);
+      }
     },
     isActive(step: Step) {
       return (this as any).activeStepId === step.id;
     },
     isSelected(step: Step) {
-      return step.identifier === 2;
+      return this.selectedSteps.includes(step.id);
     }
   },
   data: () => ({
     steps: stepsFactory(),
-    activeStepId: ""
-  }),
-  props: {}
-});
-
-export const AllSelected: () => Component = () => ({
-  components: {
-    StepList
-  },
-  template: `
-    <StepList :steps="steps" @step-click="handleStepClick" :is-selected="isSelected" :is-active="isActive"/>
-  `,
-  methods: {
-    handleStepClick(stepId: string) {
-      (this as any).activeStepId = stepId;
-    },
-    isActive(step: Step) {
-      return (this as any).activeStepId === step.id;
-    },
-    isSelected() {
-      return true;
-    }
-  },
-  data: () => ({
-    steps: stepsFactory(),
-    activeStepId: ""
+    activeStepId: "",
+    selectedSteps: []
   }),
   props: {}
 });

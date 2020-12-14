@@ -7,6 +7,7 @@ import {
 } from "@/stories/decorators";
 import StepListStep from "@/components/StepList/StepListStep.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
+import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 
 export default {
   title: "Components/StepList/StepListStep",
@@ -47,6 +48,25 @@ export const Active: () => Component = () => ({
   },
   template: `
     <StepListStep :step="step" :is-active="true"/>
+  `,
+  methods: {},
+  data: () => ({
+    step: stepFactory()
+  }),
+  props: {}
+});
+
+export const WithWidget: () => Component = () => ({
+  components: {
+    StepListStep,
+    SelectToggleWidget
+  },
+  template: `
+    <StepListStep :step="step">
+      <template #before>
+        <SelectToggleWidget />
+      </template>
+    </StepListStep>
   `,
   methods: {},
   data: () => ({

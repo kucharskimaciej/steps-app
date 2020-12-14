@@ -3,7 +3,7 @@ import { Vue, Component } from "vue-property-decorator";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import Container from "@/components/Layout/Container.vue";
 import { getSteps } from "@/store";
-import AllStepsProvider from "@/components/Providers/AllStepsProvider.vue";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 
 @Component({
   components: {

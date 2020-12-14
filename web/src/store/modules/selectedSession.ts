@@ -10,6 +10,7 @@ import { PracticeSession } from "../../../../common/types/PracticeSession";
 import { getStoreAccessors } from "typesafe-vuex";
 import { PracticeSessionsResource } from "@/lib/practiceSessions.resource";
 import { without } from "lodash";
+import router, { ROUTES } from "@/router";
 
 type SelectedSessionContext = ActionContext<SelectedSessionState, RootState>;
 
@@ -59,7 +60,7 @@ export const selectedSession = createModule(
       async closeSession(context: SelectedSessionContext) {
         if (
           !context.state.session ||
-          context.state.session.status !== "closed"
+          context.state.session.status === "closed"
         ) {
           return;
         }
@@ -73,11 +74,21 @@ export const selectedSession = createModule(
 
         commitSetSession(context, closedSession);
         await resource.update(context.state.session.id, closedSession);
+      },
+      async removeSession(context: SelectedSessionContext) {
+        if (!context.state.session) {
+          return;
+        }
+
+        const resource = Container.get(PracticeSessionsResource);
+        await resource.remove(context.state.session.id);
+        await router.push({ name: ROUTES.SESSIONS });
+        commitSetSession(context, null);
       }
     },
     mutations: {
       updateStatus,
-      setSession(state: SelectedSessionState, payload: PracticeSession) {
+      setSession(state: SelectedSessionState, payload: PracticeSession | null) {
         state.session = payload;
       },
       updateSession(
@@ -124,5 +135,6 @@ export const dispatchUpdateSession = dispatch(actions.updateSession);
 export const dispatchAddStep = dispatch(actions.addStep);
 export const dispatchRemoveStep = dispatch(actions.removeStep);
 export const dispatchCloseSession = dispatch(actions.closeSession);
+export const dispatchRemoveSession = dispatch(actions.removeSession);
 
 export const getIsClosed = read(getters.getIsClosed);

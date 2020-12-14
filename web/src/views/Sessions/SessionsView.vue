@@ -38,7 +38,7 @@ export default class SessionsView extends VueWithStore {
 
 <template>
   <Container>
-    <AllSessionsProvider>
+    <AllSessionsProvider :always-fetch="true">
       <header class="flex items-center">
         <h1 class="font-heading text-2xl text-bold">
           Sessions

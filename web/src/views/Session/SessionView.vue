@@ -1,48 +1,72 @@
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { first } from "lodash";
 import { VueWithStore } from "@/lib/vueWithStore";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import { PracticeSession } from "../../../../common/types/PracticeSession";
 import Sessions from "@/components/Sessions/Sessions.vue";
 import SessionProvider from "@/components/Providers/SessionProvider.vue";
-import AllStepsProvider from "@/components/Providers/AllStepsProvider.vue";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import Feed from "@/components/Feed/Feed.vue";
-import { getSteps } from "@/store";
-import PureStepList from "@/components/StepList/PureStepList.vue";
+import {
+  getSteps,
+  stepsById,
+  dispatchOpenModal,
+  dispatchAddStep,
+  dispatchRemoveStep,
+  dispatchUpdateSession,
+  dispatchRemoveSession
+} from "@/store";
 import Container from "@/components/Layout/Container.vue";
-import { dispatchOpenModal } from "@/store/modules/uiModals";
 import { MODALS } from "@/lib/modals/modals";
+import StepList from "@/components/StepList/StepList.vue";
+import FullWithSidebar from "@/components/Layout/FullWithSidebar.vue";
+import { Step } from "../../../../common/types/Step";
+import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
+import ContentBox from "@/components/ContentBox/ContentBox.vue";
 
 @Component({
   components: {
     Feed,
-    PureStepList,
+    StepList,
     AllStepsProvider,
     SessionProvider,
     WideWithSidebarRight,
+    FullWithSidebar,
+    ReadonlyStep,
     Container,
     PureButton,
     PureIcon,
-    Sessions
+    Sessions,
+    ContentBox
   }
 })
 export default class SessionView extends VueWithStore {
   @Prop() private sessionId!: string;
 
-  get session(): PracticeSession {
-    return this.$store.state.selectedSession.session!;
+  activeStepId = "";
+
+  @Watch("steps")
+  handleStepsChange(steps: Step[]) {
+    this.activeStepId = first(steps)?.id || "";
   }
 
-  get stepsNotInSession() {
-    if (!this.session) {
+  get activeStep(): Step | null {
+    if (this.activeStepId) {
+      return stepsById(this.$store)[this.activeStepId];
+    } else {
       return null;
     }
+  }
 
-    return getSteps(this.$store).filter(
-      step => !this.session.steps.includes(step.id)
-    );
+  get steps() {
+    return getSteps(this.$store);
+  }
+
+  get session(): PracticeSession {
+    return this.$store.state.selectedSession.session!;
   }
 
   get stepsInSession() {
@@ -50,9 +74,7 @@ export default class SessionView extends VueWithStore {
       return null;
     }
 
-    return getSteps(this.$store).filter(step =>
-      this.session.steps.includes(step.id)
-    );
+    return this.steps.filter(step => this.session.steps.includes(step.id));
   }
 
   openCart() {
@@ -61,31 +83,97 @@ export default class SessionView extends VueWithStore {
       params: ["this is foo"]
     });
   }
+
+  private isInSession(stepId: string): boolean {
+    return this.session.steps.includes(stepId);
+  }
+
+  isStepActive(step: Step) {
+    return this.activeStepId === step.id;
+  }
+
+  isStepSelected(step: Step) {
+    return this.isInSession(step.id);
+  }
+
+  onStepSelectToggle(stepId: string) {
+    if (this.isInSession(stepId)) {
+      dispatchRemoveStep(this.$store, stepId);
+    } else {
+      dispatchAddStep(this.$store, stepId);
+    }
+  }
+
+  onActiveStepChange(stepId: string) {
+    this.activeStepId = stepId;
+  }
+
+  handleClear() {
+    dispatchUpdateSession(this.$store, { steps: [] });
+  }
+
+  handleRemoveSession() {
+    dispatchRemoveSession(this.$store);
+  }
 }
 </script>
 
 <template>
   <SessionProvider :id="sessionId">
     <template #default>
-      <WideWithSidebarRight v-if="session.status === 'open'">
-        <template #default>
-          <button @click="openCart">Le open</button>
+      <FullWithSidebar v-if="session.status === 'open'">
+        <template #sidebar>
           <AllStepsProvider>
-            <Feed :steps="stepsInSession" />
+            <div class="h-screen desktop:h-full flex flex-col">
+              <ContentBox class="border-r">
+                <PureButton feel="ghost" @click="openCart">
+                  Session feed
+                </PureButton>
+              </ContentBox>
+              <ContentBox
+                class="border-r border-t h-full mb-auto flex-shrink"
+                overflow="scroll"
+              >
+                <StepList
+                  :steps="steps"
+                  :is-active="isStepActive"
+                  :is-selected="isStepSelected"
+                  @active-step-change="onActiveStepChange"
+                  @toggle="onStepSelectToggle"
+                />
+              </ContentBox>
+              <ContentBox class="border border-l-0 border-b-0">
+                <div class="flex items-center">
+                  <span>{{ session.steps.length }} selected</span>
+                  <span class="ml-auto">
+                    <PureButton feel="ghost" @click="handleClear"
+                      >Clear</PureButton
+                    >
+                  </span>
+                </div>
+              </ContentBox>
+            </div>
           </AllStepsProvider>
         </template>
 
-        <template #sidebar>
-          <AllStepsProvider>
-            <PureStepList :steps="stepsNotInSession" />
-          </AllStepsProvider>
+        <template #default>
+          <div class="h-screen desktop:h-full flex flex-col">
+            <ContentBox class="border-b">
+              <div class="flex items-center">
+                <h1>{{ session.name }}</h1>
+                <aside class="ml-auto">
+                  <PureButton feel="ghost" @click="handleRemoveSession">
+                    Remove session
+                  </PureButton>
+                </aside>
+              </div>
+            </ContentBox>
+            <ContentBox class="border-0 h-full w-full">
+              <ReadonlyStep v-if="activeStep" :step="activeStep" />
+            </ContentBox>
+          </div>
         </template>
-      </WideWithSidebarRight>
-      <Container v-else>
-        <AllStepsProvider>
-          <Feed :steps="stepsInSession" />
-        </AllStepsProvider>
-      </Container>
+      </FullWithSidebar>
     </template>
   </SessionProvider>
 </template>

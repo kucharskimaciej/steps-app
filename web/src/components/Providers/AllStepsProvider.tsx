@@ -1,4 +1,4 @@
-<script lang="ts">
+import { CreateElement } from "vue";
 import { Component } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
 import { dispatchFetchAllSteps } from "@/store";
@@ -20,14 +20,14 @@ export default class AllStepsProvider extends VueWithStore {
   async created() {
     await this.loadSteps();
   }
-}
-</script>
 
-<template>
-  <div>
-    <slot v-if="loading" name="loading">
-      <h1>Loading steps</h1>
-    </slot>
-    <slot v-else />
-  </div>
-</template>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  render(h: CreateElement) {
+    console.log("#render?");
+    if (this.loading) {
+      return this.$slots.loading || <div>Loading</div>;
+    } else {
+      return this.$slots.default;
+    }
+  }
+}

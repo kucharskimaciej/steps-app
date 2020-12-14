@@ -38,6 +38,11 @@ export abstract class Resource<
     return documentRef.get().then(this.toDocument);
   }
 
+  public async remove(id: string): Promise<void> {
+    const documentRef = this.collection.doc(id);
+    await documentRef.delete();
+  }
+
   protected toDocument(snapshot: DocumentSnapshot): T {
     return {
       ...snapshot.data(),

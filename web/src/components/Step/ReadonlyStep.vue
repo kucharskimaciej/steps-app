@@ -19,7 +19,7 @@ export default class ReadonlyStep extends Vue {
 </script>
 
 <template>
-  <article class="desktop:p-2 flex flex-col">
+  <article class="desktop:p-2 flex flex-col w-full h-full">
     <header class=" px-2 desktop:px-0">
       <h1
         class="text-lg desktop:text-2xl font-heading font-bold leading-tight mt-3 desktop:mt-0"
@@ -29,7 +29,7 @@ export default class ReadonlyStep extends Vue {
     </header>
 
     <main
-      class="video-container order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto"
+      class="video-container order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto desktop:w-auto"
     >
       <VideoPlayer
         class="video shadow-lg desktop:rounded w-full m-auto"

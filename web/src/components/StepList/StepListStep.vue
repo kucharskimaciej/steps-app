@@ -17,38 +17,18 @@ export default class StepListStep extends Vue {
 
 <template>
   <article
-    class="relative bg-white p-5 border-b border-gray-100"
-    :class="{ selected: isSelected, active: isActive }"
+    class="flex items-start relative px-2 py-4 border border-gray-300 hover:border-gray-400"
+    :class="{
+      'bg-gray-200 bg-opacity-50': !isActive && !isSelected,
+      'bg-gray-200 bg-opacity-75': isSelected,
+      'bg-white shadow-md border-gray-400 z-10': isActive
+    }"
     v-on="$listeners"
   >
-    <header class="font-heading font-normal leading-tight">
+    <slot name="before" />
+
+    <header class="mx-4 font-heading font-normal leading-tight">
       {{ step.name }}
     </header>
-    <footer class="mt-3">
-      <PureTag
-        v-for="tag in step.tags"
-        :key="tag.text"
-        :tag="tag"
-        class="mr-1 mt-1 inline-block"
-      />
-    </footer>
   </article>
 </template>
-
-<style scoped>
-.selected:after {
-  content: "";
-  display: block;
-  width: theme("width.1");
-  height: theme("height.10");
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: theme("colors.blue.lighter");
-  @apply mt-5;
-}
-
-.active {
-  @apply bg-opacity-50;
-}
-</style>

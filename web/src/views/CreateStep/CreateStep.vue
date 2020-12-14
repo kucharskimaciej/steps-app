@@ -22,7 +22,7 @@ import {
   stepsById
 } from "@/store";
 import { VueWithStore } from "@/lib/vueWithStore";
-import AllStepsProvider from "@/components/Providers/AllStepsProvider.vue";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 
 @Component({
   components: {

@@ -8,7 +8,7 @@ import Container from "@/components/Layout/Container.vue";
 import { Step } from "../../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import AllStepsProvider from "@/components/Providers/AllStepsProvider.vue";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import { getSteps } from "@/store";
 
 @Component({

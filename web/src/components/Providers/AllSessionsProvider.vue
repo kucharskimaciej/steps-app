@@ -1,16 +1,21 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
 import { dispatchFetchAllSessions } from "@/store";
 
 @Component
 export default class AllSessionsProvider extends VueWithStore {
+  @Prop() private alwaysFetch!: boolean;
+
   get loading() {
     return this.$store.state.practiceSessions.status === "pending";
   }
 
-  async loadSteps() {
-    if (this.$store.state.practiceSessions.status !== "clean") {
+  async load() {
+    if (
+      !this.alwaysFetch &&
+      this.$store.state.practiceSessions.status !== "clean"
+    ) {
       return;
     }
 
@@ -18,7 +23,7 @@ export default class AllSessionsProvider extends VueWithStore {
   }
 
   async created() {
-    await this.loadSteps();
+    await this.load();
   }
 }
 </script>
