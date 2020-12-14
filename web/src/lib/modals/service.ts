@@ -32,16 +32,8 @@ export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
     return {
       component: SessionCartModal,
       options: this.ensureDefaults({
-        props: { foo },
-        style: MODAL_STYLE.DRAWER
+        props: { foo }
       })
-    };
-  }
-
-  [MODALS.SECOND_MODAL]() {
-    return {
-      component: SessionCartModal,
-      options: this.ensureDefaults()
     };
   }
 

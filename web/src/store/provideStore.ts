@@ -9,7 +9,7 @@ import { uiModals } from "@/store/modules/uiModals";
 
 let store: Store<RootState>;
 
-export function provideStore() {
+export function provideStore(): Store<RootState> {
   if (!store) {
     store = new Vuex.Store<RootState>({
       modules: {

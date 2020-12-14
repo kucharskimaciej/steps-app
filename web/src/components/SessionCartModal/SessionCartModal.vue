@@ -1,12 +1,28 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
+import { VueWithStore } from "@/lib/vueWithStore";
+import AllStepsProvider from "@/components/Providers/AllStepsProvider";
+import { stepsById } from "@/store";
+import Feed from "@/components/Feed/Feed.vue";
 
-@Component
-export default class SessionCartModal extends Vue {
-  @Prop() private foo!: string;
+@Component({
+  components: {
+    AllStepsProvider,
+    Feed
+  }
+})
+export default class SessionCartModal extends VueWithStore {
+  get sessionSteps() {
+    const steps = stepsById(this.$store);
+    return this.$store.state.selectedSession.session!.steps.map(
+      stepId => steps[stepId]
+    );
+  }
 }
 </script>
 
 <template>
-  <div>aa{{ foo }}</div>
+  <AllStepsProvider>
+    <Feed :steps="sessionSteps" />
+  </AllStepsProvider>
 </template>

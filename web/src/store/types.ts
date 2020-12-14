@@ -38,4 +38,5 @@ export interface RootState {
   currentStep: CurrentStepState;
   practiceSessions: PracticeSessionsState;
   selectedSession: SelectedSessionState;
+  uiModals: ModalsState;
 }

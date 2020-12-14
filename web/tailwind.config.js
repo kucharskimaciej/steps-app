@@ -55,6 +55,9 @@ module.exports = {
     extend: {
       lineHeight: {
         "0": 0
+      },
+      maxHeight: {
+        "80": "80%"
       }
     },
     colors: {
