@@ -48,9 +48,27 @@ export default class SessionView extends VueWithStore {
 
   activeStepId = "";
 
+  private hasStepWatcherRun = false;
+
   @Watch("steps")
   handleStepsChange(steps: Step[]) {
-    this.activeStepId = first(steps)?.id || "";
+    if (!this.hasStepWatcherRun) {
+      this.activeStepId = first(steps)?.id || "";
+      this.hasStepWatcherRun = true;
+    }
+  }
+
+  private hasSessionWatcherRun = false;
+
+  @Watch("session")
+  handleSessionChange(session: PracticeSession) {
+    if (!this.hasSessionWatcherRun && session) {
+      this.hasSessionWatcherRun = true;
+      if (session.steps.length > 0 && !this.$match("desktop")) {
+        this.openCart();
+        this.hasSessionWatcherRun = true;
+      }
+    }
   }
 
   get activeStep(): Step | null {

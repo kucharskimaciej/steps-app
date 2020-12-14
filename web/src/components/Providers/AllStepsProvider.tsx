@@ -23,7 +23,6 @@ export default class AllStepsProvider extends VueWithStore {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render(h: CreateElement) {
-    console.log("#render?");
     if (this.loading) {
       return this.$slots.loading || <div>Loading</div>;
     } else {

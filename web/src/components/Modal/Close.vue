@@ -13,7 +13,7 @@ export default class Close extends Vue {}
 <template>
   <aside
     v-bind="$attrs"
-    class="absolute top-0 right-0 mt-4 mr-4 text-3xl leading-0 cursor-pointer transition-all transform scale-1 hover:scale-110"
+    class="absolute top-0 right-0 mr-2 mt-2 desktop:mt-4 desktop:mr-4 text-3xl leading-0 cursor-pointer transition-all transform scale-1 hover:scale-110"
     v-on="$listeners"
   >
     <PureIcon type="close" />

@@ -15,7 +15,9 @@ export default class Overlay extends ModalView {}
   <div
     class="relative overflow-hidden desktop:rounded desktop:my-10 desktop:mx-auto max-w-6xl w-full desktop:m-h-80 desktop:m-w-screen "
   >
-    <main class="bg-gray-100 w-full h-full overflow-y-auto desktop:p-14">
+    <main
+      class="bg-gray-100 w-full h-full overflow-y-auto p-2 pt-10 desktop:p-14"
+    >
       <slot />
     </main>
     <Close @click="close()" />

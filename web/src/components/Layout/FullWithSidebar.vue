@@ -6,8 +6,12 @@ export default class FullWithSidebar extends Vue {}
 </script>
 
 <template>
-  <div class="flex items-stretch h-screen w-full max-w-full">
-    <section class="sidebar w-1/5 flex-shrink-0">
+  <div
+    class="flex flex-col desktop:flex-row items-stretch h-screen w-full max-w-full"
+  >
+    <section
+      class="sidebar w-full max-w-none desktop:w-1/5 desktop:max-w-xs flex-shrink-0"
+    >
       <slot name="sidebar" />
     </section>
 
@@ -16,10 +20,3 @@ export default class FullWithSidebar extends Vue {}
     </section>
   </div>
 </template>
-
-<style scoped>
-.sidebar {
-  min-width: 320px;
-  max-width: 400px;
-}
-</style>
