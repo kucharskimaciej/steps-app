@@ -97,8 +97,7 @@ export default class SessionView extends VueWithStore {
 
   openCart() {
     dispatchOpenModal(this.$store, {
-      modal: MODALS.SESSION_CART,
-      params: ["this is foo"]
+      modal: MODALS.SESSION_CART
     });
   }
 
@@ -180,6 +179,9 @@ export default class SessionView extends VueWithStore {
               <div class="flex items-center">
                 <h1>{{ session.name }}</h1>
                 <aside class="ml-auto">
+                  <PureButton feel="ghost">
+                    <PureIcon />
+                  </PureButton>
                   <PureButton feel="ghost" @click="handleRemoveSession">
                     Remove session
                   </PureButton>

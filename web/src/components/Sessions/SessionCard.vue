@@ -21,10 +21,6 @@ export default class SessionCard extends Vue {
       }
     };
   }
-
-  get isClosed() {
-    return this.session.status === "closed";
-  }
 }
 </script>
 
@@ -37,13 +33,6 @@ export default class SessionCard extends Vue {
         </header>
         <section class="text-sm text-gray-500 font-thin mt-2 flex items-end">
           {{ session.steps.length }} steps
-          <aside
-            v-if="isClosed"
-            class="text-green-base ml-auto flex items-center"
-          >
-            <PureIcon type="done" class="text-lg mr-px" />
-            {{ session.closed_at | date }}
-          </aside>
         </section>
       </main>
     </router-link>

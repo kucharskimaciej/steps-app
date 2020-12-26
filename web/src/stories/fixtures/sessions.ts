@@ -1,7 +1,4 @@
-import {
-  ClosedSession,
-  PracticeSession
-} from "../../../../common/types/PracticeSession";
+import { PracticeSession } from "../../../../common/types/PracticeSession";
 import { range } from "lodash";
 
 export function sessionsFactory(): PracticeSession[] {
@@ -9,7 +6,7 @@ export function sessionsFactory(): PracticeSession[] {
     {
       id: "session-1",
       owner_uid: "user-1",
-      status: "open",
+      locked: false,
       name: "Pusta sesja",
       steps: [],
       created_at: Date.now() - 10
@@ -17,7 +14,7 @@ export function sessionsFactory(): PracticeSession[] {
     {
       id: "session-5",
       owner_uid: "user-1",
-      status: "open",
+      locked: false,
       name: "A practice session",
       steps: ["step-1", "step-2", "step-3"],
       created_at: Date.now() - 9
@@ -25,7 +22,7 @@ export function sessionsFactory(): PracticeSession[] {
     {
       id: "session-2",
       owner_uid: "user-1",
-      status: "open",
+      locked: false,
       name: "Tepy",
       steps: ["step-1", "step-2", "step-3", "step-4"],
       created_at: Date.now() - 8
@@ -33,7 +30,7 @@ export function sessionsFactory(): PracticeSession[] {
     {
       id: "session-3",
       owner_uid: "user-1",
-      status: "open",
+      locked: false,
       name: "Prywatna z nowaczkami 23/03",
       steps: ["step-1", "step-2", "step-3", "step-4"],
       created_at: Date.now() - 7
@@ -41,8 +38,7 @@ export function sessionsFactory(): PracticeSession[] {
     {
       id: "session-4",
       owner_uid: "user-1",
-      status: "closed",
-      closed_at: Date.now(),
+      locked: true,
       name: "Another practice session",
       steps: ["step-1", "step-2", "step-3"],
       created_at: Date.now() - 6
@@ -52,12 +48,10 @@ export function sessionsFactory(): PracticeSession[] {
 
 export function makeSession({
   steps = 3,
-  longName = false,
-  closed = false
+  longName = false
 }: {
   steps?: number;
   longName?: boolean;
-  closed?: boolean;
 } = {}): PracticeSession {
   const session: Partial<PracticeSession> = {
     id: "session-1",
@@ -66,11 +60,6 @@ export function makeSession({
   };
 
   session.steps = range(steps).map(idx => `step-${idx}`);
-
-  if (closed) {
-    session.status = "closed";
-    (session as ClosedSession).closed_at = Date.now();
-  }
 
   if (longName) {
     session.name =

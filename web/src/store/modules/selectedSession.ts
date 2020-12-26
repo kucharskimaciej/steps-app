@@ -57,23 +57,19 @@ export const selectedSession = createModule(
         commitUpdateSession(context, payload);
         await resource.update(context.state.session.id, payload);
       },
-      async closeSession(context: SelectedSessionContext) {
-        if (
-          !context.state.session ||
-          context.state.session.status === "closed"
-        ) {
+      async toggleLockSession(context: SelectedSessionContext) {
+        if (!context.state.session) {
           return;
         }
 
         const resource = Container.get(PracticeSessionsResource);
-        const closedSession: PracticeSession = {
+        const updatedSession: PracticeSession = {
           ...context.state.session,
-          status: "closed",
-          closed_at: Date.now()
+          locked: !context.state.session.locked
         };
 
-        commitSetSession(context, closedSession);
-        await resource.update(context.state.session.id, closedSession);
+        commitSetSession(context, updatedSession);
+        await resource.update(context.state.session.id, updatedSession);
       },
       async removeSession(context: SelectedSessionContext) {
         if (!context.state.session) {
@@ -93,9 +89,9 @@ export const selectedSession = createModule(
       },
       updateSession(
         state: SelectedSessionState,
-        payload: Partial<Pick<PracticeSession, "steps" | "name">>
+        payload: Partial<Pick<PracticeSession, "steps" | "name" | "locked">>
       ) {
-        if (state.session?.status === "open") {
+        if (state.session && !state.session.locked) {
           state.session = {
             ...state.session,
             ...payload
@@ -103,15 +99,7 @@ export const selectedSession = createModule(
         }
       }
     },
-    getters: {
-      getIsClosed(state: SelectedSessionState): boolean {
-        if (!state.session) {
-          return false;
-        }
-
-        return state.session.status === "closed";
-      }
-    }
+    getters: {}
   },
   {
     ...provideInitialStatus(),
@@ -119,12 +107,11 @@ export const selectedSession = createModule(
   } as SelectedSessionState
 );
 
-const { commit, dispatch, read } = getStoreAccessors<
-  SelectedSessionState,
-  RootState
->("selectedSession");
+const { commit, dispatch } = getStoreAccessors<SelectedSessionState, RootState>(
+  "selectedSession"
+);
 
-const { mutations, actions, getters } = selectedSession;
+const { mutations, actions } = selectedSession;
 
 const commitUpdateStatus = commit(mutations.updateStatus);
 const commitSetSession = commit(mutations.setSession);
@@ -134,7 +121,5 @@ export const dispatchFetchSession = dispatch(actions.fetchSession);
 export const dispatchUpdateSession = dispatch(actions.updateSession);
 export const dispatchAddStep = dispatch(actions.addStep);
 export const dispatchRemoveStep = dispatch(actions.removeStep);
-export const dispatchCloseSession = dispatch(actions.closeSession);
+export const dispatchToggleLockSession = dispatch(actions.toggleLockSession);
 export const dispatchRemoveSession = dispatch(actions.removeSession);
-
-export const getIsClosed = read(getters.getIsClosed);
