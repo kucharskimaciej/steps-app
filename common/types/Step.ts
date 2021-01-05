@@ -33,5 +33,4 @@ export interface Step extends CommonFields {
   variations: StepRef[];
 }
 
-export interface StepRef
-  extends Pick<CommonFields, "identifier" | "name" | "id"> {}
+export type StepRef = Pick<CommonFields, "identifier" | "name" | "id">;

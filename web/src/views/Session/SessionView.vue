@@ -88,7 +88,7 @@ export default class SessionView extends VueWithStore {
   }
 
   get session(): PracticeSession {
-    return this.$store.state.selectedSession.session;
+    return this.$store.state.selectedSession.session!;
   }
 
   get stepsInSession() {
@@ -143,7 +143,7 @@ export default class SessionView extends VueWithStore {
 <template>
   <SessionProvider :id="sessionId">
     <template #default>
-      <FullWithSidebar v-if="session.status === 'open'">
+      <FullWithSidebar v-if="session && session.status === 'open'">
         <template #sidebar>
           <AllStepsProvider>
             <div class="h-screen desktop:h-full flex flex-col">
@@ -191,7 +191,7 @@ export default class SessionView extends VueWithStore {
         <template #default>
           <div class="h-screen desktop:h-full flex flex-col">
             <ContentBox class="border-b">
-              <div class="flex items-center">
+              <div v-if="session" class="flex items-center">
                 <h1>{{ session.name }}</h1>
                 <aside class="ml-auto">
                   <PureButton feel="ghost">

@@ -2,8 +2,6 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-console.log(process.env);
-
 const FIREBASE_CONFIG = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
   appId: process.env.VUE_APP_FIREBASE_APP_ID,

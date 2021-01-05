@@ -12,10 +12,6 @@ export default class SelectToggleWidget extends Vue {
 
   @Emit()
   toggle() {}
-
-  clickhandler() {
-    console.log("click");
-  }
 }
 </script>
 

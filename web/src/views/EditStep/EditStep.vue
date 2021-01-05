@@ -42,16 +42,18 @@ import { getStepScore } from "@/lib/variations/variationStepScore";
 export default class EditStep extends VueWithStore {
   @Ref("form") readonly form!: StepFormApi;
   selectedVariations: string[] = [];
-  step: Step = null;
 
-  get allSteps() {
-    return this.$store.state.steps.rawSteps;
+  get step(): RawStep {
+    return this.$store.state.steps.rawSteps.find(
+      step => this.$route.params.stepId === step.id
+    )!;
   }
 
-  @Watch("allSteps")
-  handleStepsLoaded(steps: RawStep[]) {
-    this.step = steps.find(step => this.$route.params.stepId === step.id);
-    this.selectedVariations = [this.step.variationKey];
+  @Watch("step")
+  handleStepsLoaded() {
+    if (this.step) {
+      this.selectedVariations = [];
+    }
   }
 
   async saveStep() {

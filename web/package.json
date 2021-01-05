@@ -10,7 +10,7 @@
     "lint": "eslint src/**/*.{vue,ts} --max-warnings=0",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "typecheck": "tsc -p . --noEmit",
+    "typecheck": "tsc --noEmit",
     "prettify": "pretty-quick --staged"
   },
   "dependencies": {

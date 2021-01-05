@@ -28,9 +28,9 @@ export const Active: () => Component = () => ({
     Card
   },
   template: `
-    <Card allow-active 
-          #default="{active}" 
-          :active="parentActive" 
+    <Card allow-active
+          #default="{active}"
+          :active="parentActive"
           @toggle-active="parentActive = !parentActive">
       Card content: {{ active ? 'active' : 'not active' }}
     </Card>`,
