@@ -15,17 +15,17 @@ export default class PureStepList extends Vue {
   ) => boolean;
 
   @Emit()
-  select(stepId: string) {}
+  select(_stepId: string) {}
 }
 </script>
 
 <template>
   <section class="h-full overflow-y-auto overflow-x-hidden">
     <PureStepListItem
-      class="mb-2"
       v-for="step in steps"
-      :step="step"
       :key="step.id"
+      class="mb-2"
+      :step="step"
       :is-selected="isSelected(step.id)"
       @select="select(step.id)"
     />

@@ -22,20 +22,22 @@ export const Default: () => Component = () => ({
     <StepList :steps="steps" @active-step-change="changeActiveStep" @toggle="handleToggle" :is-selected="isSelected" :is-active="isActive"/>
   `,
   methods: {
-    changeActiveStep(stepId: string) {
-      (this as any).activeStepId = stepId;
+    changeActiveStep(this: any, stepId: string) {
+      this.activeStepId = stepId;
     },
-    handleToggle(stepId: string) {
+    handleToggle(this: any, stepId: string) {
       if (this.selectedSteps.includes(stepId)) {
-        this.selectedSteps = this.selectedSteps.filter(id => id !== stepId);
+        this.selectedSteps = this.selectedSteps.filter(
+          (id: string) => id !== stepId
+        );
       } else {
         this.selectedSteps.push(stepId);
       }
     },
-    isActive(step: Step) {
-      return (this as any).activeStepId === step.id;
+    isActive(this: any, step: Step) {
+      return this.activeStepId === step.id;
     },
-    isSelected(step: Step) {
+    isSelected(this: any, step: Step) {
       return this.selectedSteps.includes(step.id);
     }
   },

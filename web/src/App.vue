@@ -1,6 +1,6 @@
 <template>
   <GlobalStyles>
-    <router-view></router-view>
+    <router-view />
     <ModalContainer />
   </GlobalStyles>
 </template>

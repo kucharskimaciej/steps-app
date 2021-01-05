@@ -28,12 +28,10 @@ export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
     };
   }
 
-  [MODALS.SESSION_CART](foo: string) {
+  [MODALS.SESSION_CART]() {
     return {
       component: SessionCartModal,
-      options: this.ensureDefaults({
-        props: { foo }
-      })
+      options: this.ensureDefaults()
     };
   }
 

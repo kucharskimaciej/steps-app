@@ -28,9 +28,9 @@ export default class Video extends Vue {
           <PureIcon type="open_in_new" /> Open
         </PureButton>
 
-        <PureButton kind="danger" feel="ghost" @click="remove()"
-          >Delete</PureButton
-        >
+        <PureButton kind="danger" feel="ghost" @click="remove()">
+          Delete
+        </PureButton>
       </aside>
     </header>
     <p v-if="filename" class="font-light text-sm">

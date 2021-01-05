@@ -1,5 +1,5 @@
 import { RootState, Status, StepsState } from "@/store/types";
-import { RawStep } from "../../../../common/types/Step";
+import { RawStep, Step } from "../../../../common/types/Step";
 import { Container } from "vue-typedi";
 import {
   CreateParams,
@@ -24,7 +24,7 @@ export const steps = {
     getVariationsByKey(state: StepsState): Record<string, RawStep[]> {
       return groupBy(state.rawSteps, "variationKey");
     },
-    getSteps(state: StepsState) {
+    getSteps(state: StepsState): Step[] {
       const convertedSteps = state.rawSteps.map(
         partial(convertToStep, getVariationsByKey(provideStore()))
       );

@@ -21,16 +21,20 @@ import {
 } from "@/store";
 import Container from "@/components/Layout/Container.vue";
 import { MODALS } from "@/lib/modals/modals";
-import StepList from "@/components/StepList/StepList.vue";
 import FullWithSidebar from "@/components/Layout/FullWithSidebar.vue";
 import { Step } from "../../../../common/types/Step";
 import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
 import ContentBox from "@/components/ContentBox/ContentBox.vue";
+import Card from "@/components/Card/Card.vue";
+import StepTitle from "@/components/Step/components/StepTitle.vue";
+import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 
 @Component({
   components: {
+    SelectToggleWidget,
+    StepTitle,
+    Card,
     Feed,
-    StepList,
     AllStepsProvider,
     SessionProvider,
     WideWithSidebarRight,
@@ -84,7 +88,7 @@ export default class SessionView extends VueWithStore {
   }
 
   get session(): PracticeSession {
-    return this.$store.state.selectedSession.session!;
+    return this.$store.state.selectedSession.session;
   }
 
   get stepsInSession() {
@@ -97,7 +101,8 @@ export default class SessionView extends VueWithStore {
 
   openCart() {
     dispatchOpenModal(this.$store, {
-      modal: MODALS.SESSION_CART
+      modal: MODALS.SESSION_CART,
+      params: []
     });
   }
 
@@ -151,14 +156,24 @@ export default class SessionView extends VueWithStore {
                 class="border-r border-t h-full mb-auto flex-shrink"
                 overflow="scroll"
               >
-                <StepList
-                  :steps="steps"
-                  :is-active="isStepActive"
-                  :is-selected="isStepSelected"
-                  @active-step-change="onActiveStepChange"
-                  @toggle="onStepSelectToggle"
-                />
+                <Card
+                  v-for="step in steps"
+                  :key="step.id"
+                  class="mb-1"
+                  allow-active
+                  :active="isStepActive(step)"
+                  @toggle-active="onActiveStepChange(step.id)"
+                >
+                  <template #prefix>
+                    <SelectToggleWidget
+                      :selected="isStepSelected(step)"
+                      @toggle="onStepSelectToggle(step.id)"
+                    />
+                  </template>
+                  <StepTitle :step="step" />
+                </Card>
               </ContentBox>
+
               <ContentBox class="border border-l-0 border-b-0">
                 <div class="flex items-center">
                   <span>{{ session.steps.length }} selected</span>

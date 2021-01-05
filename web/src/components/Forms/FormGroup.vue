@@ -30,16 +30,16 @@ export default class FormGroup extends Vue {
       'text-red-lighter': hasError
     }"
   >
-    <label class="block ml-3 mb-1 text-sm font-bold "
-      >{{ label
-      }}<ValidationHint :validation="validation" v-if="label && validation"
-    /></label>
+    <label class="block ml-3 mb-1 text-sm font-bold">
+      {{ label }}
+      <ValidationHint v-if="label && validation" :validation="validation" />
+    </label>
     <main class="mb-1">
-      <slot></slot>
+      <slot />
     </main>
 
     <footer class="pl-3 text-2xs">
-      <slot name="help"></slot>
+      <slot name="help" />
     </footer>
   </section>
 </template>

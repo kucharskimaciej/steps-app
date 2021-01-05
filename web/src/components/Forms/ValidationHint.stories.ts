@@ -9,7 +9,7 @@ import ValidationHint from "@/components/Forms/ValidationHint.vue";
 import { validationMixin } from "vuelidate";
 import { minLength, required } from "vuelidate/lib/validators";
 import FormGroup from "@/components/Forms/FormGroup.vue";
-import Input from "@/components/Forms/Input.vue";
+import SimpleInput from "@/components/Forms/SimpleInput.vue";
 
 export default {
   title: "Components/ValidationHint",
@@ -99,7 +99,7 @@ export const WithInput: () => Component = () => ({
   components: {
     ValidationHint,
     FormGroup,
-    Input
+    Input: SimpleInput
   },
   template: `
         <FormGroup label="Name" :validation="$v.name">

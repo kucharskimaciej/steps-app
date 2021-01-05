@@ -14,9 +14,13 @@ import Feed from "@/components/Feed/Feed.vue";
 export default class SessionCartModal extends VueWithStore {
   get sessionSteps() {
     const steps = stepsById(this.$store);
-    return this.$store.state.selectedSession.session!.steps.map(
-      stepId => steps[stepId]
-    );
+    if (this.$store.state.selectedSession.session) {
+      return this.$store.state.selectedSession.session.steps.map(
+        stepId => steps[stepId]
+      );
+    } else {
+      return [];
+    }
   }
 }
 </script>

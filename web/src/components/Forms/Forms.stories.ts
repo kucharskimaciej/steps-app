@@ -5,7 +5,7 @@ import {
   WithGlobalStyles
 } from "@/stories/decorators";
 import { withKnobs, text, boolean } from "@storybook/addon-knobs";
-import Input from "@/components/Forms/Input.vue";
+import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import PureCheckbox from "@/components/Forms/PureCheckbox.vue";
@@ -23,7 +23,7 @@ export default {
 };
 
 export const BasicInput = () => ({
-  components: { Input, FormGroup },
+  components: { Input: SimpleInput, FormGroup },
   template: `<FormGroup :label="label" :invalid="hasError"><Input v-model="value" /></FormGroup>`,
   props: {
     label: {
@@ -113,7 +113,7 @@ export const BasicTextarea = () => ({
 });
 
 export const NestedFormGroup = () => ({
-  components: { Input, FormGroup },
+  components: { Input: SimpleInput, FormGroup },
   template: `
       <FormGroup label="outer" :invalid="hasError">
         <FormGroup label="inner" :invalid="hasError">

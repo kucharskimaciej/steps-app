@@ -29,10 +29,11 @@ export default class Checklist extends Vue {
   <div>
     <PureCheckbox
       v-for="option of options"
+      :key="option"
       :value="isChecked(option)"
       @input="() => handleChange(option)"
     >
-      <slot :option="option"></slot>
+      <slot :option="option" />
     </PureCheckbox>
   </div>
 </template>

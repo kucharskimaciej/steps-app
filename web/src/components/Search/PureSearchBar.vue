@@ -19,16 +19,16 @@ export default class PureSearchBar extends Vue {
   }
 
   @Emit()
-  searchChange(query: string) {}
+  searchChange(_query: string) {}
 }
 </script>
 
 <template>
   <div class="relative text-gray-700 w-full">
     <input
+      v-model.trim="query"
       type="text"
       placeholder="Search steps"
-      v-model.trim="query"
       class="w-full font-light bg-gray-200 outline-none rounded pl-3 pr-10 py-2 border border-gray-200 focus:bg-gray-100 focus:border-gray-100"
     />
     <PureIcon

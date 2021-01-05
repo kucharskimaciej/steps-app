@@ -7,6 +7,6 @@ export default class Container extends Vue {}
 
 <template>
   <div class="desktop:pt-10 mx-auto desktop:px-6 max-w-4xl w-full">
-    <slot></slot>
+    <slot />
   </div>
 </template>

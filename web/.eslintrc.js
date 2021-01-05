@@ -26,6 +26,12 @@ module.exports = {
     "@typescript-eslint/camelcase": ["off", { properties: "never" }],
     "@typescript-eslint/no-use-before-define": 0,
     "vue/max-attributes-per-line": 0,
-    "vue/html-indent": 0
+    "vue/html-indent": 0,
+    "vue/html-self-closing": 0,
+    "vue/singleline-html-element-content-newline": 0,
+    "vue/html-closing-bracket-newline": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
   }
 };

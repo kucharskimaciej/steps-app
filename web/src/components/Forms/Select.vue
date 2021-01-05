@@ -34,10 +34,10 @@ export default class Select extends Vue {
     <select
       class="relative w-full font-light appearance-none bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
       :value="value"
-      @input="handleValueChange"
       :class="validityClasses"
+      @input="handleValueChange"
     >
-      <slot></slot>
+      <slot />
     </select>
     <aside class="absolute right-0 top-0 mr-2 mt-2">
       <PureIcon

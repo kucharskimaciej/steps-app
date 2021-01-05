@@ -3,13 +3,15 @@ import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import StepListStep from "@/components/StepList/StepListStep.vue";
 import { Step } from "../../../../common/types/Step";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
+import Card from "@/components/Card/Card.vue";
 
 type StateFn = (step: Step) => boolean;
 
 @Component({
   components: {
     StepListStep,
-    SelectToggleWidget
+    SelectToggleWidget,
+    Card
   }
 })
 export default class StepList extends Vue {
@@ -18,10 +20,10 @@ export default class StepList extends Vue {
   @Prop({ default: () => false }) isActive!: StateFn;
 
   @Emit()
-  toggle(stepId: string) {}
+  toggle(_stepId: string) {}
 
   @Emit()
-  activeStepChange(stepId: string) {}
+  activeStepChange(_stepId: string) {}
 }
 </script>
 

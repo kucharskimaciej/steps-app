@@ -30,7 +30,7 @@ export default class Textarea extends Vue {
   <textarea
     class="w-full font-light bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
     :value="value"
-    @input="handleValueChange"
     :class="validityClasses"
+    @input="handleValueChange"
   />
 </template>

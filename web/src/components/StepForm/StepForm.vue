@@ -3,7 +3,7 @@ import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { Tag, TagTypes } from "../../../../common/types/Tag";
 import { Dance, RawStep } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
-import Input from "@/components/Forms/Input.vue";
+import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
 import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
@@ -11,11 +11,7 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
-import {
-  minLength,
-  required,
-  url as urlValidator
-} from "vuelidate/lib/validators";
+import { minLength, required } from "vuelidate/lib/validators";
 import { oneOf } from "@/lib/validators/oneOf";
 import { duplicate } from "@/lib/validators/duplicate";
 import { Inject } from "vue-typedi";
@@ -31,7 +27,7 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 @Component({
   components: {
     FormGroup,
-    Input,
+    SimpleInput,
     Select,
     TagsInput,
     PureButton,
@@ -223,7 +219,7 @@ export default class StepForm extends Vue implements StepFormApi {
       </FormGroup>
 
       <FormGroup label="Name" :validation="form.name">
-        <Input v-model.lazy="form.name.$model" />
+        <SimpleInput v-model.lazy="form.name.$model" />
       </FormGroup>
 
       <section class="flex">
@@ -271,8 +267,8 @@ export default class StepForm extends Vue implements StepFormApi {
         >
           <TagsInput
             :value="form.smart_tags.$model"
-            @input="handleSmartTagRemove($event)"
             :allow-new="false"
+            @input="handleSmartTagRemove($event)"
           />
         </FormGroup>
         <FormGroup

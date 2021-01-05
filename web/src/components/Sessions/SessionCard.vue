@@ -4,9 +4,11 @@ import { Location } from "vue-router";
 import PureIcon from "../PureIcon/PureIcon.vue";
 import { PracticeSession } from "../../../../common/types/PracticeSession";
 import { ROUTES } from "@/router";
+import Card from "@/components/Card/Card.vue";
 
 @Component({
   components: {
+    Card,
     PureIcon
   }
 })
@@ -25,7 +27,7 @@ export default class SessionCard extends Vue {
 </script>
 
 <template>
-  <article class="bg-white p-3 rounded shadow-sm hover:shadow cursor-pointer">
+  <Card>
     <router-link v-slot="{ navigate }" :to="route">
       <main @click="navigate">
         <header class="font-heading text-lg">
@@ -36,5 +38,5 @@ export default class SessionCard extends Vue {
         </section>
       </main>
     </router-link>
-  </article>
+  </Card>
 </template>

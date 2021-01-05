@@ -66,27 +66,3 @@ export const LongName: () => Component = () => ({
   }),
   props: {}
 });
-
-export const Closed: () => Component = () => ({
-  components: {
-    SessionCard
-  },
-  template: `<SessionCard :session="session" />`,
-  methods: {},
-  data: () => ({
-    session: makeSession({ closed: true })
-  }),
-  props: {}
-});
-
-export const ClosedWithLongName: () => Component = () => ({
-  components: {
-    SessionCard
-  },
-  template: `<SessionCard :session="session" />`,
-  methods: {},
-  data: () => ({
-    session: makeSession({ closed: true, longName: true })
-  }),
-  props: {}
-});

@@ -7,7 +7,7 @@ import {
   InjectReactive
 } from "vue-property-decorator";
 import VueTagsInput from "@johmun/vue-tags-input";
-import { Tag, TagTypes } from "../../../../../common/types/Tag";
+import { Tag } from "../../../../../common/types/Tag";
 
 @Component({
   components: {
@@ -45,14 +45,14 @@ export default class TagsInput extends Vue {
 
 <template>
   <VueTagsInput
+    v-model="inputValue"
     class="tags-input"
     :class="{ invalid: hasError }"
-    v-model="inputValue"
-    @tags-changed="handleTagsChanged"
     :tags="asTags(value)"
     :autocomplete-items="asTags(filteredItems)"
     :add-only-from-autocomplete="!allowNew"
     placeholder="+ Add tag"
+    @tags-changed="handleTagsChanged"
   />
 </template>
 

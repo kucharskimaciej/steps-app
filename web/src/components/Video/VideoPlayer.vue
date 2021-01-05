@@ -151,12 +151,12 @@ export default class VideoPlayer extends Vue {
       loop
       playsinline
       :autoplay="autoplay"
+      class="w-full max-h-full absolute inset-x-0"
       v-on="videoEventListeners"
       @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"
       @play="handlePlayingChange(true)"
       @pause="handlePlayingChange(false)"
-      class="w-full max-h-full absolute inset-x-0"
     />
 
     <aside
@@ -180,8 +180,8 @@ export default class VideoPlayer extends Vue {
     </aside>
 
     <aside
-      class="absolute bottom-0 right-0 left-0"
       v-if="provideVideoElement()"
+      class="absolute bottom-0 right-0 left-0"
     >
       <Progress
         :current="currentTime"

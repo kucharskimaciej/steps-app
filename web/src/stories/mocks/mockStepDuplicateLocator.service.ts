@@ -8,22 +8,22 @@ import { rawStepFactory } from "@/stories/fixtures/steps";
 // default
 @Service(StepsDuplicateLocatorToken)
 export class NeverDuplicate implements DuplicateLocator<RawStep, VideoObject> {
-  isDuplicate(key: VideoObject): boolean {
+  isDuplicate(_key: VideoObject): boolean {
     return false;
   }
 
-  getDuplicate(key: VideoObject): void | RawStep {
+  getDuplicate(_key: VideoObject): void | RawStep {
     return undefined;
   }
 }
 
 @Service()
 export class AlwaysDuplicate implements DuplicateLocator<RawStep, VideoObject> {
-  isDuplicate(key: VideoObject): boolean {
+  isDuplicate(_key: VideoObject): boolean {
     return true;
   }
 
-  getDuplicate(key: VideoObject): void | RawStep {
+  getDuplicate(_key: VideoObject): void | RawStep {
     return rawStepFactory() as RawStep;
   }
 }

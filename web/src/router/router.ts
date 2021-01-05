@@ -6,6 +6,7 @@ import FeedView from "@/views/Feed/FeedView.vue";
 import PublicStep from "@/views/PublicStep/PublicStep.vue";
 import SessionsView from "@/views/Sessions/SessionsView.vue";
 import SessionView from "@/views/Session/SessionView.vue";
+import EditStep from "@/views/EditStep/EditStep.vue";
 
 export default new Router({
   mode: "history",
@@ -24,6 +25,11 @@ export default new Router({
       name: ROUTES.CREATE_STEP,
       path: "/create-step",
       component: CreateStep
+    },
+    {
+      name: ROUTES.EDIT_STEP,
+      path: "/edit/:stepId",
+      component: EditStep
     },
     {
       name: ROUTES.FEED,
@@ -50,10 +56,5 @@ export default new Router({
       component: SessionView,
       props: true
     }
-    // {
-    //   name: ROUTES.EDIT_STEP,
-    //   path: "/edit/:stepId",
-    //   component: EditStep
-    // }
   ]
 });

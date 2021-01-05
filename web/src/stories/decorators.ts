@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 
 import GlobalStyles from "@/components/GlobalStyles.vue";
 import { DecoratorFunction } from "@storybook/addons/dist/types";

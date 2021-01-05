@@ -10,7 +10,7 @@ export default {};
         cursor-pointer select-none outline-none"
     v-on="$listeners"
   >
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <style lang="scss" scoped>

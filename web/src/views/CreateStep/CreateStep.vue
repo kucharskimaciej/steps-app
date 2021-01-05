@@ -23,6 +23,10 @@ import {
 } from "@/store";
 import { VueWithStore } from "@/lib/vueWithStore";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
+import ContentBox from "@/components/ContentBox/ContentBox.vue";
+import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
+import FullContent from "@/components/Step/components/FullContent.vue";
+import Card from "@/components/Card/Card.vue";
 
 @Component({
   components: {
@@ -31,7 +35,11 @@ import AllStepsProvider from "@/components/Providers/AllStepsProvider";
     PureButton,
     VideoInput,
     PureStepList,
-    AllStepsProvider
+    AllStepsProvider,
+    ContentBox,
+    SelectToggleWidget,
+    FullContent,
+    Card
   }
 })
 export default class CreateStep extends VueWithStore {
@@ -127,42 +135,58 @@ export default class CreateStep extends VueWithStore {
 
 <template>
   <WideWithSidebarRight class="max-h-screen">
-    <StepForm
-      :existing-tags="existingTags"
-      :existing-artists="existingArtists"
-      ref="form"
-    />
-    <footer class="mt-8 text-right">
-      <PureButton
-        class="mr-2"
-        @click.native="submitAndRedirect"
-        kind="success"
-        spacing="wide"
-        size="large"
-        feel="ghost"
-      >
-        Save
-      </PureButton>
+    <div class="h-screen flex flex-col">
+      <ContentBox class="border-r border-b text-right">
+        <PureButton
+          class="mr-2"
+          kind="success"
+          spacing="wide"
+          feel="ghost"
+          @click.native="submitAndRedirect"
+        >
+          Save
+        </PureButton>
 
-      <PureButton
-        @click.native="submitAndClear"
-        kind="success"
-        spacing="wide"
-        size="large"
-      >
-        Save &amp; create another
-      </PureButton>
-    </footer>
+        <PureButton
+          kind="success"
+          spacing="wide"
+          @click.native="submitAndClear"
+        >
+          Save &amp; create another
+        </PureButton>
+      </ContentBox>
+
+      <ContentBox class="border-r h-full flex-shrink">
+        <StepForm
+          ref="form"
+          :existing-tags="existingTags"
+          :existing-artists="existingArtists"
+        />
+      </ContentBox>
+    </div>
 
     <template #sidebar>
-      <AllStepsProvider>
-        <PureStepList
-          :steps="stepsByScore"
-          :is-selected="isPartOfSelectedVariation"
-          class="max-h-full"
-          @select="toggleVariationSelected"
-        />
-      </AllStepsProvider>
+      <ContentBox overflow="scroll">
+        <AllStepsProvider>
+          <div>
+            <Card
+              v-for="step in stepsByScore"
+              :id="step.id"
+              :key="step.id"
+              class="mb-2"
+            >
+              <template #prefix>
+                <SelectToggleWidget
+                  :selected="isPartOfSelectedVariation(step.id)"
+                  @toggle="toggleVariationSelected(step.id)"
+                />
+              </template>
+
+              <FullContent :step="step" />
+            </Card>
+          </div>
+        </AllStepsProvider>
+      </ContentBox>
     </template>
   </WideWithSidebarRight>
 </template>

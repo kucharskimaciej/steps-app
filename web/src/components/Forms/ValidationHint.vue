@@ -23,8 +23,8 @@ export default class ValidationHint extends Vue {
     <span v-if="isRequired">*</span>
 
     <span
-      class="ml-2 text-2xs uppercase tracking-wider font-medium"
       v-if="validation.$anyError"
+      class="ml-2 text-2xs uppercase tracking-wider font-medium"
     >
       <span v-if="customError('required')">
         Required

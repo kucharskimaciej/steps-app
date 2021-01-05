@@ -2,13 +2,13 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { last } from "lodash";
 import FormGroup from "@/components/Forms/FormGroup.vue";
-import Input from "@/components/Forms/Input.vue";
+import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import { Focusable } from "@/components/Forms/types";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 @Component({
-  components: { FormGroup, Input, PureButton, PureIcon }
+  components: { FormGroup, SimpleInput, PureButton, PureIcon }
 })
 export default class StringArray extends Vue {
   @Prop({ default: () => [] }) private value!: string[];
@@ -32,7 +32,7 @@ export default class StringArray extends Vue {
 <template>
   <div>
     <FormGroup v-for="(_, index) in value" :key="index">
-      <Input ref="items" v-model.trim="value[index]">
+      <SimpleInput ref="items" v-model.trim="value[index]">
         <template #after>
           <PureButton
             feel="ghost"
@@ -43,10 +43,10 @@ export default class StringArray extends Vue {
             <PureIcon type="remove" />
           </PureButton>
         </template>
-      </Input>
+      </SimpleInput>
     </FormGroup>
-    <PureButton feel="ghost" size="small" @click.prevent="addElement"
-      >+ Add another</PureButton
-    >
+    <PureButton feel="ghost" size="small" @click.prevent="addElement">
+      + Add another
+    </PureButton>
   </div>
 </template>

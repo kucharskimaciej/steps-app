@@ -32,7 +32,7 @@ export default class Modal extends Vue {
 </script>
 
 <template>
-  <component :is="modal.options.style" @close="closeModal()" class="z-0">
+  <component :is="modal.options.style" class="z-0" @close="closeModal()">
     <component :is="componentName" v-bind="props" />
   </component>
 </template>

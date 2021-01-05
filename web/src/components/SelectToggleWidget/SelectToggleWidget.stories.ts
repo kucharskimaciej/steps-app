@@ -5,7 +5,7 @@ import {
   WithGlobalStyles,
   Container
 } from "@/stories/decorators";
-import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget";
+import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 
 export default {
   title: "Components/SelectToggleWidget",
@@ -20,7 +20,7 @@ export const Default: () => Component = () => ({
     <SelectToggleWidget :selected="selected" @toggle="toggle" />
   `,
   methods: {
-    toggle() {
+    toggle(this: any) {
       this.selected = !this.selected;
     }
   },

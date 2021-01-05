@@ -9,7 +9,7 @@ import {
 import { Focusable } from "@/components/Forms/types";
 
 @Component
-export default class Input extends Vue implements Focusable {
+export default class SimpleInput extends Vue implements Focusable {
   @Prop() private value!: string;
 
   @Emit("input")
@@ -42,13 +42,13 @@ export default class Input extends Vue implements Focusable {
     class="w-full flex font-light bg-gray-200 rounded px-3 py-2 border focus-within:bg-white focus-within:shadow focus-within:border-gray-100"
   >
     <input
+      ref="element"
       v-bind="$attrs"
       class="outline-none font-light bg-transparent w-full"
       :value="value"
-      @input="handleValueChange"
       :class="validityClasses"
-      ref="element"
+      @input="handleValueChange"
     />
-    <slot name="after"></slot>
+    <slot name="after" />
   </div>
 </template>

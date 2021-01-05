@@ -55,10 +55,10 @@
       <section class="mt-4 flex">
         <div class="w-1/2">
           <PureTag
-            class="mr-1 mt-1 inline-block"
             v-for="tag in step.tags"
-            :tag="tag"
             :key="tag.text"
+            class="mr-1 mt-1 inline-block"
+            :tag="tag"
           />
         </div>
 
@@ -77,7 +77,9 @@
         </ul>
       </section>
       <section v-if="hasVariations" class="text-sm text-gray-700 mt-3">
-        <h2 class="font-semibold">Variations</h2>
+        <h2 class="font-semibold">
+          Variations
+        </h2>
         <a
           v-for="variation in step.variations"
           :key="variation.id"

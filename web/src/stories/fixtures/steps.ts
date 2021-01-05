@@ -70,6 +70,36 @@ export function rawStepsFactory(): RawStep[] {
       removed_smart_tags: ["Obrót"],
       tokens: [],
       variationKey: "B"
+    },
+    {
+      id: "step-id-1",
+      owner_uid: "owner-id-1",
+      identifier: 4,
+      name: "Ten krok ma wiele wideo",
+      videos: [
+        {
+          url: "https://example.com/videos/hash-1",
+          hash: "hash-1"
+        },
+        {
+          url: "https://example.com/videos/hash-2",
+          hash: "hash-2"
+        },
+        {
+          url: "https://example.com/videos/hash-3",
+          hash: "hash-3"
+        }
+      ],
+      tags: ["Grande saida", "Zatrzymanie"],
+      difficulty: 3,
+      dance: ["semba"],
+      created_at: Date.now(),
+      artists: [],
+      notes: "",
+      smart_tags: [],
+      removed_smart_tags: [],
+      tokens: [],
+      variationKey: "A"
     }
   ];
 }

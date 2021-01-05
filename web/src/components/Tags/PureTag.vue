@@ -1,13 +1,13 @@
 <template>
   <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm text-xs">
-    <slot name="prepend"></slot>
+    <slot name="prepend" />
     <span
       v-if="showType && tag.type"
       class="text-gray-600 font-hairline text-2xs mr-1"
       >{{ tag.type }}</span
     >
     {{ tag.text }}
-    <slot name="append"></slot>
+    <slot name="append" />
   </span>
 </template>
 

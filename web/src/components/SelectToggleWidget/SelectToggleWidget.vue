@@ -12,18 +12,23 @@ export default class SelectToggleWidget extends Vue {
 
   @Emit()
   toggle() {}
+
+  clickhandler() {
+    console.log("click");
+  }
 }
 </script>
 
 <template>
   <label
     class="block leading-0 text-2xl cursor-pointer opacity-75 hover:opacity-100"
+    @click.stop="() => {}"
   >
     <input
       type="checkbox"
       :checked="selected"
       class="hidden"
-      @change="toggle"
+      @change.stop="toggle"
     />
     <PureIcon v-if="selected" type="check_box" />
     <PureIcon v-else type="check_box_outline_blank" />

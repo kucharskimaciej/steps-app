@@ -1,5 +1,6 @@
 import { createDecorator, VueDecorator } from "vue-class-component";
 import { throttle, ThrottleSettings } from "lodash";
+import Vue from "vue";
 
 export function ThrottleTime(
   time: number,
@@ -13,7 +14,7 @@ export function ThrottleTime(
     const originalFn = componentOptions.methods[fnName];
 
     componentOptions.methods[fnName] = throttle(
-      function(...args) {
+      function(this: Vue, ...args) {
         originalFn.apply(this, args);
       },
       time,

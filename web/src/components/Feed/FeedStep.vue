@@ -51,7 +51,7 @@ export default class FeedStep extends Vue {
     </header>
     <footer class="px-2 mb-2">
       <FeedActions class="mb-2">
-        <slot name="actions" :step="step"></slot>
+        <slot name="actions" :step="step" />
       </FeedActions>
       <section class="-mt-1">
         <PureTag

@@ -36,13 +36,13 @@ export default class PureCheckbox extends Vue {
     <input
       type="checkbox"
       :checked="value"
-      @change="handleChange"
       class="hidden"
+      @change="handleChange"
     />
     <span class="block mr-1">
       <PureIcon v-if="value" type="check_box" :class="iconClasses" />
       <PureIcon v-else type="check_box_outline_blank" :class="iconClasses" />
     </span>
-    <slot></slot>
+    <slot />
   </label>
 </template>
