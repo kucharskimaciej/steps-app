@@ -7,6 +7,7 @@ import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import FeedActions from "@/components/Feed/FeedActions.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
+import Tags from "@/components/Step/components/Tags.vue";
 
 @Component({
   components: {
@@ -15,7 +16,8 @@ import PureButton from "@/components/PureButton/PureButton.vue";
     CopyToClipboard,
     FeedActions,
     PureIcon,
-    PureButton
+    PureButton,
+    Tags
   }
 })
 export default class FeedStep extends Vue {
@@ -54,12 +56,7 @@ export default class FeedStep extends Vue {
         <slot name="actions" :step="step" />
       </FeedActions>
       <section class="-mt-1">
-        <PureTag
-          v-for="tag in step.tags"
-          :key="tag.text"
-          :tag="tag"
-          class="mr-1 mt-1 inline-block"
-        />
+        <Tags :step="step" />
       </section>
     </footer>
   </article>

@@ -20,7 +20,7 @@ import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import ContentBox from "@/components/ContentBox/ContentBox.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
-import FullContent from "@/components/Step/components/FullContent.vue";
+import FullContent from "@/components/Step/FullContent.vue";
 import Card from "@/components/Card/Card.vue";
 import { sortBy, without } from "lodash";
 import { getStepScore } from "@/lib/variations/variationStepScore";

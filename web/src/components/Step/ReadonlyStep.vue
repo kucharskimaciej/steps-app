@@ -3,11 +3,13 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import { Step } from "../../../../common/types/Step";
 import VideoPlayer from "@/components/Video/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
+import Tags from "@/components/Step/components/Tags.vue";
 
 @Component({
   components: {
     VideoPlayer,
-    PureTag
+    PureTag,
+    Tags
   }
 })
 export default class ReadonlyStep extends Vue {
@@ -39,12 +41,7 @@ export default class ReadonlyStep extends Vue {
     </main>
 
     <footer class="mt-2 px-2 desktop:px-0 pb-2">
-      <PureTag
-        v-for="tag in step.tags"
-        :key="tag.text"
-        :tag="tag"
-        class="mr-1 mt-1 inline-block"
-      />
+      <Tags :step="step" />
     </footer>
   </article>
 </template>

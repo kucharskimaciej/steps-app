@@ -28,8 +28,18 @@ export interface RawStep extends CommonFields {
   tokens: string[];
 }
 
+export type TagCategory =
+  | "dance"
+  | "difficulty"
+  | "artist"
+  | "content"
+  | "meta"
+  | "all";
+
+export type TagCategories = Record<TagCategory, Tag[]>;
+
 export interface Step extends CommonFields {
-  tags: Tag[];
+  tags: TagCategories;
   variations: StepRef[];
 }
 

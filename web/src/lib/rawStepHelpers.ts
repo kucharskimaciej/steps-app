@@ -1,4 +1,9 @@
-import { RawStep, Step, StepRef } from "../../../common/types/Step";
+import {
+  RawStep,
+  Step,
+  StepRef,
+  TagCategories
+} from "../../../common/types/Step";
 import { Tag, TagTypes } from "../../../common/types/Tag";
 import { DANCES, STEP_DIFFICULTIES } from "../../../common/constants";
 
@@ -30,27 +35,41 @@ export function convertToStep(
     variationKey
   } = raw;
 
-  const generatedTags: Tag[] = [
+  const artistTags: Tag<TagTypes.ARTIST>[] = artists.map(artist => ({
+    type: TagTypes.ARTIST,
+    text: artist
+  }));
+
+  const danceTags: Tag<TagTypes.DANCE>[] = dance.map(d => ({
+    type: TagTypes.DANCE,
+    text: DANCES[d]
+  }));
+
+  const difficultyTag: Tag<TagTypes.DIFFICULTY> = {
+    type: TagTypes.DIFFICULTY,
+    text: STEP_DIFFICULTIES[difficulty]
+  };
+
+  const metaTags: Tag[] = [...danceTags, ...artistTags, difficultyTag];
+
+  const contentTags: Tag[] = [
     ...tags.map(tag => ({
       text: tag
     })),
     ...(smart_tags || []).map(tag => ({
       type: TagTypes.SMART,
       text: tag
-    })),
-    ...dance.map(d => ({
-      type: TagTypes.DANCE,
-      text: DANCES[d]
-    })),
-    {
-      type: TagTypes.DIFFICULTY,
-      text: STEP_DIFFICULTIES[difficulty]
-    },
-    ...artists.map(artist => ({
-      type: TagTypes.ARTIST,
-      text: artist
     }))
   ];
+
+  const tagCategories: TagCategories = {
+    artist: artistTags,
+    dance: danceTags,
+    difficulty: [difficultyTag],
+    content: contentTags,
+    meta: metaTags,
+    all: [...contentTags, ...metaTags]
+  };
 
   const variations =
     variationsByKey && variationsByKey[variationKey] && variationKey
@@ -62,7 +81,7 @@ export function convertToStep(
   return {
     identifier,
     id,
-    tags: generatedTags,
+    tags: tagCategories,
     videos,
     name,
     notes,

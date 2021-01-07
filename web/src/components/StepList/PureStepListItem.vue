@@ -54,12 +54,7 @@
       </section>
       <section class="mt-4 flex">
         <div class="w-1/2">
-          <PureTag
-            v-for="tag in step.tags"
-            :key="tag.text"
-            class="mr-1 mt-1 inline-block"
-            :tag="tag"
-          />
+          <Tags :step="step" />
         </div>
 
         <ul class="w-1/2 list-none">
@@ -105,9 +100,11 @@ import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
+import Tags from "@/components/Step/components/Tags.vue";
 
 @Component({
   components: {
+    Tags,
     PureTag,
     PureToggleButton,
     PureButton,

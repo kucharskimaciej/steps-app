@@ -1,16 +1,16 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { Step } from "../../../../../common/types/Step";
+import { Step } from "../../../../common/types/Step";
 import StepTitle from "@/components/Step/components/StepTitle.vue";
 import StepVideoLinks from "@/components/Step/components/VideoLinks.vue";
-import AllTags from "@/components/Step/components/AllTags.vue";
+import Tags from "@/components/Step/components/Tags.vue";
 import Variations from "@/components/Step/components/Variations.vue";
 
 @Component({
   components: {
     StepTitle,
     StepVideoLinks,
-    AllTags,
+    Tags,
     Variations
   }
 })
@@ -26,9 +26,10 @@ export default class FullContent extends Vue {
       <StepVideoLinks :step="step" skip-first />
     </header>
 
-    <AllTags :step="step" class="mb-2" />
+    <Tags :step="step" category="meta" class="mb-1" />
+    <Tags :step="step" category="content" class="mb-2" />
 
-    <section v-if="step.variations.length > 0">
+    <section v-if="step.variations.length > 0" class="text-sm">
       <h2 class="font-semibold">
         Variations
       </h2>
