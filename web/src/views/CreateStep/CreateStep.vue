@@ -134,8 +134,8 @@ export default class CreateStep extends VueWithStore {
 </script>
 
 <template>
-  <WideWithSidebarRight class="max-h-screen">
-    <div class="h-screen flex flex-col">
+  <WideWithSidebarRight class="h-screen">
+    <div class="flex flex-col h-full">
       <ContentBox class="border-r border-b text-right">
         <PureButton
           class="mr-2"
@@ -166,7 +166,7 @@ export default class CreateStep extends VueWithStore {
     </div>
 
     <template #sidebar>
-      <ContentBox overflow="scroll">
+      <ContentBox overflow="scroll" class="h-screen">
         <AllStepsProvider>
           <div>
             <Card

@@ -121,8 +121,8 @@ export default class EditStep extends VueWithStore {
 </script>
 
 <template>
-  <WideWithSidebarRight class="max-h-screen">
-    <div class="h-screen flex flex-col">
+  <WideWithSidebarRight class="h-screen">
+    <div class="h-full flex flex-col">
       <ContentBox class="border-r border-b text-right">
         <PureButton
           class="mr-2"

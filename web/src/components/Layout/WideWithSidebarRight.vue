@@ -7,10 +7,10 @@ export default class WideWithSidebarRight extends Vue {}
 
 <template>
   <div class="mx-auto w-full flex flex-wrap">
-    <main class="desktop:w-3/5 w-full">
+    <main class="desktop:w-3/5 w-full h-full">
       <slot />
     </main>
-    <aside class="desktop:w-2/5 w-full flex-shrink-0">
+    <aside class="desktop:w-2/5 w-full flex-shrink-0 h-full">
       <slot name="sidebar" />
     </aside>
   </div>
