@@ -31,7 +31,7 @@ export default class ReadonlyStep extends Vue {
     </header>
 
     <main
-      class="video-container order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen h-screen bg-black flex desktop:h-auto desktop:w-auto"
+      class="video-container order-first desktop:order-none desktop:mt-3 max-w-full w-screen max-h-screen bg-black flex desktop:h-auto desktop:w-auto"
     >
       <VideoPlayer
         class="video shadow-lg desktop:rounded w-full m-auto"
@@ -47,6 +47,13 @@ export default class ReadonlyStep extends Vue {
 </template>
 
 <style scoped>
+.video-container {
+  min-height: -webkit-fill-available;
+  min-height: -moz-available;
+  min-height: fill-available;
+  min-height: 100vh;
+}
+
 @media screen and (min-width: theme("screens.desktop")) {
   .video-container {
     height: 800px;
