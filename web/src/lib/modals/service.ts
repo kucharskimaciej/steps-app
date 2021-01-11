@@ -9,6 +9,7 @@ import {
 import { uuid } from "@/lib/uuid";
 import SessionCartModal from "@/components/SessionCartModal/SessionCartModal.vue";
 import { defaults } from "lodash";
+import VideoModal from "@/components/VideoModal/VideoModal.vue";
 
 @Service()
 export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
@@ -32,6 +33,16 @@ export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
     return {
       component: SessionCartModal,
       options: this.ensureDefaults()
+    };
+  }
+
+  [MODALS.SINGLE_VIDEO](videoUrl: string) {
+    return {
+      component: VideoModal,
+      options: this.ensureDefaults({
+        props: { videoUrl },
+        style: MODAL_STYLE.BORDERLESS
+      })
     };
   }
 

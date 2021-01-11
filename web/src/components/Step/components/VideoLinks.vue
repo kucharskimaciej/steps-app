@@ -35,8 +35,8 @@ export default class StepVideoLinks extends Vue {
       v-for="(url, index) in videoUrls"
       :key="url"
       target="_blank"
-      :href="url"
       class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm text-xs mr-1 mb-1 hover:bg-gray-300"
+      @click="$openModal($modals.SINGLE_VIDEO, url)"
     >
       Video {{ index + indexOffset }}
     </a>

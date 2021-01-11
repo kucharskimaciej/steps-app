@@ -2,7 +2,8 @@ import { Component } from "vue";
 
 export enum MODAL_STYLE {
   DRAWER = "DRAWER",
-  OVERLAY = "OVERLAY"
+  OVERLAY = "OVERLAY",
+  BORDERLESS = "BORDERLESS"
 }
 
 export type ModalRef = {
@@ -24,5 +25,6 @@ export type ModalDefinition = {
 export type ModalDefinitionProvider = (...params: any[]) => ModalDefinition;
 
 export enum MODALS {
-  SESSION_CART = "SESSION_CART"
+  SESSION_CART = "SESSION_CART",
+  SINGLE_VIDEO = "SINGLE_VIDEO"
 }

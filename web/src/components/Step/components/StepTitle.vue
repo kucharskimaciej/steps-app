@@ -20,10 +20,10 @@ export default class StepTitle extends Vue {
 
     <a
       v-if="linkToVideo"
-      :href="firstVideoUrl"
       target="_blank"
       referrerpolicy="no-referrer"
-      class="focus:outline-none focus:bg-yellow-base"
+      class="focus:outline-none focus:bg-yellow-base cursor-pointer"
+      @click="$openModal($modals.SINGLE_VIDEO, firstVideoUrl)"
       >{{ step.name }}</a
     >
     <span v-else>{{ step.name }}</span>
