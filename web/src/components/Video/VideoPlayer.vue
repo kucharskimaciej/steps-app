@@ -176,10 +176,10 @@ export default class VideoPlayer extends Vue {
       <PlayControl v-if="!playing" />
     </aside>
 
-    <aside class="absolute top-0 right-0 m-2 flex flex-col">
-      <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
-      <!--      <SizeControl :enabled="false" @toggle="toggleSize" />-->
-    </aside>
+    <!--    <aside class="absolute top-0 right-0 m-2 flex flex-col">-->
+    <!--      <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />-->
+    <!--      &lt;!&ndash;      <SizeControl :enabled="false" @toggle="toggleSize" />&ndash;&gt;-->
+    <!--    </aside>-->
 
     <aside class="absolute bottom-0 right-0 m-2 flex">
       <ForwardOne class="mr-1" @click="seek(1)" />
