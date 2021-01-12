@@ -32,6 +32,14 @@ export interface ModalsState {
   stack: ModalRef[];
 }
 
+export interface CurrentVideoState extends WithStatus {
+  url: string | null;
+  meta: {
+    width: number;
+    height: number;
+  } | null;
+}
+
 export interface RootState {
   auth: AuthState;
   steps: StepsState;
@@ -39,4 +47,5 @@ export interface RootState {
   practiceSessions: PracticeSessionsState;
   selectedSession: SelectedSessionState;
   uiModals: ModalsState;
+  uiCurrentVideo: CurrentVideoState;
 }

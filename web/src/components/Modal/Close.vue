@@ -19,7 +19,7 @@ export default class Close extends Vue {
 <template>
   <aside
     v-bind="$attrs"
-    class="absolute top-0 m-2 desktop:m-4 text-3xl leading-0 cursor-pointer transition-all transform scale-1 hover:scale-110"
+    class="absolute top-0 m-2 desktop:m-4 text-3xl leading-0 cursor-pointer"
     :class="{
       'right-0': iconPosition === 'topRight',
       'left-0': iconPosition === 'topLeft',

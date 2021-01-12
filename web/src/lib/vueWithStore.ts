@@ -3,7 +3,9 @@ import { Store } from "vuex";
 import { RootState } from "@/store/types";
 
 abstract class VueWithStoreClass extends Vue {
-  public $store!: Store<RootState>;
+  public $store!: Store<RootState> & {
+    state: RootState;
+  };
 }
 
 export const VueWithStore = Vue as VueConstructor<VueWithStoreClass>;

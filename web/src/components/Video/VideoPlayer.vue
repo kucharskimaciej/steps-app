@@ -59,6 +59,7 @@ const mediaEvents = [
 export default class VideoPlayer extends Vue {
   @Prop({ required: true }) private url!: string;
   @Prop({ default: false }) private autoplay!: boolean;
+  @Prop({ default: false }) private thumbnail!: boolean;
 
   static readonly FULL_SPEED = 1;
   static readonly SLOW_SPEED = 0.5;
@@ -143,7 +144,16 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative bg-black w-full h-full">
+  <main class="relative bg-black w-full h-full overflow-hidden">
+    <aside v-if="thumbnail" class="absolute inset-0 overflow-hidden">
+      <div class="absolute inset-0 -m-10 opacity-50">
+        <video
+          class="blurred h-full w-full m-h-full m-w-full absolute inset-x-0 object-cover object-center"
+          :src="url"
+          muted
+        />
+      </div>
+    </aside>
     <video
       ref="video"
       :muted="muted"
@@ -195,5 +205,9 @@ export default class VideoPlayer extends Vue {
 video {
   top: 50%;
   transform: translateY(-50%);
+}
+
+.blurred {
+  filter: blur(15px);
 }
 </style>
