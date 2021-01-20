@@ -144,16 +144,7 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative bg-black w-full h-full overflow-hidden z-0">
-    <aside v-if="thumbnail" class="absolute inset-0 overflow-hidden -z-1">
-      <div class="absolute inset-0 -m-10 opacity-50">
-        <video
-          class="blurred h-full w-full m-h-full m-w-full absolute inset-x-0 object-cover object-center"
-          :src="url"
-          muted
-        />
-      </div>
-    </aside>
+  <main class="relative w-full h-full bg-black overflow-hidden z-0">
     <video
       ref="video"
       :muted="muted"
@@ -161,7 +152,7 @@ export default class VideoPlayer extends Vue {
       loop
       playsinline
       :autoplay="autoplay"
-      class="w-full max-h-full absolute inset-x-0 -z-1"
+      class="video w-full max-h-full absolute inset-x-0 -z-1"
       v-on="videoEventListeners"
       @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"
@@ -202,12 +193,8 @@ export default class VideoPlayer extends Vue {
 </template>
 
 <style scoped>
-video {
+.video {
   top: 50%;
   transform: translateY(-50%);
-}
-
-.blurred {
-  filter: blur(15px);
 }
 </style>
