@@ -3,6 +3,7 @@ import { Matchers } from "@/plugins/matchMedia";
 import { RouterOptions } from "vue-router/types/router";
 import { MODALS } from "@/lib/modals/modals";
 import { ModalsService } from "@/lib/modals/service";
+import { ClientInfo } from "@/lib/clientInfo.service";
 
 declare module "vuelidate" {
   interface Validation {
@@ -21,6 +22,7 @@ declare module "vue/types/vue" {
       modal: TKey,
       ...params: Parameters<ModalsService[TKey]>
     ): void;
+    $client: ClientInfo;
   }
 }
 

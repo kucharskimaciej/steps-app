@@ -12,8 +12,6 @@ export const uiCurrentVideo = createModule(
     actions: {
       async loadVideo(context: Context, url: string) {
         commitUpdateState(context, {
-          url,
-          meta: null,
           status: "pending"
         });
         const loadedVideo = await loadVideo(url);
@@ -22,7 +20,8 @@ export const uiCurrentVideo = createModule(
           url,
           meta: {
             height: videoHeight,
-            width: videoWidth
+            width: videoWidth,
+            aspectRatio: videoWidth / videoHeight
           },
           status: "dirty"
         });

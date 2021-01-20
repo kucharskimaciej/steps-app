@@ -1,7 +1,6 @@
 import { RawStep } from "../../../common/types/Step";
 import { PracticeSession } from "../../../common/types/PracticeSession";
 import { ModalRef } from "@/lib/modals/modals";
-
 export type Status = "clean" | "pending" | "dirty";
 
 export interface WithStatus {
@@ -32,13 +31,19 @@ export interface ModalsState {
   stack: ModalRef[];
 }
 
-export interface CurrentVideoState extends WithStatus {
-  url: string | null;
-  meta: {
-    width: number;
-    height: number;
-  } | null;
-}
+export type CurrentVideoState =
+  | {
+      status: "clean" | "pending";
+    }
+  | {
+      status: "dirty";
+      url: string | null;
+      meta: {
+        width: number;
+        height: number;
+        aspectRatio: number;
+      };
+    };
 
 export interface RootState {
   auth: AuthState;
