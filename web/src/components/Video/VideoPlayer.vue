@@ -144,8 +144,8 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative bg-black w-full h-full overflow-hidden">
-    <aside v-if="thumbnail" class="absolute inset-0 overflow-hidden">
+  <main class="relative bg-black w-full h-full overflow-hidden z-0">
+    <aside v-if="thumbnail" class="absolute inset-0 overflow-hidden -z-1">
       <div class="absolute inset-0 -m-10 opacity-50">
         <video
           class="blurred h-full w-full m-h-full m-w-full absolute inset-x-0 object-cover object-center"
@@ -161,7 +161,7 @@ export default class VideoPlayer extends Vue {
       loop
       playsinline
       :autoplay="autoplay"
-      class="w-full max-h-full absolute inset-x-0"
+      class="w-full max-h-full absolute inset-x-0 -z-1"
       v-on="videoEventListeners"
       @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"
@@ -176,10 +176,10 @@ export default class VideoPlayer extends Vue {
       <PlayControl v-if="!playing" />
     </aside>
 
-    <!--    <aside class="absolute top-0 right-0 m-2 flex flex-col">-->
-    <!--      <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />-->
-    <!--      &lt;!&ndash;      <SizeControl :enabled="false" @toggle="toggleSize" />&ndash;&gt;-->
-    <!--    </aside>-->
+    <aside class="absolute top-0 right-0 m-2 flex flex-col">
+      <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
+      <SizeControl @click="$openModal($modals.SINGLE_VIDEO, url)" />
+    </aside>
 
     <aside class="absolute bottom-0 right-0 m-2 flex">
       <ForwardOne class="mr-1" @click="seek(1)" />

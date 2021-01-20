@@ -58,6 +58,9 @@ module.exports = {
       },
       maxHeight: {
         "80": "80%"
+      },
+      zIndex: {
+        "-1": -1
       }
     },
     colors: {

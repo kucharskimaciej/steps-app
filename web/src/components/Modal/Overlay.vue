@@ -25,6 +25,6 @@ export default class Overlay extends ModalView {
     >
       <slot />
     </main>
-    <Close icon-style="filled" @click="close()" />
+    <Close icon-position="topLeft" icon-style="filled" @click="close()" />
   </div>
 </template>
