@@ -9,7 +9,6 @@ import Sessions from "@/components/Sessions/Sessions.vue";
 import SessionProvider from "@/components/Providers/SessionProvider.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
-import Feed from "@/components/Feed/Feed.vue";
 import {
   getSteps,
   stepsById,
@@ -34,7 +33,6 @@ import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidg
     SelectToggleWidget,
     StepTitle,
     Card,
-    Feed,
     AllStepsProvider,
     SessionProvider,
     WideWithSidebarRight,

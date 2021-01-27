@@ -40,6 +40,6 @@ export default class RecordPracticeWidget extends VueWithStore {
     <PureIcon type="done" /> Practiced
   </PureButton>
   <PureButton v-else feel="ghost" kind="default" @click="handleRecordPractice">
-    Record practice {{ isTodayRecordedForCollection }}
+    Record practice
   </PureButton>
 </template>

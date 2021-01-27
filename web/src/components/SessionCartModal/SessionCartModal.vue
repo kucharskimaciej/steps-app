@@ -4,11 +4,13 @@ import { VueWithStore } from "@/lib/vueWithStore";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import { stepsById } from "@/store";
 import Feed from "@/components/Feed/Feed.vue";
+import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 
 @Component({
   components: {
     AllStepsProvider,
-    Feed
+    Feed,
+    RecordPracticeWidget
   }
 })
 export default class SessionCartModal extends VueWithStore {
@@ -22,11 +24,25 @@ export default class SessionCartModal extends VueWithStore {
       return [];
     }
   }
+
+  get selectedSessionId(): string {
+    if (!this.$store.state.selectedSession.session) {
+      return false;
+    }
+    return this.$store.state.selectedSession.session.id;
+  }
 }
 </script>
 
 <template>
   <AllStepsProvider>
-    <Feed :steps="sessionSteps" />
+    <Feed :steps="sessionSteps">
+      <template #stepActions="{ step }">
+        <RecordPracticeWidget
+          :step-id="step.id"
+          :collection-id="selectedSessionId"
+        />
+      </template>
+    </Feed>
   </AllStepsProvider>
 </template>

@@ -13,6 +13,7 @@ import { convertToStep } from "@/lib/rawStepHelpers";
 import { provideStore } from "@/store";
 import { PracticeRecord } from "../../../../common/types/PracticeRecord";
 import { today } from "@/lib/dateHelpers";
+import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 
 type StepsContext = ActionContext<StepsState, RootState>;
 
@@ -97,10 +98,7 @@ export const steps = {
       const startOfToday = today();
       console.log(today(), new Date(today()));
 
-      if (
-        step.practice_records &&
-        step.practice_records.find(r => r.date === startOfToday)
-      ) {
+      if (hasRecordedPracticeToday(step, collectionId)) {
         return;
       }
 
