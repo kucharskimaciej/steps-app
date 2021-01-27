@@ -1,17 +1,18 @@
-import { RootState, Status, StepsState } from "@/store/types";
-import { RawStep, Step } from "../../../../common/types/Step";
 import { Container } from "vue-typedi";
+import { ActionContext } from "vuex";
+import { getStoreAccessors } from "typesafe-vuex";
+import { RootState, Status, StepsState } from "@/store/types";
 import {
   CreateParams,
   StepsResource,
   UpdateParams
 } from "@/lib/steps.resource";
+import { RawStep, Step } from "../../../../common/types/Step";
 import { orderBy, uniq, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
-import { ActionContext } from "vuex";
 import { provideStore } from "@/store";
-import { getStoreAccessors } from "typesafe-vuex";
 import { PracticeRecord } from "../../../../common/types/PracticeRecord";
+import { today } from "@/lib/dateHelpers";
 
 type StepsContext = ActionContext<StepsState, RootState>;
 
@@ -93,7 +94,17 @@ export const steps = {
     ) {
       const stepsResource = Container.get(StepsResource);
       const step = stepsById(provideStore())[stepId];
-      const record: PracticeRecord = { date: Date.now() };
+      const startOfToday = today();
+      console.log(today(), new Date(today()));
+
+      if (
+        step.practice_records &&
+        step.practice_records.find(r => r.date === startOfToday)
+      ) {
+        return;
+      }
+
+      const record: PracticeRecord = { date: startOfToday };
       if (collectionId) {
         record.collection_id = collectionId;
       }

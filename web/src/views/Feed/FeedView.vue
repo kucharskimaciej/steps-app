@@ -10,6 +10,7 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import { getSteps } from "@/store";
+import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 
 @Component({
   components: {
@@ -17,7 +18,8 @@ import { getSteps } from "@/store";
     Feed,
     PureButton,
     PureIcon,
-    AllStepsProvider
+    AllStepsProvider,
+    RecordPracticeWidget
   }
 })
 export default class FeedView extends VueWithStore {
@@ -32,6 +34,7 @@ export default class FeedView extends VueWithStore {
       () => getSteps(this.$store),
       steps => {
         this.steps = this.feedService.getStepsForFeed(steps);
+        this.stepsWatcher();
       }
     );
   }
@@ -50,7 +53,11 @@ export default class FeedView extends VueWithStore {
 <template>
   <AllStepsProvider>
     <Container class="pt-5 pb-10">
-      <Feed :steps="steps" />
+      <Feed :steps="steps">
+        <template #stepActions="{ step }">
+          <RecordPracticeWidget :step-id="step.id" />
+        </template>
+      </Feed>
       <footer class="text-center mt-5">
         <PureButton spacing="wide" size="large" @click="refresh">
           <PureIcon type="refresh" /> Refresh

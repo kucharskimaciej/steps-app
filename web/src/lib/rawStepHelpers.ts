@@ -32,7 +32,8 @@ export function convertToStep(
     artists,
     notes,
     smart_tags,
-    variationKey
+    variationKey,
+    practice_records
   } = raw;
 
   const artistTags: Tag<TagTypes.ARTIST>[] = artists.map(artist => ({
@@ -88,6 +89,7 @@ export function convertToStep(
     created_at,
     owner_uid,
     variations,
-    variationKey
+    variationKey,
+    practice_records
   };
 }
