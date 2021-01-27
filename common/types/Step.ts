@@ -2,6 +2,7 @@ import { Tag } from "./Tag";
 import { DatabaseItem } from "./common/DatabaseItem";
 import { VideoObject } from "./VideoObject";
 import { Owned } from "./common/Owned";
+import { PracticeRecord } from "./PracticeRecord";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
 export type Dance = "semba" | "kizomba" | "fusion" | "tarraxa" | "urban";
@@ -10,12 +11,12 @@ interface CommonFields extends DatabaseItem, Owned {
   identifier: number; // internal, auto-incremented identifier assigned per user
   name: string;
   videos: VideoObject[];
-  last_practiced_at?: number;
   last_viewed_at?: number;
   updated_at?: number;
   created_at: number;
   notes: string;
   variationKey: string;
+  practice_records?: PracticeRecord[];
 }
 
 export interface RawStep extends CommonFields {
