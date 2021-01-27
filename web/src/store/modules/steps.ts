@@ -11,6 +11,7 @@ import { convertToStep } from "@/lib/rawStepHelpers";
 import { ActionContext } from "vuex";
 import { provideStore } from "@/store";
 import { getStoreAccessors } from "typesafe-vuex";
+import { PracticeRecord } from "../../../../common/types/PracticeRecord";
 
 type StepsContext = ActionContext<StepsState, RootState>;
 
@@ -85,6 +86,22 @@ export const steps = {
       const stepsResource = Container.get(StepsResource);
       const updatedStep = await stepsResource.update(stepId, params);
       commitUpdateStep(context, updatedStep);
+    },
+    async recordPractice(
+      context: StepsContext,
+      [stepId, collectionId]: [string, string?]
+    ) {
+      const stepsResource = Container.get(StepsResource);
+      const step = stepsById(provideStore())[stepId];
+      const record: PracticeRecord = { date: Date.now() };
+      if (collectionId) {
+        record.collection_id = collectionId;
+      }
+      const updateStep = await stepsResource.update(stepId, {
+        practice_records: [record, ...(step.practice_records || [])]
+      });
+
+      commitUpdateStep(context, updateStep);
     }
   }
 };
@@ -112,3 +129,4 @@ export const existingTags = read(getters.existingTags);
 export const dispatchFetchAllSteps = dispatch(actions.fetchAllSteps);
 export const dispatchCreateStep = dispatch(actions.createStep);
 export const dispatchUpdateStep = dispatch(actions.updateStep);
+export const dispatchRecordPractice = dispatch(actions.recordPractice);
