@@ -27,7 +27,7 @@ export default class SessionCartModal extends VueWithStore {
 
   get selectedSessionId(): string {
     if (!this.$store.state.selectedSession.session) {
-      return false;
+      return "";
     }
     return this.$store.state.selectedSession.session.id;
   }

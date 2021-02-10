@@ -4,6 +4,7 @@ import { RouterOptions } from "vue-router/types/router";
 import { MODALS } from "@/lib/modals/modals";
 import { ModalsService } from "@/lib/modals/service";
 import { ClientInfo } from "@/lib/clientInfo.service";
+import { ROUTES } from "@/router";
 
 declare module "vuelidate" {
   interface Validation {
@@ -23,6 +24,7 @@ declare module "vue/types/vue" {
       ...params: Parameters<ModalsService[TKey]>
     ): void;
     $client: ClientInfo;
+    $routes: typeof ROUTES;
   }
 }
 

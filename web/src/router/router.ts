@@ -7,6 +7,7 @@ import PublicStep from "@/views/PublicStep/PublicStep.vue";
 import SessionsView from "@/views/Sessions/SessionsView.vue";
 import SessionView from "@/views/Session/SessionView.vue";
 import EditStep from "@/views/EditStep/EditStep.vue";
+import HistoricalSessionView from "@/views/HistoricalSession/HistoricalSessionView.vue";
 
 export default new Router({
   mode: "history",
@@ -54,6 +55,12 @@ export default new Router({
       name: ROUTES.SESSION,
       path: "/sessions/:sessionId",
       component: SessionView,
+      props: true
+    },
+    {
+      name: ROUTES.HISTORICAL_SESSION,
+      path: "/historical-sessions/:sessionDate",
+      component: HistoricalSessionView,
       props: true
     }
   ]

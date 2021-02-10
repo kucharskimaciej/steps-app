@@ -8,7 +8,7 @@ import {
   UpdateParams
 } from "@/lib/steps.resource";
 import { RawStep, Step } from "../../../../common/types/Step";
-import { orderBy, uniq, maxBy, keyBy, groupBy, partial } from "lodash";
+import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { provideStore } from "@/store";
 import { PracticeRecord } from "../../../../common/types/PracticeRecord";
@@ -46,6 +46,17 @@ export const steps = {
     },
     existingTags(state: StepsState) {
       return uniq(state.rawSteps.map(step => step.tags).flat());
+    },
+    stepsByPracticeDate(): Record<number, Step[]> {
+      return getSteps(provideStore()).reduce(($, step) => {
+        for (const practiceRecord of step.practice_records || []) {
+          $[practiceRecord.date] = $[practiceRecord.date]
+            ? uniqBy([...$[practiceRecord.date], step], "id")
+            : [step];
+        }
+
+        return $;
+      }, {} as Record<number, Step[]>);
     }
   },
   mutations: {
@@ -96,7 +107,6 @@ export const steps = {
       const stepsResource = Container.get(StepsResource);
       const step = stepsById(provideStore())[stepId];
       const startOfToday = today();
-      console.log(today(), new Date(today()));
 
       if (hasRecordedPracticeToday(step, collectionId)) {
         return;
@@ -133,6 +143,7 @@ export const nextIdentifier = read(getters.nextIdentifier);
 export const stepsById = read(getters.stepsById);
 export const existingArtists = read(getters.existingArtists);
 export const existingTags = read(getters.existingTags);
+export const stepsByPracticeDate = read(getters.stepsByPracticeDate);
 
 // ACTIONS
 export const dispatchFetchAllSteps = dispatch(actions.fetchAllSteps);

@@ -1,11 +1,16 @@
 import moment from "moment";
+import { format as formatDate } from "date-fns";
 
-export function DateFilter(value: string | number, format = "DD MMM"): string {
-  if (value) {
-    return moment.utc(value).format(format);
-  } else {
+export function DateFilter(value: string | number, format = "dd MMM"): string {
+  if (!value) {
     return "";
   }
+
+  if (!isNaN(Number(value))) {
+    value = Number(value);
+  }
+
+  return formatDate(new Date(value), format);
 }
 
 export function FullDateFilter(value: string | number): string {
