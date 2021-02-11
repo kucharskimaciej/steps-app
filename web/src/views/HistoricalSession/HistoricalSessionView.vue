@@ -18,7 +18,7 @@ export default class HistoricalSessionView extends VueWithStore {
   @Prop({ type: [String, Number] }) private sessionDate!: string | number;
 
   get stepsInSession(): Step[] {
-    return stepsByPracticeDate(this.$store)[this.sessionDate];
+    return stepsByPracticeDate(this.$store)[Number(this.sessionDate)];
   }
 }
 </script>
