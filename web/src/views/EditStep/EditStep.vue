@@ -49,16 +49,22 @@ export default class EditStep extends VueWithStore {
     )!;
   }
 
-  @Watch("step")
+  @Watch("step", { immediate: true })
   handleStepsLoaded() {
     if (this.step) {
-      this.selectedVariations = [];
+      this.selectedVariations = this.step.variationKey
+        ? [this.step.variationKey]
+        : [];
     }
   }
 
   async saveStep() {
     if (this.form.validate()) {
-      await dispatchUpdateStep(this.$store, [this.step.id, this.form.value]);
+      await dispatchUpdateStep(this.$store, {
+        stepId: this.step.id,
+        params: this.form.value,
+        selectedVariations: this.selectedVariations
+      });
     }
   }
 

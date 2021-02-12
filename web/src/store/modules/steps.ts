@@ -94,10 +94,18 @@ export const steps = {
     },
     async updateStep(
       context: StepsContext,
-      [stepId, params]: [string, UpdateParams]
+      payload: {
+        stepId: string;
+        params: UpdateParams;
+        selectedVariations: string[];
+      }
     ) {
       const stepsResource = Container.get(StepsResource);
-      const updatedStep = await stepsResource.update(stepId, params);
+      const updatedStep = await stepsResource.update(
+        payload.stepId,
+        payload.params,
+        payload.selectedVariations
+      );
       commitUpdateStep(context, updatedStep);
     },
     async recordPractice(

@@ -43,25 +43,65 @@ export class StepsResource extends Resource<
       variationKey
     };
 
+    const batch = await this.createBatchVariationUpdate(
+      params.owner_uid,
+      variationKey,
+      variationsToMerge
+    );
+
     const documentRef = this.collection.doc();
+    batch.set(documentRef, stepToSave);
+    await batch.commit();
+
+    return documentRef.get().then(this.toDocument);
+  }
+
+  public async update(
+    id: string,
+    params: UpdateParams,
+    variationsToMerge?: string[]
+  ): Promise<RawStep> {
+    const variationKey = createVariationId();
+
+    if (!variationsToMerge || !variationsToMerge.length) {
+      variationsToMerge = [variationKey];
+    }
+
+    const documentRef = this.collection.doc(id);
+
+    const originalDocument = await documentRef.get().then(this.toDocument);
+
+    const batch = await this.createBatchVariationUpdate(
+      originalDocument.owner_uid,
+      variationKey,
+      variationsToMerge
+    );
+
+    batch.set(documentRef, { ...params, variationKey }, { merge: true });
+    await batch.commit();
+
+    return documentRef.get().then(this.toDocument);
+  }
+
+  private async createBatchVariationUpdate(
+    owner_uid: string,
+    newVariationKey: string,
+    variationsToMerge: string[] = []
+  ): Promise<firebase.firestore.WriteBatch> {
     const documentsToUpdate =
-      variationsToMerge && variationsToMerge.length > 0
+      variationsToMerge.length > 0
         ? await this.collection
-            .where("owner_uid", "==", params.owner_uid)
+            .where("owner_uid", "==", owner_uid)
             .where("variationKey", "in", variationsToMerge)
             .get()
         : [];
 
     const batch = this.firestore.db.batch();
 
-    batch.set(documentRef, stepToSave);
-
     documentsToUpdate.forEach(document => {
-      batch.update(document.ref, { variationKey });
+      batch.update(document.ref, { variationKey: newVariationKey });
     });
 
-    await batch.commit();
-
-    return documentRef.get().then(this.toDocument);
+    return batch;
   }
 }
