@@ -46,6 +46,16 @@ const BASE_COLORS = {
     base: "#bb3322",
     light: "#c24738",
     lighter: "#c95c4e"
+  },
+  mono: {
+    black: "#000",
+    100: "#181818",
+    200: "#22292f",
+    500: "#5a5a5a",
+    600: "#999",
+    800: "#ebebeb",
+    900: "#f4f4f4",
+    white: "#fff"
   }
 };
 
