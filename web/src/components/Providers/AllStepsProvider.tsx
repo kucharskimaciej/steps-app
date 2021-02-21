@@ -1,16 +1,18 @@
 import { CreateElement } from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
 import { dispatchFetchAllSteps } from "@/store";
 
 @Component
 export default class AllStepsProvider extends VueWithStore {
+  @Prop() private alwaysFetch!: boolean;
+
   get loading() {
     return this.$store.state.steps.status === "pending";
   }
 
   async loadSteps() {
-    if (this.$store.state.steps.status !== "clean") {
+    if (!this.alwaysFetch && this.$store.state.steps.status !== "clean") {
       return;
     }
 

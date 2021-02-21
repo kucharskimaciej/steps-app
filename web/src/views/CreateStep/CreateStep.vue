@@ -167,7 +167,7 @@ export default class CreateStep extends VueWithStore {
 
     <template #sidebar>
       <ContentBox overflow="scroll" class="h-screen">
-        <AllStepsProvider>
+        <AllStepsProvider always-fetch>
           <div>
             <Card
               v-for="step in stepsByScore"

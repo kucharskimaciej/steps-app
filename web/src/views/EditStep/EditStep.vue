@@ -154,7 +154,7 @@ export default class EditStep extends VueWithStore {
 
     <template #sidebar>
       <ContentBox overflow="scroll">
-        <AllStepsProvider>
+        <AllStepsProvider always-fetch>
           <div>
             <Card
               v-for="step in stepsByScore"

@@ -21,7 +21,7 @@ export default class Steps extends Vue {
 
 <template>
   <Container>
-    <AllStepsProvider>
+    <AllStepsProvider always-fetch>
       <PureStepList :steps="steps" />
     </AllStepsProvider>
   </Container>
