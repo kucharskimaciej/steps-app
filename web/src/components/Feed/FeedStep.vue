@@ -39,7 +39,7 @@ export default class FeedStep extends Vue {
       <VideoPlayer :url="primaryVideo.url" />
     </main>
     <header class="px-2 mb-2 flex">
-      <h2 class="text-wood-bark font-normal mr-auto">
+      <h2 class="text-mono-100 font-normal mr-auto">
         {{ step.name }}
       </h2>
 

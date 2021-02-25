@@ -1,7 +1,7 @@
 <template>
   <article
     :id="`step-${step.identifier}`"
-    class="p-4 bg-white rounded flex items-start"
+    class="p-4 bg-mono-white rounded flex items-start"
     :class="{
       'border-white border': !isSelected,
       'border-green-base border-2': isSelected
@@ -9,7 +9,7 @@
   >
     <main class="w-full">
       <header class="flex items-start">
-        <h2 class="font-heading text-wood-bark font-normal mr-auto">
+        <h2 class="font-heading text-mono-100 font-normal mr-auto">
           <a
             :href="firstVideoUrl"
             target="_blank"
