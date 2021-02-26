@@ -1,16 +1,13 @@
 {
-  "extends": "../../tsconfig",
   "compilerOptions": {
     "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es6",
-    "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "strict": true,
+    "target": "es2017"
   },
-  "include": ["migrate.ts", "migrations/**/*.ts"]
+  "compileOnSave": true,
+  "include": ["lib"]
 }
