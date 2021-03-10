@@ -57,6 +57,11 @@ export const steps = {
 
         return $;
       }, {} as Record<number, Step[]>);
+    },
+    stableStepIds(): string[] {
+      return getSteps(provideStore())
+        .map(step => step.id)
+        .sort();
     }
   },
   mutations: {
@@ -152,6 +157,7 @@ export const stepsById = read(getters.stepsById);
 export const existingArtists = read(getters.existingArtists);
 export const existingTags = read(getters.existingTags);
 export const stepsByPracticeDate = read(getters.stepsByPracticeDate);
+export const stableStepIds = read(getters.stableStepIds);
 
 // ACTIONS
 export const dispatchFetchAllSteps = dispatch(actions.fetchAllSteps);

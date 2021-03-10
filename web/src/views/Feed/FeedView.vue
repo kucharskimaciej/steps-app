@@ -1,16 +1,18 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
 import { Inject } from "vue-typedi";
-import { FeedService } from "@/views/Feed/feed.service";
+import { FeedPresets, FeedService } from "@/views/Feed/feed.service";
 import Feed from "@/components/Feed/Feed.vue";
 import Container from "@/components/Layout/Container.vue";
 import { Step } from "../../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
-import { getSteps } from "@/store";
+import { getSteps, stepsById, stableStepIds } from "@/store";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
+import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
+import { isEqual } from "lodash";
 
 @Component({
   components: {
@@ -19,50 +21,72 @@ import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracti
     PureButton,
     PureIcon,
     AllStepsProvider,
-    RecordPracticeWidget
+    RecordPracticeWidget,
+    DropdownMenu
   }
 })
 export default class FeedView extends VueWithStore {
   @Inject() private readonly feedService!: FeedService;
 
-  steps: Step[] = this.feedService.getStepsForFeed(getSteps(this.$store));
+  get stepIds() {
+    return stableStepIds(this.$store);
+  }
 
-  stepsWatcher!: () => void;
+  @Watch("stepIds")
+  handleStepsChange(newStepIds, oldStepIds) {
+    if (!isEqual(newStepIds, oldStepIds)) {
+      this.selectStepsForFeed();
+    }
+  }
 
-  created() {
-    this.stepsWatcher = this.$store.watch(
-      () => getSteps(this.$store),
-      steps => {
-        this.steps = this.feedService.getStepsForFeed(steps);
-        this.stepsWatcher();
-      }
+  handlePresetChange(preset: FeedPresets) {
+    this.selectedPreset = preset;
+    this.selectStepsForFeed();
+  }
+
+  private selectStepsForFeed() {
+    this.selectedStepIds = this.feedService.getStepIdsWithPreset(
+      this.selectedPreset,
+      getSteps(this.$store)
     );
   }
 
-  beforeDestroy() {
-    this.stepsWatcher();
-  }
+  selectedPreset = FeedPresets.RANDOM;
+  presetLabels: Record<FeedPresets, string> = {
+    [FeedPresets.RANDOM]: "Random",
+    [FeedPresets.NEVER_PRACTICED]: "Never practiced",
+    [FeedPresets.PRACTICED_ASC]: "Most recently practiced",
+    [FeedPresets.PRACTICED_DESC]: "Least recently practiced",
+    [FeedPresets.RECENTLY_ADDED]: "Recently added"
+  };
+  presetOptions = Object.values(FeedPresets).map(value => ({
+    value,
+    label: this.presetLabels[value]
+  }));
+  selectedStepIds: string[] = [];
 
-  refresh() {
-    this.steps = this.feedService.getStepsForFeed(getSteps(this.$store));
-    window.scrollTo(0, 0);
+  get selectedSteps(): Step[] {
+    const byId = stepsById(this.$store);
+    return this.selectedStepIds.map(id => byId[id]);
   }
 }
 </script>
 
 <template>
   <AllStepsProvider>
-    <Container class="pt-5 pb-10">
-      <Feed :steps="steps">
+    <Container class="pt-2 pb-4">
+      <header class="mx-2 mb-2">
+        <DropdownMenu
+          :value="selectedPreset"
+          :options="presetOptions"
+          @input="handlePresetChange"
+        />
+      </header>
+      <Feed :steps="selectedSteps">
         <template #stepActions="{ step }">
           <RecordPracticeWidget :step-id="step.id" />
         </template>
       </Feed>
-      <footer class="text-center mt-5">
-        <PureButton spacing="wide" size="large" @click="refresh">
-          <PureIcon type="refresh" /> Refresh
-        </PureButton>
-      </footer>
     </Container>
   </AllStepsProvider>
 </template>
