@@ -21,6 +21,7 @@ export const steps = {
   namespaced: true,
   state: {
     rawSteps: [],
+    stepsViewedInCurrentSession: [],
     status: "clean"
   },
   getters: {
@@ -75,6 +76,9 @@ export const steps = {
     },
     updateStatus(state: StepsState, payload: Status) {
       state.status = payload;
+    },
+    markStepAsViewed(state: StepsState, stepId: string) {
+      state.stepsViewedInCurrentSession.push(stepId);
     }
   },
   actions: {
@@ -129,11 +133,26 @@ export const steps = {
       if (collectionId) {
         record.collection_id = collectionId;
       }
-      const updateStep = await stepsResource.update(stepId, {
+      const updatedStep = await stepsResource.update(stepId, {
         practice_records: [record, ...(step.practice_records || [])]
       });
 
-      commitUpdateStep(context, updateStep);
+      commitUpdateStep(context, updatedStep);
+    },
+    async recordView(context: StepsContext, stepId: string) {
+      const stepsResource = Container.get(StepsResource);
+      if (context.state.stepsViewedInCurrentSession.includes(stepId)) {
+        // avoid duplicate view records in single app load
+        return;
+      }
+
+      const step = stepsById(provideStore())[stepId];
+
+      const updatedStep = await stepsResource.update(stepId, {
+        view_records: [Date.now(), ...(step.view_records || [])]
+      });
+      commitMarkStepAsViewed(context, step.id);
+      commitUpdateStep(context, updatedStep);
     }
   }
 };
@@ -148,6 +167,7 @@ const { getters, mutations, actions } = steps;
 const commitSetSteps = commit(mutations.setSteps);
 const commitUpdateStep = commit(mutations.updateStep);
 const commitUpdateStatus = commit(mutations.updateStatus);
+const commitMarkStepAsViewed = commit(mutations.markStepAsViewed);
 
 // GETTERS
 export const getVariationsByKey = read(getters.getVariationsByKey);
@@ -164,3 +184,4 @@ export const dispatchFetchAllSteps = dispatch(actions.fetchAllSteps);
 export const dispatchCreateStep = dispatch(actions.createStep);
 export const dispatchUpdateStep = dispatch(actions.updateStep);
 export const dispatchRecordPractice = dispatch(actions.recordPractice);
+export const dispatchRecordView = dispatch(actions.recordView);

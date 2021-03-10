@@ -13,6 +13,7 @@ export interface AuthState {
 
 export interface StepsState extends WithStatus {
   rawSteps: RawStep[];
+  stepsViewedInCurrentSession: string[];
 }
 
 export interface CurrentStepState extends WithStatus {

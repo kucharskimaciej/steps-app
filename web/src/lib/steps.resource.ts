@@ -14,6 +14,7 @@ type EditableFields =
   | "smart_tags"
   | "removed_smart_tags"
   | "practice_records"
+  | "view_records"
   | "tokens";
 
 export type CreateParams = Pick<

@@ -17,6 +17,7 @@ interface CommonFields extends DatabaseItem, Owned {
   notes: string;
   variationKey: string;
   practice_records?: PracticeRecord[];
+  view_records?: number[];
 }
 
 export interface RawStep extends CommonFields {

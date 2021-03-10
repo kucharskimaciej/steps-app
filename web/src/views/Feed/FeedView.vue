@@ -9,7 +9,12 @@ import { Step } from "../../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
-import { getSteps, stepsById, stableStepIds } from "@/store";
+import {
+  getSteps,
+  stepsById,
+  stableStepIds,
+  dispatchRecordView
+} from "@/store";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
 import { isEqual } from "lodash";
@@ -69,6 +74,10 @@ export default class FeedView extends VueWithStore {
     const byId = stepsById(this.$store);
     return this.selectedStepIds.map(id => byId[id]);
   }
+
+  handleStepViewed(stepId: string) {
+    dispatchRecordView(this.$store, stepId);
+  }
 }
 </script>
 
@@ -82,7 +91,7 @@ export default class FeedView extends VueWithStore {
           @input="handlePresetChange"
         />
       </header>
-      <Feed :steps="selectedSteps">
+      <Feed :steps="selectedSteps" @step-viewed="handleStepViewed">
         <template #stepActions="{ step }">
           <RecordPracticeWidget :step-id="step.id" />
         </template>

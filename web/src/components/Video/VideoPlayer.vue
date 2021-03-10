@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { pick } from "lodash";
 import MuteControl from "@/components/Video/MuteControl.vue";
 import SizeControl from "@/components/Video/SizeControl.vue";
@@ -60,14 +60,20 @@ export default class VideoPlayer extends Vue {
   @Prop({ required: true }) private url!: string;
   @Prop({ default: false }) private autoplay!: boolean;
   @Prop({ default: false }) private thumbnail!: boolean;
+  @Prop({ default: false }) private sizeControl!: boolean;
 
   static readonly FULL_SPEED = 1;
   static readonly SLOW_SPEED = 0.5;
+  static readonly VIEW_THRESHOLD = 0.8;
 
   muted = true;
   playing = false;
   speed = VideoPlayer.FULL_SPEED;
   currentTime = 0;
+  viewedFlag = false;
+
+  @Emit()
+  viewed() {}
 
   get videoEventListeners() {
     return pick(this.$listeners, mediaEvents);
@@ -134,11 +140,27 @@ export default class VideoPlayer extends Vue {
   handleTimeUpdate() {
     if (this.provideVideoElement()) {
       this.currentTime = this.provideVideoElement().currentTime;
+      this.updateViewedStatus();
     }
   }
 
   get isSlow() {
     return this.speed < 1;
+  }
+
+  private updateViewedStatus() {
+    const progress =
+      this.provideVideoElement().currentTime /
+      this.provideVideoElement().duration;
+
+    if (progress < 0.1) {
+      this.viewedFlag = false;
+    }
+
+    if (!this.viewedFlag && progress > VideoPlayer.VIEW_THRESHOLD) {
+      this.viewedFlag = true;
+      this.viewed();
+    }
   }
 }
 </script>
@@ -169,7 +191,10 @@ export default class VideoPlayer extends Vue {
 
     <aside class="absolute top-0 right-0 m-2 flex flex-col">
       <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
-      <SizeControl @click="$openModal($modals.SINGLE_VIDEO, url)" />
+      <SizeControl
+        v-if="sizeControl"
+        @click="$openModal($modals.SINGLE_VIDEO, url)"
+      />
     </aside>
 
     <aside class="absolute bottom-0 right-0 m-2 flex">
