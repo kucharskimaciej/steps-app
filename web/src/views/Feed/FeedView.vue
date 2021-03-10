@@ -56,13 +56,15 @@ export default class FeedView extends VueWithStore {
     );
   }
 
-  selectedPreset = FeedPresets.RANDOM;
+  selectedPreset = FeedPresets.LEAST_RECENTLY_VIEWED;
   presetLabels: Record<FeedPresets, string> = {
     [FeedPresets.RANDOM]: "Random",
     [FeedPresets.NEVER_PRACTICED]: "Never practiced",
     [FeedPresets.PRACTICED_ASC]: "Most recently practiced",
     [FeedPresets.PRACTICED_DESC]: "Least recently practiced",
-    [FeedPresets.RECENTLY_ADDED]: "Recently added"
+    [FeedPresets.RECENTLY_ADDED]: "Recently added",
+    [FeedPresets.LEAST_RECENTLY_VIEWED]: "Least recently viewed",
+    [FeedPresets.LEAST_VIEWED]: "Least viewed"
   };
   presetOptions = Object.values(FeedPresets).map(value => ({
     value,

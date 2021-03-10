@@ -1,13 +1,9 @@
 import { Service } from "vue-typedi";
-import { shuffle, take, sortBy, first } from "lodash";
+import { shuffle, orderBy, first } from "lodash";
 import { Step } from "../../../../common/types/Step";
 
 @Service()
 export class FeedService {
-  getStepsForFeed(steps: Step[], count = 10): Step[] {
-    return take(shuffle(steps), count);
-  }
-
   getStepIdsWithPreset(preset: FeedPresets, steps: Step[]): string[] {
     let selectedSteps: Step[];
 
@@ -16,29 +12,48 @@ export class FeedService {
         selectedSteps = shuffle(steps);
         break;
       case FeedPresets.NEVER_PRACTICED:
-        selectedSteps = sortBy(
+        selectedSteps = orderBy(
           steps.filter(
             step => !step.practice_records || step.practice_records.length === 0
           ),
-          ["-updated_at"]
+          ["updated_at"],
+          ["desc"]
         );
         break;
       case FeedPresets.PRACTICED_ASC:
-        selectedSteps = sortBy(
+        selectedSteps = orderBy(
           steps.filter(step => step.practice_records?.length),
-          [step => -first(step.practice_records)!.date, "-updated_at"]
+          [step => first(step.practice_records)!.date, "updated_at"],
+          ["asc", "desc"]
         );
         break;
 
       case FeedPresets.PRACTICED_DESC:
-        selectedSteps = sortBy(
+        selectedSteps = orderBy(
           steps.filter(step => step.practice_records?.length),
-          [step => first(step.practice_records)!.date, "-updated_at"]
+          [step => first(step.practice_records)!.date, "updated_at"],
+          ["desc", "desc"]
         );
         break;
 
       case FeedPresets.RECENTLY_ADDED:
-        selectedSteps = sortBy(steps, ["-created_at"]);
+        selectedSteps = orderBy(steps, ["created_at"], ["desc"]);
+        break;
+
+      case FeedPresets.LEAST_RECENTLY_VIEWED:
+        selectedSteps = orderBy(
+          steps,
+          [step => first(step.view_records), "updated_at"],
+          ["desc", "desc"]
+        );
+        break;
+
+      case FeedPresets.LEAST_VIEWED:
+        selectedSteps = orderBy(
+          steps,
+          [step => step.view_records?.length || 0, "updated_at"],
+          ["asc", "desc"]
+        );
         break;
     }
 
@@ -47,6 +62,8 @@ export class FeedService {
 }
 
 export enum FeedPresets {
+  LEAST_RECENTLY_VIEWED = "LEAST_RECENTLY_VIEWED",
+  LEAST_VIEWED = "LEAST_VIEWED",
   RANDOM = "RANDOM",
   NEVER_PRACTICED = "NEVER_PRACTICED",
   PRACTICED_DESC = "PRACTICED_DESC",
