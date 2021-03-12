@@ -60,7 +60,7 @@ const mediaEvents = [
 export default class VideoPlayer extends Vue {
   @Prop({ required: true }) private video!: VideoObject;
   @Prop({ default: false }) private autoplay!: boolean;
-  @Prop({ default: false }) private thumbnail!: boolean;
+  @Prop({ default: true }) private background!: boolean;
   @Prop({ default: false }) private sizeControl!: boolean;
 
   static readonly FULL_SPEED = 1;
@@ -170,6 +170,12 @@ export default class VideoPlayer extends Vue {
   <main
     class="relative bg-black overflow-hidden z-0 flex h-full w-full flex-grow"
   >
+    <aside
+      v-if="background && video.snapshot_url"
+      class="video-background"
+      :style="{ backgroundImage: `url(${video.snapshot_url})` }"
+    />
+
     <video
       ref="video"
       :muted="muted"
@@ -220,3 +226,11 @@ export default class VideoPlayer extends Vue {
     </aside>
   </main>
 </template>
+
+<style scoped lang="scss">
+.video-background {
+  @apply absolute inset-0 -m-10 bg-cover bg-center -z-1 opacity-70;
+  filter: blur(2rem);
+  transform: translate3D(0, 0, 0);
+}
+</style>
