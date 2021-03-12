@@ -38,7 +38,7 @@ export default class FeedView extends VueWithStore {
   }
 
   @Watch("stepIds")
-  handleStepsChange(newStepIds, oldStepIds) {
+  handleStepsChange(newStepIds: string[], oldStepIds: string[]) {
     if (!isEqual(newStepIds, oldStepIds)) {
       this.selectStepsForFeed();
     }
@@ -47,6 +47,7 @@ export default class FeedView extends VueWithStore {
   handlePresetChange(preset: FeedPresets) {
     this.selectedPreset = preset;
     this.selectStepsForFeed();
+    window.scrollTo(0, 0);
   }
 
   private selectStepsForFeed() {
@@ -85,8 +86,8 @@ export default class FeedView extends VueWithStore {
 
 <template>
   <AllStepsProvider>
-    <Container class="pt-2 pb-4">
-      <header class="mx-2 mb-2">
+    <Container class="pb-4 ">
+      <header class="px-2 py-2 mb-2 sticky top-0 z-10 bg-mono-white shadow-sm">
         <DropdownMenu
           :value="selectedPreset"
           :options="presetOptions"

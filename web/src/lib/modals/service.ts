@@ -10,6 +10,7 @@ import { uuid } from "@/lib/uuid";
 import SessionCartModal from "@/components/SessionCartModal/SessionCartModal.vue";
 import { defaults } from "lodash";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
+import { VideoObject } from "../../../../common/types/VideoObject";
 
 @Service()
 export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
@@ -36,11 +37,11 @@ export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
     };
   }
 
-  [MODALS.SINGLE_VIDEO](videoUrl: string) {
+  [MODALS.SINGLE_VIDEO](video: VideoObject) {
     return {
       component: VideoModal,
       options: this.ensureDefaults({
-        props: { videoUrl },
+        props: { video },
         style: MODAL_STYLE.BORDERLESS
       })
     };

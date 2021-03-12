@@ -22,6 +22,7 @@ import Tags from "@/components/Step/components/Tags.vue";
 })
 export default class FeedStep extends Vue {
   @Prop({ required: true }) private step!: Step;
+  @Prop() private autoplay!: boolean;
 
   get anchor() {
     return `step-${this.step.id}`;
@@ -42,7 +43,8 @@ export default class FeedStep extends Vue {
   <article :id="anchor" class="bg-white rounded shadow overflow-hidden">
     <main class="video-container mb-2">
       <VideoPlayer
-        :url="primaryVideo.url"
+        :autoplay="!$match('desktop')"
+        :video="primaryVideo"
         size-control
         @viewed="handleViewed"
       />
@@ -73,6 +75,9 @@ export default class FeedStep extends Vue {
 
 <style scoped>
 .video-container {
-  height: 500px;
+  height: 75vh;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
 }
 </style>

@@ -12,6 +12,7 @@ import PlayFromStart from "@/components/Video/PlayFromStart.vue";
 import SlowControl from "@/components/Video/SlowControl.vue";
 import Progress from "@/components/Video/Progress.vue";
 import { ThrottleTime } from "@/lib/decorators/throttleTime";
+import { VideoObject } from "../../../../common/types/VideoObject";
 
 const mediaEvents = [
   "abort",
@@ -57,7 +58,7 @@ const mediaEvents = [
   }
 })
 export default class VideoPlayer extends Vue {
-  @Prop({ required: true }) private url!: string;
+  @Prop({ required: true }) private video!: VideoObject;
   @Prop({ default: false }) private autoplay!: boolean;
   @Prop({ default: false }) private thumbnail!: boolean;
   @Prop({ default: false }) private sizeControl!: boolean;
@@ -166,15 +167,18 @@ export default class VideoPlayer extends Vue {
 </script>
 
 <template>
-  <main class="relative w-full h-full bg-black overflow-hidden z-0">
+  <main
+    class="relative bg-black overflow-hidden z-0 flex h-full w-full flex-grow"
+  >
     <video
       ref="video"
       :muted="muted"
-      :src="url"
+      :src="video.url"
       loop
       playsinline
       :autoplay="autoplay"
-      class="video w-full max-h-full absolute inset-x-0 -z-1"
+      class="relative -z-1 mx-auto flex-grow"
+      preload="metadata"
       v-on="videoEventListeners"
       @timeupdate="handleTimeUpdate"
       @volumechange="handleVolumeChange"
@@ -193,7 +197,7 @@ export default class VideoPlayer extends Vue {
       <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
       <SizeControl
         v-if="sizeControl"
-        @click="$openModal($modals.SINGLE_VIDEO, url)"
+        @click="$openModal($modals.SINGLE_VIDEO, video)"
       />
     </aside>
 
@@ -216,10 +220,3 @@ export default class VideoPlayer extends Vue {
     </aside>
   </main>
 </template>
-
-<style scoped>
-.video {
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>

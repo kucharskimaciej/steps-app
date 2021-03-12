@@ -5,6 +5,7 @@ import { VueWithStore } from "@/lib/vueWithStore";
 import { dispatchLoadVideo } from "@/store";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
 import { CurrentVideoState } from "@/store/types";
+import { VideoObject } from "../../../../common/types/VideoObject";
 
 @Component({
   components: {
@@ -13,11 +14,11 @@ import { CurrentVideoState } from "@/store/types";
   }
 })
 export default class VideoModal extends VueWithStore {
-  @Prop({ required: true }) private videoUrl!: string;
+  @Prop({ required: true }) private video!: VideoObject;
 
-  @Watch("videoUrl", { immediate: true })
-  handleUrlChange(url: string) {
-    dispatchLoadVideo(this.$store, url);
+  @Watch("video", { immediate: true })
+  handleUrlChange(video: VideoObject) {
+    dispatchLoadVideo(this.$store, video.url);
   }
 
   get state(): CurrentVideoState {
@@ -57,7 +58,7 @@ export default class VideoModal extends VueWithStore {
   <div class="flex h-full">
     <main v-if="isVideoLoaded" class="video-container h-full w-full m-auto">
       <VideoPlayer
-        :url="videoUrl"
+        :video="video"
         :autoplay="true"
         thumbnail
         :style="videoPlayerStyles"

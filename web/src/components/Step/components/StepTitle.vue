@@ -7,7 +7,7 @@ export default class StepTitle extends Vue {
   @Prop() private step!: Step;
   @Prop() private linkToVideo!: boolean;
 
-  get firstVideoUrl(): string {
+  get firstVideo(): VideoObject {
     const [firstVideo] = this.step.videos;
     return firstVideo.url;
   }
@@ -23,7 +23,7 @@ export default class StepTitle extends Vue {
       target="_blank"
       referrerpolicy="no-referrer"
       class="focus:outline-none focus:bg-yellow-base cursor-pointer"
-      @click="$openModal($modals.SINGLE_VIDEO, firstVideoUrl)"
+      @click="$openModal($modals.SINGLE_VIDEO, firstVideo)"
       >{{ step.name }}</a
     >
     <span v-else>{{ step.name }}</span>

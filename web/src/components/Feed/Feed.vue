@@ -2,10 +2,16 @@
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import FeedStep from "./FeedStep.vue";
 import { Step } from "../../../../common/types/Step";
+import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
+import FeedStepSkeleton from "@/components/Feed/FeedStepSkeleton.vue";
+import HeightObserver from "@/components/HeightObserver/HeightObserver";
 
 @Component({
   components: {
-    FeedStep
+    FeedStep,
+    FeedStepSkeleton,
+    IntersectSwitch,
+    HeightObserver
   }
 })
 export default class Feed extends Vue {
@@ -19,17 +25,31 @@ export default class Feed extends Vue {
 </script>
 
 <template>
-  <main>
-    <FeedStep
+  <main class="h-full max-h-full overflow-y-auto">
+    <HeightObserver
       v-for="step in steps"
+      :id="step.name"
       :key="step.id"
-      :step="step"
-      class="mb-4"
-      @viewed="stepViewed(step.id)"
+      max-height
     >
-      <template #actions="slotScope">
-        <slot name="stepActions" v-bind="slotScope" />
+      <template #default="{ height }">
+        <IntersectSwitch :viewport-root="$el" :threshold="[0, 0.5, 0.6, 1]">
+          <template #default="{visible}">
+            <div class="relative mb-4">
+              <FeedStep
+                v-if="visible"
+                :step="step"
+                @viewed="stepViewed(step.id)"
+              >
+                <template #actions="slotScope">
+                  <slot name="stepActions" v-bind="slotScope" />
+                </template>
+              </FeedStep>
+              <FeedStepSkeleton v-else :height="height" />
+            </div>
+          </template>
+        </IntersectSwitch>
       </template>
-    </FeedStep>
+    </HeightObserver>
   </main>
 </template>
