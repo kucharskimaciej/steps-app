@@ -73,7 +73,7 @@ export default class FeedStep extends Vue {
 
 <style scoped>
 .video-container {
-  height: 75vh;
+  height: 500px;
   display: flex;
   align-items: stretch;
   overflow: hidden;

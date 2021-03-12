@@ -33,7 +33,10 @@ export default class Feed extends Vue {
       max-height
     >
       <template #default="{ height }">
-        <IntersectSwitch :viewport-root="$el" :threshold="[0, 0.5, 0.6, 1]">
+        <IntersectSwitch
+          :viewport-root="$el"
+          :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]"
+        >
           <template #default="{visible}">
             <div class="relative mb-4">
               <FeedStep

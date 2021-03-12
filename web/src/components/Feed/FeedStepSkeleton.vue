@@ -6,7 +6,7 @@ import { Step } from "../../../../common/types/Step";
 export default class FeedStepSkeleton extends Vue {
   @Prop() private step?: Step;
   @Prop({ default: 600 }) private height!: number;
-  @Prop({ default: "85vh" }) private estimateHeight!: string;
+  @Prop({ default: "700px" }) private estimateHeight!: string;
 
   get anchor() {
     return this.step ? `step-${this.step.id}` : "";
