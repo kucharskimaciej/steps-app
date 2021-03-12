@@ -33,9 +33,7 @@ export default class FeedStep extends Vue {
   }
 
   @Emit("viewed")
-  handleViewed() {
-    console.log("viewed");
-  }
+  handleViewed() {}
 }
 </script>
 

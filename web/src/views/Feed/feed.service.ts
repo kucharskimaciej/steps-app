@@ -44,7 +44,7 @@ export class FeedService {
         selectedSteps = orderBy(
           steps,
           [step => first(step.view_records), "updated_at"],
-          ["desc", "desc"]
+          ["asc", "desc"]
         );
         break;
 
