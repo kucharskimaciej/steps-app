@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@types/resize-observer-browser": "^0.1.5",
     "husky": "^3.1.0"
   },
   "husky": {
@@ -8,9 +7,5 @@
       "pre-commit": "(cd web && npm run prettify && npm run lint -- --fix)",
       "pre-push": "(cd web && npm run test:unit && npm run build)"
     }
-  },
-  "dependencies": {
-    "vue-intersect": "^1.1.6",
-    "vue-virtual-scroller": "^1.0.10"
   }
 }
