@@ -17,8 +17,6 @@ import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserv
 export default class Feed extends Vue {
   @Prop({ required: true }) private steps!: Step[];
 
-  private;
-
   @Emit()
   stepViewed(stepId: string) {
     return stepId;
@@ -27,7 +25,7 @@ export default class Feed extends Vue {
   scaledVideoHeight(step: Step, targetWidth: number): number {
     const { height, width } = step.videos[0];
     if (!height || !width || !targetWidth) {
-      return 500;
+      return 400;
     }
 
     const scaleRatio = targetWidth / width;
@@ -40,10 +38,7 @@ export default class Feed extends Vue {
   <main class="h-full max-h-full overflow-y-auto">
     <DimensionsObserver v-for="step in steps" :key="step.id" max-height>
       <template #default="{ height, width }">
-        <IntersectSwitch
-          :viewport-root="$el"
-          :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]"
-        >
+        <IntersectSwitch :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]">
           <template #default="{visible}">
             <div class="relative mb-4">
               <FeedStep

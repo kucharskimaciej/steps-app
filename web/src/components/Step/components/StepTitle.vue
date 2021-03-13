@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Step } from "../../../../../common/types/Step";
+import { VideoObject } from "../../../../../common/types/VideoObject";
 
 @Component
 export default class StepTitle extends Vue {
@@ -9,7 +10,7 @@ export default class StepTitle extends Vue {
 
   get firstVideo(): VideoObject {
     const [firstVideo] = this.step.videos;
-    return firstVideo.url;
+    return firstVideo;
   }
 }
 </script>

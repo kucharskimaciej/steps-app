@@ -14,11 +14,12 @@ export default class IntersectSwitch extends IntersectComponentProps {
   currentRatio = 1;
 
   @Emit("change")
-  handleChange(entry: IntersectionObserverEntry): boolean {
+  handleChange(entry: IntersectionObserverEntry) {
     this.currentRatio = entry.intersectionRatio;
     this.currentlyVisible = this.currentRatio > this.visibilityThreshold;
     return {
       visible: this.currentlyVisible,
+      ratio: this.currentRatio,
       entry
     };
   }
@@ -27,7 +28,7 @@ export default class IntersectSwitch extends IntersectComponentProps {
 
 <template>
   <Intersect v-bind="$props" @change="handleChange">
-    <slot :visible="currentlyVisible">
+    <slot :visible="currentlyVisible" :ratio="currentRatio">
       <slot v-if="currentlyVisible" name="visible" />
       <slot v-else name="hidden" />
     </slot>

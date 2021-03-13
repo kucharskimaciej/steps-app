@@ -6,6 +6,7 @@ import {
   Container
 } from "@/stories/decorators";
 import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserver";
+import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Components/DimensionsObserver",
@@ -14,20 +15,18 @@ export default {
 
 export const Default: () => Component = () => ({
   components: {
-    HeightObserver: DimensionsObserver
+    DimensionsObserver
   },
   template: `
-    <HeightObserver @change="handleChange">
+    <DimensionsObserver @change="handleChange">
     <div class="bg-mono-900" style="height: 600px; resize: vertical; overflow: auto">
 
     Hello
         </div>
-    </HeightObserver>
+    </DimensionsObserver>
   `,
   methods: {
-    handleChange(value: number) {
-      console.log(value);
-    }
+    handleChange: action("dimensions change")
   },
   data: () => ({}),
   props: {}
@@ -35,22 +34,20 @@ export const Default: () => Component = () => ({
 
 export const ValueInSlot: () => Component = () => ({
   components: {
-    HeightObserver: DimensionsObserver
+    DimensionsObserver
   },
   template: `
-    <HeightObserver @change="handleChange">
+    <DimensionsObserver @change="handleChange">
       <template #default="{ height }">
         <div class="bg-mono-900" style="height: 600px; resize: vertical; overflow: auto">
 
         Hello: {{ height }}
         </div>
       </template>
-    </HeightObserver>
+    </DimensionsObserver>
   `,
   methods: {
-    handleChange(value: number) {
-      console.log(value);
-    }
+    handleChange: action("dimensions change")
   },
   data: () => ({}),
   props: {}
@@ -70,9 +67,7 @@ export const MaxHeight: () => Component = () => ({
     </HeightObserver>
   `,
   methods: {
-    handleChange(value: number) {
-      console.log(value);
-    }
+    handleChange: action("dimensions change")
   },
   data: () => ({}),
   props: {}
