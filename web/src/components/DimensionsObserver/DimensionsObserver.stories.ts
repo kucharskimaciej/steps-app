@@ -5,16 +5,16 @@ import {
   WithGlobalStyles,
   Container
 } from "@/stories/decorators";
-import HeightObserver from "@/components/HeightObserver/HeightObserver";
+import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserver";
 
 export default {
-  title: "Components/HeightObserver",
+  title: "Components/DimensionsObserver",
   decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
 };
 
 export const Default: () => Component = () => ({
   components: {
-    HeightObserver
+    HeightObserver: DimensionsObserver
   },
   template: `
     <HeightObserver @change="handleChange">
@@ -35,7 +35,7 @@ export const Default: () => Component = () => ({
 
 export const ValueInSlot: () => Component = () => ({
   components: {
-    HeightObserver
+    HeightObserver: DimensionsObserver
   },
   template: `
     <HeightObserver @change="handleChange">
@@ -58,7 +58,7 @@ export const ValueInSlot: () => Component = () => ({
 
 export const MaxHeight: () => Component = () => ({
   components: {
-    HeightObserver
+    HeightObserver: DimensionsObserver
   },
   template: `
     <HeightObserver @change="handleChange" max-height>

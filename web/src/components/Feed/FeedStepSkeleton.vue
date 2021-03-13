@@ -5,8 +5,8 @@ import { Step } from "../../../../common/types/Step";
 @Component
 export default class FeedStepSkeleton extends Vue {
   @Prop() private step?: Step;
-  @Prop({ default: 600 }) private height!: number;
-  @Prop({ default: "700px" }) private estimateHeight!: string;
+  @Prop() private videoHeight!: number;
+  @Prop() private totalHeight!: number;
 
   get anchor() {
     return this.step ? `step-${this.step.id}` : "";
@@ -19,10 +19,16 @@ export default class FeedStepSkeleton extends Vue {
     :id="anchor"
     class="bg-mono-white rounded overflow-hidden flex flex-col opacity-40"
     :style="{
-      height: height ? `${height}px` : estimateHeight
+      height: totalHeight ? `${totalHeight}px` : 'auto'
     }"
   >
-    <main class="w-full bg-mono-800 mb-2 h-full"></main>
+    <main
+      class="w-full bg-mono-800 mb-2 h-full"
+      :style="{
+        height: totalHeight ? '100%' : `${videoHeight}px`,
+        maxHeight: totalHeight ? 'auto' : '80vh'
+      }"
+    ></main>
     <header class="mb-2 px-2">
       <div class="h-8 w-full bg-mono-800 rounded-sm"></div>
     </header>

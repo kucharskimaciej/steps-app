@@ -10,7 +10,7 @@ import { IntersectComponentProps } from "@/components/Intersect/intersectCompone
 })
 export default class IntersectSwitch extends IntersectComponentProps {
   @Prop({ default: 0.7 }) private visibilityThreshold!: number;
-  currentlyVisible = true;
+  currentlyVisible = false;
   currentRatio = 1;
 
   @Emit("change")
