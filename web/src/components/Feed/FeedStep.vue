@@ -9,7 +9,6 @@ import FeedActions from "@/components/Feed/FeedActions.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
-import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserver";
 
 @Component({
   components: {
@@ -20,15 +19,12 @@ import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserv
     PureIcon,
     PureButton,
     Tags,
-    IntersectSwitch,
-    DimensionsObserver
+    IntersectSwitch
   }
 })
 export default class FeedStep extends Vue {
   @Prop({ required: true }) private step!: Step;
   @Prop() private autoplay!: boolean;
-
-  width: number | null = null;
 
   get anchor() {
     return `step-${this.step.id}`;
@@ -40,6 +36,11 @@ export default class FeedStep extends Vue {
 
   @Emit("viewed")
   handleViewed() {}
+
+  width = 0;
+  mounted() {
+    this.width = this.$el.clientWidth;
+  }
 
   get scaledVideoHeight(): number {
     const { height, width } = this.primaryVideo;
@@ -54,54 +55,52 @@ export default class FeedStep extends Vue {
 </script>
 
 <template>
-  <DimensionsObserver @change="width = $event[0]">
-    <article :id="anchor" class="bg-white rounded shadow overflow-hidden">
-      <main
-        class="video-container mb-2"
-        :style="{
-          height: scaledVideoHeight ? `${scaledVideoHeight}px` : 'auto',
-          maxHeight: `400px`
-        }"
+  <article :id="anchor" class="bg-white rounded shadow overflow-hidden">
+    <main
+      class="video-container mb-2"
+      :style="{
+        height: scaledVideoHeight ? `${scaledVideoHeight}px` : 'auto',
+        maxHeight: `60vh`
+      }"
+    >
+      <IntersectSwitch :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]">
+        <template #default="{ visible }">
+          <div class="w-full h-full">
+            <VideoPlayer
+              v-if="visible"
+              :autoplay="!$match('desktop')"
+              :video="primaryVideo"
+              size-control
+              @viewed="handleViewed"
+            />
+
+            <div v-else class="w-full bg-mono-800 h-full"></div>
+          </div>
+        </template>
+      </IntersectSwitch>
+    </main>
+    <header class="px-2 mb-2 flex">
+      <h2 class="text-mono-100 font-normal mr-auto">
+        {{ step.name }}
+      </h2>
+
+      <CopyToClipboard
+        :value="step | shortLink($router)"
+        class="ml-auto self-start"
       >
-        <IntersectSwitch :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]">
-          <template #default="{ visible }">
-            <div class="w-full h-full">
-              <VideoPlayer
-                v-if="visible"
-                :autoplay="!$match('desktop')"
-                :video="primaryVideo"
-                size-control
-                @viewed="handleViewed"
-              />
-
-              <div v-else class="w-full bg-mono-800 h-full"></div>
-            </div>
-          </template>
-        </IntersectSwitch>
-      </main>
-      <header class="px-2 mb-2 flex">
-        <h2 class="text-mono-100 font-normal mr-auto">
-          {{ step.name }}
-        </h2>
-
-        <CopyToClipboard
-          :value="step | shortLink($router)"
-          class="ml-auto self-start"
-        >
-          Shareable link
-          <PureIcon class="self-center ml-1" type="content_copy" />
-        </CopyToClipboard>
-      </header>
-      <footer class="px-2 mb-2">
-        <FeedActions class="mb-2">
-          <slot name="actions" :step="step" />
-        </FeedActions>
-        <section class="-mt-1">
-          <Tags :step="step" />
-        </section>
-      </footer>
-    </article>
-  </DimensionsObserver>
+        Shareable link
+        <PureIcon class="self-center ml-1" type="content_copy" />
+      </CopyToClipboard>
+    </header>
+    <footer class="px-2 mb-2">
+      <FeedActions class="mb-2">
+        <slot name="actions" :step="step" />
+      </FeedActions>
+      <section class="-mt-1">
+        <Tags :step="step" />
+      </section>
+    </footer>
+  </article>
 </template>
 
 <style scoped>
