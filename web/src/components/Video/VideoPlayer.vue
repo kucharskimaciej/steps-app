@@ -231,6 +231,5 @@ export default class VideoPlayer extends Vue {
 .video-background {
   @apply absolute inset-0 -m-10 bg-cover bg-center -z-1 opacity-70;
   filter: blur(2rem);
-  transform: translate3D(0, 0, 0);
 }
 </style>
