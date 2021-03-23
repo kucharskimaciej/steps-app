@@ -14,7 +14,7 @@ export default class Progress extends Vue {
 
 <template>
   <div class="w-full">
-    <div class="progress bg-green-lighter" :style="{ width: progress + '%' }" />
+    <div class="progress bg-white" :style="{ width: progress + '%' }" />
   </div>
 </template>
 
