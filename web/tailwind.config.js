@@ -54,7 +54,7 @@ const BASE_COLORS = {
     500: "#5a5a5a",
     600: "#999",
     800: "#ebebeb",
-    900: "#f6f6f6",
+    900: "#fafafa",
     white: "#fff"
   }
 };

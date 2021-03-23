@@ -87,7 +87,9 @@ export default class FeedView extends VueWithStore {
 <template>
   <AllStepsProvider>
     <Container class="pb-4 ">
-      <header class="px-2 py-2 mb-2 sticky top-0 z-10 bg-mono-white shadow-sm">
+      <header
+        class="px-2 py-2 mb-2 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900"
+      >
         <DropdownMenu
           :value="selectedPreset"
           :options="presetOptions"

@@ -55,7 +55,7 @@ export default class FeedStep extends Vue {
 </script>
 
 <template>
-  <article :id="anchor" class="bg-white rounded shadow overflow-hidden">
+  <article :id="anchor" class="bg-white overflow-hidden">
     <main
       class="video-container mb-2"
       :style="{
