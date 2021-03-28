@@ -58,7 +58,7 @@ export function convertToStep(
     text: STEP_DIFFICULTIES[difficulty]
   };
 
-  const metaTags: Tag[] = [...danceTags, ...artistTags, difficultyTag, kindTag];
+  const metaTags: Tag[] = [kindTag, ...danceTags, ...artistTags, difficultyTag];
 
   const contentTags: Tag[] = [
     ...tags.map(tag => ({
