@@ -2,7 +2,8 @@ export enum TagTypes {
   DIFFICULTY = "DIFFICULTY",
   DANCE = "DANCE",
   ARTIST = "ARTIST",
-  SMART = "SMART"
+  SMART = "SMART",
+  KIND = "KIND"
 }
 
 export interface Tag<T extends TagTypes = TagTypes> {

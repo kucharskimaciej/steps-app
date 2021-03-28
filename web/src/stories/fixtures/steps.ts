@@ -6,6 +6,7 @@ export function rawStepsFactory(): RawStep[] {
   return [
     {
       id: "step-id-1",
+      kind: "step",
       owner_uid: "owner-id-1",
       identifier: 1,
       name: "Męska grande-saida z zatrzymaniem partnerki",
@@ -28,6 +29,7 @@ export function rawStepsFactory(): RawStep[] {
     },
     {
       id: "step-id-2",
+      kind: "step",
       owner_uid: "owner-id-1",
       identifier: 2,
       name:
@@ -53,6 +55,7 @@ export function rawStepsFactory(): RawStep[] {
       id: "step-id-3",
       owner_uid: "owner-id-1",
       identifier: 3,
+      kind: "step",
       name: "Płynny obrót z przejściem przez shadow position",
       videos: [
         {
@@ -75,6 +78,7 @@ export function rawStepsFactory(): RawStep[] {
       id: "step-id-1",
       owner_uid: "owner-id-1",
       identifier: 4,
+      kind: "routine",
       name: "Ten krok ma wiele wideo",
       videos: [
         {
