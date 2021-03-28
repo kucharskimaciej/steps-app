@@ -6,7 +6,7 @@ import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { DANCES, STEP_DIFFICULTIES } from "../../../../common/constants";
+import { DANCES, KINDS, STEP_DIFFICULTIES } from "../../../../common/constants";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
@@ -56,6 +56,10 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
         difficulty: {
           required,
           oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
+        },
+        kind: {
+          required,
+          oneOf: oneOf(Object.keys(KINDS))
         },
         dance: {
           required,
@@ -129,12 +133,17 @@ export default class StepForm extends Vue implements StepFormApi {
     return STEP_DIFFICULTIES;
   }
 
+  get stepKinds() {
+    return KINDS;
+  }
+
   private getDataObject(step: Partial<RawStep> = {}): StepFormData {
     const {
       videos = [],
       name = "",
       difficulty = 1,
       dance = [],
+      kind = "step",
       tags = [],
       artists = [],
       notes = "",
@@ -148,6 +157,7 @@ export default class StepForm extends Vue implements StepFormApi {
       name,
       difficulty,
       dance,
+      kind,
       tags,
       artists,
       notes,
@@ -224,6 +234,18 @@ export default class StepForm extends Vue implements StepFormApi {
 
       <section class="flex">
         <div class="w-1/2 pr-3">
+          <FormGroup label="Kind" :validation="form.kind">
+            <Select v-model.number="form.kind.$model">
+              <option
+                v-for="(label, value) in stepKinds"
+                :key="value"
+                :value="value"
+              >
+                {{ label }}
+              </option>
+            </Select>
+          </FormGroup>
+
           <FormGroup label="Difficulty" :validation="form.difficulty">
             <Select v-model.number="form.difficulty.$model">
               <option

@@ -7,6 +7,7 @@ export type StepFormData = Pick<
   | "difficulty"
   | "tags"
   | "dance"
+  | "kind"
   | "artists"
   | "notes"
   | "smart_tags"
