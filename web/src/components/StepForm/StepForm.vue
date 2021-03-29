@@ -1,12 +1,16 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { Tag, TagTypes } from "../../../../common/types/Tag";
-import { Dance, RawStep } from "../../../../common/types/Step";
+import { Feeling, RawStep } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { DANCES, KINDS, STEP_DIFFICULTIES } from "../../../../common/constants";
+import {
+  FEELINGS,
+  KINDS,
+  STEP_DIFFICULTIES
+} from "../../../../common/constants";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
@@ -61,7 +65,7 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
           required,
           oneOf: oneOf(Object.keys(KINDS))
         },
-        dance: {
+        feeling: {
           required,
           minLength: minLength(1)
         },
@@ -121,12 +125,12 @@ export default class StepForm extends Vue implements StepFormApi {
     this.formData.tokens = this.tokenizer.tokenize(name);
   }
 
-  get danceValues(): Dance[] {
-    return Object.keys(DANCES) as Dance[];
+  get feelingValues(): Feeling[] {
+    return Object.keys(FEELINGS) as Feeling[];
   }
 
-  danceLabel(dance: Dance): string {
-    return DANCES[dance];
+  feelingLabel(feeling: Feeling): string {
+    return FEELINGS[feeling];
   }
 
   get stepDifficulties() {
@@ -142,7 +146,7 @@ export default class StepForm extends Vue implements StepFormApi {
       videos = [],
       name = "",
       difficulty = 1,
-      dance = [],
+      feeling = [],
       kind = "step",
       tags = [],
       artists = [],
@@ -156,7 +160,7 @@ export default class StepForm extends Vue implements StepFormApi {
       videos,
       name,
       difficulty,
-      dance,
+      feeling,
       kind,
       tags,
       artists,
@@ -266,13 +270,17 @@ export default class StepForm extends Vue implements StepFormApi {
           </FormGroup>
         </div>
 
-        <FormGroup class="w-1/2 pl-3" label="Dance" :validation="form.dance">
+        <FormGroup
+          class="w-1/2 pl-3"
+          label="Feeling"
+          :validation="form.feeling"
+        >
           <Checklist
             #default="{option}"
-            v-model="form.dance.$model"
-            :options="danceValues"
+            v-model="form.feeling.$model"
+            :options="feelingValues"
           >
-            {{ danceLabel(option) }}
+            {{ feelingLabel(option) }}
           </Checklist>
         </FormGroup>
       </section>

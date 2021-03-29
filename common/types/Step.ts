@@ -5,7 +5,13 @@ import { Owned } from "./common/Owned";
 import { PracticeRecord } from "./PracticeRecord";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
-export type Dance = "semba" | "kizomba" | "fusion" | "tarraxa" | "urban";
+export type Feeling =
+  | "semba"
+  | "kizomba"
+  | "fusion"
+  | "tarraxa"
+  | "urban"
+  | "doucer";
 export type StepKind = "step" | "routine" | "inspiration";
 
 interface CommonFields extends DatabaseItem, Owned {
@@ -24,7 +30,7 @@ interface CommonFields extends DatabaseItem, Owned {
 export interface RawStep extends CommonFields {
   tags: string[];
   difficulty: StepDifficulty;
-  dance: Dance[];
+  feeling: Feeling[];
   artists: string[];
   smart_tags: string[];
   removed_smart_tags: string[];
@@ -33,7 +39,7 @@ export interface RawStep extends CommonFields {
 }
 
 export type TagCategory =
-  | "dance"
+  | "feeling"
   | "difficulty"
   | "artist"
   | "content"

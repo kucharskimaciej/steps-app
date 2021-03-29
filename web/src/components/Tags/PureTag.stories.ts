@@ -27,7 +27,7 @@ tagStories.add("With type", () => {
     components: { PureTag },
     template: '<PureTag :tag="tag"/>',
     data: () => ({
-      tag: { text: "Semba", type: TagTypes.DANCE } as TagType
+      tag: { text: "Semba", type: TagTypes.FEELING } as TagType
     })
   };
 });

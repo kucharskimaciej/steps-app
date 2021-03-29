@@ -24,7 +24,7 @@ export const CanBeRemoved = () => ({
   components: { RemovableTag },
   template: "<RemovableTag :tag='tag' @remove='handleRemove' />",
   data: () => ({
-    tag: { text: "Semba", type: TagTypes.DANCE } as TagType
+    tag: { text: "Semba", type: TagTypes.FEELING } as TagType
   }),
   methods: {
     handleRemove: action("REMOVE")

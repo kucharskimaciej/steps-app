@@ -4,7 +4,7 @@ import { createVariationId } from "@/lib/variations/variationId";
 import { Resource } from "@/lib/resource.class";
 
 type EditableFields =
-  | "dance"
+  | "feeling"
   | "difficulty"
   | "videos"
   | "name"

@@ -5,7 +5,7 @@ import {
   TagCategories
 } from "../../../common/types/Step";
 import { Tag, TagTypes } from "../../../common/types/Tag";
-import { DANCES, STEP_DIFFICULTIES, KINDS } from "../../../common/constants";
+import { FEELINGS, STEP_DIFFICULTIES, KINDS } from "../../../common/constants";
 
 export function convertToStepRef({
   name,
@@ -23,7 +23,7 @@ export function convertToStep(
     identifier,
     id,
     tags,
-    dance,
+    feeling,
     difficulty,
     owner_uid,
     created_at,
@@ -43,9 +43,9 @@ export function convertToStep(
     text: artist
   }));
 
-  const danceTags: Tag<TagTypes.DANCE>[] = dance.map(d => ({
-    type: TagTypes.DANCE,
-    text: DANCES[d]
+  const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map(feeling => ({
+    type: TagTypes.FEELING,
+    text: FEELINGS[feeling]
   }));
 
   const kindTag: Tag<TagTypes.KIND> = {
@@ -58,7 +58,12 @@ export function convertToStep(
     text: STEP_DIFFICULTIES[difficulty]
   };
 
-  const metaTags: Tag[] = [kindTag, ...danceTags, ...artistTags, difficultyTag];
+  const metaTags: Tag[] = [
+    kindTag,
+    ...feelingTags,
+    ...artistTags,
+    difficultyTag
+  ];
 
   const contentTags: Tag[] = [
     ...tags.map(tag => ({
@@ -72,7 +77,7 @@ export function convertToStep(
 
   const tagCategories: TagCategories = {
     artist: artistTags,
-    dance: danceTags,
+    feeling: feelingTags,
     difficulty: [difficultyTag],
     content: contentTags,
     meta: metaTags,

@@ -1,6 +1,6 @@
 export enum TagTypes {
   DIFFICULTY = "DIFFICULTY",
-  DANCE = "DANCE",
+  FEELING = "FEELING",
   ARTIST = "ARTIST",
   SMART = "SMART",
   KIND = "KIND"

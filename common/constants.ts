@@ -1,5 +1,5 @@
 import { ReadonlyRecord } from "./types/helperTypes";
-import { Dance, StepDifficulty, StepKind } from "./types/Step";
+import { Feeling, StepDifficulty, StepKind } from "./types/Step";
 
 export const STEP_DIFFICULTIES: ReadonlyRecord<StepDifficulty, string> = {
   1: "Very easy",
@@ -9,12 +9,13 @@ export const STEP_DIFFICULTIES: ReadonlyRecord<StepDifficulty, string> = {
   8: "Very hard"
 };
 
-export const DANCES: ReadonlyRecord<Dance, string> = {
+export const FEELINGS: ReadonlyRecord<Feeling, string> = {
   semba: "Semba",
   kizomba: "Kizomba",
   tarraxa: "Tarraxa",
   fusion: "Kizomba fusion",
-  urban: "Urban Kizz"
+  urban: "Urban Kizz",
+  doucer: "Doucer"
 };
 
 export const KINDS: ReadonlyRecord<StepKind, string> = {
