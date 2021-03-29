@@ -16,7 +16,7 @@ test("returns correct tags", () => {
   ).toEqual(["Obrót", "Odwrotne trzymanie"].sort());
   expect(
     smartTags.getSmartTags("Tepy, potem przesunięcie nogi w pozycji z tyłu")
-  ).toEqual(["Tep", "Przesunięcie nogi"].sort());
+  ).toEqual(["Tep", "Przesunięcie nogi", "Za partnerką"].sort());
   expect(
     smartTags.getSmartTags(" Przesunięcie nogi, zawinięcie po napasadzie")
   ).toEqual(["Przesunięcie nogi", "Napasada"].sort());

@@ -43,9 +43,9 @@ export function convertToStep(
     text: artist
   }));
 
-  const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map(feeling => ({
+  const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map(f => ({
     type: TagTypes.FEELING,
-    text: FEELINGS[feeling]
+    text: FEELINGS[f]
   }));
 
   const kindTag: Tag<TagTypes.KIND> = {
