@@ -21,12 +21,17 @@ export class SmartTags {
     ["Położenie", ["położeniem"]],
     ["Podcięcie", ["podcięciem?"]],
     ["Cassamento", ["cassamento"]],
-    ["Footwork", ["footwork(iem)?"]],
+    ["Footwork", ["footwork(iem|u)?"]],
     ["Obrót", ["obrót", "obrot(u|em)"]],
     ["Clockwise", ["clockwise"]],
-    ["Skorpion", ["skorpion"]],
+    ["Skorpion", ["skorpion(ie)?"]],
     ["Napasada", ["napasad(a|zie)"]],
-    ["Cross", ["kross", "cross", "cros(sem|sie)"]]
+    ["Cross", ["kross", "cross", "cros(sem|sie)"]],
+    ["Za partnerką", ["pozycj(a|i|ą) z tyłu", "za partnerką", "z tyłu"]],
+    [
+      "Przed partnerką",
+      ["pozycj(a|i|ą) z przodu", "z przodu", "przed partnerką"]
+    ]
   ];
 
   private matchers: Matchers = SmartTags.MATCHERS.reduce(
