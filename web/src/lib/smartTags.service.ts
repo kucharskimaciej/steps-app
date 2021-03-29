@@ -32,7 +32,7 @@ export class SmartTags {
       "Przed partnerką",
       ["pozycj(a|i|ą) z przodu", "z przodu", "przed partnerką"]
     ],
-    ["Wypuszczenie", ["wypuszcze(ń|nie|niu|niem)"]]
+    ["Wypuszczenie", ["wypuszcze(ń|nie|niu|nia|niem)"]]
   ];
 
   private matchers: Matchers = SmartTags.MATCHERS.reduce(

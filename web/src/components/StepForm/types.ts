@@ -15,8 +15,13 @@ export type StepFormData = Pick<
   | "tokens"
 >;
 
+export type PersistentFormData = Pick<
+  StepFormData,
+  "feeling" | "kind" | "artists" | "tags" | "difficulty"
+>;
+
 export interface StepFormApi {
-  reset(): void;
+  reset(value?: Partial<StepFormData>): void;
   validate(): boolean;
   value: StepFormData;
 }

@@ -103,15 +103,17 @@ export default class StepForm extends Vue implements StepFormApi {
     return !this.$v.$invalid;
   }
 
-  reset(): void {
-    this.formData = this.getDataObject();
+  reset(value?: StepFormData): void {
+    this.formData = this.getDataObject(value);
   }
 
   formData: StepFormData = this.getDataObject(this.step);
 
   @Watch("step")
   handleStepChange(step: RawStep) {
-    this.formData = this.getDataObject(step);
+    if (step) {
+      this.formData = this.getDataObject(step);
+    }
   }
 
   @Watch("form.name.$model")

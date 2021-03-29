@@ -1,7 +1,11 @@
 <script lang="ts">
 import { Component, Ref } from "vue-property-decorator";
 import StepForm from "@/components/StepForm/StepForm.vue";
-import { StepFormApi } from "@/components/StepForm/types";
+import {
+  PersistentFormData,
+  StepFormApi,
+  StepFormData
+} from "@/components/StepForm/types";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import "@/lib/rawStepHelpers";
 import { ROUTES } from "@/router/routes";
@@ -72,11 +76,21 @@ export default class CreateStep extends VueWithStore {
     try {
       if (this.form.validate()) {
         await this.saveStep();
-        this.reset();
+        this.reset(CreateStep.getPersistentValue(this.form.value));
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  static getPersistentValue({
+    feeling,
+    kind,
+    artists,
+    tags,
+    difficulty
+  }: StepFormData): PersistentFormData {
+    return { feeling, kind, artists, tags, difficulty };
   }
 
   toggleVariationSelected(stepId: string): void {
@@ -118,8 +132,8 @@ export default class CreateStep extends VueWithStore {
     return sortBy(getSteps(this.$store), step => -scoringResults[step.id]);
   }
 
-  reset() {
-    this.form.reset();
+  reset(value?: Partial<StepFormData>) {
+    this.form.reset(value);
     this.selectedVariations = [];
   }
 
