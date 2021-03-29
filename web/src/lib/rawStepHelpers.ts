@@ -77,7 +77,7 @@ export function convertToStep(
     content: contentTags,
     meta: metaTags,
     kind: [kindTag],
-    all: [...contentTags, ...metaTags]
+    all: [...metaTags, ...contentTags]
   };
 
   const variations =
