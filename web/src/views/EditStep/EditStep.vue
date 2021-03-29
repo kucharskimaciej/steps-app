@@ -127,7 +127,7 @@ export default class EditStep extends VueWithStore {
 </script>
 
 <template>
-  <WideWithSidebarRight class="h-screen">
+  <WideWithSidebarRight class="desktop:h-screen">
     <div class="h-full flex flex-col">
       <ContentBox class="border-r border-b text-right">
         <PureButton
@@ -153,7 +153,7 @@ export default class EditStep extends VueWithStore {
     </div>
 
     <template #sidebar>
-      <ContentBox overflow="scroll">
+      <ContentBox :overflow="$match('desktop') ? 'scroll' : 'default'">
         <AllStepsProvider always-fetch>
           <div>
             <Card
