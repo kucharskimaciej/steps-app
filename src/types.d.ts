@@ -32,5 +32,5 @@ declare module "storybook-vue-router" {
   export default function storyRouterDecorator(
     extend: unknown,
     routerOptions: RouterOptions
-  ): Function;
+  ): any;
 }

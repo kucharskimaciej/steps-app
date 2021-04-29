@@ -10,7 +10,7 @@ import {
 import { RawStep, Step } from "../../../common/types/Step";
 import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy, partial } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
-import { provideStore } from "@/store/index";
+import { provideStore } from "@/store";
 import { PracticeRecord } from "../../../common/types/PracticeRecord";
 import { today } from "@/lib/dateHelpers";
 import { hasRecordedPracticeToday } from "@/lib/stepHelpers";

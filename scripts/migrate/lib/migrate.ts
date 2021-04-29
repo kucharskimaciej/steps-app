@@ -72,7 +72,7 @@ function getAllMigrations(): Migration[] {
 async function runAllMigrations(db: Firebase.firestore.Firestore) {
   const migrations = getAllMigrations();
 
-  for (let migration of migrations) {
+  for (const migration of migrations) {
     const ref = db.collection("_migrations").doc(migration.id);
     const doc = await ref.get();
     if (doc.exists) {

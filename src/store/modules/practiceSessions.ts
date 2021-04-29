@@ -41,7 +41,7 @@ export const practiceSessions = createModule(
         commitSetSessions(context, result);
         commitUpdateStatus(context, "dirty");
       },
-      async createSession(context: Context, payload?: CreateParams) {
+      async createSession(context: Context, payload: CreateParams | undefined) {
         const resource = Container.get(PracticeSessionsResource);
         const newSession = await resource.create({
           ...payload,
