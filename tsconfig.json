@@ -2,7 +2,7 @@
   "extends": "./tsconfig.base",
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "strict": true,
     "strictNullChecks": true,
     "jsx": "preserve",
@@ -19,6 +19,12 @@
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["src/**/*.vue", "src/**/*.tsx", "src/**/*.ts", "common/**/*.ts"],
+  "include": [
+    "src/**/*.vue",
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "common/**/*.ts",
+    "scripts/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

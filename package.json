@@ -12,7 +12,8 @@
     "prettify": "pretty-quick --staged",
     "migrate": "ts-node scripts/migrate/lib/migrate.ts --accountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json}",
     "backup": "firestore-backup-restore --accountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json} --backupPath ./backups/database.$(date \"+%Y%m%d-%H%M%S\")",
-    "restore": "firestore-backup-restore --restoreAccountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json} --backupPath"
+    "restore": "firestore-backup-restore --restoreAccountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json} --backupPath",
+    "script:refreshSmartTags": "ts-node scripts/refreshSmartTags --accountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json}"
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
