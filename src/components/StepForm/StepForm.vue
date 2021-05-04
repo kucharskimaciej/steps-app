@@ -18,7 +18,7 @@ import { Inject } from "vue-typedi";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import Textarea from "@/components/Forms/Textarea.vue";
 import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
-import { SmartTags } from "../../../common/lib/smartTags.service";
+import { SmartTags } from "../../../common/lib/smartTags/smartTags.service";
 import { DebounceTime } from "@/lib/decorators/debouceTime";
 import { uniq, head, difference } from "lodash";
 import { TokenizeService } from "@/lib/tokenize.service";
