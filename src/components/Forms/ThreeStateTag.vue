@@ -4,7 +4,7 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import { Tag } from "../../../common/types/Tag";
 import PureTag from "@/components/Tags/PureTag.vue";
 
-type ValueType = 1 | 0 | -1;
+export type ValueType = 1 | 0 | -1;
 
 @Component({
   components: {
