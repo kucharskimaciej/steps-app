@@ -1,9 +1,11 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
-import ThreeStateTag, { ValueType } from "@/components/Forms/ThreeStateTag.vue";
-import { Tag } from "../../../../common/types/Tag";
-
-type TagValueTuple = [Tag, ValueType];
+import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
+import {
+  KeyValueTuple,
+  OptionWithLabel,
+  ValueType
+} from "@/components/Forms/TagsSelection/types";
 
 @Component({
   components: {
@@ -11,39 +13,35 @@ type TagValueTuple = [Tag, ValueType];
   }
 })
 export default class TagsSelection extends Vue {
-  @Prop({ required: true }) private tags!: Tag[];
-  @Prop({ default: () => [] }) private value!: TagValueTuple[];
+  @Prop({ required: true }) private options!: OptionWithLabel[];
+  @Prop({ default: () => [] }) private value!: KeyValueTuple[];
 
   @Emit("input")
-  handleChange(tag: Tag, newValue: ValueType): TagValueTuple[] {
-    if (this.getValueTuple(tag)) {
+  handleChange(key: string, newValue: ValueType): KeyValueTuple[] {
+    if (this.getValueTuple(key)) {
       return this.value
         .map(tuple => {
-          const [t] = tuple;
+          const [k] = tuple;
 
-          if (t.text !== tag.text) {
+          if (k !== key) {
             return tuple;
           }
 
-          if (newValue === 0) {
-            return null;
-          }
-
-          return [tag, newValue];
+          return [key, newValue] as KeyValueTuple;
         })
-        .filter(Boolean);
+        .filter(([, value]) => value !== 0);
     } else {
-      return [...this.value, [tag, newValue]];
+      return [...this.value, [key, newValue]];
     }
   }
 
-  getValueOrDefault(tag: Tag): ValueType {
-    const [, value] = this.getValueTuple(tag) || [tag, 0];
+  getValueOrDefault(key: string): ValueType {
+    const [, value] = this.getValueTuple(key) || [key, 0];
     return value;
   }
 
-  private getValueTuple(tag: Tag): TagValueTuple | undefined {
-    return this.value.find(([t]) => t.text === tag.text);
+  private getValueTuple(key: string): KeyValueTuple | undefined {
+    return this.value.find(([k]) => k === key);
   }
 }
 </script>
@@ -51,12 +49,14 @@ export default class TagsSelection extends Vue {
 <template>
   <section>
     <ThreeStateTag
-      v-for="tag of tags"
-      :key="tag.text"
-      class="mr-2"
-      :tag="tag"
-      :value="getValueOrDefault(tag)"
-      @input="handleChange(tag, $event)"
-    />
+      v-for="option of options"
+      :key="option.key"
+      class="mr-2 mt-1"
+      :tag="{ text: option.key }"
+      :value="getValueOrDefault(option.key)"
+      @input="handleChange(option.key, $event)"
+    >
+      {{ option.label }}
+    </ThreeStateTag>
   </section>
 </template>

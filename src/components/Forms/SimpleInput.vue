@@ -13,7 +13,7 @@ export default class SimpleInput extends Vue implements Focusable {
   @Prop() private value!: string;
 
   @Emit("input")
-  handleValueChange(event: InputEvent) {
+  handleValueInput(event: InputEvent) {
     return (event.target as HTMLInputElement).value;
   }
 
@@ -47,7 +47,7 @@ export default class SimpleInput extends Vue implements Focusable {
       class="outline-none font-light bg-transparent w-full"
       :value="value"
       :class="validityClasses"
-      @input="handleValueChange"
+      @input="handleValueInput"
     />
     <slot name="after" />
   </div>

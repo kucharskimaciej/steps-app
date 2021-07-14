@@ -1,6 +1,5 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Tag, TagTypes } from "../../../common/types/Tag";
 import { Feeling, RawStep } from "../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
@@ -78,7 +77,7 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
   }
 })
 export default class StepForm extends Vue implements StepFormApi {
-  @Prop({ default: () => [] }) private existingTags!: Tag[];
+  @Prop({ default: () => [] }) private existingTags!: string[];
   @Prop({ default: () => [] }) private existingArtists!: string[];
   @Prop() private step!: RawStep;
 
@@ -173,10 +172,6 @@ export default class StepForm extends Vue implements StepFormApi {
     return this.$v.formData;
   }
 
-  get artistTagType() {
-    return TagTypes.ARTIST;
-  }
-
   handleSmartTagRemove(newValue: string[]) {
     const removedTag = head(difference(this.formData.smart_tags, newValue));
     if (!removedTag) {
@@ -263,7 +258,6 @@ export default class StepForm extends Vue implements StepFormApi {
             <TagsInput
               v-model="form.artists.$model"
               :autocomplete="existingArtists"
-              :tag-type="artistTagType"
             />
           </FormGroup>
         </div>

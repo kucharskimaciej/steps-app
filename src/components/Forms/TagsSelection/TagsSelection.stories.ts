@@ -17,12 +17,16 @@ export const BasicUsage: () => Component = () => ({
     TagsSelection
   },
   template: `<section>
-    <TagsSelection :tags="tags" v-model="value" />
-    <pre>{{ value }}</pre>
+    <TagsSelection :options="options" v-model="value" />
+    <pre class="mt-2">{{ value }}</pre>
   </section>`,
   methods: {},
   data: () => ({
-    tags: [{ text: "One" }, { text: "Two" }, { text: "Three" }],
+    options: [
+      { key: "one", label: "One" },
+      { key: "two", label: "Two" },
+      { key: "three", label: "Three" }
+    ],
     value: []
   }),
   props: {}

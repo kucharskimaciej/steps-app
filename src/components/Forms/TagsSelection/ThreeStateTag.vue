@@ -1,10 +1,9 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import { Tag } from "../../../common/types/Tag";
+import { Tag } from "../../../../common/types/Tag";
 import PureTag from "@/components/Tags/PureTag.vue";
-
-export type ValueType = 1 | 0 | -1;
+import { ValueType } from "@/components/Forms/TagsSelection/types";
 
 @Component({
   components: {
@@ -52,5 +51,6 @@ export default class ThreeStateTag extends Vue {
       <PureIcon v-if="value === 1" type="done" class="-ml-1" />
       <PureIcon v-if="value === -1" type="close" class="-ml-1" />
     </template>
+    <slot></slot>
   </PureTag>
 </template>

@@ -6,7 +6,7 @@
       class="text-gray-600 font-hairline text-2xs mr-1"
       >{{ tag.type }}</span
     >
-    {{ tag.text }}
+    <slot>{{ tag.text }}</slot>
     <slot name="append" />
   </span>
 </template>

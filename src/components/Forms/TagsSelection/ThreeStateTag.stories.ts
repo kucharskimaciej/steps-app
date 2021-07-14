@@ -6,7 +6,7 @@ import {
   Container
 } from "@/stories/decorators";
 import FormGroup from "@/components/Forms/FormGroup.vue";
-import ThreeStateTag from "@/components/Forms/ThreeStateTag.vue";
+import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
 
 export default {
   title: "Components/Forms/ThreeStateTag",
