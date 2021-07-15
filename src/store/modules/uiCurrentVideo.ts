@@ -28,15 +28,12 @@ export const uiCurrentVideo = createModule(
       }
     },
     mutations: {
-      updateState(
-        state: CurrentVideoState,
-        payload: Partial<CurrentVideoState>
-      ) {
+      updateState(state, payload: Partial<CurrentVideoState>) {
         extend(state, payload);
       }
     }
   },
-  { url: null, meta: null, status: "clean" }
+  { url: null, meta: null, status: "clean" } as CurrentVideoState
 );
 
 function loadVideo(url: string): Promise<HTMLVideoElement> {

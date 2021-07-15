@@ -5,4 +5,5 @@ export * from "./modules/practiceSessions";
 export * from "./modules/selectedSession";
 export * from "./modules/uiModals";
 export * from "./modules/uiCurrentVideo";
+export * from "./modules/feed";
 export * from "./provideStore";
