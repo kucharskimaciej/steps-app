@@ -31,3 +31,23 @@ export const BasicUsage: () => Component = () => ({
   }),
   props: {}
 });
+
+export const WithValueProvided: () => Component = () => ({
+  components: {
+    TagsSelection
+  },
+  template: `<section>
+    <TagsSelection :options="options" v-model="value" />
+    <pre class="mt-2">{{ value }}</pre>
+  </section>`,
+  methods: {},
+  data: () => ({
+    options: [
+      { key: "one", label: "One" },
+      { key: "two", label: "Two" },
+      { key: "three", label: "Three" }
+    ],
+    value: [["one", 1]]
+  }),
+  props: {}
+});

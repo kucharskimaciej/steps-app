@@ -47,11 +47,10 @@ export default class FullSearch extends Vue {
 
 <template>
   <section class="w-full">
-    <pre>{{ value.filters }}</pre>
     <FullSearchFilters
       :existing-tags="existingTags"
       :existing-artists="existingArtists"
-      :value="value.filters"
+      :filters="value.filters"
       @input="handleFiltersChange"
     />
     <FullSearchSort :value="value.sort" @input="handleSortChange" />

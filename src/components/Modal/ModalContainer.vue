@@ -24,7 +24,6 @@ export default class ModalContainer extends VueWithStore {
   @Watch("topModal")
   @Watch("inlineModalOpen")
   handleTopModalChange(value: ModalRef | boolean) {
-    console.log("bam", value);
     if (value) {
       document.body.classList.add("overflow-hidden");
     } else {

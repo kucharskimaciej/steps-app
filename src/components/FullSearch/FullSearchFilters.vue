@@ -32,7 +32,16 @@ import { entries } from "lodash";
   }
 })
 export default class FullSearchFilters extends Vue {
-  @Prop({ default: () => [] }) private value!: SearchFilters;
+  @Prop({
+    default: () => ({
+      query: "",
+      feeling: [],
+      includeAllTags: [],
+      excludeAnyTags: [],
+      anyArtists: []
+    })
+  })
+  private filters!: SearchFilters;
 
   @Prop({ default: () => [] }) private existingTags!: Tag[];
   @Prop({ default: () => [] }) private existingArtists!: string[];
@@ -44,23 +53,9 @@ export default class FullSearchFilters extends Vue {
     }));
   }
 
-  filters: SearchFilters = {
-    query: "",
-    feeling: [],
-    includeAllTags: [],
-    excludeAnyTags: [],
-    anyArtists: []
-  };
-
   @Watch("filters", { deep: true })
   handleSearchChange(newSearch: SearchFilters) {
     this.$emit("input", newSearch);
-  }
-
-  @Watch("value")
-  handleValueChange(value: SearchFilters) {
-    console.log("setting value to", value);
-    this.filters = value;
   }
 }
 </script>

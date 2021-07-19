@@ -7,7 +7,6 @@ import {
   SortType,
   sortTypeLabels
 } from "@/components/FullSearch/types";
-import FullSearchFilters from "@/components/FullSearch/FullSearchFilters.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Select from "@/components/Forms/Select.vue";
 import { validationMixin } from "vuelidate";
@@ -18,7 +17,7 @@ import { validationMixin } from "vuelidate";
     Select
   },
   mixins: [validationMixin],
-  validations(this: FullSearchFilters) {
+  validations(this: FullSearchSort) {
     return {
       sort: {
         type: {},
@@ -28,12 +27,13 @@ import { validationMixin } from "vuelidate";
   }
 })
 export default class FullSearchSort extends Vue {
-  @Prop({ default: () => [] }) private value!: SearchSort;
-
-  sort: SearchSort = {
-    type: SortType.SCORE,
-    direction: SortDirection.DESCENDING
-  };
+  @Prop({
+    default: () => ({
+      type: SortType.SCORE,
+      direction: SortDirection.DESCENDING
+    })
+  })
+  private sort!: SearchSort;
 
   get sortTypes() {
     return sortTypeLabels;
@@ -46,11 +46,6 @@ export default class FullSearchSort extends Vue {
   @Watch("sort", { deep: true })
   handleSearchChange(newSearch: SearchSort) {
     this.$emit("input", newSearch);
-  }
-
-  @Watch("value")
-  handleValueChange(value: SearchSort) {
-    this.sort = value;
   }
 }
 </script>

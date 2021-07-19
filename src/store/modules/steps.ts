@@ -46,7 +46,10 @@ export const steps = {
       return uniq(state.rawSteps.map(step => step.artists).flat());
     },
     existingTags(state: StepsState) {
-      return uniq(state.rawSteps.map(step => step.tags).flat());
+      return uniq([
+        ...state.rawSteps.map(step => step.tags).flat(),
+        ...state.rawSteps.map(step => step.smart_tags).flat()
+      ]);
     },
     stepsByPracticeDate(): Record<number, Step[]> {
       return getSteps(provideStore()).reduce(($, step) => {
