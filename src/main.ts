@@ -2,6 +2,7 @@ import "reflect-metadata";
 import Vue from "vue";
 import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
+import PortalVue from "portal-vue";
 import { provideStore } from "@/store";
 import "./main.scss";
 import router from "./router";
@@ -14,6 +15,7 @@ Vue.config.productionTip = false;
 
 Vue.use(Vuex);
 Vue.use(VueTypedi);
+Vue.use(PortalVue);
 
 new Vue({
   router,

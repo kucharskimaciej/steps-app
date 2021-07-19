@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Component, Watch } from "vue-property-decorator";
+import { PortalTarget } from "portal-vue";
 import { VueWithStore } from "@/lib/vueWithStore";
 import {
   dispatchCloseModal,
@@ -13,17 +14,26 @@ import { ModalRef } from "@/lib/modals/modals";
 @Component({
   components: {
     Modal,
-    Backdrop
+    Backdrop,
+    PortalTarget
   }
 })
 export default class ModalContainer extends VueWithStore {
+  inlineModalOpen = false;
+
   @Watch("topModal")
-  handleTopModalChange(value: ModalRef) {
+  @Watch("inlineModalOpen")
+  handleTopModalChange(value: ModalRef | boolean) {
+    console.log("bam", value);
     if (value) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
     }
+  }
+
+  get anyModalOpen() {
+    return this.inlineModalOpen || this.openModals.length > 0;
   }
 
   get openModals() {
@@ -34,8 +44,11 @@ export default class ModalContainer extends VueWithStore {
     const [top] = this.openModals;
     return top;
   }
+  get backgroundModals() {
+    if (this.inlineModalOpen) {
+      return this.openModals;
+    }
 
-  get otherModals() {
     const [, ...other] = this.openModals;
     return other;
   }
@@ -51,18 +64,29 @@ export default class ModalContainer extends VueWithStore {
 </script>
 
 <template>
-  <aside v-if="openModals.length > 0">
-    <div class="fixed inset-0 flex z-20">
-      <Modal
-        v-for="modal in otherModals"
-        :key="modal.uuid"
-        :modal="modal"
-        @close-modal="closeModal(modal.uuid)"
-      />
+  <aside
+    :class="{
+      'fixed inset-0 flex z-20': anyModalOpen,
+      hidden: !anyModalOpen
+    }"
+  >
+    <Modal
+      v-for="modal in backgroundModals"
+      :key="modal.uuid"
+      :modal="modal"
+      @close-modal="closeModal(modal.uuid)"
+    />
 
+    <PortalTarget name="modal-backdrop" slim>
       <Backdrop @click="closeTopModal()" />
+    </PortalTarget>
 
-      <Modal :modal="topModal" @close-modal="closeModal(topModal.uuid)" />
-    </div>
+    <Modal
+      v-if="!inlineModalOpen && topModal"
+      :modal="topModal"
+      @close-modal="closeModal(topModal.uuid)"
+    />
+
+    <PortalTarget name="modal" slim @change="inlineModalOpen = $event" />
   </aside>
 </template>

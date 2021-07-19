@@ -20,7 +20,7 @@ export const NeutralBackground: DecoratorFunction<any> = story => ({
 });
 
 export const DarkBackground: DecoratorFunction<any> = story => ({
-  template: `<div class="w-screen min-h-screen bg-black"><story/></div>`
+  template: `<div class="w-screen min-h-screen bg-mono-200"><story/></div>`
 });
 
 export const Container: (

@@ -13,11 +13,19 @@ import {
   getSteps,
   stepsById,
   stableStepIds,
-  dispatchRecordView
+  dispatchRecordView,
+  dispatchSearch,
+  getSearch,
+  getIsSearchEmpty,
+  dispatchClearSearch
 } from "@/store";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
 import { isEqual } from "lodash";
+import SearchWidget from "@/components/SearchWidget/SearchWidget.vue";
+import SearchOverlay from "@/components/SearchOverlay/SearchOverlay.vue";
+import InlineModal from "@/components/Modal/InlineModal.vue";
+import { Search } from "@/components/FullSearch/types";
 
 @Component({
   components: {
@@ -27,7 +35,10 @@ import { isEqual } from "lodash";
     PureIcon,
     AllStepsProvider,
     RecordPracticeWidget,
-    DropdownMenu
+    DropdownMenu,
+    SearchWidget,
+    InlineModal,
+    SearchOverlay
   }
 })
 export default class FeedView extends VueWithStore {
@@ -81,6 +92,24 @@ export default class FeedView extends VueWithStore {
   handleStepViewed(stepId: string) {
     dispatchRecordView(this.$store, stepId);
   }
+
+  searchOpen = false;
+
+  get search(): Search {
+    return getSearch(this.$store);
+  }
+
+  get hasActiveSearch(): boolean {
+    return !getIsSearchEmpty(this.$store);
+  }
+
+  handleSearchChange(search: Search) {
+    dispatchSearch(this.$store, search);
+  }
+
+  handleClearSearch() {
+    dispatchClearSearch(this.$store);
+  }
 }
 </script>
 
@@ -88,13 +117,26 @@ export default class FeedView extends VueWithStore {
   <AllStepsProvider>
     <Container class="pb-4 ">
       <header
-        class="px-2 py-2 mb-2 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900"
+        class="flex justify-center px-2 py-2 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900"
       >
-        <DropdownMenu
-          :value="selectedPreset"
-          :options="presetOptions"
-          @input="handlePresetChange"
+        <SearchWidget
+          class="ml-auto"
+          :search-active="hasActiveSearch"
+          @click="searchOpen = true"
         />
+
+        <InlineModal
+          v-if="searchOpen"
+          modal-style="OVERLAY"
+          @close-modal="searchOpen = false"
+        >
+          <SearchOverlay
+            :search="search"
+            @search-change="handleSearchChange"
+            @clear-search="handleClearSearch"
+            @close-modal="searchOpen = false"
+          />
+        </InlineModal>
       </header>
       <Feed :steps="selectedSteps" @step-viewed="handleStepViewed">
         <template #stepActions="{ step }">

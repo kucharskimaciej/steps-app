@@ -1,27 +1,26 @@
 <script lang="ts">
-import { Vue, Component, Emit, Prop } from "vue-property-decorator";
-import { MODAL_STYLE, ModalRef } from "@/lib/modals/modals";
-import Drawer from "@/components/Modal/Drawer.vue";
-import Overlay from "@/components/Modal/Overlay.vue";
+import { Vue, Component, Emit, Prop, Provide } from "vue-property-decorator";
+import { ModalRef } from "@/lib/modals/modals";
 import SessionCartModal from "@/components/SessionCartModal/SessionCartModal.vue";
-import BorderlessOverlay from "@/components/Modal/BorderlessOverlay.vue";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
+import SearchOverlay from "@/components/SearchOverlay/SearchOverlay.vue";
+import { ModalStyleComponents } from "@/components/Modal/lib";
 
 @Component({
   components: {
     // modal styles
-    [MODAL_STYLE.DRAWER]: Drawer,
-    [MODAL_STYLE.OVERLAY]: Overlay,
-    [MODAL_STYLE.BORDERLESS]: BorderlessOverlay,
+    ...ModalStyleComponents,
 
     // modal components
     SessionCartModal,
-    VideoModal
+    VideoModal,
+    SearchOverlay
   }
 })
 export default class Modal extends Vue {
   @Prop() private modal!: ModalRef;
 
+  @Provide()
   @Emit()
   closeModal() {}
 

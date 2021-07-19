@@ -24,5 +24,6 @@ export const {
   dispatchSearch,
   dispatchClearSearch,
   commitSetSearch,
-  getSearch
+  getSearch,
+  getIsSearchEmpty
 } = search;

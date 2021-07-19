@@ -51,7 +51,7 @@ export default class TagsSelection extends Vue {
     <ThreeStateTag
       v-for="option of options"
       :key="option.key"
-      class="mr-2 mt-1"
+      class="mr-2 mt-2 inline-block"
       :tag="{ text: option.key }"
       :value="getValueOrDefault(option.key)"
       @input="handleChange(option.key, $event)"

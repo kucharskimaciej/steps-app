@@ -26,5 +26,6 @@ export type ModalDefinitionProvider = (...params: any[]) => ModalDefinition;
 
 export enum MODALS {
   SESSION_CART = "SESSION_CART",
-  SINGLE_VIDEO = "SINGLE_VIDEO"
+  SINGLE_VIDEO = "SINGLE_VIDEO",
+  SEARCH_OVERLAY = "SEARCH_OVERLAY"
 }

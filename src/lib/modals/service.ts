@@ -11,6 +11,12 @@ import SessionCartModal from "@/components/SessionCartModal/SessionCartModal.vue
 import { defaults } from "lodash";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
+import SearchOverlay from "@/components/SearchOverlay/SearchOverlay.vue";
+import {
+  ClearSearchFn,
+  GetSearchFn,
+  SetSearchFn
+} from "@/components/SearchOverlay/types";
 
 @Service()
 export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
@@ -43,6 +49,19 @@ export class ModalsService implements Record<MODALS, ModalDefinitionProvider> {
       options: this.ensureDefaults({
         props: { video },
         style: MODAL_STYLE.BORDERLESS
+      })
+    };
+  }
+
+  [MODALS.SEARCH_OVERLAY](props: {
+    getSearch: GetSearchFn;
+    setSearch: SetSearchFn;
+    clearSearch: ClearSearchFn;
+  }) {
+    return {
+      component: SearchOverlay,
+      options: this.ensureDefaults({
+        props
       })
     };
   }

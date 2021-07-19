@@ -59,6 +59,7 @@ export default class FullSearchFilters extends Vue {
 
   @Watch("value")
   handleValueChange(value: SearchFilters) {
+    console.log("setting value to", value);
     this.filters = value;
   }
 }

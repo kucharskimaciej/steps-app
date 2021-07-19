@@ -8,6 +8,7 @@ import {
   MutationHandlerWithPayload
 } from "typesafe-vuex";
 import { RootState } from "@/store/types";
+import { isEqual } from "lodash";
 
 export type SearchState = {
   search: Search;
@@ -64,6 +65,11 @@ export function searchMixin(namespace: string) {
   const searchGetter: GetterHandler<SearchState, RootState, Search> = state =>
     state.search;
 
+  const searchEmpty: GetterHandler<SearchState, RootState, boolean> = state => {
+    const emptySearchState = initialSearch();
+    return !state.search || isEqual(state.search, emptySearchState);
+  };
+
   const { commit, dispatch, read } = getStoreAccessors<SearchState, RootState>(
     namespace
   );
@@ -72,6 +78,7 @@ export function searchMixin(namespace: string) {
   const dispatchSearch = dispatch(search);
   const dispatchClearSearch = dispatch(clearSearch);
   const getSearch = read(searchGetter);
+  const getIsSearchEmpty = read(searchEmpty);
 
   const moduleLike: Pick<ModuleWithState<SearchState>, "state"> &
     Accessors<SearchState> = {
@@ -84,7 +91,8 @@ export function searchMixin(namespace: string) {
       setSearch
     },
     getters: {
-      getSearch: searchGetter
+      searchGetter,
+      searchEmpty
     }
   };
 
@@ -93,6 +101,7 @@ export function searchMixin(namespace: string) {
     commitSetSearch,
     dispatchSearch,
     dispatchClearSearch,
-    getSearch
+    getSearch,
+    getIsSearchEmpty
   };
 }
