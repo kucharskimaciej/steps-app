@@ -1,8 +1,8 @@
 export type OptionKey = string;
 export type ValueType = 1 | 0 | -1;
 
-export type OptionWithLabel = {
-  key: OptionKey;
+export type OptionWithLabel<TKey = OptionKey> = {
+  key: TKey;
   label: string;
 };
-export type KeyValueTuple = [OptionKey, ValueType];
+export type KeyValueTuple<TKey = OptionKey> = [TKey, ValueType];

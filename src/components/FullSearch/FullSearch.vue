@@ -9,7 +9,6 @@ import FullSearchFilters from "@/components/FullSearch/FullSearchFilters.vue";
 import FullSearchSort from "@/components/FullSearch/FullSearchSort.vue";
 import { DebounceTime } from "@/lib/decorators/debouceTime";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import { Tag } from "../../../common/types/Tag";
 
 @Component({
   components: {
@@ -23,7 +22,7 @@ export default class FullSearch extends Vue {
     default: () => ({})
   })
   private value!: Search;
-  @Prop({ default: () => [] }) private existingTags!: Tag[];
+  @Prop({ default: () => [] }) private existingTags!: string[];
   @Prop({ default: () => [] }) private existingArtists!: string[];
 
   @Emit("search")
@@ -53,6 +52,6 @@ export default class FullSearch extends Vue {
       :filters="value.filters"
       @input="handleFiltersChange"
     />
-    <FullSearchSort :value="value.sort" @input="handleSortChange" />
+    <FullSearchSort :sort="value.sort" @input="handleSortChange" />
   </section>
 </template>

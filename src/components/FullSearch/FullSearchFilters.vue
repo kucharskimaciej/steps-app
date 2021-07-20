@@ -8,7 +8,6 @@ import { FEELINGS } from "../../../common/constants";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import { SearchFilters } from "@/components/FullSearch/types";
-import { Tag } from "../../../common/types/Tag";
 import { entries } from "lodash";
 
 @Component({
@@ -43,7 +42,7 @@ export default class FullSearchFilters extends Vue {
   })
   private filters!: SearchFilters;
 
-  @Prop({ default: () => [] }) private existingTags!: Tag[];
+  @Prop({ default: () => [] }) private existingTags!: string[];
   @Prop({ default: () => [] }) private existingArtists!: string[];
 
   get feelingOptions(): OptionWithLabel[] {

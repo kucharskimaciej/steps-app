@@ -45,7 +45,7 @@ export const steps = {
     existingArtists(state: StepsState) {
       return uniq(state.rawSteps.map(step => step.artists).flat());
     },
-    existingTags(state: StepsState) {
+    existingTags(state: StepsState): string[] {
       return uniq([
         ...state.rawSteps.map(step => step.tags).flat(),
         ...state.rawSteps.map(step => step.smart_tags).flat()

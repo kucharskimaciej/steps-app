@@ -27,6 +27,8 @@ export const Default: () => Component = () => ({
     }
   },
   data: () => ({
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
+    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"],
     search: {}
   }),
   props: {}

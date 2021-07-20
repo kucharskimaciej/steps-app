@@ -1,13 +1,13 @@
 import { KeyValueTuple } from "@/components/Forms/TagsSelection/types";
-import { Tag, TagTypes } from "../../../common/types/Tag";
 import { ReadonlyRecord } from "../../../common/types/helperTypes";
+import { Feeling } from "../../../common/types/Step";
 
 export type SearchFilters = {
   query: string;
-  feeling: KeyValueTuple[];
-  includeAllTags: Tag[];
-  excludeAnyTags: Tag[];
-  anyArtists: Tag<TagTypes.ARTIST>[];
+  feeling: KeyValueTuple<Feeling>[];
+  includeAllTags: string[];
+  excludeAnyTags: string[];
+  anyArtists: string[];
 };
 
 export enum SortType {
