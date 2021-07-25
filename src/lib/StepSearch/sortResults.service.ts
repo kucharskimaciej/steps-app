@@ -73,7 +73,6 @@ export class SortResultsService {
           [sortDirection]
         );
 
-        console.log("scored results", sortedResults);
         break;
     }
 

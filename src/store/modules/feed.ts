@@ -34,11 +34,10 @@ export const feed = createModule(
 );
 
 export const {
-  dispatchSearch,
   dispatchClearSearch,
-  commitSetSearch,
+  getIsSearchEmpty,
   getSearch,
-  getIsSearchEmpty
+  dispatchSearch
 } = search;
 
 const { read } = getStoreAccessors<SearchState, RootState>(MODULE_NAMESPACE);

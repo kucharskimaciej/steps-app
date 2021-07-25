@@ -25,8 +25,6 @@ export class SearchService {
       filters.query
     );
 
-    console.log("resultsMatchingQuery", resultsMatchingQuery);
-
     const sortedResults = this.sorter.sortResults(resultsMatchingQuery, {
       filters,
       sort

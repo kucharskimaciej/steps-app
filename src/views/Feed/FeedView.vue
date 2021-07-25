@@ -69,7 +69,6 @@ export default class FeedView extends VueWithStore {
   searchOpen = false;
 
   get search(): Search {
-    console.log(getSearch, getSearch(this.$store));
     return getSearch(this.$store);
   }
 
@@ -78,7 +77,6 @@ export default class FeedView extends VueWithStore {
   }
 
   handleSearchChange(search: Search) {
-    console.log(dispatchSearch, search);
     dispatchSearch(this.$store, search);
     this.onSearchChange();
   }

@@ -1,14 +1,9 @@
-import { Accessors, ModuleWithState } from "@/store/createModule";
+import { Accessors } from "@/store/createModule";
 import { Search, SortDirection, SortType } from "@/components/FullSearch/types";
-import {
-  ActionHandlerNoPayload,
-  ActionHandlerWithPayload,
-  getStoreAccessors,
-  GetterHandler,
-  MutationHandlerWithPayload
-} from "typesafe-vuex";
+import { getStoreAccessors } from "typesafe-vuex";
 import { RootState } from "@/store/types";
 import { isEqual } from "lodash";
+import { ActionContext } from "vuex";
 
 export type SearchState = {
   search: Search;
@@ -34,74 +29,60 @@ export function provideSearchState(): SearchState {
   return { search: initialSearch() };
 }
 
+function accessorTypeInference<TAccessors extends Accessors<SearchState>>(
+  accessors: TAccessors
+): TAccessors {
+  return accessors;
+}
+
 export function searchMixin(namespace: string) {
-  const setSearch: MutationHandlerWithPayload<SearchState, Search | null> = (
-    state,
-    payload: Search | null
-  ) => {
-    state.search = payload ? payload : initialSearch();
-  };
-
-  const search: ActionHandlerWithPayload<
-    SearchState,
-    RootState,
-    Partial<Search>,
-    void
-  > = (context, value) => {
-    commitSetSearch(context, {
-      ...context.state.search,
-      ...value
-    });
-  };
-
-  const clearSearch: ActionHandlerNoPayload<
-    SearchState,
-    RootState,
-    void
-  > = context => {
-    commitSetSearch(context, null);
-  };
-
-  const searchGetter: GetterHandler<SearchState, RootState, Search> = state =>
-    state.search;
-
-  const searchEmpty: GetterHandler<SearchState, RootState, boolean> = state => {
-    const emptySearchState = initialSearch();
-    return !state.search || isEqual(state.search, emptySearchState);
+  const moduleLike = {
+    state: provideSearchState(),
+    ...accessorTypeInference({
+      actions: {
+        search(context, value) {
+          commitSetSearch(context, {
+            ...context.state.search,
+            ...value
+          });
+        },
+        clearSearch(context: ActionContext<SearchState, RootState>) {
+          commitSetSearch(context, null);
+        }
+      },
+      mutations: {
+        setSearch(state, payload) {
+          state.search = payload ? payload : initialSearch();
+        }
+      },
+      getters: {
+        getSearch(state) {
+          return state.search;
+        },
+        searchEmpty(state) {
+          const emptySearchState = initialSearch();
+          return !state.search || isEqual(state.search, emptySearchState);
+        }
+      }
+    })
   };
 
   const { commit, dispatch, read } = getStoreAccessors<SearchState, RootState>(
     namespace
   );
 
-  const commitSetSearch = commit(setSearch);
-  const dispatchSearch = dispatch(search);
-  const dispatchClearSearch = dispatch(clearSearch);
-  const getSearch = read(searchGetter);
-  const getIsSearchEmpty = read(searchEmpty);
-
-  const moduleLike: Pick<ModuleWithState<SearchState>, "state"> &
-    Accessors<SearchState> = {
-    state: provideSearchState(),
-    actions: {
-      search,
-      clearSearch
-    },
-    mutations: {
-      setSearch
-    },
-    getters: {
-      searchGetter,
-      searchEmpty
-    }
-  };
+  const commitSetSearch = commit(moduleLike.mutations.setSearch);
+  const dispatchSearch = dispatch(moduleLike.actions.search);
+  const dispatchClearSearch = dispatch(moduleLike.actions.clearSearch);
+  const getSearchAccessor = read(moduleLike.getters.getSearch);
+  const getIsSearchEmpty = read(moduleLike.getters.searchEmpty);
 
   return {
     ...moduleLike,
     commitSetSearch,
     dispatchSearch,
     dispatchClearSearch,
-    getSearch,
+    getSearch: getSearchAccessor,
     getIsSearchEmpty
   };
 }
