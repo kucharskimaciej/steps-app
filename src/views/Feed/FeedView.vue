@@ -97,13 +97,21 @@ export default class FeedView extends VueWithStore {
   <AllStepsProvider>
     <Container class="pb-4 ">
       <header
-        class="flex justify-center px-2 py-2 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900"
+        class="flex justify-center py-5 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900"
       >
         <SearchWidget
           class="ml-auto"
           :search-active="hasActiveSearch"
           @click="searchOpen = true"
-        />
+        >
+          <template #activeSearch>
+            <span
+              class="bg-mono-200 ml-2 -mt-px rounded-sm text-2xs text-mono-white font-bold px-1 py-1"
+            >
+              {{ selectedStepIds.length }}
+            </span>
+          </template>
+        </SearchWidget>
 
         <InlineModal
           v-if="searchOpen"
