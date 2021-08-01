@@ -11,6 +11,7 @@ import { Focusable } from "@/components/Forms/types";
 @Component
 export default class SimpleInput extends Vue implements Focusable {
   @Prop() private value!: string;
+  @Prop() private lazy!: boolean;
 
   @Emit("input")
   handleValueInput(event: InputEvent) {
@@ -47,7 +48,8 @@ export default class SimpleInput extends Vue implements Focusable {
       class="outline-none font-light bg-transparent w-full"
       :value="value"
       :class="validityClasses"
-      @input="handleValueInput"
+      @input="lazy ? null : handleValueInput($event)"
+      @change="lazy ? handleValueInput($event) : null"
     />
     <slot name="after" />
   </div>

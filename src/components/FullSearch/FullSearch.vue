@@ -7,7 +7,6 @@ import {
 } from "@/components/FullSearch/types";
 import FullSearchFilters from "@/components/FullSearch/FullSearchFilters.vue";
 import FullSearchSort from "@/components/FullSearch/FullSearchSort.vue";
-import { DebounceTime } from "@/lib/decorators/debouceTime";
 import PureButton from "@/components/PureButton/PureButton.vue";
 
 @Component({
@@ -26,7 +25,6 @@ export default class FullSearch extends Vue {
   @Prop({ default: () => [] }) private existingArtists!: string[];
 
   @Emit("search")
-  @DebounceTime(200)
   handleFiltersChange(filters: SearchFilters) {
     return {
       ...this.value,

@@ -63,7 +63,8 @@ export default class FullSearchFilters extends Vue {
   <section>
     <FormGroup :validation="$v.filters.query">
       <SimpleInput
-        v-model.lazy.trim="$v.filters.query.$model"
+        v-model.trim="$v.filters.query.$model"
+        lazy
         placeholder="Search"
       />
     </FormGroup>
