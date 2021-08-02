@@ -13,8 +13,7 @@ import { MODAL_STYLE } from "@/lib/modals/modals";
   }
 })
 export default class InlineModal extends Vue {
-  @Prop({ default: false }) private controlled!: boolean;
-  @Prop() private modalStyle!: MODAL_STYLE;
+  @Prop({ default: MODAL_STYLE.OVERLAY }) private modalStyle!: MODAL_STYLE;
 
   @Emit()
   closeModal() {}
@@ -23,7 +22,7 @@ export default class InlineModal extends Vue {
 
 <template>
   <span>
-    <Portal to="modal-backdrop">
+    <Portal to="modal">
       <Backdrop @click="closeModal()" />
     </Portal>
 

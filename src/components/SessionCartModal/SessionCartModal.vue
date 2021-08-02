@@ -5,15 +5,23 @@ import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import { stepsById } from "@/store";
 import Feed from "@/components/Feed/Feed.vue";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
+import InlineModal from "@/components/Modal/InlineModal.vue";
 
 @Component({
   components: {
+    InlineModal,
     AllStepsProvider,
     Feed,
     RecordPracticeWidget
   }
 })
 export default class SessionCartModal extends VueWithStore {
+  private isOpen = false;
+
+  openModal() {
+    this.isOpen = true;
+  }
+
   get sessionSteps() {
     const steps = stepsById(this.$store);
     if (this.$store.state.selectedSession.session) {
@@ -35,14 +43,16 @@ export default class SessionCartModal extends VueWithStore {
 </script>
 
 <template>
-  <AllStepsProvider>
-    <Feed :steps="sessionSteps">
-      <template #stepActions="{ step }">
-        <RecordPracticeWidget
-          :step-id="step.id"
-          :collection-id="selectedSessionId"
-        />
-      </template>
-    </Feed>
-  </AllStepsProvider>
+  <InlineModal v-if="isOpen" @close-modal="isOpen = false">
+    <AllStepsProvider>
+      <Feed :steps="sessionSteps">
+        <template #stepActions="{ step }">
+          <RecordPracticeWidget
+            :step-id="step.id"
+            :collection-id="selectedSessionId"
+          />
+        </template>
+      </Feed>
+    </AllStepsProvider>
+  </InlineModal>
 </template>

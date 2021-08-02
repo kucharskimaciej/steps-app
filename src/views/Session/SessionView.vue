@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { first } from "lodash";
 import { VueWithStore } from "@/lib/vueWithStore";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -12,14 +12,12 @@ import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import {
   getSteps,
   stepsById,
-  dispatchOpenModal,
   dispatchAddStep,
   dispatchRemoveStep,
   dispatchUpdateSession,
   dispatchRemoveSession
 } from "@/store";
 import Container from "@/components/Layout/Container.vue";
-import { MODALS } from "@/lib/modals/modals";
 import FullWithSidebar from "@/components/Layout/FullWithSidebar.vue";
 import { Step } from "../../../common/types/Step";
 import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
@@ -27,9 +25,11 @@ import ContentBox from "@/components/ContentBox/ContentBox.vue";
 import Card from "@/components/Card/Card.vue";
 import StepTitle from "@/components/Step/components/StepTitle.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
+import SessionCartModal from "@/components/SessionCartModal/SessionCartModal.vue";
 
 @Component({
   components: {
+    SessionCartModal,
     SelectToggleWidget,
     StepTitle,
     Card,
@@ -47,6 +47,7 @@ import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidg
 })
 export default class SessionView extends VueWithStore {
   @Prop() private sessionId!: string;
+  @Ref("sessionCartModal") readonly cart!: SessionCartModal;
 
   activeStepId = "";
 
@@ -86,6 +87,7 @@ export default class SessionView extends VueWithStore {
   }
 
   get session(): PracticeSession {
+    console.log("session, ", this.$store.state.selectedSession.session);
     return this.$store.state.selectedSession.session!;
   }
 
@@ -98,10 +100,7 @@ export default class SessionView extends VueWithStore {
   }
 
   openCart() {
-    dispatchOpenModal(this.$store, {
-      modal: MODALS.SESSION_CART,
-      params: []
-    });
+    this.cart.openModal();
   }
 
   private isInSession(stepId: string): boolean {
@@ -141,7 +140,7 @@ export default class SessionView extends VueWithStore {
 <template>
   <SessionProvider :id="sessionId">
     <template #default>
-      <FullWithSidebar v-if="session && session.status === 'open'">
+      <FullWithSidebar v-if="session && !session.locked">
         <template #sidebar>
           <AllStepsProvider>
             <div class="h-screen desktop:h-full flex flex-col">
@@ -207,6 +206,7 @@ export default class SessionView extends VueWithStore {
           </div>
         </template>
       </FullWithSidebar>
+      <SessionCartModal ref="sessionCartModal" />
     </template>
   </SessionProvider>
 </template>

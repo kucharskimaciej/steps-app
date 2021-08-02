@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 import { Step } from "../../../common/types/Step";
 import StepTitle from "@/components/Step/components/StepTitle.vue";
 import StepVideoLinks from "@/components/Step/components/VideoLinks.vue";
@@ -20,6 +20,7 @@ import VideoModal from "@/components/VideoModal/VideoModal.vue";
   }
 })
 export default class FullContent extends Vue {
+  @Ref("videoModal") readonly videoModal!: VideoModal;
   @Prop() private step!: Step;
 
   get firstVideo(): VideoObject {
@@ -37,12 +38,12 @@ export default class FullContent extends Vue {
       <StepTitle
         :step="step"
         link-to-video
-        @click.native="openVideo = firstVideo"
+        @click.native="videoModal.openModal(firstVideo)"
       />
       <StepVideoLinks
         :step="step"
         skip-first
-        @open-video="openVideo = $event"
+        @open-video="videoModal.openModal($event)"
       />
     </header>
 
@@ -56,12 +57,6 @@ export default class FullContent extends Vue {
       <Variations :step="step" />
     </section>
 
-    <InlineModal
-      v-if="openVideo"
-      :modal-style="$modalStyle.BORDERLESS"
-      @close-modal="openVideo = null"
-    >
-      <VideoModal :video="openVideo" />
-    </InlineModal>
+    <VideoModal ref="videoModal" />
   </main>
 </template>

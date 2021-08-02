@@ -76,6 +76,9 @@ export default class VideoPlayer extends Vue {
   @Emit()
   viewed() {}
 
+  @Emit()
+  openFullSize() {}
+
   get videoEventListeners() {
     return pick(this.$listeners, mediaEvents);
   }
@@ -201,10 +204,7 @@ export default class VideoPlayer extends Vue {
 
     <aside class="absolute top-0 right-0 m-2 flex flex-col">
       <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
-      <SizeControl
-        v-if="sizeControl"
-        @click="$openModal($modals.SINGLE_VIDEO, video)"
-      />
+      <SizeControl v-if="sizeControl" @click="openFullSize()" />
     </aside>
 
     <aside class="absolute bottom-0 right-0 m-2 flex">

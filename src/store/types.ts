@@ -1,6 +1,5 @@
 import { RawStep } from "../../common/types/Step";
 import { PracticeSession } from "../../common/types/PracticeSession";
-import { ModalRef } from "@/lib/modals/modals";
 export type Status = "clean" | "pending" | "dirty";
 
 export interface WithStatus {
@@ -28,10 +27,6 @@ export interface SelectedSessionState extends WithStatus {
   session: PracticeSession | null;
 }
 
-export interface ModalsState {
-  stack: ModalRef[];
-}
-
 export type CurrentVideoState =
   | {
       status: "clean" | "pending";
@@ -52,6 +47,5 @@ export interface RootState {
   currentStep: CurrentStepState;
   practiceSessions: PracticeSessionsState;
   selectedSession: SelectedSessionState;
-  uiModals: ModalsState;
   uiCurrentVideo: CurrentVideoState;
 }

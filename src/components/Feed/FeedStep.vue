@@ -72,6 +72,7 @@ export default class FeedStep extends Vue {
               :video="primaryVideo"
               size-control
               @viewed="handleViewed"
+              @open-full-size="showFullSize = true"
             />
 
             <div v-else class="w-full bg-mono-800 h-full"></div>
