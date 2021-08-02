@@ -13,6 +13,7 @@ import { MODAL_STYLE } from "@/lib/modals/modals";
   }
 })
 export default class InlineModal extends Vue {
+  @Prop({ default: false }) private controlled!: boolean;
   @Prop() private modalStyle!: MODAL_STYLE;
 
   @Emit()
