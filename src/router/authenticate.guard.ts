@@ -4,7 +4,7 @@ import { AuthService } from "@/lib/firebase/auth.service";
 import { dispatchHandleAuthStateChange, provideStore } from "@/store";
 
 export const authenticate: NavigationGuard = async (to, from, next) => {
-  if (to.meta.public) {
+  if (to.meta?.public) {
     next();
   } else {
     const authService = Container.get(AuthService);
