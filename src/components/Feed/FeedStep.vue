@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit, Ref } from "vue-property-decorator";
 import { Step } from "../../../common/types/Step";
 import VideoPlayer from "@/components/Video/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
@@ -9,6 +9,7 @@ import FeedActions from "@/components/Feed/FeedActions.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
+import VideoModal from "@/components/VideoModal/VideoModal.vue";
 
 @Component({
   components: {
@@ -19,10 +20,12 @@ import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
     PureIcon,
     PureButton,
     Tags,
-    IntersectSwitch
+    IntersectSwitch,
+    VideoModal
   }
 })
 export default class FeedStep extends Vue {
+  @Ref("videoModal") readonly videoModal!: VideoModal;
   @Prop({ required: true }) private step!: Step;
   @Prop() private autoplay!: boolean;
 
@@ -72,7 +75,7 @@ export default class FeedStep extends Vue {
               :video="primaryVideo"
               size-control
               @viewed="handleViewed"
-              @open-full-size="showFullSize = true"
+              @open-full-size="videoModal.openModal(primaryVideo)"
             />
 
             <div v-else class="w-full bg-mono-800 h-full"></div>
@@ -101,6 +104,7 @@ export default class FeedStep extends Vue {
         <Tags :step="step" />
       </section>
     </footer>
+    <VideoModal ref="videoModal" />
   </article>
 </template>
 

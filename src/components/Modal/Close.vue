@@ -11,7 +11,7 @@ export type Style = "default" | "filled";
   }
 })
 export default class Close extends Vue {
-  @Prop({ default: "topRight" }) private iconPosition!: Positions;
+  @Prop({ default: "topLeft" }) private iconPosition!: Positions;
   @Prop({ default: "default" }) private iconStyle!: Style;
 }
 </script>
