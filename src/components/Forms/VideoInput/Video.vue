@@ -1,10 +1,13 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit, Ref } from "vue-property-decorator";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import VideoModal from "@/components/VideoModal/VideoModal.vue";
+import { VideoObject } from "../../../../common/types/VideoObject";
 
 @Component({
   components: {
+    VideoModal,
     PureButton,
     PureIcon
   }
@@ -14,8 +17,14 @@ export default class Video extends Vue {
   @Prop() private filename!: string;
   @Prop() private url!: string;
 
+  @Ref("videoModal") readonly videoModal!: VideoModal;
+
   @Emit()
   remove() {}
+
+  get asVideo(): VideoObject {
+    return { url: this.url, hash: this.title };
+  }
 }
 </script>
 
@@ -24,7 +33,11 @@ export default class Video extends Vue {
     <header class="flex text-sm items-center">
       <strong>{{ title }}</strong>
       <aside class="ml-auto text-sm">
-        <PureButton tag="a" feel="ghost" :href="url" target="_blank">
+        <PureButton
+          role="button"
+          feel="ghost"
+          @click="videoModal.openModal(asVideo)"
+        >
           <PureIcon type="open_in_new" /> Open
         </PureButton>
 
@@ -36,5 +49,7 @@ export default class Video extends Vue {
     <p v-if="filename" class="font-light text-sm">
       Original filename: {{ filename }}
     </p>
+
+    <VideoModal ref="videoModal" />
   </div>
 </template>

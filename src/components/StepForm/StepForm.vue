@@ -209,7 +209,7 @@ export default class StepForm extends Vue implements StepFormApi {
 </script>
 
 <template>
-  <form novalidate>
+  <form novalidate @submit.prevent>
     <main>
       <FormGroup :validation="form.videos" label="Videos">
         <VideoInput v-model="form.videos.$model">

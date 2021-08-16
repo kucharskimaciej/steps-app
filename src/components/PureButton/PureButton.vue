@@ -96,6 +96,7 @@ export default class PureButton extends Vue {
     :is="tag"
     :class="[commonClasses, statusClasses, sizeClasses, colorClasses]"
     :disabled="disabled"
+    v-bind="$attrs"
     v-on="$listeners"
   >
     <slot />
