@@ -27,25 +27,10 @@ export interface SelectedSessionState extends WithStatus {
   session: PracticeSession | null;
 }
 
-export type CurrentVideoState =
-  | {
-      status: "clean" | "pending";
-    }
-  | {
-      status: "dirty";
-      url: string | null;
-      meta: {
-        width: number;
-        height: number;
-        aspectRatio: number;
-      };
-    };
-
 export interface RootState {
   auth: AuthState;
   steps: StepsState;
   currentStep: CurrentStepState;
   practiceSessions: PracticeSessionsState;
   selectedSession: SelectedSessionState;
-  uiCurrentVideo: CurrentVideoState;
 }

@@ -66,9 +66,6 @@ module.exports = {
       lineHeight: {
         "0": 0
       },
-      maxHeight: {
-        "80": "80%"
-      },
       zIndex: {
         "-1": -1
       }

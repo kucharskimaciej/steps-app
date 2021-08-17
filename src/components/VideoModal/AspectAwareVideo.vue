@@ -1,11 +1,14 @@
 <script lang="ts">
 import { Component, Prop, Watch } from "vue-property-decorator";
 import VideoPlayer from "@/components/Video/VideoPlayer.vue";
-import { dispatchLoadVideo } from "@/store";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
-import { CurrentVideoState } from "@/store/types";
 import { VideoObject } from "../../../common/types/VideoObject";
 import { VueWithStore } from "@/lib/vueWithStore";
+import { Inject } from "vue-typedi";
+import {
+  VideoDimensionsService,
+  VideoMetadata
+} from "@/lib/videoDimensionsService";
 
 @Component({
   components: {
@@ -14,26 +17,37 @@ import { VueWithStore } from "@/lib/vueWithStore";
   }
 })
 export default class VideoModalContent extends VueWithStore {
+  @Inject() private readonly dimensions!: VideoDimensionsService;
+
   @Prop({ required: true }) private video!: VideoObject;
+
+  loading = false;
+  videoWithDimensions: VideoMetadata | null = null;
 
   @Watch("video", { immediate: true })
   handleUrlChange(video: VideoObject) {
-    dispatchLoadVideo(this.$store, video.url);
-  }
-
-  get state(): CurrentVideoState {
-    return this.$store.state.uiCurrentVideo;
+    this.loading = true;
+    this.dimensions
+      .getVideoDimensions(video)
+      .then(videoWithDimensions => {
+        this.videoWithDimensions = videoWithDimensions;
+      })
+      .finally(() => (this.loading = false));
   }
 
   get isVideoLoaded() {
-    return this.state.status === "dirty";
+    return !this.loading;
+  }
+
+  get aspectRatio(): number {
+    return this.videoWithDimensions
+      ? this.videoWithDimensions.width / this.videoWithDimensions.height
+      : 0;
   }
 
   get shouldRotate() {
     return (
-      this.$client.aspectRatio < 1 &&
-      this.state.status === "dirty" &&
-      this.state.meta.aspectRatio > 1
+      this.$client.aspectRatio < 1 && !this.loading && this.aspectRatio > 1
     );
   }
 

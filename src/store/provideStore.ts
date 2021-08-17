@@ -5,7 +5,6 @@ import { steps } from "@/store/modules/steps";
 import { currentStep } from "@/store/modules/currentStep";
 import { practiceSessions } from "@/store/modules/practiceSessions";
 import { selectedSession } from "@/store/modules/selectedSession";
-import { uiCurrentVideo } from "@/store/modules/uiCurrentVideo";
 import { feed } from "@/store/modules/feed";
 
 let store: Store<RootState>;
@@ -19,8 +18,7 @@ export function provideStore(): Store<RootState> {
         feed,
         currentStep,
         practiceSessions,
-        selectedSession,
-        uiCurrentVideo
+        selectedSession
       }
     });
   }

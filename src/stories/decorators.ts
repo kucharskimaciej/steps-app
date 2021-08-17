@@ -2,6 +2,7 @@
 
 import GlobalStyles from "@/components/GlobalStyles.vue";
 import { DecoratorFunction } from "@storybook/addons/dist/types";
+import ModalContainer from "@/components/Modal/ModalContainer.vue";
 
 export const WithGlobalStyles: DecoratorFunction<any> = story => ({
   template: `<GlobalStyles><story/></GlobalStyles>`,
@@ -28,5 +29,12 @@ export const Container: (
   h?: string | number
 ) => DecoratorFunction<any> = (w, h = "auto") => story => ({
   template: `<div style="width: ${w}; height: ${h}; max-width: 100vw;"><story/></div>`
+});
+
+export const WithModals: DecoratorFunction<any> = story => ({
+  components: {
+    ModalContainer
+  },
+  template: `<div id="WithModals"><story /><ModalContainer /></div>`
 });
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars */

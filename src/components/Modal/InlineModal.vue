@@ -14,6 +14,7 @@ import { MODAL_STYLE } from "@/lib/modals/modals";
 })
 export default class InlineModal extends Vue {
   @Prop({ default: MODAL_STYLE.OVERLAY }) private modalStyle!: MODAL_STYLE;
+  @Prop({ default: () => ({}) }) private modalProps!: Record<string, any>;
 
   @Emit()
   closeModal() {}
@@ -27,7 +28,12 @@ export default class InlineModal extends Vue {
     </Portal>
 
     <Portal to="modal">
-      <component :is="modalStyle" class="z-0" @close="closeModal()">
+      <component
+        :is="modalStyle"
+        class="z-0"
+        v-bind="{ modalProps }"
+        @close="closeModal()"
+      >
         <slot />
       </component>
     </Portal>

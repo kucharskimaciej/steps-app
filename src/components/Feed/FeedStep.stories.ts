@@ -1,5 +1,10 @@
 import { withKnobs } from "@storybook/addon-knobs";
-import { Container, Spacing, WithGlobalStyles } from "@/stories/decorators";
+import {
+  Container,
+  Spacing,
+  WithGlobalStyles,
+  WithModals
+} from "@/stories/decorators";
 import Vue, { Component } from "vue";
 import FeedStep from "@/components/Feed/FeedStep.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
@@ -24,7 +29,8 @@ export default {
     withKnobs,
     Container("600px"),
     Spacing,
-    WithGlobalStyles
+    WithGlobalStyles,
+    WithModals
   ]
 };
 
