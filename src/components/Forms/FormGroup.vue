@@ -4,11 +4,10 @@ import { Validation } from "vuelidate";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
 
 @Component({
-  components: { ValidationHint },
-  inject: []
+  components: { ValidationHint }
 })
 export default class FormGroup extends Vue {
-  @Prop() private label!: string;
+  @Prop({ default: "" }) private label!: string;
   @Prop() private invalid!: boolean;
   @Prop() private validation!: Validation;
 
