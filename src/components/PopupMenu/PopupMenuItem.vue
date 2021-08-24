@@ -1,9 +1,16 @@
 <script lang="ts">
-import { Vue, Component, Inject } from "vue-property-decorator";
+import { Vue, Component, Inject, Emit } from "vue-property-decorator";
 
 @Component
 export default class PopupMenuItem extends Vue {
-  @Inject({ from: "onItemClick" }) handleItemClick!: string;
+  @Inject({ from: "onItemClick" }) onItemClick!: () => void;
+
+  @Emit("click")
+  handleItemClick() {
+    if (this.onItemClick) {
+      this.onItemClick();
+    }
+  }
 }
 </script>
 

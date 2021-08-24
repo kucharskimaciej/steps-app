@@ -1,4 +1,5 @@
 import { Component } from "vue";
+import { action } from "@storybook/addon-actions";
 import {
   NeutralBackground,
   Spacing,
@@ -30,10 +31,16 @@ export const BasicUsage: () => Component = () => ({
         <span @click="open">click?</span>
       </template>
 
-      <PopupMenuItem>One</PopupMenuItem>
-      <PopupMenuItem>Two</PopupMenuItem>
+      <PopupMenuItem>
+        One
+      </PopupMenuItem>
+      <PopupMenuItem @click="itemClick('two')">
+        Two
+      </PopupMenuItem>
     </PopupMenu>`,
-  methods: {},
+  methods: {
+    itemClick: action("ITEM_CLICK")
+  },
   data: () => ({}),
   props: {}
 });
