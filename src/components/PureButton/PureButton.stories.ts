@@ -18,35 +18,10 @@ stories.add("Regular", () => {
     template: `
             <div class="mb-5">
                 <PureButton kind="primary">Primary</PureButton>
-                <PureButton kind="success">Success</PureButton>
-                <PureButton kind="warning">Warning</PureButton>
+                <PureButton kind="secondary">Secondary</PureButton>
+                <PureButton kind="outline">Outline</PureButton>
+                <PureButton kind="ghost">Ghost</PureButton>
             </div>
-        `
-  };
-});
-
-stories.add("Outline", () => {
-  return {
-    components: { PureButton },
-    template: `
-<div class="mb-5">
-    <PureButton kind="primary" feel="outline">Primary</PureButton>
-    <PureButton kind="success" feel="outline">Success</PureButton>
-    <PureButton kind="warning" feel="outline">Warning</PureButton>
-</div>
-        `
-  };
-});
-
-stories.add("Ghost", () => {
-  return {
-    components: { PureButton },
-    template: `
-<div class="mb-5">
-    <PureButton kind="primary" feel="ghost">Primary</PureButton>
-    <PureButton kind="success" feel="ghost">Success</PureButton>
-    <PureButton kind="warning" feel="ghost">Warning</PureButton>
-</div>
         `
   };
 });
@@ -56,8 +31,8 @@ stories.add("Small", () => {
     components: { PureButton },
     template: `
 <div class="mb-5">
-    <PureButton kind="primary" feel="outline" size="small">Primary</PureButton>
-    <PureButton kind="success" size="small">Success</PureButton>
+    <PureButton kind="primary" size="small">Primary</PureButton>
+    <PureButton kind="secondary" size="small">Success</PureButton>
 </div>
         `
   };
@@ -68,8 +43,8 @@ stories.add("Large", () => {
     components: { PureButton },
     template: `
 <div class="mb-5">
-    <PureButton kind="primary" feel="outline" size="large">Primary</PureButton>
-    <PureButton kind="success" size="large">Success</PureButton>
+    <PureButton kind="primary" size="large">Primary</PureButton>
+    <PureButton kind="secondary" size="large">Secondary</PureButton>
 </div>
         `
   };
@@ -80,12 +55,13 @@ stories.add("Icon only", () => {
     components: { PureButton, PureIcon },
     template: `
 <div class="mb-5">
-    <PureButton kind="primary" feel="outline" size="large">
+    <PureButton kind="primary" size="large">
         <PureIcon type="check"/>
     </PureButton>
-    <PureButton kind="success"><PureIcon  type="check"/></PureButton>
-    <PureButton kind="danger" size="small"><PureIcon  type="check"/></PureButton>
-    <PureButton kind="success" size="large" feel="ghost"><PureIcon  type="check"/></PureButton>
+    <PureButton kind="primary"><PureIcon type="check"/></PureButton>
+    <PureButton kind="secondary" size="small"><PureIcon  type="check"/></PureButton>
+    <PureButton kind="outline" size="large"><PureIcon  type="check"/></PureButton>
+    <PureButton kind="ghost" size="large"><PureIcon  type="check"/></PureButton>
 </div>
         `
   };
@@ -96,9 +72,10 @@ stories.add("Disabled", () => {
     components: { PureButton },
     template: `
 <div class="mb-5">
-    <PureButton kind="primary" feel="regular" disabled="true">Primary</PureButton>
-    <PureButton kind="success" feel="outline" disabled="true">Success</PureButton>
-    <PureButton kind="warning" feel="ghost" disabled="true">Warning</PureButton>
+    <PureButton kind="primary" disabled="true">Primary</PureButton>
+    <PureButton kind="secondary" disabled="true">Secondary</PureButton>
+    <PureButton kind="outline" disabled="true">Outline</PureButton>
+    <PureButton kind="ghost" disabled="true">Ghost</PureButton>
 </div>
         `
   };

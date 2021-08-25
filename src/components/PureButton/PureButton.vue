@@ -1,49 +1,49 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 
-export type ButtonKind = "primary" | "success" | "warning" | "danger";
+export type ButtonKind = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "regular" | "small" | "large";
 export type ButtonSpacing = "regular" | "wide";
-export type ButtonFeel = "regular" | "outline" | "ghost";
-
-const kindToColorMap: Record<ButtonKind, string> = {
-  primary: "blue",
-  success: "green",
-  danger: "red",
-  warning: "yellow"
-};
 
 // CHANGES HERE NEED TO BE PROPAGATED IN THE POST CSS PURGE WHITELIST
-export function buttonColors(kind: ButtonKind, feel: ButtonFeel): string {
-  const primaryColor = kindToColorMap[kind];
-
-  switch (feel) {
-    case "regular":
+export function buttonColors(kind: ButtonKind): string {
+  switch (kind) {
+    case "primary":
       return `
-                bg-${primaryColor}-base
-                border-${primaryColor}-base
-                hover:bg-${primaryColor}-light
-                hover:border-${primaryColor}-light
-                text-white
-                active:shadow-inner focus:shadow
-            `;
+        bg-mono-black
+        border-mono-black
+        hover:bg-mono-100
+        hover:border-mono-100
+        text-white
+        focus:bg-mono-200
+      `;
+
+    case "secondary":
+      return `
+        bg-mono-800
+        border-mono-800
+        text-mono-100
+        focus:bg-mono-700
+      `;
+
     case "outline":
       return `
-                bg-transparent
-                border-${primaryColor}-base
-                text-${primaryColor}-base
-                hover:border-${primaryColor}-light
-                hover:text-${primaryColor}-light
-                active:shadow-inner focus:shadow
-            `;
+        bg-transparent
+        border-mono-black
+        text-mono-100
+        hover:border-mono-100
+        hover:text-mono-100
+        focus:border-mono-200
+        focus:text-mono-200
+      `;
     case "ghost":
       return `
-                text-${primaryColor}-base
-                bg-transparent
-                border-transparent
-                hover:bg-gray-100
-                hover:text-${primaryColor}-light
-            `;
+        text-mono-100
+        bg-transparent
+        border-transparent
+        hover:bg-mono-900
+        hover:text-mono-200
+    `;
   }
 }
 
@@ -67,7 +67,6 @@ export function buttonSize(size: ButtonSize, spacing: ButtonSpacing): string {
 @Component
 export default class PureButton extends Vue {
   @Prop({ default: "primary" }) private kind!: ButtonKind;
-  @Prop({ default: "regular" }) private feel!: ButtonFeel;
   @Prop({ default: "regular" }) private size!: ButtonSize;
   @Prop({ default: "regular" }) private spacing!: ButtonSpacing;
   @Prop({ default: "button" }) private tag!: string;
@@ -82,7 +81,7 @@ export default class PureButton extends Vue {
   }
 
   get statusClasses(): string {
-    return this.disabled ? "opacity-75 cursor-not-allowed" : "";
+    return this.disabled ? "opacity-50 cursor-not-allowed" : "";
   }
 
   get colorClasses(): string {
