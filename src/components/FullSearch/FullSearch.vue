@@ -7,11 +7,9 @@ import {
 } from "@/components/FullSearch/types";
 import FullSearchFilters from "@/components/FullSearch/FullSearchFilters.vue";
 import FullSearchSort from "@/components/FullSearch/FullSearchSort.vue";
-import PureButton from "@/components/PureButton/PureButton.vue";
 
 @Component({
   components: {
-    PureButton,
     FullSearchFilters,
     FullSearchSort
   }

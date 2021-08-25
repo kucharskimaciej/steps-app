@@ -58,7 +58,7 @@ export const CustomAction: () => Component = () =>
     template: `
       <FeedStep :step="step">
         <template #actions>
-          <PureButton feel="ghost">Only action</PureButton>
+          <PureButton kind="ghost">Only action</PureButton>
         </template>
       </FeedStep>`
   });
@@ -75,8 +75,8 @@ export const MultipleCustomActions: () => Component = () =>
     template: `
       <FeedStep :step="step">
         <template #actions>
-          <PureButton feel="ghost">Action 1</PureButton>
-          <PureButton feel="ghost">Action 2</PureButton>
+          <PureButton kind="ghost">Action 1</PureButton>
+          <PureButton kind="ghost">Action 2</PureButton>
         </template>
       </FeedStep>`
   });

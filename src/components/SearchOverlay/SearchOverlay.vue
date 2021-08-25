@@ -44,7 +44,7 @@ export default class SearchOverlay extends Vue {
       @search="searchChange"
     />
     <footer class="flex justify-center">
-      <PureButton feel="outline" class="mr-2" @click="clearSearch">
+      <PureButton kind="outline" class="mr-2" @click="clearSearch">
         Clear
       </PureButton>
       <PureButton @click="closeModal()">Back to results</PureButton>

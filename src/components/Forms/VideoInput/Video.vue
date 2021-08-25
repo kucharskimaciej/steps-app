@@ -35,13 +35,14 @@ export default class Video extends Vue {
       <aside class="ml-auto text-sm">
         <PureButton
           role="button"
-          feel="ghost"
+          kind="secondary"
+          class="mr-2"
           @click="videoModal.openModal(asVideo)"
         >
           <PureIcon type="open_in_new" /> Open
         </PureButton>
 
-        <PureButton kind="danger" feel="ghost" @click="remove()">
+        <PureButton kind="ghost" @click="remove()">
           Delete
         </PureButton>
       </aside>

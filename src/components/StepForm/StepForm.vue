@@ -6,7 +6,6 @@ import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
 import { FEELINGS, KINDS, STEP_DIFFICULTIES } from "../../../common/constants";
-import PureButton from "@/components/PureButton/PureButton.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
@@ -29,7 +28,6 @@ import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
     SimpleInput,
     Select,
     TagsInput,
-    PureButton,
     Checklist,
     Textarea,
     VideoInput

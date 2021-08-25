@@ -132,7 +132,7 @@ export default class EditStep extends VueWithStore {
       <ContentBox class="border-r border-b text-right">
         <PureButton
           class="mr-2"
-          kind="success"
+          kind="primary"
           spacing="wide"
           @click.native="submitAndRedirect"
         >

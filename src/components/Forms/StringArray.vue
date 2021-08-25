@@ -35,9 +35,8 @@ export default class StringArray extends Vue {
       <SimpleInput ref="items" v-model.trim="value[index]">
         <template #after>
           <PureButton
-            feel="ghost"
             size="small"
-            kind="danger"
+            kind="secondary"
             @click.prevent="removeAt(index)"
           >
             <PureIcon type="remove" />
@@ -45,7 +44,7 @@ export default class StringArray extends Vue {
         </template>
       </SimpleInput>
     </FormGroup>
-    <PureButton feel="ghost" size="small" @click.prevent="addElement">
+    <PureButton kind="primary" size="small" @click.prevent="addElement">
       + Add another
     </PureButton>
   </div>

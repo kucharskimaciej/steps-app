@@ -145,7 +145,7 @@ export default class SessionView extends VueWithStore {
           <AllStepsProvider>
             <div class="h-screen desktop:h-full flex flex-col">
               <ContentBox class="border-r">
-                <PureButton feel="ghost" @click="openCart">
+                <PureButton kind="ghost" @click="openCart">
                   Session feed
                 </PureButton>
               </ContentBox>
@@ -175,7 +175,7 @@ export default class SessionView extends VueWithStore {
                 <div class="flex items-center">
                   <span>{{ session.steps.length }} selected</span>
                   <span class="ml-auto">
-                    <PureButton feel="ghost" @click="handleClear"
+                    <PureButton kind="ghost" @click="handleClear"
                       >Clear</PureButton
                     >
                   </span>
@@ -191,10 +191,10 @@ export default class SessionView extends VueWithStore {
               <div v-if="session" class="flex items-center">
                 <h1>{{ session.name }}</h1>
                 <aside class="ml-auto">
-                  <PureButton feel="ghost">
+                  <PureButton kind="ghost">
                     <PureIcon />
                   </PureButton>
-                  <PureButton feel="ghost" @click="handleRemoveSession">
+                  <PureButton kind="ghost" @click="handleRemoveSession">
                     Remove session
                   </PureButton>
                 </aside>

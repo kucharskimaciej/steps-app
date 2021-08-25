@@ -85,7 +85,7 @@ export default class PureButton extends Vue {
   }
 
   get colorClasses(): string {
-    return buttonColors(this.kind, this.feel);
+    return buttonColors(this.kind);
   }
 }
 </script>

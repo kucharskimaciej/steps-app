@@ -153,16 +153,15 @@ export default class CreateStep extends VueWithStore {
       <ContentBox class="border-r border-b text-right">
         <PureButton
           class="mr-2"
-          kind="success"
           spacing="wide"
-          feel="ghost"
+          kind="secondary"
           @click.native="submitAndRedirect"
         >
           Save
         </PureButton>
 
         <PureButton
-          kind="success"
+          kind="primary"
           spacing="wide"
           @click.native="submitAndClear"
         >

@@ -12,7 +12,7 @@ export default class PureToggleButton extends Vue {
 </script>
 
 <template>
-  <PureButton kind="success" :feel="toggled ? 'regular' : 'ghost'" size="large">
+  <PureButton :kind="toggled ? 'primary' : 'ghost'" size="large">
     <PureIcon type="check" class="text-3xl" />
   </PureButton>
 </template>

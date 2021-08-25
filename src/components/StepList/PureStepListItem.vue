@@ -23,12 +23,7 @@
 
         <aside class="flex flex-shrink-0 ml-4">
           <router-link v-slot="{ navigate }" :to="`/edit/${step.id}`">
-            <PureButton
-              feel="ghost"
-              kind="primary"
-              class="mr-2"
-              @click.native="navigate"
-            >
+            <PureButton kind="ghost" class="mr-2" @click.native="navigate">
               <PureIcon type="edit" /> Edit
             </PureButton>
           </router-link>
@@ -43,7 +38,7 @@
           referrerpolicy="no-referrer"
           tag="a"
           size="small"
-          feel="ghost"
+          kind="ghost"
           class="mr-2"
         >
           Video {{ index + 2 }}

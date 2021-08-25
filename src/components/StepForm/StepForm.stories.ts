@@ -36,7 +36,7 @@ export const EmptyForm: () => Component = () => ({
   },
   template: `<main>
       <StepForm ref="form" :existing-tags="tags" :existing-artists="artists" />
-      <PureButton @click.native="handleSave" kind="success" spacing="wide" size="large">Save</PureButton>
+      <PureButton @click.native="handleSave" kind="primary" spacing="wide" size="large">Save</PureButton>
   </main>`,
   methods: {
     handleSave() {
@@ -59,7 +59,7 @@ export const WithData: () => Component = () => ({
   },
   template: `<main>
       <StepForm ref="form" :step="step" :existing-tags="tags" :existing-artists="artists" />
-      <PureButton @click.native="handleSave" kind="success" spacing="wide" size="large">Save</PureButton>
+      <PureButton @click.native="handleSave" kind="primary" spacing="wide" size="large">Save</PureButton>
   </main>`,
   methods: {
     handleSave() {

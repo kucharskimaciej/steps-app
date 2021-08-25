@@ -106,7 +106,7 @@ export default class FeedStep extends Vue {
           <PureButton
             v-if="hasVariations"
             size="small"
-            feel="ghost"
+            kind="ghost"
             class="mr-auto"
             @click="variationsOpen = true"
           >
@@ -131,7 +131,7 @@ export default class FeedStep extends Vue {
 
       <OptionsPopup :step="step">
         <template #toggle="{ open }">
-          <PureButton size="small" feel="ghost" @click="open">
+          <PureButton size="small" kind="ghost" @click="open">
             <PureIcon type="more_vert" class="text-xl" />
           </PureButton>
         </template>

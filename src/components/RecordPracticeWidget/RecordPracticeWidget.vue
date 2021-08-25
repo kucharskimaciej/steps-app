@@ -34,7 +34,7 @@ export default class RecordPracticeWidget extends VueWithStore {
 <template>
   <span v-if="isTodayRecordedForCollection">
     <slot name="practiced" :practice="handleRecordPractice">
-      <PureButton feel="ghost" @click="handleRecordPractice">
+      <PureButton kind="ghost" @click="handleRecordPractice">
         <PureIcon type="done" /> Practiced
       </PureButton>
     </slot>
@@ -42,7 +42,7 @@ export default class RecordPracticeWidget extends VueWithStore {
 
   <span v-else>
     <slot name="not_practiced" :practice="handleRecordPractice">
-      <PureButton feel="ghost" kind="default" @click="handleRecordPractice">
+      <PureButton kind="secondary" @click="handleRecordPractice">
         Record practice
       </PureButton>
     </slot>

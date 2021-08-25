@@ -130,14 +130,14 @@ export default class FeedView extends VueWithStore {
         <template #rightActionsArea="{ step }">
           <RecordPracticeWidget :step-id="step.id">
             <template #not_practiced="{ practice }">
-              <PureButton size="small" feel="ghost" @click="practice">
+              <PureButton size="small" kind="ghost" @click="practice">
                 <span v-if="$match('desktop')" class="mr-1">Practice </span>
                 <PureIcon type="playlist_play" class="text-xl" />
               </PureButton>
             </template>
 
             <template #practiced="{ practice }">
-              <PureButton size="small" feel="ghost" @click="practice">
+              <PureButton size="small" kind="ghost" @click="practice">
                 <PureIcon type="playlist_add_check" class="text-xl" />
               </PureButton>
             </template>
