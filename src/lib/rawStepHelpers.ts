@@ -1,30 +1,22 @@
-import { RawStep, Step, StepRef, TagCategories } from "../../common/types/Step";
+import { RawStep, Step, TagCategories } from "../../common/types/Step";
 import { Tag, TagTypes } from "../../common/types/Tag";
 import { FEELINGS, STEP_DIFFICULTIES, KINDS } from "../../common/constants";
 
-export function convertToStepRef({
-  name,
-  id,
-  identifier
-}: Step | RawStep): StepRef {
-  return { name, id, identifier };
-}
-
 export function convertToStep(
-  variationsByKey: Record<string, RawStep[]> | null,
-  raw: RawStep
+  raw: RawStep,
+  variationsByKey?: Record<string, RawStep[]> | null
 ): Step {
   const {
     identifier,
     id,
-    tags,
-    feeling,
+    tags = [],
+    feeling = [],
     difficulty,
     owner_uid,
     created_at,
     name,
     videos,
-    artists,
+    artists = [],
     notes,
     smart_tags,
     variationKey,
@@ -83,8 +75,8 @@ export function convertToStep(
   const variations =
     variationsByKey && variationsByKey[variationKey] && variationKey
       ? variationsByKey[variationKey]
-          .map(convertToStepRef)
           .filter(ref => ref.id !== raw.id)
+          .map(rawStep => convertToStep(rawStep))
       : [];
 
   return {

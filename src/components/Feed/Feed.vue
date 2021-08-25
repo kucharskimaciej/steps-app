@@ -26,8 +26,12 @@ export default class Feed extends Vue {
   <main class="h-full max-h-full overflow-y-auto">
     <div v-for="step in steps" :key="step.id" class="relative mb-4">
       <FeedStep :step="step" @viewed="stepViewed(step.id)">
-        <template #actions="slotScope">
-          <slot name="stepActions" v-bind="slotScope" />
+        <template #leftActionsArea="slotScope">
+          <slot name="leftActionsArea" v-bind="slotScope" />
+        </template>
+
+        <template #rightActionsArea="slotScope">
+          <slot name="rightActionsArea" v-bind="slotScope" />
         </template>
       </FeedStep>
     </div>

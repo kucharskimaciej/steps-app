@@ -8,7 +8,7 @@ import {
   UpdateParams
 } from "@/lib/steps.resource";
 import { RawStep, Step } from "../../../common/types/Step";
-import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy, partial } from "lodash";
+import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { provideStore } from "@/store";
 import { PracticeRecord } from "../../../common/types/PracticeRecord";
@@ -29,8 +29,9 @@ export const steps = {
       return groupBy(state.rawSteps, "variationKey");
     },
     getSteps(state: StepsState): Step[] {
-      const convertedSteps = state.rawSteps.map(
-        partial(convertToStep, getVariationsByKey(provideStore()))
+      const variationsByKey = getVariationsByKey(provideStore());
+      const convertedSteps = state.rawSteps.map(rawStep =>
+        convertToStep(rawStep, variationsByKey)
       );
 
       return orderBy(convertedSteps, "created_at", ["desc", "desc"]);

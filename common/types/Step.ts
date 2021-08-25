@@ -51,7 +51,7 @@ export type TagCategories = Record<TagCategory, Tag[]>;
 
 export interface Step extends CommonFields {
   tags: TagCategories;
-  variations: StepRef[];
+  variations: Step[];
 }
 
 export type StepRef = Pick<CommonFields, "identifier" | "name" | "id">;

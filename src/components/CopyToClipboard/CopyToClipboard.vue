@@ -17,13 +17,7 @@ export default class CopyToClipboard extends Vue {
 </script>
 
 <template>
-  <div
-    class="inline-flex flex-shrink-0 text-sm text-gray-700 cursor-pointer"
-    @click="copy"
-  >
-    <slot>
-      <span class="hover:underline">{{ value }}</span>
-      <PureIcon class="self-center ml-1" type="content_copy" />
-    </slot>
-  </div>
+  <span class="cursor-pointer" @click="copy">
+    <slot></slot>
+  </span>
 </template>

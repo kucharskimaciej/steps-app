@@ -1,6 +1,6 @@
 import { RawStep, Step } from "../../../common/types/Step";
 import { convertToStep } from "@/lib/rawStepHelpers";
-import { groupBy, partial } from "lodash";
+import { groupBy } from "lodash";
 
 export function rawStepsFactory(): RawStep[] {
   return [
@@ -114,7 +114,7 @@ export function rawStepFactory(n = 0): RawStep {
 
 export function stepsFactory(rawSteps: RawStep[] = rawStepsFactory()): Step[] {
   const variationsByKey = groupBy(rawSteps, "variationKey");
-  return rawSteps.map(partial(convertToStep, variationsByKey));
+  return rawSteps.map(rawStep => convertToStep(rawStep, variationsByKey));
 }
 
 export function stepFactory(n = 0): Step {

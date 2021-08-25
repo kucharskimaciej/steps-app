@@ -15,6 +15,11 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 export default {
   title: "Components/Feed/Step",
   decorators: [
+    withKnobs,
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    WithModals,
     StoryRouter(
       {},
       {
@@ -25,12 +30,7 @@ export default {
           }
         ]
       }
-    ),
-    withKnobs,
-    Container("600px"),
-    Spacing,
-    WithGlobalStyles,
-    WithModals
+    )
   ]
 };
 

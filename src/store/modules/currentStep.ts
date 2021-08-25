@@ -17,7 +17,7 @@ export const currentStep = {
   getters: {
     step(state: CurrentStepState) {
       if (state.raw) {
-        return convertToStep(null, state.raw);
+        return convertToStep(state.raw, null);
       }
 
       return null;

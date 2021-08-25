@@ -27,7 +27,7 @@ export default class ModalContainer extends VueWithStore {
 <template>
   <PortalTarget
     :class="{
-      'fixed inset-0 flex z-20': inlineModalOpen,
+      'z-20 relative': inlineModalOpen,
       hidden: !inlineModalOpen
     }"
     name="modal"

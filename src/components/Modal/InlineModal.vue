@@ -22,12 +22,10 @@ export default class InlineModal extends Vue {
 </script>
 
 <template>
-  <span>
-    <Portal to="modal">
+  <Portal to="modal">
+    <div class="fixed inset-0 flex">
       <Backdrop @click="closeModal()" />
-    </Portal>
 
-    <Portal to="modal">
       <component
         :is="modalStyle"
         class="z-0"
@@ -36,6 +34,6 @@ export default class InlineModal extends Vue {
       >
         <slot />
       </component>
-    </Portal>
-  </span>
+    </div>
+  </Portal>
 </template>
