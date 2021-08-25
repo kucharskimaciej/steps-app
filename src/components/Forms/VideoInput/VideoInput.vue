@@ -75,7 +75,7 @@ export default class VideoInput extends Vue {
     <header class="mb-4">
       <FileInput accept="video/*" @file-selected="onFileSelected">
         <PureButton tag="span">
-          <PureIcon type="cloud_upload" class="mr-2" />
+          <PureIcon type="cloud_upload" class="mr-1" />
           Upload video
         </PureButton>
       </FileInput>

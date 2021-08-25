@@ -110,7 +110,7 @@ export default class FeedStep extends Vue {
             class="mr-auto"
             @click="variationsOpen = true"
           >
-            <span v-if="$match('desktop')" class="mr-1">Variations </span>
+            <span v-if="$match('desktop')" class="mr-1">Variations</span>
             <PureIcon type="collections" class="text-xl" />
           </PureButton>
         </slot>
