@@ -38,7 +38,7 @@
           referrerpolicy="no-referrer"
           tag="a"
           size="small"
-          kind="ghost"
+          kind="secondary"
           class="mr-2"
         >
           Video {{ index + 2 }}
@@ -81,7 +81,10 @@
       </section>
 
       <section class="mt-3 text-sm">
-        Shortlink: <CopyToClipboard :value="step | shortLink($router)" />
+        Shortlink:
+        <CopyToClipboard :value="step | shortLink($router)">
+          {{ step | shortLink($router) }}
+        </CopyToClipboard>
       </section>
     </main>
   </article>
