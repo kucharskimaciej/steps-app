@@ -5,7 +5,7 @@ import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { FEELINGS, KINDS, STEP_DIFFICULTIES } from "../../../common/constants";
+import { KINDS, STEP_DIFFICULTIES } from "../../../common/constants";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
@@ -21,6 +21,8 @@ import { DebounceTime } from "@/lib/decorators/debouceTime";
 import { uniq, head, difference } from "lodash";
 import { TokenizeService } from "@/lib/tokenize.service";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
+import { AppConfigToken } from "../../../common/tokens";
+import { AppConfig } from "../../../common/config/types";
 
 @Component({
   components: {
@@ -82,6 +84,9 @@ export default class StepForm extends Vue implements StepFormApi {
   @Inject(StepsDuplicateLocatorToken)
   private readonly duplicateLocator!: StepDuplicateLocator;
 
+  @Inject(AppConfigToken)
+  private readonly appConfig!: AppConfig;
+
   @Inject()
   private readonly smartTags!: SmartTags;
 
@@ -121,11 +126,11 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   get feelingValues(): Feeling[] {
-    return Object.keys(FEELINGS) as Feeling[];
+    return Object.keys(this.appConfig.feelings) as Feeling[];
   }
 
   feelingLabel(feeling: Feeling): string {
-    return FEELINGS[feeling];
+    return this.appConfig.feelings[feeling];
   }
 
   get stepDifficulties() {

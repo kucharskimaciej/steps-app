@@ -1,14 +1,16 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { entries } from "lodash";
+import { Inject } from "vue-typedi";
+import { validationMixin } from "vuelidate";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { validationMixin } from "vuelidate";
 import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
-import { FEELINGS } from "../../../common/constants";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import { SearchFilters } from "@/components/FullSearch/types";
-import { entries } from "lodash";
+import { AppConfigToken } from "../../../common/tokens";
+import { AppConfig } from "../../../common/config/types";
 
 @Component({
   components: {
@@ -31,6 +33,9 @@ import { entries } from "lodash";
   }
 })
 export default class FullSearchFilters extends Vue {
+  @Inject(AppConfigToken)
+  private readonly appConfig!: AppConfig;
+
   @Prop({
     default: () => ({
       query: "",
@@ -46,7 +51,7 @@ export default class FullSearchFilters extends Vue {
   @Prop({ default: () => [] }) private existingArtists!: string[];
 
   get feelingOptions(): OptionWithLabel[] {
-    return entries(FEELINGS).map(([key, label]) => ({
+    return entries(this.appConfig.feelings).map(([key, label]) => ({
       key,
       label
     }));

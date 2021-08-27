@@ -1,11 +1,16 @@
 import { RawStep, Step, TagCategories } from "../../common/types/Step";
 import { Tag, TagTypes } from "../../common/types/Tag";
-import { FEELINGS, STEP_DIFFICULTIES, KINDS } from "../../common/constants";
+import { STEP_DIFFICULTIES, KINDS } from "../../common/constants";
+import { AppConfigToken } from "../../common/tokens";
+import { AppConfig } from "../../common/config/types";
+import { Container } from "vue-typedi";
 
 export function convertToStep(
   raw: RawStep,
   variationsByKey?: Record<string, RawStep[]> | null
 ): Step {
+  const { feelings } = Container.get(AppConfigToken) as AppConfig;
+
   const {
     identifier,
     id,
@@ -32,7 +37,7 @@ export function convertToStep(
 
   const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map(f => ({
     type: TagTypes.FEELING,
-    text: FEELINGS[f]
+    text: feelings[f]
   }));
 
   const kindTag: Tag<TagTypes.KIND> = {

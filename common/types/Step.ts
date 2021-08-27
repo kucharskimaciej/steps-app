@@ -5,13 +5,7 @@ import { Owned } from "./common/Owned";
 import { PracticeRecord } from "./PracticeRecord";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
-export type Feeling =
-  | "semba"
-  | "kizomba"
-  | "fusion"
-  | "tarraxa"
-  | "urban"
-  | "doucer";
+export type Feeling = string;
 export type StepKind = "step" | "routine" | "inspiration";
 
 interface CommonFields extends DatabaseItem, Owned {

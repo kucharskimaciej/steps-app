@@ -8,6 +8,7 @@ import "./main.scss";
 import router from "./router";
 import "./filters";
 import "./plugins";
+import "../common/config";
 
 import App from "./App.vue";
 
