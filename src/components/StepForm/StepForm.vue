@@ -5,7 +5,7 @@ import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { KINDS, STEP_DIFFICULTIES } from "../../../common/constants";
+import { KINDS } from "../../../common/constants";
 import Checklist from "@/components/Forms/Checklist.vue";
 import { StepFormApi, StepFormData } from "@/components/StepForm/types";
 import { validationMixin } from "vuelidate";
@@ -54,7 +54,7 @@ import { AppConfig } from "../../../common/config/types";
         },
         difficulty: {
           required,
-          oneOf: oneOf(Object.keys(STEP_DIFFICULTIES).map(Number))
+          oneOf: oneOf(Object.keys(this.appConfig.difficulties).map(Number))
         },
         kind: {
           required,
@@ -134,7 +134,7 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   get stepDifficulties() {
-    return STEP_DIFFICULTIES;
+    return this.appConfig.difficulties;
   }
 
   get stepKinds() {

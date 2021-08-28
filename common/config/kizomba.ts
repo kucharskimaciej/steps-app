@@ -9,6 +9,13 @@ const kizombaConfig: AppConfig = {
     urban: "Urban Kizz",
     doucer: "Doucer"
   },
+  difficulties: {
+    1: "Very easy",
+    2: "Easy",
+    3: "Intermediate",
+    5: "Hard",
+    8: "Very hard"
+  },
   smartTagMatchers: [
     ["Saida damska", ["said(a|y|zie) damsk(a|iej)"]],
     ["Saida męska", ["said(a|y|zie) męsk(a|iej)"]],

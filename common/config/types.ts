@@ -1,6 +1,11 @@
-import { TagMatcherDefinitionTuple } from "common/types/helperTypes";
+import {
+  ReadonlyRecord,
+  TagMatcherDefinitionTuple
+} from "common/types/helperTypes";
+import { StepDifficulty } from "../types/Step";
 
 export type AppConfig = {
-  feelings: Record<string, string>;
+  feelings: ReadonlyRecord<string, string>;
+  difficulties: ReadonlyRecord<StepDifficulty, string>;
   smartTagMatchers: TagMatcherDefinitionTuple[];
 };
