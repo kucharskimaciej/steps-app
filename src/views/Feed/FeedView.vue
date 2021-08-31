@@ -24,6 +24,7 @@ import SearchWidget from "@/components/SearchWidget/SearchWidget.vue";
 import SearchOverlay from "@/components/SearchOverlay/SearchOverlay.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import { Search } from "@/components/FullSearch/types";
+import Badge from "@/components/Badge/Badge.vue";
 
 @Component({
   components: {
@@ -36,7 +37,8 @@ import { Search } from "@/components/FullSearch/types";
     DropdownMenu,
     SearchWidget,
     InlineModal,
-    SearchOverlay
+    SearchOverlay,
+    Badge
   }
 })
 export default class FeedView extends VueWithStore {
@@ -97,7 +99,7 @@ export default class FeedView extends VueWithStore {
   <AllStepsProvider>
     <Container class="pb-4 ">
       <header
-        class="flex justify-center py-5 px-2 sticky top-0 z-10 bg-mono-white border-b-1 border-b-mono-900 desktop:px-0"
+        class="flex justify-center py-5 px-2 sticky top-0 z-10 bg-mono-950 border-b-1 border-b-mono-900 desktop:px-0"
       >
         <SearchWidget
           class="ml-auto"
@@ -105,11 +107,9 @@ export default class FeedView extends VueWithStore {
           @click="searchOpen = true"
         >
           <template #activeSearch>
-            <span
-              class="bg-mono-200 ml-2 -mt-px rounded-sm text-2xs text-mono-white font-bold px-1 py-1"
-            >
+            <Badge class="ml-2">
               {{ selectedStepIds.length }}
-            </span>
+            </Badge>
           </template>
         </SearchWidget>
 
@@ -131,8 +131,8 @@ export default class FeedView extends VueWithStore {
           <RecordPracticeWidget :step-id="step.id">
             <template #not_practiced="{ practice }">
               <PureButton size="small" kind="ghost" @click="practice">
-                <span v-if="$match('desktop')" class="mr-1">Practice</span>
-                <PureIcon type="playlist_play" class="text-xl" />
+                <PureIcon type="playlist_play" class="text-xl mr-1" />
+                <span v-if="$match('desktop')">Practice</span>
               </PureButton>
             </template>
 

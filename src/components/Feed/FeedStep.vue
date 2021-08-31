@@ -14,6 +14,7 @@ import InlineModal from "@/components/Modal/InlineModal.vue";
 import Feed from "@/components/Feed/Feed.vue";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
+import Badge from "@/components/Badge/Badge.vue";
 
 @Component({
   components: {
@@ -29,7 +30,8 @@ import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
     IntersectSwitch,
     VideoModal,
     InlineModal,
-    RecordPracticeWidget
+    RecordPracticeWidget,
+    Badge
   }
 })
 export default class FeedStep extends Vue {
@@ -71,11 +73,15 @@ export default class FeedStep extends Vue {
   get hasVariations() {
     return this.step.variations?.length > 0;
   }
+
+  get variationsCount(): number {
+    return this.step.variations?.length || 0;
+  }
 }
 </script>
 
 <template>
-  <article :id="anchor" class="bg-white overflow-hidden">
+  <article :id="anchor" class="bg-mono-white rounded-sm overflow-hidden">
     <main
       class="video-container mb-2"
       :style="{
@@ -100,18 +106,18 @@ export default class FeedStep extends Vue {
         </template>
       </IntersectSwitch>
     </main>
-    <section class="px-2 -mx-1 flex mb-2">
+    <section class="px-4 -mx-2 flex mb-2">
       <span class="w-full mr-auto">
-        <slot v-if="$slots.leftActionsArea" name="leftActionsArea" :step="step">
+        <slot name="leftActionsArea" :step="step">
           <PureButton
-            v-if="hasVariations"
+            :disabled="!hasVariations"
             size="small"
             kind="ghost"
             class="mr-auto"
             @click="variationsOpen = true"
           >
-            <span v-if="$match('desktop')" class="mr-1">Variations</span>
-            <PureIcon type="collections" class="text-xl" />
+            <PureIcon type="collections" class="text-xl mr-1" />
+            <Badge>{{ variationsCount }}</Badge>
           </PureButton>
         </slot>
       </span>
@@ -122,28 +128,27 @@ export default class FeedStep extends Vue {
 
       <span class="w-full ml-auto text-right">
         <slot name="rightActionsArea" :step="step"></slot>
+        <OptionsPopup :step="step">
+          <template #toggle="{ open }">
+            <PureButton size="small" kind="ghost" @click="open">
+              <PureIcon type="more_vert" class="text-xl" />
+            </PureButton>
+          </template>
+
+          <template #customOptions>
+            <PopupMenuItem v-if="hasVariations" @click="variationsOpen = true">
+              Show variations
+            </PopupMenuItem>
+          </template>
+        </OptionsPopup>
       </span>
     </section>
-    <header class="px-2 mb-2 flex">
+    <header class="px-4 mb-2 flex">
       <h2 class="text-mono-100 font-normal mr-auto">
         {{ step.name }}
       </h2>
-
-      <OptionsPopup :step="step">
-        <template #toggle="{ open }">
-          <PureButton size="small" kind="ghost" @click="open">
-            <PureIcon type="more_vert" class="text-xl" />
-          </PureButton>
-        </template>
-
-        <template #customOptions>
-          <PopupMenuItem v-if="hasVariations" @click="variationsOpen = true">
-            Show variations
-          </PopupMenuItem>
-        </template>
-      </OptionsPopup>
     </header>
-    <footer class="px-2 mb-2">
+    <footer class="px-4 mb-4">
       <section class="-mt-1">
         <Tags :step="step" />
       </section>
