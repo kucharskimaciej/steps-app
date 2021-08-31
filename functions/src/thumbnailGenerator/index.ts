@@ -90,8 +90,6 @@ async function processVideo(
 
   logger.log(`File downloaded to: ${tempVideoPath}, processing...`);
   const bucket = admin.storage().bucket();
-  const snapshotFile = bucket.file(snapshotPath);
-  const thumbnailFile = bucket.file(thumbnailPath);
 
   try {
     await Promise.all([
@@ -135,20 +133,10 @@ async function processVideo(
   );
 
   logger.log("Cleaned-up, signing files...");
-  const [[snapshotUrl], [thumbnailUrl]] = await Promise.all([
-    snapshotFile.getSignedUrl({
-      action: "read",
-      expires: "01-01-2500"
-    }),
-    thumbnailFile.getSignedUrl({
-      action: "read",
-      expires: "01-01-2500"
-    })
-  ]);
 
   return {
-    snapshotUrl,
-    thumbnailUrl,
+    snapshotUrl: snapshotPath,
+    thumbnailUrl: thumbnailPath,
     width,
     height
   };
