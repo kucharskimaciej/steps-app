@@ -55,7 +55,8 @@ async function run(db: Firebase.firestore.Firestore) {
 
     return doc.ref.set(
       {
-        videos: updatedVideos
+        videos: updatedVideos,
+        __t: Date.now()
       },
       { merge: true }
     );
