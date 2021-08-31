@@ -166,6 +166,10 @@ export default class VideoPlayer extends Vue {
       this.viewed();
     }
   }
+
+  get snapshotUrl() {
+    return `https://storage.googleapis.com/${process.env.VUE_APP_FIREBASE_STORAGE_BUCKET}/${this.video.snapshot_url}`;
+  }
 }
 </script>
 
@@ -176,7 +180,7 @@ export default class VideoPlayer extends Vue {
     <aside
       v-if="background && video.snapshot_url"
       class="video-background"
-      :style="{ backgroundImage: `url(${video.snapshot_url})` }"
+      :style="{ backgroundImage: `url(${snapshotUrl})` }"
     />
 
     <video
