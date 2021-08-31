@@ -157,7 +157,10 @@ function getVideoDimensions(
         return reject(err);
       }
 
-      const { width, height } = data.streams[0];
+      const { width, height } = data.streams.find(s => s.width) || {
+        width: 0,
+        height: 0
+      };
       logger.debug(`Resolved ${pathToVideo} to be ${width}x${height}`);
       resolve({ width: width!, height: height! });
     });
