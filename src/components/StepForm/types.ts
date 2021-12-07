@@ -17,7 +17,7 @@ export type StepFormData = Pick<
 
 export type PersistentFormData = Pick<
   StepFormData,
-  "feeling" | "kind" | "artists" | "tags" | "difficulty"
+  "feeling" | "artists" | "tags" | "difficulty"
 >;
 
 export interface StepFormApi {

@@ -85,12 +85,11 @@ export default class CreateStep extends VueWithStore {
 
   static getPersistentValue({
     feeling,
-    kind,
     artists,
     tags,
     difficulty
   }: StepFormData): PersistentFormData {
-    return { feeling, kind, artists, tags, difficulty };
+    return { feeling, artists, tags, difficulty };
   }
 
   toggleVariationSelected(stepId: string): void {
