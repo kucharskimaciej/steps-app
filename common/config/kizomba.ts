@@ -44,7 +44,7 @@ const kizombaConfig: AppConfig = {
     ["Clockwise", ["clockwise"]],
     ["Skorpion", ["skorpion(ie)?"]],
     ["Napasada", ["napasad(y|a|zie)"]],
-    ["Cross", ["kross", "cross", "cros(sem|sie)"]],
+    ["Cross", ["kross", "cross(a|y)?", "cros(sem|sie)"]],
     ["Za partnerką", ["pozycj(a|i|ą) z tyłu", "za partnerką", "z tyłu"]],
     [
       "Przed partnerką",
