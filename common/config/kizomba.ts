@@ -54,7 +54,8 @@ const kizombaConfig: AppConfig = {
     ["Wyrzucenie ręki", ["wyrzucen(iem?|iu)"]],
     ["Slide", ["slid(u|e|em|zie)"]],
     ["Pivot", ["pivot(em|u)?", "pivocie"]],
-    ["Izolacja", ["izolacj(i|a|ami|ą)"]]
+    ["Izolacja", ["izolacj(i|a|ami|ą)"]],
+    ["Cyrkiel", ["cyrkiel", "cyrkl(u|a|em)"]]
   ]
 };
 
