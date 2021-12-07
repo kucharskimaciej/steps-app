@@ -53,7 +53,8 @@ const kizombaConfig: AppConfig = {
     ["Wypuszczenie", ["wypuszcze(ń|nie|niu|nia|niem)"]],
     ["Wyrzucenie ręki", ["wyrzucen(iem?|iu)"]],
     ["Slide", ["slid(u|e|em|zie)"]],
-    ["Pivot", ["pivot(em|u)?", "pivocie"]]
+    ["Pivot", ["pivot(em|u)?", "pivocie"]],
+    ["Izolacja", ["izolacj(i|a|ami|ą)"]]
   ]
 };
 
