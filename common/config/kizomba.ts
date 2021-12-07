@@ -37,7 +37,7 @@ const kizombaConfig: AppConfig = {
       ["odwrotnego trzymania", "odwrotnym trzymani(u|em)"]
     ],
     ["Położenie", ["położeni(a|u|e|em)"]],
-    ["Podcięcie", ["podcięci(u|e|em)"]],
+    ["Podcięcie", ["podcięci(a|u|e|em)"]],
     ["Cassamento", ["cassamento"]],
     ["Footwork", ["footwork(iem|u)?"]],
     ["Obrót", ["obrót", "obrot(u|em|ami)", "obrocie"]],
