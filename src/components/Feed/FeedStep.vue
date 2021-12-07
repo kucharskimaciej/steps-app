@@ -11,14 +11,13 @@ import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
 import OptionsPopup from "@/components/Feed/OptionsPopup.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import Feed from "@/components/Feed/Feed.vue";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
 import Badge from "@/components/Badge/Badge.vue";
 
 @Component({
   components: {
-    Feed,
+    Feed: () => import("@/components/Feed/Feed.vue"),
     VideoPlayer,
     PureTag,
     OptionsPopup,
@@ -110,7 +109,7 @@ export default class FeedStep extends Vue {
       <span class="w-full mr-auto">
         <slot name="leftActionsArea" :step="step">
           <PureButton
-            :disabled="!hasVariations"
+            v-if="hasVariations"
             size="small"
             kind="ghost"
             class="mr-auto"
