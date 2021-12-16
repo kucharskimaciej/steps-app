@@ -17,7 +17,7 @@ export default class SelectToggleWidget extends Vue {
 
 <template>
   <label
-    class="block leading-0 text-2xl cursor-pointer opacity-75 hover:opacity-100"
+    class="block leading-none text-2xl cursor-pointer opacity-75 hover:opacity-100"
     @click.stop="() => {}"
   >
     <input

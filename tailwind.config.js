@@ -61,12 +61,9 @@ const BASE_COLORS = {
 };
 
 module.exports = {
-  purge: false,
+  content: ["./src/**/*.vue"],
   theme: {
     extend: {
-      lineHeight: {
-        "0": 0
-      },
       zIndex: {
         "-1": -1
       }
@@ -98,19 +95,5 @@ module.exports = {
       desktop: "75rem"
     }
   },
-  variants: [
-    "responsive",
-    "group-hover",
-    "focus-within",
-    "first",
-    "last",
-    "odd",
-    "even",
-    "hover",
-    "focus",
-    "active",
-    "visited",
-    "disabled"
-  ],
   plugins: []
 };
