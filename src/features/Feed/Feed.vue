@@ -15,6 +15,7 @@ import { Step } from "../../../common/types/Step";
 })
 export default class Feed extends Vue {
   @Prop({ required: true }) private steps!: Step[];
+  @Prop() private pageMode!: boolean;
 
   width = 0;
   mounted() {
@@ -27,7 +28,7 @@ export default class Feed extends Vue {
 
 <template>
   <main>
-    <DynamicScroller page-mode :items="steps" :min-item-size="800">
+    <DynamicScroller :page-mode="pageMode" :items="steps" :min-item-size="800">
       <template #default="{ item, index, active }">
         <DynamicScrollerItem
           :item="item"

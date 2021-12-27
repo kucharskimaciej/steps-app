@@ -130,7 +130,7 @@ export default class FeedView extends VueWithStore {
           />
         </InlineModal>
       </header>
-      <Feed :steps="selectedSteps">
+      <Feed :steps="selectedSteps" page-mode>
         <template #default="{ step, videoHeight }">
           <FeedStep
             :step="step"
