@@ -5,7 +5,7 @@ import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
 import PortalVue from "portal-vue";
 import { provideStore } from "@/store";
-import "./main.scss";
+import "./main.css";
 import router from "./router";
 import "./filters";
 import "./plugins";

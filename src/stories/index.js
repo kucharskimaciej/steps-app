@@ -4,7 +4,7 @@ import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
 
 import "./mocks";
-import "../main.scss";
+import "../main.css";
 import "../filters";
 import "../plugins";
 
