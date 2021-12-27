@@ -1,6 +1,6 @@
 import { Inject, Service } from "vue-typedi";
 import { FilteredResult } from "@/lib/StepSearch/types";
-import { Search, SortDirection, SortType } from "@/components/FullSearch/types";
+import { Search, SortDirection, SortType } from "@/features/Search/types";
 import { RawStep } from "../../../common/types/Step";
 import { first, orderBy, shuffle } from "lodash";
 import { ScoreResultService } from "@/lib/StepSearch/scoreResult.service";

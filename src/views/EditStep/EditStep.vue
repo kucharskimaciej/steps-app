@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Ref, Watch } from "vue-property-decorator";
-import StepForm from "@/components/StepForm/StepForm.vue";
-import { StepFormApi } from "@/components/StepForm/types";
+import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
+import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
 import { RawStep, Step } from "../../../common/types/Step";
 import "@/lib/stepsByHashDuplicateLocator";
 import { ROUTES } from "@/router/routes";

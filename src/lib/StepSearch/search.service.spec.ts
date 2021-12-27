@@ -1,7 +1,7 @@
 import { Matcher, SearchService } from "@/lib/StepSearch/search.service";
 import { Feeling, RawStep } from "../../../common/types/Step";
 import { KeyValueTuple } from "@/components/Forms/TagsSelection/types";
-import { SearchFilters } from "@/components/FullSearch/types";
+import { SearchFilters } from "@/features/Search/types";
 
 describe("Search service", () => {
   describe("specific filter matchers", () => {

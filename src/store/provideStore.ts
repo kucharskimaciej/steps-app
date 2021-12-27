@@ -5,6 +5,7 @@ import { steps } from "@/store/modules/steps";
 import { currentStep } from "@/store/modules/currentStep";
 import { practiceSessions } from "@/store/modules/practiceSessions";
 import { selectedSession } from "@/store/modules/selectedSession";
+import { inlineEdit } from "@/store/modules/inlineEdit";
 import { feed } from "@/store/modules/feed";
 
 let store: Store<RootState>;
@@ -18,7 +19,8 @@ export function provideStore(): Store<RootState> {
         feed,
         currentStep,
         practiceSessions,
-        selectedSession
+        selectedSession,
+        inlineEdit
       }
     });
   }

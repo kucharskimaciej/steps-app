@@ -8,7 +8,7 @@ import { withKnobs } from "@storybook/addon-knobs";
 import Video from "@/components/Forms/VideoInput/Video.vue";
 
 export default {
-  title: "Components/VideoInput/Video",
+  title: "Components/VideoInput/VideoPlayer",
   decorators: [
     withKnobs,
     Container("600px"),
@@ -22,6 +22,6 @@ export const Default = () => ({
     Video
   },
   template: `
-    <Video :title="'Video 1'" filename="some_file.mp4" url="http://www.youtube.com/" />
+    <Video :title="'VideoPlayer 1'" filename="some_file.mp4" url="http://www.youtube.com/" />
   `
 });

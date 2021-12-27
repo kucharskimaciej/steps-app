@@ -1,7 +1,8 @@
 <script lang="ts">
+import StepActions from "@/views/Feed/components/StepActions.vue";
 import { Component, Watch } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
-import Feed from "@/components/Feed/Feed.vue";
+import Feed from "@/features/Feed/Feed.vue";
 import Container from "@/components/Layout/Container.vue";
 import { Step } from "../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -20,16 +21,19 @@ import {
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
 import { isEqual } from "lodash";
-import SearchWidget from "@/components/SearchWidget/SearchWidget.vue";
-import SearchOverlay from "@/components/SearchOverlay/SearchOverlay.vue";
+import SearchWidget from "@/features/Search/SearchWidget.vue";
+import SearchOverlay from "@/features/Search/SearchOverlay.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import { Search } from "@/components/FullSearch/types";
+import { Search } from "@/features/Search/types";
 import Badge from "@/components/Badge/Badge.vue";
+import FeedStep from "@/features/Feed/FeedStep.vue";
 
 @Component({
   components: {
+    StepActions,
     Container,
     Feed,
+    FeedStep,
     PureButton,
     PureIcon,
     AllStepsProvider,
@@ -126,22 +130,13 @@ export default class FeedView extends VueWithStore {
           />
         </InlineModal>
       </header>
-      <Feed :steps="selectedSteps" @step-viewed="handleStepViewed">
-        <template #rightActionsArea="{ step }">
-          <RecordPracticeWidget :step-id="step.id">
-            <template #not_practiced="{ practice }">
-              <PureButton size="small" kind="ghost" @click="practice">
-                <PureIcon type="playlist_play" class="text-xl mr-1" />
-                <span v-if="$match('desktop')">Practice</span>
-              </PureButton>
+      <Feed :steps="selectedSteps">
+        <template #default="{ step }">
+          <FeedStep :step="step" @viewed="handleStepViewed">
+            <template #actions>
+              <StepActions :step="step" class="mb-2" />
             </template>
-
-            <template #practiced="{ practice }">
-              <PureButton size="small" kind="ghost" @click="practice">
-                <PureIcon type="playlist_add_check" class="text-xl" />
-              </PureButton>
-            </template>
-          </RecordPracticeWidget>
+          </FeedStep>
         </template>
       </Feed>
     </Container>

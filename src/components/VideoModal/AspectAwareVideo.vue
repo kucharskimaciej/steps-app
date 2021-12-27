@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Component, Prop, Watch } from "vue-property-decorator";
-import VideoPlayer from "@/components/Video/VideoPlayer.vue";
+import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
 import { VueWithStore } from "@/lib/vueWithStore";

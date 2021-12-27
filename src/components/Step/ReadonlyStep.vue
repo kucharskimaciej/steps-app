@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Step } from "../../../common/types/Step";
-import VideoPlayer from "@/components/Video/VideoPlayer.vue";
+import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 

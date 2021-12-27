@@ -1,6 +1,6 @@
 import { Service } from "vue-typedi";
 import { FilteredResult } from "@/lib/StepSearch/types";
-import { SearchFilters } from "@/components/FullSearch/types";
+import { SearchFilters } from "@/features/Search/types";
 
 @Service()
 export class ScoreResultService {

@@ -1,6 +1,6 @@
 import { Inject, Service } from "vue-typedi";
 import { RawStep } from "../../../common/types/Step";
-import { Search, SearchFilters } from "@/components/FullSearch/types";
+import { Search, SearchFilters } from "@/features/Search/types";
 import { QuerySearchService } from "@/lib/StepSearch/querySearch.service";
 import { SortResultsService } from "@/lib/StepSearch/sortResults.service";
 

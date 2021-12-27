@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import Vue from "vue";
+import VueCompositionAPI from "@vue/composition-api";
 import VueTypedi from "vue-typedi";
 import Vuex from "vuex";
 import PortalVue from "portal-vue";
@@ -18,6 +19,7 @@ Vue.config.devtools = true;
 Vue.use(Vuex);
 Vue.use(VueTypedi);
 Vue.use(PortalVue);
+Vue.use(VueCompositionAPI);
 
 new Vue({
   router,

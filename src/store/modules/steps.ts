@@ -1,3 +1,4 @@
+import { createVariationId } from "@/lib/variations/variationId";
 import { Container } from "vue-typedi";
 import { ActionContext } from "vuex";
 import { getStoreAccessors } from "typesafe-vuex";
@@ -17,6 +18,17 @@ import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 
 type StepsContext = ActionContext<StepsState, RootState>;
 
+type UpdateStepMutationPayload = {
+  updatedStep: RawStep;
+  variationsToMerge?: string[];
+};
+
+type UpdateStepActionPayload = {
+  stepId: string;
+  params: UpdateParams;
+  selectedVariations: string[];
+};
+
 export const steps = {
   namespaced: true,
   state: {
@@ -25,6 +37,9 @@ export const steps = {
     status: "clean"
   },
   getters: {
+    rawStepsById(state: StepsState) {
+      return keyBy(state.rawSteps, "id");
+    },
     getVariationsByKey(state: StepsState): Record<string, RawStep[]> {
       return groupBy(state.rawSteps, "variationKey");
     },
@@ -73,10 +88,32 @@ export const steps = {
     setSteps(state: StepsState, payload: RawStep[]) {
       state.rawSteps = payload;
     },
-    updateStep(state: StepsState, payload: RawStep) {
-      state.rawSteps = state.rawSteps.map(step =>
-        step.id === payload.id ? payload : step
+    updateStep(
+      state: StepsState,
+      { updatedStep, variationsToMerge }: UpdateStepMutationPayload
+    ) {
+      const previousValue = state.rawSteps.find(
+        step => updatedStep.id === step.id
       );
+
+      if (!previousValue) {
+        return;
+      }
+
+      state.rawSteps = state.rawSteps.map(step => {
+        if (step.id === updatedStep.id) {
+          return updatedStep;
+        }
+
+        if (variationsToMerge?.includes(step.variationKey)) {
+          return {
+            ...step,
+            variationKey: updatedStep.variationKey
+          };
+        }
+
+        return step;
+      });
     },
     updateStatus(state: StepsState, payload: Status) {
       state.status = payload;
@@ -107,19 +144,26 @@ export const steps = {
     },
     async updateStep(
       context: StepsContext,
-      payload: {
-        stepId: string;
-        params: UpdateParams;
-        selectedVariations: string[];
-      }
+      { stepId, params, selectedVariations }: UpdateStepActionPayload
     ) {
       const stepsResource = Container.get(StepsResource);
-      const updatedStep = await stepsResource.update(
-        payload.stepId,
-        payload.params,
-        payload.selectedVariations
+      const currentStep = rawStepsById(context)[stepId];
+
+      const variationKey = createVariationId();
+
+      const updatedStep = { ...currentStep, ...params, variationKey };
+
+      commitUpdateStep(context, {
+        updatedStep,
+        variationsToMerge: selectedVariations
+      });
+
+      await stepsResource.update(
+        stepId,
+        params,
+        variationKey,
+        selectedVariations
       );
-      commitUpdateStep(context, updatedStep);
     },
     async recordPractice(
       context: StepsContext,
@@ -141,7 +185,7 @@ export const steps = {
         practice_records: [record, ...(step.practice_records || [])]
       });
 
-      commitUpdateStep(context, updatedStep);
+      commitUpdateStep(context, { updatedStep });
     },
     async recordView(context: StepsContext, stepId: string) {
       const stepsResource = Container.get(StepsResource);
@@ -156,7 +200,7 @@ export const steps = {
         view_records: [Date.now(), ...(step.view_records || [])]
       });
       commitMarkStepAsViewed(context, step.id);
-      commitUpdateStep(context, updatedStep);
+      commitUpdateStep(context, { updatedStep });
     }
   }
 };
@@ -178,6 +222,7 @@ export const getVariationsByKey = read(getters.getVariationsByKey);
 export const getSteps = read(getters.getSteps);
 export const nextIdentifier = read(getters.nextIdentifier);
 export const stepsById = read(getters.stepsById);
+export const rawStepsById = read(getters.rawStepsById);
 export const existingArtists = read(getters.existingArtists);
 export const existingTags = read(getters.existingTags);
 export const stepsByPracticeDate = read(getters.stepsByPracticeDate);

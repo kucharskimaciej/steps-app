@@ -1,5 +1,5 @@
 import { Accessors } from "@/store/createModule";
-import { Search, SortDirection, SortType } from "@/components/FullSearch/types";
+import { Search, SortDirection, SortType } from "@/features/Search/types";
 import { getStoreAccessors } from "typesafe-vuex";
 import { RootState } from "@/store/types";
 import { isEqual } from "lodash";

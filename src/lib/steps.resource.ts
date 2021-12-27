@@ -23,7 +23,9 @@ export type CreateParams = Pick<
   EditableFields | "owner_uid" | "identifier"
 >;
 
-export type UpdateParams = Partial<Pick<RawStep, EditableFields>>;
+export type UpdateParams = Partial<
+  Pick<RawStep, EditableFields | "variationKey">
+>;
 
 @Service()
 export class StepsResource extends Resource<
@@ -61,10 +63,9 @@ export class StepsResource extends Resource<
   public async update(
     id: string,
     params: UpdateParams,
+    variationKey: string = createVariationId(),
     variationsToMerge?: string[]
   ): Promise<RawStep> {
-    const variationKey = createVariationId();
-
     if (!variationsToMerge || !variationsToMerge.length) {
       variationsToMerge = [variationKey];
     }

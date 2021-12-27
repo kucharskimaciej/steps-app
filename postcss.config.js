@@ -7,7 +7,7 @@ const _ = require("lodash");
 module.exports = {
   plugins: [
     atimport(),
-    tailwindcss("./tailwind.config.js"),
+    tailwindcss(),
     process.env.NODE_ENV === "production"
       ? purgecss({
           content: ["./src/**/*.vue"],

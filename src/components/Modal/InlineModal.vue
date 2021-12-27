@@ -32,7 +32,7 @@ export default class InlineModal extends Vue {
         v-bind="{ modalProps }"
         @close="closeModal()"
       >
-        <slot />
+        <slot :close="closeModal" />
       </component>
     </div>
   </Portal>

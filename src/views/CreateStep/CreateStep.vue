@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Component, Ref } from "vue-property-decorator";
-import StepForm from "@/components/StepForm/StepForm.vue";
+import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import {
   PersistentFormData,
   StepFormApi,
   StepFormData
-} from "@/components/StepForm/types";
+} from "@/features/CreateEditStep/StepForm/types";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import "@/lib/rawStepHelpers";
 import { ROUTES } from "@/router/routes";

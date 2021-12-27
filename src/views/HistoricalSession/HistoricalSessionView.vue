@@ -3,7 +3,7 @@ import { Component, Prop } from "vue-property-decorator";
 import { VueWithStore } from "@/lib/vueWithStore";
 import Container from "@/components/Layout/Container.vue";
 import AllStepsProvider from "../../components/Providers/AllStepsProvider";
-import Feed from "@/components/Feed/Feed.vue";
+import Feed from "@/features/Feed/Feed.vue";
 import { Step } from "../../../common/types/Step";
 import { stepsByPracticeDate } from "@/store";
 

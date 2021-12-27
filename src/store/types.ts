@@ -1,5 +1,7 @@
 import { RawStep } from "../../common/types/Step";
 import { PracticeSession } from "../../common/types/PracticeSession";
+import { InlineEditState } from "./modules/inlineEdit";
+
 export type Status = "clean" | "pending" | "dirty";
 
 export interface WithStatus {
@@ -33,4 +35,5 @@ export interface RootState {
   currentStep: CurrentStepState;
   practiceSessions: PracticeSessionsState;
   selectedSession: SelectedSessionState;
+  inlineEdit: InlineEditState;
 }

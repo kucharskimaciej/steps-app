@@ -19,11 +19,11 @@ export default class Close extends Vue {
 <template>
   <aside
     v-bind="$attrs"
-    class="absolute top-0 m-2 desktop:m-4 text-3xl leading-none cursor-pointer"
+    class="absolute top-0 m-2 desktop:m-4 text-3xl flex leading-none cursor-pointer"
     :class="{
       'right-0': iconPosition === 'topRight',
       'left-0': iconPosition === 'topLeft',
-      'bg-white rounded-full pt-px': iconStyle === 'filled'
+      'bg-white rounded-full': iconStyle === 'filled'
     }"
     v-on="$listeners"
   >
