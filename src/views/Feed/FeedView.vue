@@ -132,7 +132,7 @@ export default class FeedView extends VueWithStore {
       </header>
       <Feed :steps="selectedSteps">
         <template #default="{ step }">
-          <FeedStep :step="step" @viewed="handleStepViewed">
+          <FeedStep :step="step" @viewed="handleStepViewed(step.id)">
             <template #actions>
               <StepActions :step="step" class="mb-2" />
             </template>
