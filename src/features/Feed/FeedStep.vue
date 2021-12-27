@@ -70,7 +70,7 @@ export default class FeedStep extends VueWithStore {
 <template>
   <article :id="anchor" class="bg-mono-white rounded-sm overflow-hidden">
     <ProvideVideoModal
-      class="video-container mb-2"
+      class="flex items-stretch overflow-hidden mb-2"
       :style="{
         height: scaledVideoHeight ? `${scaledVideoHeight}px` : 'auto',
         maxHeight: `60vh`
@@ -110,12 +110,3 @@ export default class FeedStep extends VueWithStore {
     </footer>
   </article>
 </template>
-
-<style scoped>
-.video-container {
-  height: auto;
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-}
-</style>
