@@ -35,7 +35,7 @@ export default class ProvideInlineEdit extends VueWithStore {
       :modal-style="$modalStyle.BORDERLESS"
       @close-modal="modalOpen = false"
     >
-      <InlineStepEdit :step="step" />
+      <InlineStepEdit :step="step" @finished="modalOpen = false" />
     </InlineModal>
   </div>
 </template>

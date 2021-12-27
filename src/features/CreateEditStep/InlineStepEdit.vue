@@ -96,6 +96,8 @@ export default class InlineStepEdit extends VueWithStore {
         params: this.form.value,
         selectedVariations: this.selectedVariations
       });
+
+      this.$emit("finished");
     }
   }
 }
