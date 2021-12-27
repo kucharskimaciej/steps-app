@@ -129,7 +129,7 @@ export default class StepForm extends Vue implements StepFormApi {
   }
 
   @Watch("formData", { immediate: true, deep: true })
-  handleFormValueChange(value) {
+  handleFormValueChange(value: StepFormData) {
     this.$emit("input", value);
   }
 
