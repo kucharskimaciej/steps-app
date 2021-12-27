@@ -4,19 +4,19 @@ import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 import FullContent from "@/components/Step/FullContent.vue";
-import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
-import { DebounceTime } from "@/lib/decorators/debouceTime";
-import { getStepScore } from "@/lib/variations/variationStepScore";
+import ProvideScoring from "@/features/CreateEditStep/ProvideScoring";
+import {
+  StepFormApi,
+  StepFormData
+} from "@/features/CreateEditStep/StepForm/types";
 import { VueWithStore } from "@/lib/vueWithStore";
-import { sortBy, without } from "lodash";
+import { without } from "lodash";
 import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { RawStep } from "../../../common/types/Step";
 import {
   dispatchUpdateStep,
   existingArtists,
   existingTags,
-  rawStepsById,
-  stableStepIds,
   stepsById
 } from "@/store";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
@@ -28,7 +28,8 @@ import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
     PureButton,
     SelectToggleWidget,
     Card,
-    FullContent
+    FullContent,
+    ProvideScoring
   }
 })
 export default class InlineStepEdit extends VueWithStore {
@@ -36,7 +37,7 @@ export default class InlineStepEdit extends VueWithStore {
   @Ref("form") readonly form!: StepFormApi;
 
   selectedVariations: string[] = [];
-  stepIdsByScore: string[] = [];
+  value: Partial<StepFormData> = {};
 
   @Watch("step", { immediate: true })
   handleStepsLoaded() {
@@ -47,28 +48,8 @@ export default class InlineStepEdit extends VueWithStore {
     }
   }
 
-  @Watch("form.value", { immediate: true })
-  @Watch("step.variationKey")
-  @DebounceTime(200)
-  handleFormValueChanged() {
-    if (this.form?.value) {
-      const scoringResults = stableStepIds(this.$store).reduce(
-        (acc, stepId) => {
-          acc[stepId] = this.form?.value
-            ? getStepScore(rawStepsById(this.$store)[stepId], this.form.value)
-            : 0;
-          return acc;
-        },
-        {} as Record<string, number>
-      );
-
-      this.stepIdsByScore = sortBy(
-        without(stableStepIds(this.$store), this.step.id),
-        stepId => -scoringResults[stepId]
-      ).slice(0, 20);
-    } else {
-      this.stepIdsByScore = [];
-    }
+  get formValue() {
+    return this.value;
   }
 
   get stepsById() {
@@ -135,25 +116,37 @@ export default class InlineStepEdit extends VueWithStore {
         :step="step"
         :existing-tags="existingTags"
         :existing-artists="existingArtists"
+        @input="value = $event"
       />
 
       <template #sidebar>
-        <section class="h-full overflow-y-auto mr-4">
-          <Card
-            v-for="stepId in stepIdsByScore"
-            :id="stepId"
-            :key="stepId"
-            class="mb-2"
-          >
-            <template #prefix>
-              <SelectToggleWidget
-                :selected="isPartOfSelectedVariation(stepId)"
-                @toggle="toggleVariationSelected(stepId)"
-              />
-            </template>
-            <FullContent :step="stepsById[stepId]" />
-          </Card>
-        </section>
+        <ProvideScoring
+          :exclude="[step.id]"
+          :data-for-scoring="formValue"
+          class="h-full overflow-y-auto mr-4"
+        >
+          <template #default="{ stepIdsByScore, results }">
+            <div>
+              <Card
+                v-for="stepId in stepIdsByScore.slice(0, 20)"
+                :id="stepId"
+                :key="stepId"
+                class="mb-2"
+              >
+                <template #prefix>
+                  <div class="text-2xs bg-mono-600 mb-2 p-1 text-center">
+                    {{ results[stepId] }}
+                  </div>
+                  <SelectToggleWidget
+                    :selected="isPartOfSelectedVariation(stepId)"
+                    @toggle="toggleVariationSelected(stepId)"
+                  />
+                </template>
+                <FullContent :step="stepsById[stepId]" />
+              </Card>
+            </div>
+          </template>
+        </ProvideScoring>
       </template>
     </WideWithSidebarRight>
   </section>

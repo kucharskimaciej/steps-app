@@ -128,6 +128,11 @@ export default class StepForm extends Vue implements StepFormApi {
     this.formData.tokens = this.tokenizer.tokenize(name);
   }
 
+  @Watch("formData", { immediate: true, deep: true })
+  handleFormValueChange(value) {
+    this.$emit("input", value);
+  }
+
   get feelingValues(): Feeling[] {
     return Object.keys(this.appConfig.feelings) as Feeling[];
   }
