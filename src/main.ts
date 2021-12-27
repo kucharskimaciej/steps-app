@@ -10,7 +10,7 @@ import router from "./router";
 import "./filters";
 import "./plugins";
 import "../common/config";
-
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 import App from "./App.vue";
 
 Vue.config.productionTip = false;

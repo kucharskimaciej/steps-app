@@ -35,6 +35,7 @@ export default class FeedStep extends VueWithStore {
   @Prop() private autoplay!: boolean;
   @Prop({ default: true }) private showVariations!: boolean;
   @Prop({ default: false }) private practiceActions!: boolean;
+  @Prop() private videoHeight!: number;
 
   get anchor() {
     return `step-${this.step.id}`;
@@ -49,21 +50,6 @@ export default class FeedStep extends VueWithStore {
 
   @Emit()
   edit() {}
-
-  width = 0;
-  mounted() {
-    this.width = this.$el.clientWidth;
-  }
-
-  get scaledVideoHeight(): number {
-    const { height, width } = this.primaryVideo;
-    if (!height || !width || !this.width) {
-      return 400;
-    }
-
-    const scaleRatio = this.width / width;
-    return scaleRatio * height;
-  }
 }
 </script>
 
@@ -72,12 +58,12 @@ export default class FeedStep extends VueWithStore {
     <ProvideVideoModal
       class="flex items-stretch overflow-hidden mb-2"
       :style="{
-        height: scaledVideoHeight ? `${scaledVideoHeight}px` : 'auto',
+        height: videoHeight ? `${videoHeight}px` : 'auto',
         maxHeight: `60vh`
       }"
     >
       <template #default="{open}">
-        <IntersectSwitch :threshold="[0, 0.3, 0.5, 0.6, 0.8, 1]">
+        <IntersectSwitch :threshold="[0, 0.25, 0.5, 0.75, 1]">
           <template #default="{ visible }">
             <div class="w-full h-full">
               <VideoPlayer
@@ -85,6 +71,7 @@ export default class FeedStep extends VueWithStore {
                 :autoplay="!$match('desktop')"
                 :video="primaryVideo"
                 size-control
+                @play="$emit('play')"
                 @viewed="handleViewed"
                 @open-full-size="open(primaryVideo)"
               />

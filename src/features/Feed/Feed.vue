@@ -1,32 +1,56 @@
 <script lang="ts">
+import ProvideScaledVideoSize from "@/components/Providers/ProvideScaledVideoSize";
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
 import FeedStep from "./FeedStep.vue";
 import { Step } from "../../../common/types/Step";
-import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
-import DimensionsObserver from "@/components/DimensionsObserver/DimensionsObserver";
 
 @Component({
   components: {
+    DynamicScroller,
+    DynamicScrollerItem,
     FeedStep,
-    IntersectSwitch,
-    DimensionsObserver
+    ProvideScaledVideoSize
   }
 })
 export default class Feed extends Vue {
   @Prop({ required: true }) private steps!: Step[];
+
+  width = 0;
+  mounted() {
+    this.width = this.$el.clientWidth;
+  }
+
+  stepVideoHeight: Record<string, number> = {};
 }
 </script>
 
 <template>
-  <main class="h-full max-h-full overflow-y-auto">
-    <div
-      v-for="step in steps"
-      :key="step.id"
-      class="relative mb-2 desktop:mb-8"
-    >
-      <slot :step="step">
-        <FeedStep :step="step" />
-      </slot>
-    </div>
+  <main>
+    <DynamicScroller page-mode :items="steps" :min-item-size="800">
+      <template #default="{ item, index, active }">
+        <DynamicScrollerItem
+          :item="item"
+          :active="active"
+          :data-index="index"
+          :size-dependencies="[stepVideoHeight[item.id]]"
+          :key-field="item.id"
+        >
+          <ProvideScaledVideoSize
+            :video="item.videos[0]"
+            :target-width="width"
+            @updated-height="stepVideoHeight[item.id] = $event"
+          >
+            <template #default="{scaledVideoHeight}">
+              <div class="mb-4">
+                <slot :step="item" :video-height="scaledVideoHeight">
+                  <FeedStep :step="item" :video-height="scaledVideoHeight" />
+                </slot>
+              </div>
+            </template>
+          </ProvideScaledVideoSize>
+        </DynamicScrollerItem>
+      </template>
+    </DynamicScroller>
   </main>
 </template>
