@@ -27,7 +27,7 @@ const kizombaConfig: AppConfig = {
     ["Otwarcie", ["otwarci(e|a|u)"]],
     [
       "Przesunięcie nogi",
-      ["przesunięci(e|u)", "przesunięcie nogi", "przesunięcie stopy"]
+      ["przesunięci(e|u)", "przesunięciem? nogi", "przesunięcie stopy"]
     ],
     ["Zatrzymanie", ["zatrzymani(u|e|em)"]],
     ["Grande-saida", ["grande(-|\\s)said(a|y|zie)"]],
