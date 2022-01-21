@@ -39,8 +39,12 @@ module.exports = {
             ..."px-10 py-1 border-2 text-xl".split(" "),
             ..."px-4 py-1 border-2 text-xl".split(" "),
             "body",
-            "html"
+            "html",
+            "ready",
+            "page-mode",
+            "direction-vertical"
           ],
+          whitelistPatterns: [/^vue-recycle-scroller/],
           extractors: [
             {
               extractor: class TailwindExtractor {
