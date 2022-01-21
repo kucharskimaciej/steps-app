@@ -101,7 +101,7 @@ export default class FeedView extends VueWithStore {
 
 <template>
   <AllStepsProvider>
-    <Container class="pb-4 ">
+    <Container class="pb-4">
       <header
         class="flex justify-center py-5 px-2 sticky top-0 z-10 bg-mono-950 border-b-1 border-b-mono-900 desktop:px-0"
       >
