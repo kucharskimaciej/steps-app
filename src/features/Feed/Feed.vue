@@ -28,7 +28,12 @@ export default class Feed extends Vue {
 
 <template>
   <main>
-    <DynamicScroller :page-mode="pageMode" :items="steps" :min-item-size="800">
+    <DynamicScroller
+      :page-mode="pageMode"
+      :items="steps"
+      :buffer="600"
+      :min-item-size="800"
+    >
       <template #default="{ item, index, active }">
         <DynamicScrollerItem
           :item="item"

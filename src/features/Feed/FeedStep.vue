@@ -1,6 +1,6 @@
 <script lang="ts">
 import { VueWithStore } from "@/lib/vueWithStore";
-import { Component, Prop, Emit } from "vue-property-decorator";
+import { Component, Prop, Emit, Watch } from "vue-property-decorator";
 import { Step } from "../../../common/types/Step";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
@@ -43,6 +43,14 @@ export default class FeedStep extends VueWithStore {
 
   get primaryVideo() {
     return this.step.videos[0];
+  }
+
+  @Watch("step.id", { immediate: true })
+  onStep() {
+    fetch(this.step.videos[0].url);
+    if (this.step.videos[0].snapshot_url) {
+      fetch(this.step.videos[0].snapshot_url);
+    }
   }
 
   @Emit("viewed")
