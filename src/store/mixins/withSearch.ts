@@ -19,7 +19,7 @@ function initialSearch(): Search {
       excludeAnyTags: []
     },
     sort: {
-      type: SortType.SCORE,
+      type: SortType.ADDED_DATE,
       direction: SortDirection.DESCENDING
     }
   };
