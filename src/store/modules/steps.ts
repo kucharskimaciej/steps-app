@@ -170,7 +170,7 @@ export const steps = {
       [stepId, collectionId]: [string, string?]
     ) {
       const stepsResource = Container.get(StepsResource);
-      const step = stepsById(provideStore())[stepId];
+      const step = rawStepsById(provideStore())[stepId];
       const startOfToday = today();
 
       if (hasRecordedPracticeToday(step, collectionId)) {
@@ -184,11 +184,18 @@ export const steps = {
       if (collectionId) {
         record.collection_id = collectionId;
       }
-      const updatedStep = await stepsResource.update(stepId, {
-        practice_records: [record, ...(step.practice_records || [])]
-      });
 
-      commitUpdateStep(context, { updatedStep });
+      const updatePayload: UpdateParams = {
+        practice_records: [record, ...(step.practice_records || [])]
+      };
+
+      const optimisticUpdatedStep: StepDTO = {
+        ...step,
+        ...updatePayload
+      };
+
+      commitUpdateStep(context, { updatedStep: optimisticUpdatedStep });
+      await stepsResource.update(stepId, updatePayload);
     },
     async recordView(context: StepsContext, stepId: string) {
       const stepsResource = Container.get(StepsResource);
