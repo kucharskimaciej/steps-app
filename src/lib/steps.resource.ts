@@ -1,5 +1,5 @@
 import { Service } from "vue-typedi";
-import { RawStep } from "../../common/types/Step";
+import { StepDTO } from "../../common/types/Step";
 import { createVariationId } from "@/lib/variations/variationId";
 import { Resource } from "@/lib/resource.class";
 
@@ -19,17 +19,17 @@ type EditableFields =
   | "tokens";
 
 export type CreateParams = Pick<
-  RawStep,
+  StepDTO,
   EditableFields | "owner_uid" | "identifier"
 >;
 
 export type UpdateParams = Partial<
-  Pick<RawStep, EditableFields | "variationKey">
+  Pick<StepDTO, EditableFields | "variationKey">
 >;
 
 @Service()
 export class StepsResource extends Resource<
-  RawStep,
+  StepDTO,
   CreateParams,
   UpdateParams
 > {
@@ -38,10 +38,10 @@ export class StepsResource extends Resource<
   public async create(
     params: CreateParams,
     variationsToMerge?: string[]
-  ): Promise<RawStep> {
+  ): Promise<StepDTO> {
     const variationKey = createVariationId();
 
-    const stepToSave: Omit<RawStep, "id"> = {
+    const stepToSave: Omit<StepDTO, "id"> = {
       ...params,
       created_at: Date.now(),
       variationKey
@@ -65,7 +65,7 @@ export class StepsResource extends Resource<
     params: UpdateParams,
     variationKey: string = createVariationId(),
     variationsToMerge?: string[]
-  ): Promise<RawStep> {
+  ): Promise<StepDTO> {
     if (!variationsToMerge || !variationsToMerge.length) {
       variationsToMerge = [variationKey];
     }

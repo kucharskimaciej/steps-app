@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Feeling, RawStep } from "../../../../common/types/Step";
+import { Feeling, StepDTO } from "../../../../common/types/Step";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
@@ -82,7 +82,7 @@ import { AppConfig } from "../../../../common/config/types";
 export default class StepForm extends Vue implements StepFormApi {
   @Prop({ default: () => [] }) private existingTags!: string[];
   @Prop({ default: () => [] }) private existingArtists!: string[];
-  @Prop() private step!: RawStep;
+  @Prop() private step!: StepDTO;
 
   @Inject(StepsDuplicateLocatorToken)
   private readonly duplicateLocator!: StepDuplicateLocator;
@@ -111,7 +111,7 @@ export default class StepForm extends Vue implements StepFormApi {
   formData: StepFormData = this.getDataObject(this.step);
 
   @Watch("step", { immediate: true })
-  handleStepChange(step: RawStep) {
+  handleStepChange(step: StepDTO) {
     if (step) {
       this.formData = this.getDataObject(step);
     }
@@ -149,7 +149,7 @@ export default class StepForm extends Vue implements StepFormApi {
     return KINDS;
   }
 
-  private getDataObject(step: Partial<RawStep> = {}): StepFormData {
+  private getDataObject(step: Partial<StepDTO> = {}): StepFormData {
     const {
       videos = [],
       name = "",
@@ -201,7 +201,7 @@ export default class StepForm extends Vue implements StepFormApi {
     );
   }
 
-  get duplicateSteps(): Record<string, RawStep> {
+  get duplicateSteps(): Record<string, StepDTO> {
     return this.value.videos.reduce((acc, element, index) => {
       if (this.isDuplicateAt(index)) {
         const duplicateStep = this.duplicateLocator.getDuplicate(
@@ -214,7 +214,7 @@ export default class StepForm extends Vue implements StepFormApi {
       }
 
       return acc;
-    }, {} as Record<string, RawStep>);
+    }, {} as Record<string, StepDTO>);
   }
 }
 </script>

@@ -1,7 +1,7 @@
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 
 export type FilteredResult = {
-  item: RawStep;
+  item: StepDTO;
   score?: number;
 };
 

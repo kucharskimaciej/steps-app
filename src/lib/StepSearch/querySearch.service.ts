@@ -1,12 +1,12 @@
 import { Service } from "vue-typedi";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 import { FilteredResult } from "@/lib/StepSearch/types";
 import Fuse from "fuse.js";
 
 @Service()
 export class QuerySearchService {
   getMatchingItemsWithScore(
-    steps: RawStep[],
+    steps: StepDTO[],
     query?: string
   ): FilteredResult[] {
     if (query) {

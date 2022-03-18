@@ -1,4 +1,4 @@
-import { RawStep } from "../../common/types/Step";
+import { StepDTO } from "../../common/types/Step";
 import { VideoObject } from "../../common/types/VideoObject";
 
 export interface DuplicateLocator<ElementType, KeyType> {
@@ -7,5 +7,5 @@ export interface DuplicateLocator<ElementType, KeyType> {
 }
 
 export type StepDuplicateLocator<
-  T extends RawStep = RawStep
+  T extends StepDTO = StepDTO
 > = DuplicateLocator<T, VideoObject>;

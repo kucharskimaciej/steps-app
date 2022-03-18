@@ -1,9 +1,9 @@
-import { RawStep, Step } from "../../common/types/Step";
+import { StepDTO, Step } from "../../common/types/Step";
 import { VueRouter } from "vue-router/types/router";
 import { ROUTES } from "@/router/routes";
 
 export function ShortLinkFilter(
-  step: RawStep | Step,
+  step: StepDTO | Step,
   $router: VueRouter
 ): string {
   const { resolved } = $router.resolve({

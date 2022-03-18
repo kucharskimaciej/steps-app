@@ -21,7 +21,7 @@ interface CommonFields extends DatabaseItem, Owned {
   view_records?: number[];
 }
 
-export interface RawStep extends CommonFields {
+export interface StepDTO extends CommonFields {
   tags: string[];
   difficulty: StepDifficulty;
   feeling: Feeling[];

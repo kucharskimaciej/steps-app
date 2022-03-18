@@ -1,7 +1,7 @@
-import { RawStep } from "../../../../common/types/Step";
+import { StepDTO } from "../../../../common/types/Step";
 
 export type StepFormData = Pick<
-  RawStep,
+  StepDTO,
   | "videos"
   | "name"
   | "difficulty"

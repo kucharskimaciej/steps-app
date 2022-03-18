@@ -4,7 +4,7 @@ import { CurrentStepState, RootState, Status, WithStatus } from "@/store/types";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { getStoreAccessors } from "typesafe-vuex";
 import { StepsResource } from "@/lib/steps.resource";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 
 type CurrentStepContext = ActionContext<CurrentStepState, RootState>;
 
@@ -24,7 +24,7 @@ export const currentStep = {
     }
   },
   mutations: {
-    setStep(state: CurrentStepState, payload: RawStep) {
+    setStep(state: CurrentStepState, payload: StepDTO) {
       state.raw = payload;
     },
     updateStatus(state: WithStatus, payload: Status) {

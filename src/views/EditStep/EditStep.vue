@@ -2,7 +2,7 @@
 import { Component, Ref, Watch } from "vue-property-decorator";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
-import { RawStep, Step } from "../../../common/types/Step";
+import { StepDTO, Step } from "../../../common/types/Step";
 import "@/lib/stepsByHashDuplicateLocator";
 import { ROUTES } from "@/router/routes";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -43,7 +43,7 @@ export default class EditStep extends VueWithStore {
   @Ref("form") readonly form!: StepFormApi;
   selectedVariations: string[] = [];
 
-  get step(): RawStep {
+  get step(): StepDTO {
     return this.$store.state.steps.rawSteps.find(
       step => this.$route.params.stepId === step.id
     )!;

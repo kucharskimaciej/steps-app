@@ -1,8 +1,8 @@
-import { RawStep, Step } from "../../../common/types/Step";
+import { StepDTO, Step } from "../../../common/types/Step";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { groupBy } from "lodash";
 
-export function rawStepsFactory(): RawStep[] {
+export function rawStepsFactory(): StepDTO[] {
   return [
     {
       id: "step-id-1",
@@ -108,11 +108,11 @@ export function rawStepsFactory(): RawStep[] {
   ];
 }
 
-export function rawStepFactory(n = 0): RawStep {
+export function rawStepFactory(n = 0): StepDTO {
   return rawStepsFactory()[n];
 }
 
-export function stepsFactory(rawSteps: RawStep[] = rawStepsFactory()): Step[] {
+export function stepsFactory(rawSteps: StepDTO[] = rawStepsFactory()): Step[] {
   const variationsByKey = groupBy(rawSteps, "variationKey");
   return rawSteps.map(rawStep => convertToStep(rawStep, variationsByKey));
 }

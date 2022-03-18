@@ -2,7 +2,7 @@ import commander from "commander";
 import { existsSync, readFileSync } from "fs";
 import colors from "colors/safe";
 import Firebase from "firebase-admin";
-import { RawStep } from "../../common/types/Step";
+import { StepDTO } from "../../common/types/Step";
 import { omit } from "lodash";
 
 const ACCOUNT_CREDENTIALS_PATH = "accountCredentials";
@@ -47,7 +47,7 @@ async function run(db: Firebase.firestore.Firestore) {
   const allSteps = await db.collection("steps").get();
 
   allSteps.forEach(doc => {
-    const step = doc.data() as Pick<RawStep, "videos">;
+    const step = doc.data() as Pick<StepDTO, "videos">;
 
     const updatedVideos = step.videos.map(v =>
       omit(v, ["thumbnail_url", "snapshot_url"])

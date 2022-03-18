@@ -1,8 +1,8 @@
-import { RawStep, Step } from "../../common/types/Step";
+import { StepDTO, Step } from "../../common/types/Step";
 import { day } from "@/lib/dateHelpers";
 
 export function hasRecordedPracticeOnDate(
-  step: Step | RawStep,
+  step: Step | StepDTO,
   date: Date | number,
   collectionId?: string
 ): boolean {
@@ -19,7 +19,7 @@ export function hasRecordedPracticeOnDate(
 }
 
 export function hasRecordedPracticeToday(
-  step: Step | RawStep,
+  step: Step | StepDTO,
   collectionId?: string
 ): boolean {
   return hasRecordedPracticeOnDate(step, Date.now(), collectionId);

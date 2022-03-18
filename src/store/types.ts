@@ -1,4 +1,4 @@
-import { RawStep } from "../../common/types/Step";
+import { StepDTO } from "../../common/types/Step";
 import { PracticeSession } from "../../common/types/PracticeSession";
 import { InlineEditState } from "./modules/inlineEdit";
 
@@ -13,12 +13,12 @@ export interface AuthState {
 }
 
 export interface StepsState extends WithStatus {
-  rawSteps: RawStep[];
+  rawSteps: StepDTO[];
   stepsViewedInCurrentSession: string[];
 }
 
 export interface CurrentStepState extends WithStatus {
-  raw: RawStep | null;
+  raw: StepDTO | null;
 }
 
 export interface PracticeSessionsState extends WithStatus {

@@ -1,7 +1,7 @@
 import { Inject, Service } from "vue-typedi";
 import { FilteredResult } from "@/lib/StepSearch/types";
 import { Search, SortDirection, SortType } from "@/features/Search/types";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 import { first, orderBy, shuffle } from "lodash";
 import { ScoreResultService } from "@/lib/StepSearch/scoreResult.service";
 // @todo: each of sort types should be a separate strategy
@@ -10,7 +10,7 @@ export class SortResultsService {
   @Inject()
   scorer!: ScoreResultService;
 
-  sortResults(results: FilteredResult[], { sort, filters }: Search): RawStep[] {
+  sortResults(results: FilteredResult[], { sort, filters }: Search): StepDTO[] {
     let sortedResults: FilteredResult[];
     const sortDirection =
       sort.direction === SortDirection.DESCENDING ? "desc" : "asc";

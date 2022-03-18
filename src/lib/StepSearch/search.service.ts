@@ -1,10 +1,10 @@
 import { Inject, Service } from "vue-typedi";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 import { Search, SearchFilters } from "@/features/Search/types";
 import { QuerySearchService } from "@/lib/StepSearch/querySearch.service";
 import { SortResultsService } from "@/lib/StepSearch/sortResults.service";
 
-export type Matcher = (step: RawStep) => boolean;
+export type Matcher = (step: StepDTO) => boolean;
 
 // @todo: extract filtering logic into separate service
 @Service()
@@ -15,7 +15,7 @@ export class SearchService {
   @Inject()
   sorter!: SortResultsService;
 
-  search(steps: RawStep[], { filters, sort }: Search): RawStep["id"][] {
+  search(steps: StepDTO[], { filters, sort }: Search): StepDTO["id"][] {
     const stepsMatchingFilters = steps.filter(
       SearchService.makeMatcher(filters)
     );

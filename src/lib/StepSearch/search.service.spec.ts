@@ -1,5 +1,5 @@
 import { Matcher, SearchService } from "@/lib/StepSearch/search.service";
-import { Feeling, RawStep } from "../../../common/types/Step";
+import { Feeling, StepDTO } from "../../../common/types/Step";
 import { KeyValueTuple } from "@/components/Forms/TagsSelection/types";
 import { SearchFilters } from "@/features/Search/types";
 
@@ -18,7 +18,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["a", "b"],
               smart_tags: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBeTruthy();
         });
 
@@ -27,7 +27,7 @@ describe("Search service", () => {
             matcher(({
               tags: [],
               smart_tags: ["a", "b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBeTruthy();
         });
 
@@ -36,7 +36,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["a"],
               smart_tags: ["b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBeTruthy();
         });
 
@@ -45,7 +45,7 @@ describe("Search service", () => {
             matcher(({
               tags: [],
               smart_tags: ["b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBeFalsy();
         });
       });
@@ -60,7 +60,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["a", "b"],
               smart_tags: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBeTruthy();
         });
       });
@@ -79,7 +79,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["a"],
               smart_tags: ["b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
 
@@ -88,7 +88,7 @@ describe("Search service", () => {
             matcher(({
               tags: [],
               smart_tags: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
       });
@@ -102,7 +102,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["c"],
               smart_tags: ["d"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
 
@@ -111,7 +111,7 @@ describe("Search service", () => {
             matcher(({
               tags: ["b"],
               smart_tags: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(false);
         });
 
@@ -120,7 +120,7 @@ describe("Search service", () => {
             matcher(({
               tags: [],
               smart_tags: ["a"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(false);
         });
       });
@@ -138,7 +138,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               artists: ["a", "b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
 
@@ -146,7 +146,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               artists: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
       });
@@ -159,7 +159,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               artists: ["a"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
 
@@ -167,7 +167,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               artists: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(false);
         });
 
@@ -175,7 +175,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               artists: ["c"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(false);
         });
       });
@@ -193,7 +193,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               feeling: ["a", "b"]
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
 
@@ -201,7 +201,7 @@ describe("Search service", () => {
           expect(
             matcher(({
               feeling: []
-            } as unknown) as RawStep)
+            } as unknown) as StepDTO)
           ).toBe(true);
         });
       });
@@ -219,7 +219,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["a"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(true);
           });
 
@@ -227,7 +227,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["c"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(false);
           });
         });
@@ -244,7 +244,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["a"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(false);
           });
 
@@ -252,7 +252,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["c"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(true);
           });
         });
@@ -271,7 +271,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["a"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(true);
           });
 
@@ -279,7 +279,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["f"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(false);
           });
 
@@ -287,7 +287,7 @@ describe("Search service", () => {
             expect(
               matcher(({
                 feeling: ["a", "c"]
-              } as unknown) as RawStep)
+              } as unknown) as StepDTO)
             ).toBe(false);
           });
         });
@@ -297,7 +297,7 @@ describe("Search service", () => {
   describe("filters matcher", () => {
     type FiltersStepResult = {
       filters: Omit<SearchFilters, "query">;
-      step: RawStep;
+      step: StepDTO;
       result: boolean;
     };
 
@@ -314,7 +314,7 @@ describe("Search service", () => {
           smart_tags: ["tagB"],
           artists: ["artist"],
           feeling: []
-        } as unknown) as RawStep,
+        } as unknown) as StepDTO,
         result: true
       },
       {
@@ -329,7 +329,7 @@ describe("Search service", () => {
           smart_tags: ["tagB"],
           artists: ["artist"],
           feeling: []
-        } as unknown) as RawStep,
+        } as unknown) as StepDTO,
         result: true
       },
       {
@@ -344,7 +344,7 @@ describe("Search service", () => {
           smart_tags: ["tagB"],
           artists: ["artist"],
           feeling: []
-        } as unknown) as RawStep,
+        } as unknown) as StepDTO,
         result: false
       }
     ] as FiltersStepResult[]).forEach(({ filters, step, result }) => {

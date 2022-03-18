@@ -10,7 +10,7 @@ import got from "got";
 import { Change } from "firebase-functions/lib/cloud-functions";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
 import { VideoObject } from "../../../common/types/VideoObject";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 
 const SNAPSHOT_DIRECTORY = "snapshots";
 const THUMBNAIL_DIRECTORY = "thumbnails";
@@ -29,7 +29,7 @@ export default async function handler(
     return;
   }
 
-  const updatedStep = change.after.data() as RawStep;
+  const updatedStep = change.after.data() as StepDTO;
   const hasUnprocessedVideos = updatedStep.videos.some(
     video => !hasBeenProcessed(video)
   );

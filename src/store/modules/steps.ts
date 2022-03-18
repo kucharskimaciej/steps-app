@@ -8,7 +8,7 @@ import {
   StepsResource,
   UpdateParams
 } from "@/lib/steps.resource";
-import { RawStep, Step } from "../../../common/types/Step";
+import { StepDTO, Step } from "../../../common/types/Step";
 import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy } from "lodash";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { provideStore } from "@/store";
@@ -19,7 +19,7 @@ import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 type StepsContext = ActionContext<StepsState, RootState>;
 
 type UpdateStepMutationPayload = {
-  updatedStep: RawStep;
+  updatedStep: StepDTO;
   variationsToMerge?: string[];
 };
 
@@ -40,7 +40,7 @@ export const steps = {
     rawStepsById(state: StepsState) {
       return keyBy(state.rawSteps, "id");
     },
-    getVariationsByKey(state: StepsState): Record<string, RawStep[]> {
+    getVariationsByKey(state: StepsState): Record<string, StepDTO[]> {
       return groupBy(state.rawSteps, "variationKey");
     },
     getSteps(state: StepsState): Step[] {
@@ -85,7 +85,7 @@ export const steps = {
     }
   },
   mutations: {
-    setSteps(state: StepsState, payload: RawStep[]) {
+    setSteps(state: StepsState, payload: StepDTO[]) {
       state.rawSteps = payload;
     },
     updateStep(

@@ -12,7 +12,7 @@ import {
 import { VueWithStore } from "@/lib/vueWithStore";
 import { without } from "lodash";
 import { Component, Prop, Ref, Watch } from "vue-property-decorator";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 import {
   dispatchUpdateStep,
   existingArtists,
@@ -33,7 +33,7 @@ import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
   }
 })
 export default class InlineStepEdit extends VueWithStore {
-  @Prop({ required: true }) private step!: RawStep;
+  @Prop({ required: true }) private step!: StepDTO;
   @Ref("form") readonly form!: StepFormApi;
 
   selectedVariations: string[] = [];

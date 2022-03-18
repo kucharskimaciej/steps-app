@@ -1,4 +1,4 @@
-import { RawStep, Step, TagCategories } from "../../common/types/Step";
+import { StepDTO, Step, TagCategories } from "../../common/types/Step";
 import { Tag, TagTypes } from "../../common/types/Tag";
 import { KINDS } from "../../common/constants";
 import { AppConfigToken } from "../../common/tokens";
@@ -6,8 +6,8 @@ import { AppConfig } from "../../common/config/types";
 import { Container } from "vue-typedi";
 
 export function convertToStep(
-  raw: RawStep,
-  variationsByKey?: Record<string, RawStep[]> | null
+  raw: StepDTO,
+  variationsByKey?: Record<string, StepDTO[]> | null
 ): Step {
   const { feelings, difficulties } = Container.get(AppConfigToken) as AppConfig;
 

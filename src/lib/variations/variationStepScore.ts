@@ -1,7 +1,7 @@
 import { intersection } from "lodash";
-import { RawStep } from "../../../common/types/Step";
+import { StepDTO } from "../../../common/types/Step";
 
-export type StepForScoring = Pick<RawStep, "tags" | "tokens">;
+export type StepForScoring = Pick<StepDTO, "tags" | "tokens">;
 export type ScoringFn = (
   stepA: StepForScoring,
   stepB: StepForScoring
