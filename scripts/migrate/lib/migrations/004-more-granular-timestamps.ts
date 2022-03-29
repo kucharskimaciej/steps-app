@@ -1,7 +1,7 @@
 import { RunFn } from "../types";
-import { RawStep } from "../../../../common/types/Step";
+import { StepDTO } from "../../../../common/types/Step";
 
-type RawStepData = Omit<RawStep, "id">;
+type RawStepData = Omit<StepDTO, "id">;
 
 const run: RunFn = async db => {
   const allSteps = await db.collection("steps").get();
