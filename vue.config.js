@@ -10,5 +10,13 @@ module.exports = {
       terserOptions.keep_classnames = true;
       return args;
     });
+
+    config.module
+      .rule("vue")
+      .use("vue-svg-inline-loader")
+      .loader("vue-svg-inline-loader")
+      .options({
+        /* ... */
+      });
   }
 };
