@@ -12,7 +12,7 @@ export function hasRecordedPracticeOnDate(
     step.practice_records &&
       step.practice_records.some(
         record =>
-          record.date === dayStart &&
+          record.start_of_day === dayStart &&
           (!collectionId || record.collection_id === collectionId)
       )
   );
