@@ -1,4 +1,5 @@
 export type PracticeRecord = {
-  date: number; // start of day
+  date: number;
+  start_of_day: number;
   collection_id?: string;
 };

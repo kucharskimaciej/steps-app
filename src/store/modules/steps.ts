@@ -177,7 +177,10 @@ export const steps = {
         return;
       }
 
-      const record: PracticeRecord = { date: startOfToday };
+      const record: PracticeRecord = {
+        start_of_day: startOfToday,
+        date: Date.now()
+      };
       if (collectionId) {
         record.collection_id = collectionId;
       }
