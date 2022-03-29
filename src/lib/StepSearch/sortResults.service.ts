@@ -56,7 +56,7 @@ export class SortResultsService {
         sortedResults = orderBy(
           results,
           [
-            ({ item }) => first(item.practice_records)?.date,
+            ({ item }) => first(item.practice_records)?.date ?? 0,
             ({ item }) => item.updated_at
           ],
           [sortDirection, reverseSortDirection]
