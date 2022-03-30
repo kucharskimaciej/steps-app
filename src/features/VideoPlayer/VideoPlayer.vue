@@ -1,4 +1,5 @@
 <script lang="ts">
+import { PropType } from "vue";
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { pick } from "lodash";
 import MuteControl from "@/features/VideoPlayer/MuteControl.vue";
@@ -58,7 +59,8 @@ const mediaEvents = [
   }
 })
 export default class VideoPlayer extends Vue {
-  @Prop({ required: true }) private video!: VideoObject;
+  @Prop({ required: true, type: Object as PropType<VideoObject> })
+  private video!: VideoObject;
   @Prop({ default: false }) private autoplay!: boolean;
   @Prop({ default: true }) private background!: boolean;
   @Prop({ default: false }) private sizeControl!: boolean;
