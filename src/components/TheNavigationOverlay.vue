@@ -35,8 +35,8 @@ export default TheNavigationOverlay;
     <aside
       class="fixed inset-0 bg-mono-black transition-all"
       :class="{
-        'bg-opacity-40': open,
-        'bg-opacity-0': !open
+        'visible bg-opacity-40': open,
+        'invisible bg-opacity-0': !open
       }"
       @click="toggle()"
     ></aside>
