@@ -47,7 +47,7 @@
     "vue-typedi": "^1.1.1",
     "vue-virtual-scroller": "^1.0.10",
     "vuelidate": "^0.7.4",
-    "vuex": "^3.5.1"
+    "vuex": "^3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",

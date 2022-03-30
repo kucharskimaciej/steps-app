@@ -51,8 +51,8 @@ export function buttonSize(size: ButtonSize, spacing: ButtonSpacing): string {
   switch (size) {
     case "regular":
       return spacing === "wide"
-        ? `px-6 py-1 border text-normal`
-        : `px-3 py-1 border text-normal`;
+        ? `px-6 py-1 border text-base`
+        : `px-3 py-1 border text-base`;
     case "small":
       return spacing === "wide"
         ? `px-4 py-1 border text-sm`

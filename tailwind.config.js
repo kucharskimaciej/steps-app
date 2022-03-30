@@ -75,8 +75,9 @@ module.exports = {
       black: "#000"
     },
     fontFamily: {
-      primary: ["Cabin", "sans-serif"],
-      heading: ["Roboto Condensed", "sans-serif"]
+      primary: ["Lato", "sans-serif"],
+      heading: ["Lato", "sans-serif"],
+      logo: ["Dancing Script"]
     },
     fontSize: {
       "2xs": ".675rem",

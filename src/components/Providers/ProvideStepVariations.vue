@@ -2,7 +2,8 @@
 import Feed from "@/features/Feed/Feed.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import { stepsById } from "@/store";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
+import { VueWithStore } from "@/lib/vueWithStore";
 
 @Component({
   components: {
@@ -10,7 +11,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
     Feed
   }
 })
-export default class ProvideStepVariations extends Vue {
+export default class ProvideStepVariations extends VueWithStore {
   @Prop({ required: true }) private stepId!: string;
 
   get step() {

@@ -27,6 +27,7 @@ import InlineModal from "@/components/Modal/InlineModal.vue";
 import { Search } from "@/features/Search/types";
 import Badge from "@/components/Badge/Badge.vue";
 import FeedStep from "@/features/Feed/FeedStep.vue";
+import TheTopBarContainer from "@/components/TheTopBar/TheTopBarContainer.vue";
 
 @Component({
   components: {
@@ -42,7 +43,8 @@ import FeedStep from "@/features/Feed/FeedStep.vue";
     SearchWidget,
     InlineModal,
     SearchOverlay,
-    Badge
+    Badge,
+    TheTopBarContainer
   }
 })
 export default class FeedView extends VueWithStore {
@@ -101,48 +103,49 @@ export default class FeedView extends VueWithStore {
 
 <template>
   <AllStepsProvider>
-    <Container class="pb-4">
-      <header
-        class="flex justify-center py-5 px-2 sticky top-0 z-10 bg-mono-950 border-b-1 border-b-mono-900 desktop:px-0"
-      >
-        <SearchWidget
-          class="ml-auto"
-          :search-active="hasActiveSearch"
-          @click="searchOpen = true"
-        >
-          <template #activeSearch>
-            <Badge class="ml-2">
-              {{ selectedStepIds.length }}
-            </Badge>
-          </template>
-        </SearchWidget>
-
-        <InlineModal
-          v-if="searchOpen"
-          modal-style="OVERLAY"
-          @close-modal="searchOpen = false"
-        >
-          <SearchOverlay
-            :search="search"
-            @search-change="handleSearchChange"
-            @clear-search="handleClearSearch"
-            @close-modal="searchOpen = false"
-          />
-        </InlineModal>
-      </header>
-      <Feed :steps="selectedSteps" page-mode>
-        <template #default="{ step, videoHeight }">
-          <FeedStep
-            :step="step"
-            :video-height="videoHeight"
-            @viewed="handleStepViewed(step.id)"
+    <div>
+      <TheTopBarContainer>
+        <template #right>
+          <SearchWidget
+            :search-active="hasActiveSearch"
+            @click="searchOpen = true"
           >
-            <template #actions>
-              <StepActions :step="step" class="mb-2" />
+            <template #activeSearch>
+              <Badge class="ml-2">
+                {{ selectedStepIds.length }}
+              </Badge>
             </template>
-          </FeedStep>
+          </SearchWidget>
+
+          <InlineModal
+            v-if="searchOpen"
+            modal-style="OVERLAY"
+            @close-modal="searchOpen = false"
+          >
+            <SearchOverlay
+              :search="search"
+              @search-change="handleSearchChange"
+              @clear-search="handleClearSearch"
+              @close-modal="searchOpen = false"
+            />
+          </InlineModal>
         </template>
-      </Feed>
-    </Container>
+      </TheTopBarContainer>
+      <Container class="pb-4">
+        <Feed :steps="selectedSteps" page-mode>
+          <template #default="{ step, videoHeight }">
+            <FeedStep
+              :step="step"
+              :video-height="videoHeight"
+              @viewed="handleStepViewed(step.id)"
+            >
+              <template #actions>
+                <StepActions :step="step" class="mb-2" />
+              </template>
+            </FeedStep>
+          </template>
+        </Feed>
+      </Container>
+    </div>
   </AllStepsProvider>
 </template>

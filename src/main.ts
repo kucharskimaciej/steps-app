@@ -16,10 +16,10 @@ import App from "./App.vue";
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
+Vue.use(VueCompositionAPI);
 Vue.use(Vuex);
 Vue.use(VueTypedi);
 Vue.use(PortalVue);
-Vue.use(VueCompositionAPI);
 
 new Vue({
   router,

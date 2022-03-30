@@ -1,9 +1,10 @@
 <script lang="ts">
-import { Vue, Component, Emit, Prop } from "vue-property-decorator";
+import { Component, Emit, Prop } from "vue-property-decorator";
 import FullSearch from "@/features/Search/FullSearch.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import { existingArtists, existingTags } from "@/store";
 import { Search } from "@/features/Search/types";
+import { VueWithStore } from "@/lib/vueWithStore";
 
 @Component({
   components: {
@@ -11,7 +12,7 @@ import { Search } from "@/features/Search/types";
     PureButton
   }
 })
-export default class SearchOverlay extends Vue {
+export default class SearchOverlay extends VueWithStore {
   @Prop() private search!: Search;
 
   @Emit()

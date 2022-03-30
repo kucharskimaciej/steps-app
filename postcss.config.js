@@ -42,7 +42,8 @@ module.exports = {
             "html",
             "ready",
             "page-mode",
-            "direction-vertical"
+            "direction-vertical",
+            "overflow-hidden"
           ],
           whitelistPatterns: [/^vue-recycle-scroller/],
           extractors: [

@@ -13,7 +13,11 @@ export default class GlobalStyles extends Vue {}
 
 <style lang="scss">
 $material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
-
 @import "../vendor/material-design-icons";
-@import url("https://fonts.googleapis.com/css?family=Cabin:400,500, 600|Roboto+Condensed:400,700&subset=latin-ext");
+
+html {
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 </style>

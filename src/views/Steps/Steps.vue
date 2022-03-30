@@ -1,9 +1,10 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import Container from "@/components/Layout/Container.vue";
 import { getSteps } from "@/store";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
+import { VueWithStore } from "@/lib/vueWithStore";
 
 @Component({
   components: {
@@ -12,7 +13,7 @@ import AllStepsProvider from "@/components/Providers/AllStepsProvider";
     AllStepsProvider
   }
 })
-export default class Steps extends Vue {
+export default class Steps extends VueWithStore {
   get steps() {
     return getSteps(this.$store);
   }
