@@ -1,5 +1,7 @@
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { defineComponent, PropType, watch } from "@vue/composition-api";
+import FormGroup from "@/components/Forms/FormGroup.vue";
+import Select from "@/components/Forms/Select.vue";
 import {
   SearchSort,
   SortDirection,
@@ -7,47 +9,47 @@ import {
   SortType,
   sortTypeLabels
 } from "@/features/Search/types";
-import FormGroup from "@/components/Forms/FormGroup.vue";
-import Select from "@/components/Forms/Select.vue";
 import { validationMixin } from "vuelidate";
 
-@Component({
-  components: {
-    FormGroup,
-    Select
-  },
+const FullSearchSort = defineComponent({
   mixins: [validationMixin],
-  validations(this: FullSearchSort) {
+  validations() {
     return {
       sort: {
         type: {},
         direction: {}
       }
     };
-  }
-})
-export default class FullSearchSort extends Vue {
-  @Prop({
-    default: () => ({
-      type: SortType.SCORE,
-      direction: SortDirection.DESCENDING
-    })
-  })
-  private sort!: SearchSort;
+  },
+  components: {
+    FormGroup,
+    Select
+  },
+  props: {
+    sort: {
+      type: Object as PropType<SearchSort>,
+      default: () => ({
+        type: SortType.SCORE,
+        direction: SortDirection.DESCENDING
+      })
+    }
+  },
+  emits: ["input"],
+  setup({ sort }, ctx) {
+    watch(
+      () => sort,
+      (newSearch: SearchSort) => ctx.emit("input", newSearch),
+      { deep: true }
+    );
 
-  get sortTypes() {
-    return sortTypeLabels;
+    return {
+      sortDirections: sortDirectionLabels,
+      sortTypes: sortTypeLabels
+    };
   }
+});
 
-  get sortDirections() {
-    return sortDirectionLabels;
-  }
-
-  @Watch("sort", { deep: true })
-  handleSearchChange(newSearch: SearchSort) {
-    this.$emit("input", newSearch);
-  }
-}
+export default FullSearchSort;
 </script>
 
 <template>
