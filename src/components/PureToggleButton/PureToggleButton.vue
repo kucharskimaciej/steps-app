@@ -1,14 +1,17 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
-  components: { PureButton, PureIcon }
-})
-export default class PureToggleButton extends Vue {
-  @Prop() private toggled!: boolean;
-}
+const PureToggleButton = defineComponent({
+  components: { PureButton, PureIcon },
+  props: {
+    toggled: Boolean
+  },
+  emits: []
+});
+
+export default PureToggleButton;
 </script>
 
 <template>

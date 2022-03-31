@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 
 export type ButtonKind = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "regular" | "small" | "large";
@@ -64,36 +64,49 @@ export function buttonSize(size: ButtonSize, spacing: ButtonSpacing): string {
   }
 }
 
-@Component
-export default class PureButton extends Vue {
-  @Prop({ default: "primary" }) private kind!: ButtonKind;
-  @Prop({ default: "regular" }) private size!: ButtonSize;
-  @Prop({ default: "regular" }) private spacing!: ButtonSpacing;
-  @Prop({ default: "button" }) private tag!: string;
-  @Prop() private disabled!: boolean;
+const PureButton = defineComponent({
+  props: {
+    kind: {
+      type: String as PropType<ButtonKind>,
+      default: "primary"
+    },
+    size: {
+      type: String as PropType<ButtonSize>,
+      default: "regular"
+    },
+    spacing: {
+      type: String as PropType<ButtonSpacing>,
+      default: "regular"
+    },
+    tag: {
+      type: String,
+      default: "button"
+    },
+    disabled: Boolean
+  },
+  setup(props) {
+    const sizeClasses = computed(() => buttonSize(props.size, props.spacing));
+    const colorClasses = computed(() => buttonColors(props.kind));
 
-  get commonClasses(): string {
-    return "inline-block font-light rounded focus:outline-none";
+    return {
+      sizeClasses,
+      colorClasses
+    };
   }
+});
 
-  get sizeClasses(): string {
-    return buttonSize(this.size, this.spacing);
-  }
-
-  get statusClasses(): string {
-    return this.disabled ? "opacity-50 cursor-not-allowed" : "";
-  }
-
-  get colorClasses(): string {
-    return buttonColors(this.kind);
-  }
-}
+export default PureButton;
 </script>
 
 <template>
   <component
     :is="tag"
-    :class="[commonClasses, statusClasses, sizeClasses, colorClasses]"
+    class="inline-block font-light rounded focus:outline-none"
+    :class="[
+      { 'opacity-50 cursor-not-allowed': disabled },
+      sizeClasses,
+      colorClasses
+    ]"
     :disabled="disabled"
     v-bind="$attrs"
     v-on="$listeners"

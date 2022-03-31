@@ -1,12 +1,13 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component({
-  components: {}
-})
-export default class PureIcon extends Vue {
-  @Prop() private type!: string;
-}
+const PureIcon = defineComponent({
+  props: {
+    type: String
+  }
+});
+
+export default PureIcon;
 </script>
 
 <template>
