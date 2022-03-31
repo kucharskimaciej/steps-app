@@ -1,24 +1,26 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 
-@Component({
+const SlowControl = defineComponent({
   components: {
     PureIcon,
     Control
+  },
+  props: {
+    enabled: {
+      type: Boolean,
+      required: true
+    }
   }
-})
-export default class SlowControl extends Vue {
-  @Prop({ required: true }) private enabled!: boolean;
+});
 
-  @Emit()
-  toggle() {}
-}
+export default SlowControl;
 </script>
 
 <template>
-  <Control @click="toggle()">
+  <Control v-on="$listeners">
     <PureIcon
       v-if="enabled"
       type="slow_motion_video"

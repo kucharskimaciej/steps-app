@@ -1,15 +1,16 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 
-@Component({
+const SizeControl = defineComponent({
   components: {
     PureIcon,
     Control
   }
-})
-export default class SizeControl extends Vue {}
+});
+
+export default SizeControl;
 </script>
 
 <template>

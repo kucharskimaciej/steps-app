@@ -1,15 +1,18 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 
-@Component({
+const PlayControl = defineComponent({
   components: {
     PureIcon,
     Control
-  }
-})
-export default class PlayControl extends Vue {}
+  },
+  props: {},
+  emits: []
+});
+
+export default PlayControl;
 </script>
 
 <template>

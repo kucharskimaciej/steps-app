@@ -1,15 +1,16 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import Control from "./Control.vue";
-import PureIcon from "../../components/PureIcon/PureIcon.vue";
+import { defineComponent } from "@vue/composition-api";
+import Control from "@/features/VideoPlayer/Control.vue";
+import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
+const BackFive = defineComponent({
   components: {
     Control,
     PureIcon
   }
-})
-export default class BackFive extends Vue {}
+});
+
+export default BackFive;
 </script>
 
 <template>

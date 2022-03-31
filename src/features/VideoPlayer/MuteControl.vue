@@ -1,24 +1,26 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 
-@Component({
+const MuteControl = defineComponent({
   components: {
     PureIcon,
     Control
+  },
+  props: {
+    muted: {
+      required: true,
+      type: Boolean
+    }
   }
-})
-export default class MuteControl extends Vue {
-  @Prop({ required: true }) private muted!: boolean;
+});
 
-  @Emit()
-  toggleMuted() {}
-}
+export default MuteControl;
 </script>
 
 <template>
-  <Control @click="toggleMuted()">
+  <Control v-on="$listeners">
     <PureIcon v-if="muted" type="volume_off" />
     <PureIcon v-else type="volume_up" />
   </Control>

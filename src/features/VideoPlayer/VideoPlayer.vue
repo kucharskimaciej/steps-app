@@ -1,19 +1,21 @@
 <script lang="ts">
-import { PropType } from "vue";
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
-import { pick } from "lodash";
-import MuteControl from "@/features/VideoPlayer/MuteControl.vue";
-import SizeControl from "@/features/VideoPlayer/SizeControl.vue";
+import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
+import { pick, throttle } from "lodash";
 import PlayControl from "@/features/VideoPlayer/PlayControl.vue";
+import SizeControl from "@/features/VideoPlayer/SizeControl.vue";
+import MuteControl from "@/features/VideoPlayer/MuteControl.vue";
 import ForwardOne from "@/features/VideoPlayer/ForwardOne.vue";
-import BackOne from "@/features/VideoPlayer/BackOne.vue";
 import ForwardFive from "@/features/VideoPlayer/ForwardFive.vue";
 import BackFive from "@/features/VideoPlayer/BackFive.vue";
+import BackOne from "@/features/VideoPlayer/BackOne.vue";
 import PlayFromStart from "@/features/VideoPlayer/PlayFromStart.vue";
 import SlowControl from "@/features/VideoPlayer/SlowControl.vue";
 import Progress from "@/features/VideoPlayer/Progress.vue";
-import { ThrottleTime } from "@/lib/decorators/throttleTime";
 import { VideoObject } from "../../../common/types/VideoObject";
+
+const FULL_SPEED = 1;
+const SLOW_SPEED = 0.5;
+const VIEW_THRESHOLD = 0.8;
 
 const mediaEvents = [
   "abort",
@@ -44,7 +46,7 @@ const mediaEvents = [
   "waiting"
 ];
 
-@Component({
+const VideoPlayer = defineComponent({
   components: {
     PlayControl,
     SizeControl,
@@ -56,123 +58,155 @@ const mediaEvents = [
     PlayFromStart,
     SlowControl,
     Progress
-  }
-})
-export default class VideoPlayer extends Vue {
-  @Prop({ required: true, type: Object as PropType<VideoObject> })
-  private video!: VideoObject;
-  @Prop({ default: false }) private autoplay!: boolean;
-  @Prop({ default: true }) private background!: boolean;
-  @Prop({ default: false }) private sizeControl!: boolean;
+  },
+  props: {
+    video: {
+      required: true,
+      type: Object as PropType<VideoObject>
+    },
+    autoplay: Boolean,
+    background: {
+      type: Boolean,
+      default: true
+    },
+    sizeControl: Boolean
+  },
+  emits: ["viewed", "open-full-size"],
+  setup({ video }, ctx) {
+    const muted = ref(true);
+    const playing = ref(false);
+    const speed = ref(FULL_SPEED);
+    const currentTime = ref(0);
+    const viewedFlag = ref(false);
 
-  static readonly FULL_SPEED = 1;
-  static readonly SLOW_SPEED = 0.5;
-  static readonly VIEW_THRESHOLD = 0.8;
+    const videoElementRef = ref<HTMLVideoElement>();
 
-  muted = true;
-  playing = false;
-  speed = VideoPlayer.FULL_SPEED;
-  currentTime = 0;
-  viewedFlag = false;
-
-  @Emit()
-  viewed() {}
-
-  @Emit()
-  openFullSize() {}
-
-  get videoEventListeners() {
-    return pick(this.$listeners, mediaEvents);
-  }
-
-  provideVideoElement(): HTMLVideoElement {
-    return this.$refs.video as HTMLVideoElement;
-  }
-
-  toggleMuted(value = !this.muted) {
-    this.muted = value;
-    this.provideVideoElement().muted = value;
-  }
-
-  toggleSize() {
-    this.provideVideoElement().requestFullscreen();
-  }
-
-  play() {
-    this.playing = !this.playing;
-    if (this.playing) {
-      this.provideVideoElement().play();
-    } else {
-      this.provideVideoElement().pause();
-    }
-  }
-
-  seek(delta: number) {
-    const totalLength = this.provideVideoElement().duration;
-    const currentTime = this.provideVideoElement().currentTime;
-
-    if (!currentTime) {
-      return;
-    }
-
-    this.provideVideoElement().currentTime = Math.min(
-      Math.max(0, currentTime + delta),
-      totalLength
+    const videoEventListeners = computed(() =>
+      pick(ctx.listeners, mediaEvents)
     );
-  }
+    const isSlow = computed(() => speed.value < 1);
+    const snapshotUrl = computed(
+      () =>
+        `https://storage.googleapis.com/${process.env.VUE_APP_FIREBASE_STORAGE_BUCKET}/${video.snapshot_url}`
+    );
 
-  toggleSlowSpeed() {
-    this.provideVideoElement().playbackRate = this.speed =
-      this.speed < VideoPlayer.FULL_SPEED
-        ? VideoPlayer.FULL_SPEED
-        : VideoPlayer.SLOW_SPEED;
-  }
+    function updateViewedStatus() {
+      if (!videoElementRef.value) {
+        return;
+      }
 
-  playFromStart() {
-    this.provideVideoElement().currentTime = 0;
-  }
+      const progress =
+        videoElementRef.value.currentTime / videoElementRef.value.duration;
 
-  handlePlayingChange(value: boolean) {
-    this.playing = value;
-  }
+      if (progress < 0.1) {
+        viewedFlag.value = false;
+      }
 
-  handleVolumeChange() {
-    if (this.provideVideoElement()) {
-      this.toggleMuted(this.provideVideoElement().muted);
-    }
-  }
-
-  @ThrottleTime(500)
-  handleTimeUpdate() {
-    if (this.provideVideoElement()) {
-      this.currentTime = this.provideVideoElement().currentTime;
-      this.updateViewedStatus();
-    }
-  }
-
-  get isSlow() {
-    return this.speed < 1;
-  }
-
-  private updateViewedStatus() {
-    const progress =
-      this.provideVideoElement().currentTime /
-      this.provideVideoElement().duration;
-
-    if (progress < 0.1) {
-      this.viewedFlag = false;
+      if (!viewedFlag.value && progress > VIEW_THRESHOLD) {
+        viewedFlag.value = true;
+        ctx.emit("viewed");
+      }
     }
 
-    if (!this.viewedFlag && progress > VideoPlayer.VIEW_THRESHOLD) {
-      this.viewedFlag = true;
-      this.viewed();
-    }
-  }
+    function toggleMuted(value = !muted.value) {
+      if (!videoElementRef.value) {
+        return;
+      }
 
-  get snapshotUrl() {
-    return `https://storage.googleapis.com/${process.env.VUE_APP_FIREBASE_STORAGE_BUCKET}/${this.video.snapshot_url}`;
+      muted.value = value;
+      videoElementRef.value.muted = value;
+    }
+
+    function toggleSize() {
+      videoElementRef.value?.requestFullscreen();
+    }
+
+    function play() {
+      playing.value = !playing.value;
+
+      if (playing.value) {
+        videoElementRef.value?.play();
+      } else {
+        videoElementRef.value?.pause();
+      }
+    }
+
+    function seek(delta: number) {
+      if (!videoElementRef.value) {
+        return;
+      }
+
+      const totalLength = videoElementRef.value?.duration;
+      const currentTime = videoElementRef.value?.currentTime;
+
+      if (!currentTime || !totalLength) {
+        return;
+      }
+
+      videoElementRef.value.currentTime = Math.min(
+        Math.max(0, currentTime + delta),
+        totalLength
+      );
+    }
+
+    function toggleSlowSpeed() {
+      if (!videoElementRef.value) {
+        return;
+      }
+
+      videoElementRef.value.playbackRate = speed.value =
+        speed.value < FULL_SPEED ? FULL_SPEED : SLOW_SPEED;
+    }
+
+    function playFromStart() {
+      if (!videoElementRef.value) {
+        return;
+      }
+
+      videoElementRef.value.currentTime = 0;
+    }
+
+    function handlePlayingChange(value: boolean) {
+      playing.value = value;
+    }
+
+    function handleVolumeChange() {
+      if (videoElementRef.value) {
+        toggleMuted(videoElementRef.value.muted);
+      }
+    }
+
+    const handleTimeUpdate = throttle(() => {
+      if (videoElementRef.value) {
+        currentTime.value = videoElementRef.value.currentTime;
+        updateViewedStatus();
+      }
+    });
+
+    return {
+      muted,
+      playing,
+      currentTime,
+
+      videoEventListeners,
+      isSlow,
+      snapshotUrl,
+      videoElementRef,
+
+      toggleMuted,
+      toggleSize,
+      play,
+      seek,
+      toggleSlowSpeed,
+      playFromStart,
+      handlePlayingChange,
+      handleVolumeChange,
+      handleTimeUpdate
+    };
   }
-}
+});
+
+export default VideoPlayer;
 </script>
 
 <template>
@@ -186,7 +220,7 @@ export default class VideoPlayer extends Vue {
     />
 
     <video
-      ref="video"
+      ref="videoElementRef"
       :muted="muted"
       :src="video.url"
       loop
@@ -209,8 +243,8 @@ export default class VideoPlayer extends Vue {
     </aside>
 
     <aside class="absolute top-0 right-0 m-2 flex flex-col">
-      <MuteControl class="mb-1" :muted="muted" @toggle-muted="toggleMuted" />
-      <SizeControl v-if="sizeControl" @click="openFullSize()" />
+      <MuteControl class="mb-1" :muted="muted" @click="toggleMuted()" />
+      <SizeControl v-if="sizeControl" @click="$emit('open-full-size')" />
     </aside>
 
     <aside class="absolute bottom-0 right-0 m-2 flex">
@@ -218,17 +252,11 @@ export default class VideoPlayer extends Vue {
       <BackFive class="mr-1" @click="seek(-5)" />
       <BackOne class="mr-1" @click="seek(-1)" />
       <PlayFromStart class="mr-1" @click="playFromStart()" />
-      <SlowControl class="ml-5" :enabled="isSlow" @toggle="toggleSlowSpeed()" />
+      <SlowControl class="ml-5" :enabled="isSlow" @click="toggleSlowSpeed()" />
     </aside>
 
-    <aside
-      v-if="provideVideoElement()"
-      class="absolute bottom-0 right-0 left-0"
-    >
-      <Progress
-        :current="currentTime"
-        :total="provideVideoElement().duration"
-      />
+    <aside v-if="videoElementRef" class="absolute bottom-0 right-0 left-0">
+      <Progress :current="currentTime" :total="videoElementRef.duration" />
     </aside>
   </main>
 </template>

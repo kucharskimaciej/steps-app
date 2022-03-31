@@ -1,15 +1,24 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { computed, defineComponent } from "@vue/composition-api";
 
-@Component
-export default class Progress extends Vue {
-  @Prop({ default: 0 }) private current!: number;
-  @Prop({ required: true }) private total!: number;
-
-  get progress() {
-    return (this.current / this.total) * 100;
+const Progress = defineComponent({
+  props: {
+    current: {
+      type: Number,
+      default: 0
+    },
+    total: {
+      type: Number,
+      required: true
+    }
+  },
+  setup({ current, total }) {
+    const progress = computed(() => (current / total) * 100);
+    return { progress };
   }
-}
+});
+
+export default Progress;
 </script>
 
 <template>
