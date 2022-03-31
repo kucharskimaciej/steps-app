@@ -1,17 +1,20 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 
-@Component({
+const SearchWidget = defineComponent({
   components: {
     PureIcon,
     PureButton
-  }
-})
-export default class SearchWidget extends Vue {
-  @Prop() private searchActive!: boolean;
-}
+  },
+  props: {
+    searchActive: Boolean
+  },
+  emits: []
+});
+
+export default SearchWidget;
 </script>
 
 <template>

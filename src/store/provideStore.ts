@@ -27,3 +27,7 @@ export function provideStore(): Store<RootState> {
 
   return store;
 }
+
+export function useStore() {
+  return provideStore();
+}

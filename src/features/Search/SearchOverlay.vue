@@ -1,54 +1,50 @@
 <script lang="ts">
-import { Component, Emit, Prop } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { Search } from "@/features/Search/types";
 import FullSearch from "@/features/Search/FullSearch.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import { existingArtists, existingTags } from "@/store";
-import { Search } from "@/features/Search/types";
-import { VueWithStore } from "@/lib/vueWithStore";
+import { existingTags, existingArtists, useStore } from "@/store";
 
-@Component({
+const SearchOverlay = defineComponent({
   components: {
     FullSearch,
     PureButton
+  },
+  props: {
+    search: {
+      type: Object as PropType<Search>
+    }
+  },
+  emits: ["search-change", "close-modal", "clear-search"],
+  setup() {
+    const store = useStore();
+
+    const artists = computed(() => existingArtists(store));
+    const tags = computed(() => existingTags(store));
+
+    return {
+      artists,
+      tags
+    };
   }
-})
-export default class SearchOverlay extends VueWithStore {
-  @Prop() private search!: Search;
+});
 
-  @Emit()
-  closeModal() {}
-
-  @Emit()
-  searchChange(search: Search) {
-    return search;
-  }
-
-  @Emit()
-  clearSearch() {}
-
-  get existingTags() {
-    return existingTags(this.$store);
-  }
-
-  get existingArtists() {
-    return existingArtists(this.$store);
-  }
-}
+export default SearchOverlay;
 </script>
 
 <template>
   <div class="h-full pt-4">
     <FullSearch
       :value="search"
-      :existing-artists="existingArtists"
-      :existing-tags="existingTags"
-      @search="searchChange"
+      :existing-artists="artists"
+      :existing-tags="tags"
+      @search="$emit('search-change')"
     />
     <footer class="flex justify-center">
-      <PureButton kind="outline" class="mr-2" @click="clearSearch">
+      <PureButton kind="outline" class="mr-2" @click="$emit('clear-search')">
         Clear
       </PureButton>
-      <PureButton @click="closeModal()">Back to results</PureButton>
+      <PureButton @click="$emit('close-modal')">Back to results</PureButton>
     </footer>
   </div>
 </template>
