@@ -1,27 +1,30 @@
 <script lang="ts">
-import Card from "@/components/Card/Card.vue";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch
+} from "@vue/composition-api";
+import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
+import Card from "@/components/Card/Card.vue";
 import FullContent from "@/components/Step/FullContent.vue";
 import ProvideScoring from "@/features/CreateEditStep/ProvideScoring";
-import {
-  StepFormApi,
-  StepFormData
-} from "@/features/CreateEditStep/StepForm/types";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { without } from "lodash";
-import { Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { StepDTO } from "../../../common/types/Step";
+import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
 import {
-  dispatchUpdateStep,
-  existingArtists,
-  existingTags,
-  stepsById
+  stepsById as getStepsById,
+  existingArtists as getExistingArtists,
+  existingTags as getExistingTags,
+  useStore,
+  dispatchUpdateStep
 } from "@/store";
-import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
+import { without } from "lodash";
 
-@Component({
+const InlineStepEdit = defineComponent({
   components: {
     StepForm,
     WideWithSidebarRight,
@@ -30,83 +33,93 @@ import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
     Card,
     FullContent,
     ProvideScoring
-  }
-})
-export default class InlineStepEdit extends VueWithStore {
-  @Prop({ required: true }) private step!: StepDTO;
-  @Ref("form") readonly form!: StepFormApi;
-
-  selectedVariations: string[] = [];
-  value: Partial<StepFormData> = {};
-
-  @Watch("step", { immediate: true })
-  handleStepsLoaded() {
-    if (this.step) {
-      this.selectedVariations = this.step.variationKey
-        ? [this.step.variationKey]
-        : [];
+  },
+  props: {
+    step: {
+      type: Object as PropType<StepDTO>,
+      required: true
     }
-  }
+  },
+  emits: ["finished"],
+  setup({ step }, ctx) {
+    const store = useStore();
 
-  get formValue() {
-    return this.value;
-  }
+    const selectedVariations = ref<string[]>([]);
+    const form = ref<StepFormApi>();
 
-  get stepsById() {
-    return stepsById(this.$store);
-  }
+    watch(step, newStep => {
+      if (newStep) {
+        selectedVariations.value = newStep.variationKey
+          ? [newStep.variationKey]
+          : [];
+      }
+    });
 
-  get existingTags() {
-    return existingTags(this.$store);
-  }
+    const stepsById = computed(() => getStepsById(store));
+    const existingArtists = computed(() => getExistingArtists(store));
+    const existingTags = computed(() => getExistingTags(store));
 
-  get existingArtists() {
-    return existingArtists(this.$store);
-  }
+    function isPartOfSelectedVariation(stepId: string) {
+      const stepToCheck = stepsById.value[stepId];
 
-  toggleVariationSelected(stepId: string): void {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return;
+      if (!stepToCheck) {
+        return false;
+      }
+
+      return selectedVariations.value.includes(stepToCheck.variationKey);
     }
 
-    if (this.selectedVariations.includes(step.variationKey)) {
-      this.selectedVariations = without(
-        this.selectedVariations,
-        step.variationKey
-      );
-    } else {
-      this.selectedVariations.push(step.variationKey);
+    function toggleVariationSelected(stepId: string): void {
+      const stepToToggle = stepsById.value[stepId];
+      if (!stepToToggle) {
+        return;
+      }
+
+      if (selectedVariations.value.includes(stepToToggle.variationKey)) {
+        selectedVariations.value = without(
+          selectedVariations.value,
+          stepToToggle.variationKey
+        );
+      } else {
+        selectedVariations.value.push(stepToToggle.variationKey);
+      }
     }
-  }
 
-  isPartOfSelectedVariation(stepId: string): boolean {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return false;
+    async function saveStep() {
+      if (!form.value) {
+        return;
+      }
+
+      if (form.value.validate()) {
+        await dispatchUpdateStep(store, {
+          stepId: step.id,
+          params: form.value.value,
+          selectedVariations: selectedVariations.value
+        });
+
+        ctx.emit("finished");
+      }
     }
 
-    return this.selectedVariations.includes(step.variationKey);
+    return {
+      form,
+      stepsById,
+      existingArtists,
+      existingTags,
+      isPartOfSelectedVariation,
+      toggleVariationSelected,
+      saveStep
+    };
   }
+});
 
-  async saveStep() {
-    if (this.form.validate()) {
-      await dispatchUpdateStep(this.$store, {
-        stepId: this.step.id,
-        params: this.form.value,
-        selectedVariations: this.selectedVariations
-      });
-
-      this.$emit("finished");
-    }
-  }
-}
+export default InlineStepEdit;
 </script>
 
 <template>
   <section class="h-full flex flex-col gap-4">
     <header class="p-4 text-right">
-      <PureButton kind="primary" spacing="wide" @click.native="saveStep">
+      <PureButton kind="primary" spacing="wide" @click.native="saveStep()">
         Save
       </PureButton>
     </header>
@@ -118,13 +131,14 @@ export default class InlineStepEdit extends VueWithStore {
         :step="step"
         :existing-tags="existingTags"
         :existing-artists="existingArtists"
-        @input="value = $event"
+        @input="form.value = $event"
       />
 
       <template #sidebar>
         <ProvideScoring
+          v-if="form"
           :exclude="[step.id]"
-          :data-for-scoring="formValue"
+          :data-for-scoring="form.value"
           class="h-full overflow-y-auto mr-4"
         >
           <template #default="{ stepIdsByScore, results }">
