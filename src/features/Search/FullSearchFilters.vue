@@ -1,26 +1,25 @@
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { entries } from "lodash";
-import { Inject } from "vue-typedi";
-import { validationMixin } from "vuelidate";
+import {
+  computed,
+  ComputedRef,
+  defineComponent,
+  PropType,
+  watch
+} from "@vue/composition-api";
 import FormGroup from "@/components/Forms/FormGroup.vue";
-import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
-import SimpleInput from "@/components/Forms/SimpleInput.vue";
-import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import { SearchFilters } from "@/features/Search/types";
+import { validationMixin } from "vuelidate";
 import { AppConfigToken } from "../../../common/tokens";
-import { AppConfig } from "../../../common/config/types";
+import { Container } from "vue-typedi";
+import { entries } from "lodash";
+import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
+import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
+import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
+import SimpleInput from "@/components/Forms/SimpleInput.vue";
 
-@Component({
-  components: {
-    TagsInput,
-    TagsSelection,
-    FormGroup,
-    SimpleInput
-  },
+const FullSearchFilters = defineComponent({
   mixins: [validationMixin],
-  validations(this: FullSearchFilters) {
+  validations() {
     return {
       filters: {
         query: {},
@@ -30,38 +29,56 @@ import { AppConfig } from "../../../common/config/types";
         anyArtists: {}
       }
     };
+  },
+  components: {
+    TagsInput,
+    TagsSelection,
+    FormGroup,
+    SimpleInput
+  },
+  props: {
+    filters: {
+      type: Object as PropType<SearchFilters>,
+      default: () => ({
+        query: "",
+        feeling: [],
+        includeAllTags: [],
+        excludeAnyTags: [],
+        anyArtists: []
+      })
+    },
+    existingTags: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
+    existingArtists: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    }
+  },
+  emits: ["input"],
+  setup({ filters }, ctx) {
+    watch(
+      () => filters,
+      (filters: SearchFilters) => ctx.emit("input", filters),
+      { deep: true }
+    );
+
+    const appConfig = Container.get(AppConfigToken);
+    const feelingOptions: ComputedRef<OptionWithLabel[]> = computed(() =>
+      entries(appConfig.feelings).map(([key, label]) => ({
+        key,
+        label
+      }))
+    );
+
+    return {
+      feelingOptions
+    };
   }
-})
-export default class FullSearchFilters extends Vue {
-  @Inject(AppConfigToken)
-  private readonly appConfig!: AppConfig;
+});
 
-  @Prop({
-    default: () => ({
-      query: "",
-      feeling: [],
-      includeAllTags: [],
-      excludeAnyTags: [],
-      anyArtists: []
-    })
-  })
-  private filters!: SearchFilters;
-
-  @Prop({ default: () => [] }) private existingTags!: string[];
-  @Prop({ default: () => [] }) private existingArtists!: string[];
-
-  get feelingOptions(): OptionWithLabel[] {
-    return entries(this.appConfig.feelings).map(([key, label]) => ({
-      key,
-      label
-    }));
-  }
-
-  @Watch("filters", { deep: true })
-  handleSearchChange(newSearch: SearchFilters) {
-    this.$emit("input", newSearch);
-  }
-}
+export default FullSearchFilters;
 </script>
 
 <template>
