@@ -1,3 +1,20 @@
+<script lang="ts">
+import { defineComponent, PropType } from "@vue/composition-api";
+import { Tag } from "../../../common/types/Tag";
+
+const PureTag = defineComponent({
+  props: {
+    tag: Object as PropType<Tag>,
+    showType: {
+      type: Boolean,
+      default: true
+    }
+  }
+});
+
+export default PureTag;
+</script>
+
 <template>
   <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm text-xs">
     <slot name="prepend" />
@@ -10,14 +27,3 @@
     <slot name="append" />
   </span>
 </template>
-
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { Tag } from "../../../common/types/Tag";
-
-@Component
-export default class PureTag extends Vue {
-  @Prop() private readonly tag!: Tag;
-  @Prop({ default: true }) private readonly showType!: boolean;
-}
-</script>
