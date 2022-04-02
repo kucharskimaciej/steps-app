@@ -1,35 +1,33 @@
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { dispatchFetchCurrentStep } from "@/store";
+import { computed, defineComponent, onActivated } from "@vue/composition-api";
+import { dispatchFetchCurrentStep, useStore } from "@/store";
 
-@Component
-export default class StepProvider extends VueWithStore {
-  @Prop({ required: true }) private stepId!: string;
-
-  @Watch("stepId")
-  onStepIdChanged(newValue: string, oldValue: string) {
-    if (newValue && newValue !== oldValue) {
-      this.loadStep(newValue);
+const StepProvider = defineComponent({
+  props: {
+    stepId: {
+      required: true,
+      type: String
     }
-  }
+  },
+  setup({ stepId }) {
+    const store = useStore();
+    const loading = computed(
+      () => store.state.currentStep.status === "pending"
+    );
 
-  get loading() {
-    return this.$store.state.currentStep.status === "pending";
-  }
-
-  async loadStep(stepId: string) {
-    if (this.loading) {
-      return;
+    function loadStep() {
+      return dispatchFetchCurrentStep(store, stepId);
     }
 
-    await dispatchFetchCurrentStep(this.$store, stepId);
-  }
+    onActivated(loadStep);
 
-  async created() {
-    await this.loadStep(this.stepId);
+    return {
+      loading
+    };
   }
-}
+});
+
+export default StepProvider;
 </script>
 
 <template>

@@ -1,23 +1,32 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import Tags from "@/components/Step/components/Tags.vue";
+import { Step } from "../../../common/types/Step";
 
-@Component({
+const ReadonlyStep = defineComponent({
   components: {
     VideoPlayer,
     PureTag,
     Tags
+  },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    }
+  },
+  setup({ step }) {
+    const primaryVideo = computed(() => step.videos[0]);
+
+    return {
+      primaryVideo
+    };
   }
-})
-export default class ReadonlyStep extends Vue {
-  @Prop({ required: true }) private step!: Step;
-  get primaryVideo() {
-    return this.step.videos[0];
-  }
-}
+});
+
+export default ReadonlyStep;
 </script>
 
 <template>

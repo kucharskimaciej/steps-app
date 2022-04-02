@@ -1,27 +1,32 @@
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
-import StepProvider from "@/components/Providers/StepProvider.vue";
-import { getCurrentStep } from "@/store";
-import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
+import { computed, defineComponent } from "@vue/composition-api";
 import Container from "@/components/Layout/Container.vue";
+import StepProvider from "@/components/Providers/StepProvider.vue";
+import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
+import { getCurrentStep, useStore } from "@/store";
 
-@Component({
+const PublicStep = defineComponent({
   components: {
     Container,
     StepProvider,
     ReadonlyStep,
     BasicLoader
-  }
-})
-export default class PublicStep extends VueWithStore {
-  @Prop() private stepId!: string;
+  },
+  props: {
+    stepId: String
+  },
+  setup() {
+    const store = useStore();
+    const step = computed(() => getCurrentStep(store));
 
-  get step() {
-    return getCurrentStep(this.$store);
+    return {
+      step
+    };
   }
-}
+});
+
+export default PublicStep;
 </script>
 
 <template>
