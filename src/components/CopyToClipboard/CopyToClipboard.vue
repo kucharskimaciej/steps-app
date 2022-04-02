@@ -1,23 +1,33 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
+const CopyTyClipboard = defineComponent({
   components: {
     PureIcon
-  }
-})
-export default class CopyToClipboard extends Vue {
-  @Prop({ required: true }) private value!: string;
+  },
+  props: {
+    value: {
+      type: String,
+      required: true
+    }
+  },
+  setup({ value }) {
+    function copy() {
+      navigator.clipboard.writeText(value);
+    }
 
-  copy() {
-    navigator.clipboard.writeText(this.value);
+    return {
+      copy
+    };
   }
-}
+});
+
+export default CopyTyClipboard;
 </script>
 
 <template>
-  <span class="cursor-pointer" @click="copy">
+  <span class="cursor-pointer" @click="copy()">
     <slot></slot>
   </span>
 </template>

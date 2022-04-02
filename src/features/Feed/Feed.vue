@@ -1,33 +1,52 @@
 <script lang="ts">
-import ProvideScaledVideoSize from "@/components/Providers/ProvideScaledVideoSize";
-import { Vue, Component, Prop } from "vue-property-decorator";
+import {
+  defineComponent,
+  onMounted,
+  PropType,
+  reactive,
+  ref
+} from "@vue/composition-api";
 import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
-import FeedStep from "./FeedStep.vue";
+import FeedStep from "@/features/Feed/FeedStep.vue";
+import ProvideScaledVideoSize from "@/components/Providers/ProvideScaledVideoSize";
 import { Step } from "../../../common/types/Step";
 
-@Component({
+const Feed = defineComponent({
   components: {
     DynamicScroller,
     DynamicScrollerItem,
     FeedStep,
     ProvideScaledVideoSize
-  }
-})
-export default class Feed extends Vue {
-  @Prop({ required: true }) private steps!: Step[];
-  @Prop() private pageMode!: boolean;
+  },
+  props: {
+    steps: {
+      type: Array as PropType<Step[]>,
+      required: true
+    },
+    pageMode: Boolean
+  },
+  setup() {
+    const rootEl = ref<HTMLElement>();
+    const width = ref(0);
+    const stepVideoHeight = reactive<Record<string, number>>({});
 
-  width = 0;
-  mounted() {
-    this.width = this.$el.clientWidth;
-  }
+    onMounted(() => {
+      width.value = rootEl.value?.clientWidth || 0;
+    });
 
-  stepVideoHeight: Record<string, number> = {};
-}
+    return {
+      rootEl,
+      stepVideoHeight,
+      width
+    };
+  }
+});
+
+export default Feed;
 </script>
 
 <template>
-  <main>
+  <main ref="rootEl">
     <DynamicScroller
       :page-mode="pageMode"
       :items="steps"

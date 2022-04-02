@@ -1,30 +1,41 @@
 <script lang="ts">
+import { computed, defineComponent, ref } from "@vue/composition-api";
 import InlineStepEdit from "@/features/CreateEditStep/InlineStepEdit.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
-import { Component, Prop } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { rawStepsById } from "@/store";
+import { rawStepsById, useStore } from "@/store";
 
-@Component({
+const ProvideInlineEdit = defineComponent({
   components: {
     InlineModal,
     AspectAwareVideo,
     InlineStepEdit
-  }
-})
-export default class ProvideInlineEdit extends VueWithStore {
-  @Prop({ required: true }) private stepId!: string;
-  modalOpen = false;
+  },
+  props: {
+    stepId: {
+      type: String,
+      required: true
+    }
+  },
+  setup({ stepId }) {
+    const store = useStore();
+    const modalOpen = ref(false);
 
-  get step() {
-    return rawStepsById(this.$store)[this.stepId];
-  }
+    const step = computed(() => rawStepsById(store)[stepId]);
 
-  edit() {
-    this.modalOpen = true;
+    function edit() {
+      modalOpen.value = true;
+    }
+
+    return {
+      step,
+      edit,
+      modalOpen
+    };
   }
-}
+});
+
+export default ProvideInlineEdit;
 </script>
 
 <template>

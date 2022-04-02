@@ -1,33 +1,48 @@
 <script lang="ts">
-import { Component, Emit, Prop } from "vue-property-decorator";
-import Intersect from "./Intersect";
-import { IntersectComponentProps } from "@/components/Intersect/intersectComponentProps";
+import { defineComponent, ref } from "@vue/composition-api";
+import { intersectComponentPropsType } from "@/components/Intersect/intersectComponentProps";
+import Intersect from "@/components/Intersect/Intersect";
 
-@Component({
+const IntersectSwitch = defineComponent({
   components: {
     Intersect
-  }
-})
-export default class IntersectSwitch extends IntersectComponentProps {
-  @Prop({ default: 0.7 }) private visibilityThreshold!: number;
-  currentlyVisible = false;
-  currentRatio = 1;
+  },
+  props: {
+    ...intersectComponentPropsType,
+    visibilityThreshold: {
+      type: Number,
+      default: 0.7
+    }
+  },
+  emits: ["change"],
+  setup({ visibilityThreshold }, { emit }) {
+    const currentlyVisible = ref(false);
+    const currentRatio = ref(1);
 
-  @Emit("change")
-  handleChange(entry: IntersectionObserverEntry) {
-    this.currentRatio = entry.intersectionRatio;
-    this.currentlyVisible = this.currentRatio > this.visibilityThreshold;
+    function handleChange(entry: IntersectionObserverEntry) {
+      currentRatio.value = entry.intersectionRatio;
+      currentlyVisible.value = currentRatio.value > visibilityThreshold;
+
+      emit("change", {
+        entry,
+        ratio: currentRatio.value,
+        visible: currentlyVisible.value
+      });
+    }
+
     return {
-      visible: this.currentlyVisible,
-      ratio: this.currentRatio,
-      entry
+      handleChange,
+      currentRatio,
+      currentlyVisible
     };
   }
-}
+});
+
+export default IntersectSwitch;
 </script>
 
 <template>
-  <Intersect v-bind="$props" @change="handleChange">
+  <Intersect v-bind="$props" @change="handleChange($event)">
     <slot :visible="currentlyVisible" :ratio="currentRatio">
       <slot v-if="currentlyVisible" name="visible" />
       <slot v-else name="hidden" />

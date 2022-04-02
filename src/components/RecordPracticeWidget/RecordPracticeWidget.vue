@@ -1,40 +1,48 @@
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { dispatchRecordPractice, stepsById } from "@/store";
-import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
+import { computed, defineComponent } from "@vue/composition-api";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import { dispatchRecordPractice, stepsById, useStore } from "@/store";
+import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 
-@Component({
+const RecordPracticeWidget = defineComponent({
   components: {
     PureButton,
     PureIcon
-  }
-})
-export default class RecordPracticeWidget extends VueWithStore {
-  @Prop({ required: true }) private stepId!: string;
-  @Prop() private collectionId!: string;
+  },
+  props: {
+    stepId: {
+      type: String,
+      required: true
+    },
+    collectionId: String
+  },
+  setup({ stepId, collectionId }) {
+    const store = useStore();
 
-  get step(): Step {
-    return stepsById(this.$store)[this.stepId];
-  }
+    function handleRecordPractice() {
+      dispatchRecordPractice(store, [stepId, collectionId]);
+    }
 
-  get isTodayRecordedForCollection() {
-    return hasRecordedPracticeToday(this.step, this.collectionId);
-  }
+    const step = computed(() => stepsById(store)[stepId]);
+    const isTodayRecordedForCollection = computed(() =>
+      hasRecordedPracticeToday(step.value, collectionId)
+    );
 
-  handleRecordPractice() {
-    dispatchRecordPractice(this.$store, [this.stepId, this.collectionId]);
+    return {
+      handleRecordPractice,
+      isTodayRecordedForCollection
+    };
   }
-}
+});
+
+export default RecordPracticeWidget;
 </script>
 
 <template>
   <span v-if="isTodayRecordedForCollection">
     <slot name="practiced" :practice="handleRecordPractice">
-      <PureButton kind="ghost" @click="handleRecordPractice">
+      <PureButton kind="ghost" @click="handleRecordPractice()">
         <PureIcon type="done" /> Practiced
       </PureButton>
     </slot>
@@ -42,7 +50,7 @@ export default class RecordPracticeWidget extends VueWithStore {
 
   <span v-else>
     <slot name="not_practiced" :practice="handleRecordPractice">
-      <PureButton kind="secondary" @click="handleRecordPractice">
+      <PureButton kind="secondary" @click="handleRecordPractice()">
         Record practice
       </PureButton>
     </slot>

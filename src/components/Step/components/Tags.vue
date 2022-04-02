@@ -1,17 +1,22 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Step, TagCategory } from "../../../../common/types/Step";
+import { defineComponent, PropType } from "@vue/composition-api";
 import PureTag from "@/components/Tags/PureTag.vue";
+import { Step, TagCategory } from "../../../../common/types/Step";
 
-@Component({
+const Tags = defineComponent({
   components: {
     PureTag
+  },
+  props: {
+    step: Object as PropType<Step>,
+    category: {
+      type: String as PropType<TagCategory>,
+      default: "all"
+    }
   }
-})
-export default class Tags extends Vue {
-  @Prop() private step!: Step;
-  @Prop({ default: "all", type: String }) category!: TagCategory;
-}
+});
+
+export default Tags;
 </script>
 
 <template>

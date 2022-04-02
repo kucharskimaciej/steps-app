@@ -1,12 +1,17 @@
 <script lang="ts">
-import { Vue, Component, Emit, Provide } from "vue-property-decorator";
+import { defineComponent, provide } from "@vue/composition-api";
 
-@Component
-export default class PopupControlWrapper extends Vue {
-  @Provide("onItemClick")
-  @Emit()
-  itemClicked() {}
-}
+const PopupControlWrapper = defineComponent({
+  setup(_, ctx) {
+    function onItemClick() {
+      ctx.emit("item-clicked");
+    }
+
+    provide("onItemClick", onItemClick);
+  }
+});
+
+export default PopupControlWrapper;
 </script>
 
 <template>

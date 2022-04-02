@@ -1,24 +1,37 @@
 <script lang="ts">
-import { Vue, Component, Emit, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import { Portal } from "portal-vue";
 import { ModalStyleComponents } from "@/components/Modal/lib";
 import Backdrop from "@/components/Modal/Backdrop.vue";
 import { MODAL_STYLE } from "@/lib/modals/modals";
 
-@Component({
+const InlineModal = defineComponent({
   components: {
     Portal,
     ...ModalStyleComponents,
     Backdrop
+  },
+  props: {
+    modalStyle: {
+      default: MODAL_STYLE.OVERLAY,
+      type: String as PropType<MODAL_STYLE>
+    },
+    modalProps: {
+      type: Object as PropType<Record<string, any>>,
+      default: () => ({})
+    }
+  },
+  emits: ["close-modal"],
+  setup(_, ctx) {
+    return {
+      closeModal() {
+        ctx.emit("close-modal");
+      }
+    };
   }
-})
-export default class InlineModal extends Vue {
-  @Prop({ default: MODAL_STYLE.OVERLAY }) private modalStyle!: MODAL_STYLE;
-  @Prop({ default: () => ({}) }) private modalProps!: Record<string, any>;
+});
 
-  @Emit()
-  closeModal() {}
-}
+export default InlineModal;
 </script>
 
 <template>

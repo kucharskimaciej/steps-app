@@ -1,20 +1,25 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
-import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
+import { defineComponent, PropType } from "@vue/composition-api";
 import PopupMenu from "@/components/PopupMenu/PopupMenu.vue";
+import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
+import { Step } from "../../../common/types/Step";
 
-@Component({
+const OptionsPopup = defineComponent({
   components: {
     PopupMenu,
     PopupMenuItem,
     CopyToClipboard
+  },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    }
   }
-})
-export default class OptionsPopup extends Vue {
-  @Prop({ required: true }) private step!: Step;
-}
+});
+
+export default OptionsPopup;
 </script>
 
 <template>

@@ -1,43 +1,47 @@
 <script lang="ts">
-import Feed from "@/features/Feed/Feed.vue";
+import { computed, defineComponent, ref } from "@vue/composition-api";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import { stepsById } from "@/store";
-import { Component, Prop } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
+import Feed from "@/features/Feed/Feed.vue";
+import { stepsById, useStore } from "@/store";
 
-@Component({
+const ProvideStepVariations = defineComponent({
   components: {
     InlineModal,
     Feed
-  }
-})
-export default class ProvideStepVariations extends VueWithStore {
-  @Prop({ required: true }) private stepId!: string;
+  },
+  props: {
+    stepId: {
+      type: String,
+      required: true
+    }
+  },
+  setup({ stepId }) {
+    const store = useStore();
+    const step = computed(() => stepsById(store)[stepId]);
+    const variationsOpen = ref(false);
 
-  get step() {
-    return stepsById(this.$store)[this.stepId];
-  }
+    const variationsCount = computed(() => step.value.variations?.length ?? 0);
 
-  variationsOpen = false;
+    function openVariationsModal() {
+      variationsOpen.value = true;
+    }
 
-  get hasVariations() {
-    return this.step.variations?.length > 0;
+    return {
+      step,
+      variationsOpen,
+      variationsCount,
+      openVariationsModal
+    };
   }
+});
 
-  get variationsCount(): number {
-    return this.step.variations?.length || 0;
-  }
-
-  openVariationsModal() {
-    this.variationsOpen = true;
-  }
-}
+export default ProvideStepVariations;
 </script>
 
 <template>
   <div>
     <slot
-      :has-variations="hasVariations"
+      :has-variations="variationsCount > 0"
       :variations-count="variationsCount"
       :open-variations-modal="openVariationsModal"
     ></slot>

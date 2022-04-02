@@ -1,22 +1,29 @@
 <script lang="ts">
+import { defineComponent, ref } from "@vue/composition-api";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
-import { Vue, Component } from "vue-property-decorator";
 import { VideoObject } from "../../../common/types/VideoObject";
 
-@Component({
+const ProvideVideoModal = defineComponent({
   components: {
     InlineModal,
     AspectAwareVideo
-  }
-})
-export default class ProvideVideoModal extends Vue {
-  video: VideoObject | null = null;
+  },
+  setup() {
+    const video = ref<VideoObject | null>(null);
 
-  open(video: VideoObject) {
-    this.video = video;
+    function open(v: VideoObject) {
+      video.value = v;
+    }
+
+    return {
+      open,
+      video
+    };
   }
-}
+});
+
+export default ProvideVideoModal;
 </script>
 
 <template>

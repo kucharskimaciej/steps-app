@@ -1,23 +1,28 @@
 <script lang="ts">
-import { Vue, Component, Inject, Emit } from "vue-property-decorator";
+import { defineComponent, inject } from "@vue/composition-api";
 
-@Component
-export default class PopupMenuItem extends Vue {
-  @Inject({ from: "onItemClick" }) onItemClick!: () => void;
+const PopupMenuItem = defineComponent({
+  setup(_, ctx) {
+    const onItemClick: (() => void) | undefined = inject("onItemClick");
 
-  @Emit("click")
-  handleItemClick() {
-    if (this.onItemClick) {
-      this.onItemClick();
+    function handleItemClick() {
+      onItemClick?.();
+      ctx.emit("click");
     }
+
+    return {
+      handleItemClick
+    };
   }
-}
+});
+
+export default PopupMenuItem;
 </script>
 
 <template>
   <div
     class="px-4 py-2 text-center cursor-pointer border-b border-mono-800 text-sm font-semibold text-mono-200 hover:bg-mono-800"
-    @click="handleItemClick"
+    @click="handleItemClick()"
   >
     <slot></slot>
   </div>

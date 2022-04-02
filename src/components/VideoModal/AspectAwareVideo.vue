@@ -1,76 +1,92 @@
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch
+} from "@vue/composition-api";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { Inject } from "vue-typedi";
 import {
   VideoDimensionsService,
   VideoMetadata
 } from "@/lib/videoDimensionsService";
+import { Container } from "vue-typedi";
 
-@Component({
+const AspectAwareVideo = defineComponent({
   components: {
     VideoPlayer,
     BasicLoader
-  }
-})
-export default class VideoModalContent extends VueWithStore {
-  @Inject() private readonly dimensions!: VideoDimensionsService;
-
-  @Prop({ required: true }) private video!: VideoObject;
-
-  loading = false;
-  videoWithDimensions: VideoMetadata | null = null;
-
-  @Watch("video", { immediate: true })
-  handleUrlChange(video: VideoObject) {
-    this.loading = true;
-    this.dimensions
-      .getVideoDimensions(video)
-      .then(videoWithDimensions => {
-        this.videoWithDimensions = videoWithDimensions;
-      })
-      .finally(() => (this.loading = false));
-  }
-
-  get isVideoLoaded() {
-    return !this.loading;
-  }
-
-  get aspectRatio(): number {
-    return this.videoWithDimensions
-      ? this.videoWithDimensions.width / this.videoWithDimensions.height
-      : 0;
-  }
-
-  get shouldRotate() {
-    return (
-      this.$client.aspectRatio < 1 && !this.loading && this.aspectRatio > 1
-    );
-  }
-
-  get videoPlayerStyles() {
-    if (!this.shouldRotate) {
-      return null;
+  },
+  props: {
+    video: {
+      type: Object as PropType<VideoObject>,
+      required: true
     }
+  },
+  setup({ video }, ctx) {
+    const dimensions = Container.get(VideoDimensionsService);
+
+    const loading = ref(false);
+    const metadata = ref<VideoMetadata | null>(null);
+
+    const aspectRatio = computed((): number => {
+      return metadata.value ? metadata.value.width / metadata.value.height : 0;
+    });
+
+    const shouldRotate = computed(
+      () =>
+        ctx.root.$client.aspectRatio < 1 &&
+        !loading.value &&
+        aspectRatio.value > 1
+    );
+
+    const videoPlayerStyles = computed(() => {
+      if (!shouldRotate.value) {
+        return null;
+      }
+
+      return {
+        transform: "rotate(90deg)",
+        transformOrigin: "0 0",
+        width: `${ctx.root.$client.height}px`,
+        height: `${ctx.root.$client.width}px`,
+        position: "relative",
+        right: "-100%"
+      };
+    });
+
+    watch(
+      video,
+      (v: VideoObject) => {
+        loading.value = true;
+        dimensions
+          .getVideoDimensions(v)
+          .then(videoWithDimensions => {
+            metadata.value = videoWithDimensions;
+          })
+          .finally(() => (loading.value = false));
+      },
+      { immediate: true }
+    );
 
     return {
-      transform: "rotate(90deg)",
-      transformOrigin: "0 0",
-      width: `${this.$client.height}px`,
-      height: `${this.$client.width}px`,
-      position: "relative",
-      right: "-100%"
+      loading,
+      metadata,
+      shouldRotate,
+      videoPlayerStyles
     };
   }
-}
+});
+
+export default AspectAwareVideo;
 </script>
 
 <template>
   <div class="flex h-full">
-    <main v-if="isVideoLoaded" class="video-container h-full w-full m-auto">
+    <main v-if="!loading" class="video-container h-full w-full m-auto">
       <VideoPlayer
         :video="video"
         :autoplay="true"

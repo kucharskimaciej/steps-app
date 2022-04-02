@@ -1,22 +1,25 @@
 <script lang="ts">
-import { VueWithStore } from "@/lib/vueWithStore";
-import { Component, Prop, Emit, Watch } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  watch
+} from "@vue/composition-api";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
+import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
 import FeedActions from "@/features/Feed/FeedActions.vue";
+import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
 import ProvideVideoModal from "@/components/Providers/ProvideVideoModal.vue";
-import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
-import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
 import Badge from "@/components/Badge/Badge.vue";
+import { Step } from "../../../common/types/Step";
 
-@Component({
+const FeedStep = defineComponent({
   components: {
-    Feed: () => import("@/features/Feed/Feed.vue"),
     VideoPlayer,
     PureTag,
     OptionsPopup,
@@ -28,37 +31,48 @@ import Badge from "@/components/Badge/Badge.vue";
     IntersectSwitch,
     ProvideVideoModal,
     Badge
-  }
-})
-export default class FeedStep extends VueWithStore {
-  @Prop({ required: true }) private step!: Step;
-  @Prop() private autoplay!: boolean;
-  @Prop({ default: true }) private showVariations!: boolean;
-  @Prop({ default: false }) private practiceActions!: boolean;
-  @Prop() private videoHeight!: number;
+  },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    },
+    autoplay: Boolean,
+    showVariations: {
+      type: Boolean,
+      default: true
+    },
+    practiceActions: Boolean,
+    videoHeight: Number
+  },
+  emits: ["edit", "viewed", "play"],
+  setup({ step }, { emit }) {
+    const anchor = computed(() => `step-${step.id}`);
+    const primaryVideo = computed(() => step.videos[0]);
 
-  get anchor() {
-    return `step-${this.step.id}`;
-  }
+    watch(
+      () => step.id,
+      () => {
+        fetch(step.videos[0].url);
+        if (step.videos[0].snapshot_url) {
+          fetch(step.videos[0].snapshot_url);
+        }
+      },
+      { immediate: true }
+    );
 
-  get primaryVideo() {
-    return this.step.videos[0];
-  }
-
-  @Watch("step.id", { immediate: true })
-  onStep() {
-    fetch(this.step.videos[0].url);
-    if (this.step.videos[0].snapshot_url) {
-      fetch(this.step.videos[0].snapshot_url);
+    function handleViewed() {
+      emit("viewed");
     }
+    return {
+      anchor,
+      primaryVideo,
+      handleViewed
+    };
   }
+});
 
-  @Emit("viewed")
-  handleViewed() {}
-
-  @Emit()
-  edit() {}
-}
+export default FeedStep;
 </script>
 
 <template>
@@ -80,7 +94,7 @@ export default class FeedStep extends VueWithStore {
                 :video="primaryVideo"
                 size-control
                 @play="$emit('play')"
-                @viewed="handleViewed"
+                @viewed="handleViewed()"
                 @open-full-size="open(primaryVideo)"
               />
 

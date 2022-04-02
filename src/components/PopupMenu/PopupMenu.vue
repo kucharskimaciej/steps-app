@@ -1,29 +1,34 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import InlineModal from "@/components/Modal/InlineModal.vue";
+import { defineComponent, ref } from "@vue/composition-api";
 import PopupControlWrapper from "@/components/PopupMenu/PopupControlWrapper.vue";
+import InlineModal from "@/components/Modal/InlineModal.vue";
 
-@Component({
+const PopupMenu = defineComponent({
   components: {
     PopupControlWrapper,
     InlineModal
-  }
-})
-export default class PopupMenu extends Vue {
-  popupOpen = false;
+  },
+  setup() {
+    const popupOpen = ref(false);
 
-  openMenu() {
-    this.popupOpen = true;
-  }
+    function openMenu() {
+      popupOpen.value = true;
+    }
 
-  closeMenu() {
-    this.popupOpen = false;
-  }
+    function closeMenu() {
+      popupOpen.value = false;
+    }
 
-  onItemClick() {
-    this.closeMenu();
+    return {
+      popupOpen,
+      openMenu,
+      closeMenu,
+      onItemClick: closeMenu
+    };
   }
-}
+});
+
+export default PopupMenu;
 </script>
 
 <template>
@@ -33,9 +38,9 @@ export default class PopupMenu extends Vue {
     <InlineModal
       v-if="popupOpen"
       :modal-style="$modalStyle.POPUP"
-      @close-modal="closeMenu"
+      @close-modal="closeMenu()"
     >
-      <PopupControlWrapper @item-clicked="onItemClick">
+      <PopupControlWrapper @item-clicked="onItemClick()">
         <slot :close="closeMenu"></slot>
       </PopupControlWrapper>
     </InlineModal>

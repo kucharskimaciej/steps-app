@@ -1,16 +1,16 @@
 <script lang="ts">
-import Badge from "@/components/Badge/Badge.vue";
-import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
-import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
-import ProvideInlineEdit from "@/features/CreateEditStep/ProvideInlineEdit.vue";
-import ProvideStepVariations from "@/components/Providers/ProvideStepVariations.vue";
+import { defineComponent, PropType } from "@vue/composition-api";
+import { Step } from "../../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import Badge from "@/components/Badge/Badge.vue";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Step } from "../../../../common/types/Step";
+import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
+import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
+import ProvideStepVariations from "@/components/Providers/ProvideStepVariations.vue";
+import ProvideInlineEdit from "@/features/CreateEditStep/ProvideInlineEdit.vue";
 
-@Component({
+const StepActions = defineComponent({
   components: {
     PureButton,
     PureIcon,
@@ -20,11 +20,13 @@ import { Step } from "../../../../common/types/Step";
     PopupMenuItem,
     ProvideStepVariations,
     ProvideInlineEdit
+  },
+  props: {
+    step: Object as PropType<Step>
   }
-})
-export default class StepActions extends Vue {
-  @Prop() private step!: Step;
-}
+});
+
+export default StepActions;
 </script>
 
 <template>
@@ -53,14 +55,14 @@ export default class StepActions extends Vue {
         <span class="w-full ml-auto flex justify-end">
           <RecordPracticeWidget :step-id="step.id">
             <template #not_practiced="{ practice }">
-              <PureButton size="small" kind="ghost" @click="practice">
+              <PureButton size="small" kind="ghost" @click="practice()">
                 <PureIcon type="playlist_play" class="text-xl mr-1" />
                 <span v-if="$match('desktop')">Practice</span>
               </PureButton>
             </template>
 
             <template #practiced="{ practice }">
-              <PureButton size="small" kind="ghost" @click="practice">
+              <PureButton size="small" kind="ghost" @click="practice()">
                 <PureIcon type="playlist_add_check" class="text-xl" />
               </PureButton>
             </template>
