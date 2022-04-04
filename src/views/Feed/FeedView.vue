@@ -1,35 +1,35 @@
 <script lang="ts">
+import { computed, defineComponent, ref, watch } from "@vue/composition-api";
 import StepActions from "@/views/Feed/components/StepActions.vue";
-import { Component, Watch } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
-import Feed from "@/features/Feed/Feed.vue";
 import Container from "@/components/Layout/Container.vue";
-import { Step } from "../../../common/types/Step";
+import Feed from "@/features/Feed/Feed.vue";
+import FeedStep from "@/features/Feed/FeedStep.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
-import {
-  stepsById,
-  dispatchRecordView,
-  dispatchSearch,
-  getSearch,
-  getIsSearchEmpty,
-  dispatchClearSearch,
-  getStepsMatchingSearch,
-  stableStepIds
-} from "@/store";
 import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
 import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
-import { isEqual } from "lodash";
 import SearchWidget from "@/features/Search/SearchWidget.vue";
-import SearchOverlay from "@/features/Search/SearchOverlay.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import { Search } from "@/features/Search/types";
+import SearchOverlay from "@/features/Search/SearchOverlay.vue";
 import Badge from "@/components/Badge/Badge.vue";
-import FeedStep from "@/features/Feed/FeedStep.vue";
 import TheTopBarContainer from "@/components/TheTopBar/TheTopBarContainer.vue";
+import {
+  dispatchClearSearch,
+  dispatchRecordView,
+  dispatchSearch,
+  getIsSearchEmpty,
+  getSearch,
+  getStepsMatchingSearch,
+  stableStepIds,
+  stepsById,
+  useStore
+} from "@/store";
+import { isEqual } from "lodash";
+import { Step } from "../../../common/types/Step";
+import { Search } from "@/features/Search/types";
 
-@Component({
+const FeedView = defineComponent({
   components: {
     StepActions,
     Container,
@@ -45,60 +45,68 @@ import TheTopBarContainer from "@/components/TheTopBar/TheTopBarContainer.vue";
     SearchOverlay,
     Badge,
     TheTopBarContainer
-  }
-})
-export default class FeedView extends VueWithStore {
-  selectedStepIds: string[] = [];
+  },
+  setup() {
+    const store = useStore();
+    const selectedStepIds = ref<string[]>([]);
+    const searchOpen = ref(false);
 
-  selectStepsForFeed() {
-    this.selectedStepIds = getStepsMatchingSearch(this.$store);
-  }
+    const stepIds = computed(() => stableStepIds(store));
+    const selectedSteps = computed((): Step[] => {
+      const byId = stepsById(store);
+      return selectedStepIds.value.map(id => byId[id]);
+    });
+    const search = computed(() => getSearch(store));
+    const hasActiveSearch = computed(() => !getIsSearchEmpty(store));
 
-  get stepIds() {
-    return stableStepIds(this.$store);
-  }
-
-  @Watch("stepIds", { immediate: true })
-  handleStepsChange(newStepIds: string[], oldStepIds: string[]) {
-    if (!isEqual(newStepIds, oldStepIds)) {
-      this.selectStepsForFeed();
+    function selectStepsForFeed() {
+      selectedStepIds.value = getStepsMatchingSearch(store);
     }
-  }
 
-  get selectedSteps(): Step[] {
-    const byId = stepsById(this.$store);
-    return this.selectedStepIds.map(id => byId[id]);
-  }
+    function handleStepViewed(stepId: string) {
+      dispatchRecordView(store, stepId);
+    }
 
-  handleStepViewed(stepId: string) {
-    dispatchRecordView(this.$store, stepId);
-  }
+    function handleSearchChange(search: Search) {
+      dispatchSearch(store, search);
+      onSearchChange();
+    }
 
-  searchOpen = false;
+    function handleClearSearch() {
+      dispatchClearSearch(store);
+      onSearchChange();
+    }
 
-  get search(): Search {
-    return getSearch(this.$store);
-  }
+    function onSearchChange() {
+      selectStepsForFeed();
+      window.scrollTo(0, 0);
+    }
 
-  get hasActiveSearch(): boolean {
-    return !getIsSearchEmpty(this.$store);
-  }
+    watch(
+      stepIds,
+      (newStepIds, oldStepIds) => {
+        if (!isEqual(newStepIds, oldStepIds)) {
+          selectStepsForFeed();
+        }
+      },
+      { immediate: true }
+    );
 
-  handleSearchChange(search: Search) {
-    dispatchSearch(this.$store, search);
-    this.onSearchChange();
+    return {
+      selectedStepIds,
+      selectedSteps,
+      searchOpen,
+      search,
+      hasActiveSearch,
+      handleStepViewed,
+      handleSearchChange,
+      handleClearSearch,
+      selectStepsForFeed
+    };
   }
+});
 
-  handleClearSearch() {
-    dispatchClearSearch(this.$store);
-    this.onSearchChange();
-  }
-
-  private onSearchChange() {
-    this.selectStepsForFeed();
-    window.scrollTo(0, 0);
-  }
-}
+export default FeedView;
 </script>
 
 <template>

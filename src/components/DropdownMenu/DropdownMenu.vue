@@ -1,24 +1,34 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
+type OptionType = {
+  value: string;
+  label: string;
+};
+
+const DropdownMenu = defineComponent({
   components: {
     PureIcon
+  },
+  props: {
+    value: String,
+    options: {
+      type: Array as PropType<OptionType[]>,
+      default: () => []
+    }
+  },
+  emits: ["input"],
+  setup(_, { emit }) {
+    return {
+      handleValueChange(event: InputEvent) {
+        emit("input", (event.target as HTMLInputElement).value);
+      }
+    };
   }
-})
-export default class DropdownMenu extends Vue {
-  @Prop({ default: () => [] }) private options!: Array<{
-    value: string;
-    label: string;
-  }>;
-  @Prop() private value!: string;
+});
 
-  @Emit("input")
-  handleValueChange(event: InputEvent) {
-    return (event.target as HTMLInputElement).value;
-  }
-}
+export default DropdownMenu;
 </script>
 
 <template>
@@ -26,7 +36,7 @@ export default class DropdownMenu extends Vue {
     <select
       class="w-full appearance-none bg-transparent outline-none rounded px-4 py-3 border-0 hover:bg-mono-900 focus:bg-mono-900"
       :value="value"
-      @change="handleValueChange"
+      @change="handleValueChange($event)"
     >
       <option
         v-for="option in options"
