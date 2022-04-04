@@ -1,8 +1,9 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class WideWithSidebarRight extends Vue {}
+const WideWithSidebarRight = defineComponent({});
+
+export default WideWithSidebarRight;
 </script>
 
 <template>
