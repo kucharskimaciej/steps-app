@@ -1,26 +1,45 @@
 <script lang="ts">
-import { Vue, Component, Emit } from "vue-property-decorator";
+import { defineComponent, ref } from "@vue/composition-api";
 
 type FileEventTarget = EventTarget & { files: FileList };
 
-@Component
-export default class FileInput extends Vue {
-  @Emit()
-  fileSelected(event: InputEvent) {
-    const file = (event.target as FileEventTarget).files[0];
-    this.clear(); // clear to enable uploading the same file twice
-    return file;
-  }
+const FileInput = defineComponent({
+  emits: ["file-selected"],
+  setup(_, { emit }) {
+    const input = ref<HTMLInputElement>();
 
-  private clear() {
-    (this.$refs.input as HTMLInputElement).value = "";
+    function clear() {
+      if (!input.value) {
+        return;
+      }
+
+      input.value.value = "";
+    }
+
+    function fileSelected(event: InputEvent) {
+      const file = (event.target as FileEventTarget).files[0];
+      clear(); // clear to enable uploading the same file twice
+      emit("file-selected", file);
+    }
+
+    return {
+      input,
+      fileSelected
+    };
   }
-}
+});
+
+export default FileInput;
 </script>
 
 <template>
   <label>
-    <input ref="input" v-bind="$attrs" type="file" @input="fileSelected" />
+    <input
+      ref="input"
+      v-bind="$attrs"
+      type="file"
+      @input="fileSelected($event)"
+    />
     <slot>Upload file</slot>
   </label>
 </template>

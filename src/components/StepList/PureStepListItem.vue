@@ -1,3 +1,56 @@
+<script lang="ts">
+import { computed, defineComponent, PropType } from "@vue/composition-api";
+import Tags from "@/components/Step/components/Tags.vue";
+import PureTag from "@/components/Tags/PureTag.vue";
+import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
+import PureButton from "@/components/PureButton/PureButton.vue";
+import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
+import { Step } from "../../../common/types/Step";
+
+const PureStepListItem = defineComponent({
+  components: {
+    Tags,
+    PureTag,
+    PureToggleButton,
+    PureButton,
+    PureIcon,
+    CopyToClipboard
+  },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    },
+    isSelected: Boolean
+  },
+  setup({ step }) {
+    const primaryVideoUrl = computed(() => step.videos[0].url);
+    const restVideoUrls = computed(() => {
+      const [, ...restVideos] = step.videos || [];
+      return restVideos.map(video => video.url);
+    });
+
+    const hasMoreVideos = computed(() => step.videos.length > 1);
+    const hasVariations = computed(() => step.variations.length > 1);
+
+    const lastPracticeDate = computed(() => step.practice_records?.[0]?.date);
+
+    return {
+      primaryVideoUrl,
+      restVideoUrls,
+      hasMoreVideos,
+      hasVariations,
+      lastPracticeDate,
+      detailClasses: "text-sm text-gray-700 mb-1",
+      detailIconClasses: "mr-2 text-lg"
+    };
+  }
+});
+
+export default PureStepListItem;
+</script>
+
 <template>
   <article
     :id="`step-${step.identifier}`"
@@ -11,7 +64,7 @@
       <header class="flex items-start">
         <h2 class="font-heading text-mono-100 font-normal mr-auto">
           <a
-            :href="firstVideoUrl"
+            :href="primaryVideoUrl"
             target="_blank"
             referrerpolicy="no-referrer"
             class="focus:outline-none focus:bg-yellow-base"
@@ -59,10 +112,10 @@
             {{ step.created_at | smartDate }}
           </li>
 
-          <li v-if="step.last_practiced_at" :class="detailClasses">
+          <li v-if="lastPracticeDate" :class="detailClasses">
             <PureIcon type="timer" :class="detailIconClasses" />
             <strong>Last practiced </strong>
-            {{ step.last_practiced_at | smartDate }}
+            {{ lastPracticeDate | smartDate }}
           </li>
         </ul>
       </section>
@@ -89,61 +142,3 @@
     </main>
   </article>
 </template>
-
-<script lang="ts">
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
-import PureTag from "@/components/Tags/PureTag.vue";
-import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
-import PureButton from "@/components/PureButton/PureButton.vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
-import Tags from "@/components/Step/components/Tags.vue";
-
-@Component({
-  components: {
-    Tags,
-    PureTag,
-    PureToggleButton,
-    PureButton,
-    PureIcon,
-    CopyToClipboard
-  }
-})
-export default class PureStepListItem extends Vue {
-  @Prop() private step!: Step;
-  @Prop({ default: false }) private isSelected!: boolean;
-
-  @Emit()
-  select() {}
-
-  @Emit()
-  edit() {}
-
-  get detailClasses() {
-    return "text-sm text-gray-700 mb-1";
-  }
-
-  get detailIconClasses() {
-    return "mr-2 text-lg";
-  }
-
-  get firstVideoUrl(): string {
-    const [firstVideo] = this.step.videos;
-    return firstVideo.url;
-  }
-
-  get restVideoUrls(): string[] {
-    const [, ...restVideos] = this.step.videos;
-    return restVideos.map(video => video.url);
-  }
-
-  get hasMoreVideos(): boolean {
-    return this.restVideoUrls.length > 0;
-  }
-
-  get hasVariations(): boolean {
-    return this.step.variations.length > 0;
-  }
-}
-</script>

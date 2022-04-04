@@ -1,23 +1,27 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import PureStepList from "@/components/StepList/PureStepList.vue";
+import { computed, defineComponent } from "@vue/composition-api";
 import Container from "@/components/Layout/Container.vue";
-import { getSteps } from "@/store";
+import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
-import { VueWithStore } from "@/lib/vueWithStore";
+import { getSteps, useStore } from "@/store";
 
-@Component({
+const Steps = defineComponent({
   components: {
     Container,
     PureStepList,
     AllStepsProvider
+  },
+  setup() {
+    const store = useStore();
+    const steps = computed(() => getSteps(store));
+
+    return {
+      steps
+    };
   }
-})
-export default class Steps extends VueWithStore {
-  get steps() {
-    return getSteps(this.$store);
-  }
-}
+});
+
+export default Steps;
 </script>
 
 <template>

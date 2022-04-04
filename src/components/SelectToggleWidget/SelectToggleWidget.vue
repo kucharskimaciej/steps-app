@@ -1,18 +1,18 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
+const SelectToggleWidget = defineComponent({
   components: {
     PureIcon
-  }
-})
-export default class SelectToggleWidget extends Vue {
-  @Prop() private selected!: boolean;
+  },
+  props: {
+    selected: Boolean
+  },
+  emits: ["toggle"]
+});
 
-  @Emit()
-  toggle() {}
-}
+export default SelectToggleWidget;
 </script>
 
 <template>
@@ -24,7 +24,7 @@ export default class SelectToggleWidget extends Vue {
       type="checkbox"
       :checked="selected"
       class="hidden"
-      @change.stop="toggle"
+      @change.stop="$emit('toggle')"
     />
     <PureIcon v-if="selected" type="check_box" />
     <PureIcon v-else type="check_box_outline_blank" />

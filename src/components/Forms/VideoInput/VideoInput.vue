@@ -1,79 +1,95 @@
 <script lang="ts">
-import { Vue, Component, Prop, InjectReactive } from "vue-property-decorator";
-import { Inject } from "vue-typedi";
-import { Validation } from "vuelidate";
+import {
+  defineComponent,
+  inject,
+  PropType,
+  reactive
+} from "@vue/composition-api";
 import FileInput from "@/components/Forms/FileInput.vue";
-import { FileIdentityService } from "@/lib/fileIdentity.service";
-import { VideoUploaderToken } from "@/lib/tokens";
-import { Uploader } from "@/lib/uploader.interface";
-import { VideoObject } from "../../../../common/types/VideoObject";
 import Video from "@/components/Forms/VideoInput/Video.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import { VideoObject } from "../../../../common/types/VideoObject";
+import { Container } from "vue-typedi";
+import { FileIdentityService } from "@/lib/fileIdentity.service";
+import { VideoUploaderToken } from "@/lib/tokens";
+import { Validation } from "vuelidate";
 
-@Component({
+const VideoInput = defineComponent({
   components: {
     FileInput,
     Video,
     PureButton,
     PureIcon
-  }
-})
-export default class VideoInput extends Vue {
-  @Prop({ default: () => [] }) private value!: VideoObject[];
+  },
+  props: {
+    value: {
+      type: Array as PropType<VideoObject[]>,
+      default: () => []
+    }
+  },
+  setup({ value }) {
+    console.log(value);
+    const fileIdentity = Container.get(FileIdentityService);
+    const videoUpload = Container.get(VideoUploaderToken);
 
-  @Inject() private readonly fileIdentity!: FileIdentityService;
-  @Inject(VideoUploaderToken) private readonly videoUpload!: Uploader;
+    const originalFilenames = reactive<Record<string, string>>({});
+    const validation = inject<Validation | null>("validation", null);
 
-  @InjectReactive({ from: "validation", default: false })
-  validation!: Validation;
-
-  originalFilenames: Record<string, string> = {};
-
-  async onFileSelected(file: File) {
-    // user clicked cancel
-    if (!file.name) {
-      this.triggerValidation();
-      return;
+    function triggerValidation() {
+      if (validation) {
+        validation.$touch();
+      }
     }
 
-    const hash = await this.fileIdentity.getIdentifier(file);
-    this.originalFilenames[hash] = file.name;
-    if (this.fileAlreadySelected(hash)) {
-      return;
+    function fileAlreadySelected(hash: string) {
+      return value.some(video => video.hash === hash);
     }
-    const url = await this.videoUpload.upload(file, hash);
 
-    this.value.push({
-      hash,
-      url
-    });
-
-    this.triggerValidation();
-  }
-
-  private fileAlreadySelected(hash: string) {
-    return this.value.some(video => video.hash === hash);
-  }
-
-  private triggerValidation() {
-    if (this.validation) {
-      this.validation.$touch();
+    function handleVideoRemoved(video: VideoObject): void {
+      const index = value.indexOf(video);
+      value.splice(index, 1);
+      triggerValidation();
     }
-  }
 
-  handleVideoRemoved(video: VideoObject): void {
-    const index = this.value.indexOf(video);
-    this.value.splice(index, 1);
-    this.triggerValidation();
+    async function onFileSelected(file: File) {
+      // user clicked cancel
+      if (!file.name) {
+        triggerValidation();
+        return;
+      }
+
+      const hash = await fileIdentity.getIdentifier(file);
+      originalFilenames[hash] = file.name;
+      if (fileAlreadySelected(hash)) {
+        return;
+      }
+      const url = await videoUpload.upload(file, hash);
+
+      value.push({
+        hash,
+        url
+      });
+
+      triggerValidation();
+    }
+
+    return {
+      handleVideoRemoved,
+      onFileSelected,
+      validation,
+      originalFilenames
+    };
   }
-}
+});
+
+export default VideoInput;
 </script>
 
 <template>
   <main class="text-gray-700 px-3">
     <header class="mb-4">
-      <FileInput accept="video/*" @file-selected="onFileSelected">
+      <FileInput accept="video/*" @file-selected="onFileSelected($event)">
         <PureButton tag="span">
           <PureIcon type="cloud_upload" class="mr-1" />
           Upload video

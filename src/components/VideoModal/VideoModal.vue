@@ -1,31 +1,36 @@
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import InlineModal from "@/components/Modal/InlineModal.vue";
+import { defineComponent, ref } from "@vue/composition-api";
 import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
+import InlineModal from "@/components/Modal/InlineModal.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
 
-@Component({
+const VideoModal = defineComponent({
   components: {
     AspectAwareVideo,
     InlineModal
-  }
-})
-export default class VideoModal extends Vue {
-  video: VideoObject | null = null;
-  modalOpen = false;
+  },
+  setup() {
+    const video = ref<VideoObject>();
 
-  openModal(video: VideoObject) {
-    this.video = video;
-    this.modalOpen = true;
+    function openModal(v: VideoObject) {
+      video.value = v;
+    }
+
+    return {
+      video,
+      openModal
+    };
   }
-}
+});
+
+export default VideoModal;
 </script>
 
 <template>
   <InlineModal
-    v-if="modalOpen"
+    v-if="video"
     :modal-style="$modalStyle.BORDERLESS"
-    @close-modal="modalOpen = false"
+    @close-modal="video = null"
   >
     <AspectAwareVideo :video="video" />
   </InlineModal>

@@ -1,22 +1,22 @@
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { Step } from "../../../common/types/Step";
 
-@Component({
+const PureStepList = defineComponent({
   components: {
     PureStepListItem
+  },
+  props: {
+    steps: Array as PropType<Step[]>,
+    isSelected: {
+      type: Function as PropType<(stepId: string) => boolean>,
+      default: () => false
+    }
   }
-})
-export default class PureStepList extends Vue {
-  @Prop() private steps!: Step[];
-  @Prop({ default: () => false }) private isSelected!: (
-    stepId: string
-  ) => boolean;
+});
 
-  @Emit()
-  select(_stepId: string) {}
-}
+export default PureStepList;
 </script>
 
 <template>
@@ -27,7 +27,7 @@ export default class PureStepList extends Vue {
       class="mb-2"
       :step="step"
       :is-selected="isSelected(step.id)"
-      @select="select(step.id)"
+      @select="$emit('select', step.id)"
     />
   </section>
 </template>

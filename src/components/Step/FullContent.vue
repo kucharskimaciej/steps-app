@@ -1,15 +1,14 @@
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
-import { Step } from "../../../common/types/Step";
+import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
 import StepTitle from "@/components/Step/components/StepTitle.vue";
 import StepVideoLinks from "@/components/Step/components/VideoLinks.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import Variations from "@/components/Step/components/Variations.vue";
-import { VideoObject } from "../../../common/types/VideoObject";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
+import { Step } from "../../../common/types/Step";
 
-@Component({
+const FullContent = defineComponent({
   components: {
     StepTitle,
     StepVideoLinks,
@@ -17,19 +16,25 @@ import VideoModal from "@/components/VideoModal/VideoModal.vue";
     Variations,
     InlineModal,
     VideoModal
-  }
-})
-export default class FullContent extends Vue {
-  @Ref("videoModal") readonly videoModal!: VideoModal;
-  @Prop() private step!: Step;
+  },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    }
+  },
+  setup({ step }) {
+    const firstVideo = computed(() => step.videos[0]);
+    const videoModal = ref<typeof VideoModal>();
 
-  get firstVideo(): VideoObject {
-    const [firstVideo] = this.step.videos;
-    return firstVideo;
+    return {
+      firstVideo,
+      videoModal
+    };
   }
+});
 
-  openVideo: VideoObject | null = null;
-}
+export default FullContent;
 </script>
 
 <template>

@@ -1,16 +1,14 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class Card extends Vue {
-  @Prop() private active!: boolean;
-  @Prop() private allowActive!: boolean;
-
-  @Emit()
-  toggleActive() {
-    return this.active;
+const Card = defineComponent({
+  props: {
+    active: Boolean,
+    allowActive: Boolean
   }
-}
+});
+
+export default Card;
 </script>
 
 <template>
@@ -22,7 +20,7 @@ export default class Card extends Vue {
       'bg-gray-300': active,
       'hover:bg-opacity-95': allowActive && !active
     }"
-    @click="toggleActive()"
+    @click="$emit('toggle-active', active)"
   >
     <aside class="mr-4 -mt-px flex-shrink-0">
       <slot name="prefix" :active="active" />

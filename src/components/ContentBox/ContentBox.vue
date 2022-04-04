@@ -1,12 +1,18 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 
 type Overflow = "default" | "hidden" | "scroll";
 
-@Component
-export default class ContentBox extends Vue {
-  @Prop({ default: "default" }) private overflow!: Overflow;
-}
+const ContentBox = defineComponent({
+  props: {
+    overflow: {
+      type: String as PropType<Overflow>,
+      default: "default"
+    }
+  }
+});
+
+export default ContentBox;
 </script>
 
 <template>

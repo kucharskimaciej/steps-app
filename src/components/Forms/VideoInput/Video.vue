@@ -1,31 +1,35 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Ref } from "vue-property-decorator";
+import { computed, defineComponent, ref } from "@vue/composition-api";
+import VideoModal from "@/components/VideoModal/VideoModal.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import VideoModal from "@/components/VideoModal/VideoModal.vue";
-import { VideoObject } from "../../../../common/types/VideoObject";
 
-@Component({
+const Video = defineComponent({
   components: {
     VideoModal,
     PureButton,
     PureIcon
+  },
+  props: {
+    title: String,
+    filename: String,
+    url: String
+  },
+  emits: ["remove"],
+  setup({ url, title }) {
+    const asVideo = computed(() => {
+      return { url, hash: title };
+    });
+    const videoModal = ref<typeof VideoModal>();
+
+    return {
+      asVideo,
+      videoModal
+    };
   }
-})
-export default class Video extends Vue {
-  @Prop() private title!: string;
-  @Prop() private filename!: string;
-  @Prop() private url!: string;
+});
 
-  @Ref("videoModal") readonly videoModal!: VideoModal;
-
-  @Emit()
-  remove() {}
-
-  get asVideo(): VideoObject {
-    return { url: this.url, hash: this.title };
-  }
-}
+export default Video;
 </script>
 
 <template>
@@ -42,7 +46,7 @@ export default class Video extends Vue {
           <PureIcon type="open_in_new" /> Open
         </PureButton>
 
-        <PureButton kind="ghost" @click="remove()">
+        <PureButton kind="ghost" @click="$emit('remove')">
           Delete
         </PureButton>
       </aside>
