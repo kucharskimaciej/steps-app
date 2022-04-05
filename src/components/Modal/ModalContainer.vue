@@ -1,27 +1,29 @@
 <script lang="ts">
-import { Component, Watch } from "vue-property-decorator";
-import { PortalTarget } from "portal-vue";
-import { VueWithStore } from "@/lib/vueWithStore";
+import { defineComponent, ref, watch } from "@vue/composition-api";
 import Backdrop from "@/components/Modal/Backdrop.vue";
+import { PortalTarget } from "portal-vue";
 
-@Component({
+const ModalContainer = defineComponent({
   components: {
     Backdrop,
     PortalTarget
-  }
-})
-export default class ModalContainer extends VueWithStore {
-  inlineModalOpen = false;
+  },
+  setup() {
+    const inlineModalOpen = ref(false);
 
-  @Watch("inlineModalOpen")
-  handleTopModalChange(value: boolean) {
-    if (value) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
+    watch(inlineModalOpen, value => {
+      if (value) {
+        document.body.classList.add("overflow-hidden");
+      } else {
+        document.body.classList.remove("overflow-hidden");
+      }
+    });
+
+    return { inlineModalOpen };
   }
-}
+});
+
+export default ModalContainer;
 </script>
 
 <template>

@@ -1,47 +1,62 @@
 import { CreateElement } from "vue";
 import { Component, Emit } from "vue-property-decorator";
-import { IntersectComponentProps } from "@/components/Intersect/intersectComponentProps";
+import {
+  IntersectComponentProps,
+  intersectComponentPropsType
+} from "@/components/Intersect/intersectComponentProps";
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  nextTick,
+  onBeforeUnmount
+} from "@vue/composition-api";
 
-@Component
-export default class Intersect extends IntersectComponentProps {
-  private observer!: IntersectionObserver;
+const Intersect = defineComponent({
+  props: intersectComponentPropsType,
+  emits: ["change"],
+  setup({ threshold, viewportRoot }, { emit, slots }) {
+    const observer = ref<IntersectionObserver>();
+    const defaultSlot = ref();
 
-  @Emit()
-  change(entry: IntersectionObserverEntry) {
-    return entry;
-  }
+    function onChange(entry: IntersectionObserverEntry) {
+      emit("change", entry);
+    }
 
-  mounted() {
-    this.observer = new IntersectionObserver(
-      ([entry]) => {
-        this.change(entry);
-      },
-      {
-        threshold: this.threshold,
-        root: this.viewportRoot
-      }
-    );
+    onMounted(async () => {
+      observer.value = new IntersectionObserver(
+        ([entry]) => {
+          onChange(entry);
+        },
+        {
+          threshold,
+          root: viewportRoot
+        }
+      );
 
-    this.$nextTick(() => {
+      await nextTick();
+
+      defaultSlot.value = slots.default?.();
       if (
-        !this.$slots.default ||
-        !this.$slots.default[0] ||
-        !this.$slots.default[0].elm
+        !defaultSlot.value ||
+        !defaultSlot.value[0] ||
+        !defaultSlot.value[0].elm
       ) {
         console.warn("Must provide default slot element");
         return;
       }
 
-      this.observer.observe(this.$slots.default[0].elm as Element);
+      observer.value.observe(defaultSlot.value[0].elm as Element);
     });
-  }
 
-  destroyed() {
-    this.observer.disconnect();
-  }
+    onBeforeUnmount(() => {
+      if (observer.value) {
+        observer.value.disconnect();
+      }
+    });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  render(h: CreateElement) {
-    return this.$slots.default;
+    return () => defaultSlot.value;
   }
-}
+});
+
+export default Intersect;

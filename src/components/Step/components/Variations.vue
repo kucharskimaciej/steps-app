@@ -1,11 +1,14 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import { Step } from "../../../../common/types/Step";
 
-@Component
-export default class Variations extends Vue {
-  @Prop() private step!: Step;
-}
+const Variations = defineComponent({
+  props: {
+    step: Object as PropType<Step>
+  }
+});
+
+export default Variations;
 </script>
 
 <template>

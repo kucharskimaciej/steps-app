@@ -1,18 +1,21 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import { Step } from "../../../common/types/Step";
 import PureTag from "@/components/Tags/PureTag.vue";
 
-@Component({
-  components: {
-    PureTag
+const StepListStep = defineComponent({
+  components: { PureTag },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    },
+    isActive: Boolean,
+    isSelected: Boolean
   }
-})
-export default class StepListStep extends Vue {
-  @Prop({ required: true }) private step!: Step;
-  @Prop({ default: false }) private isActive!: boolean;
-  @Prop({ default: false }) private isSelected!: boolean;
-}
+});
+
+export default StepListStep;
 </script>
 
 <template>

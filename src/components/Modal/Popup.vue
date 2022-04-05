@@ -1,9 +1,15 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { ModalView } from "@/components/Modal/modalClass";
+import { defineComponent } from "@vue/composition-api";
+import { useModalView } from "@/components/Modal/modalClass";
 
-@Component
-export default class Popup extends ModalView {}
+const Popup = defineComponent({
+  emits: ["close"],
+  setup(_, ctx) {
+    return useModalView(ctx);
+  }
+});
+
+export default Popup;
 </script>
 
 <template>

@@ -1,14 +1,19 @@
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { ModalView } from "@/components/Modal/modalClass";
+import { defineComponent } from "@vue/composition-api";
 import Overlay from "@/components/Modal/Overlay.vue";
+import { useModalView } from "@/components/Modal/modalClass";
 
-@Component({
+const BorderlessOverlay = defineComponent({
   components: {
     Overlay
+  },
+  emits: ["close"],
+  setup(_, ctx) {
+    return useModalView(ctx);
   }
-})
-export default class BorderlessOverlay extends ModalView {}
+});
+
+export default BorderlessOverlay;
 </script>
 
 <template>

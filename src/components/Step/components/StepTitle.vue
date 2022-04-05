@@ -1,12 +1,16 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import { Step } from "../../../../common/types/Step";
 
-@Component
-export default class StepTitle extends Vue {
-  @Prop() private step!: Step;
-  @Prop() private linkToVideo!: boolean;
-}
+const StepTitle = defineComponent({
+  components: {},
+  props: {
+    step: Object as PropType<Step>,
+    linkToVideo: Boolean
+  }
+});
+
+export default StepTitle;
 </script>
 
 <template>

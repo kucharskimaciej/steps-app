@@ -1,8 +1,8 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class FullWithSidebar extends Vue {}
+const FullWithSidebar = defineComponent({});
+export default FullWithSidebar;
 </script>
 
 <template>

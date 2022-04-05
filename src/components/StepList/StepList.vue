@@ -1,30 +1,36 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import StepListStep from "@/components/StepList/StepListStep.vue";
-import { Step } from "../../../common/types/Step";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 import Card from "@/components/Card/Card.vue";
+import { Step } from "../../../common/types/Step";
 
 type StateFn = (step: Step) => boolean;
 
-@Component({
+const StepList = defineComponent({
   components: {
     StepListStep,
     SelectToggleWidget,
     Card
-  }
-})
-export default class StepList extends Vue {
-  @Prop({ required: true }) private steps!: Step[];
-  @Prop({ default: () => false }) isSelected!: StateFn;
-  @Prop({ default: () => false }) isActive!: StateFn;
+  },
+  props: {
+    steps: {
+      type: Array as PropType<Step[]>,
+      required: true
+    },
+    isSelected: {
+      type: Function as PropType<StateFn>,
+      default: () => false
+    },
+    isActive: {
+      type: Function as PropType<StateFn>,
+      default: () => false
+    }
+  },
+  emits: ["toggle", "activeStepChange"]
+});
 
-  @Emit()
-  toggle(_stepId: string) {}
-
-  @Emit()
-  activeStepChange(_stepId: string) {}
-}
+export default StepList;
 </script>
 
 <template>
@@ -36,13 +42,13 @@ export default class StepList extends Vue {
       :is-active="isActive(step)"
       :is-selected="isSelected(step)"
       class="-mt-px hover:z-10"
-      @click="activeStepChange(step.id)"
+      @click="$emit('activeStepChange', step.id)"
     >
       <template #before>
         <aside class="ml-2 -mt-px" @click.stop="">
           <SelectToggleWidget
             :selected="isSelected(step)"
-            @toggle="toggle(step.id)"
+            @toggle="$emit('toggle', step.id)"
           />
         </aside>
       </template>

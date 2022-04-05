@@ -1,19 +1,26 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 export type Positions = "topRight" | "topLeft";
 export type Style = "default" | "filled";
 
-@Component({
-  components: {
-    PureIcon
-  }
-})
-export default class Close extends Vue {
-  @Prop({ default: "topLeft" }) private iconPosition!: Positions;
-  @Prop({ default: "default" }) private iconStyle!: Style;
-}
+const Close = defineComponent({
+  components: { PureIcon },
+  props: {
+    iconPosition: {
+      type: String as PropType<Positions>,
+      default: "topLeft"
+    },
+    iconStyle: {
+      type: String as PropType<Style>,
+      default: "default"
+    }
+  },
+  emits: []
+});
+
+export default Close;
 </script>
 
 <template>

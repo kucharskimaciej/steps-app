@@ -1,34 +1,32 @@
-import { CreateElement } from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { VueWithStore } from "@/lib/vueWithStore";
-import { dispatchFetchAllSteps } from "@/store";
+import { dispatchFetchAllSteps, useStore } from "@/store";
+import { computed, defineComponent, onBeforeMount } from "@vue/composition-api";
 
-@Component
-export default class AllStepsProvider extends VueWithStore {
-  @Prop() private alwaysFetch!: boolean;
+const AllStepsProvider = defineComponent({
+  props: {
+    alwaysFetch: Boolean
+  },
+  setup({ alwaysFetch }, { slots }) {
+    const store = useStore();
+    const loading = computed(() => store.state.steps.status === "pending");
 
-  get loading() {
-    return this.$store.state.steps.status === "pending";
-  }
+    async function loadSteps() {
+      if (!alwaysFetch && store.state.steps.status !== "clean") {
+        return;
+      }
 
-  async loadSteps() {
-    if (!this.alwaysFetch && this.$store.state.steps.status !== "clean") {
-      return;
+      await dispatchFetchAllSteps(store);
     }
 
-    await dispatchFetchAllSteps(this.$store);
-  }
+    onBeforeMount(loadSteps);
 
-  async created() {
-    await this.loadSteps();
+    return () => {
+      if (loading.value) {
+        return slots.loading?.() || <div>Loading</div>;
+      } else {
+        return slots.default?.();
+      }
+    };
   }
+});
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  render(h: CreateElement) {
-    if (this.loading) {
-      return this.$slots.loading || <div>Loading</div>;
-    } else {
-      return this.$slots.default;
-    }
-  }
-}
+export default AllStepsProvider;

@@ -1,37 +1,45 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 import { Step } from "../../../../common/types/Step";
-import { VideoObject } from "../../../../common/types/VideoObject";
 import PureTag from "@/components/Tags/PureTag.vue";
+import { VideoObject } from "../../../../common/types/VideoObject";
 
-@Component({
-  components: {
-    PureTag
-  }
-})
-export default class StepVideoLinks extends Vue {
-  @Prop() private step!: Step;
-  @Prop() private skipFirst!: boolean;
-
-  @Emit()
-  openVideo(video: VideoObject) {
-    return video;
-  }
-
-  get videoUrls() {
-    let videosToDisplay: VideoObject[] = this.step.videos;
-
-    if (this.skipFirst) {
-      [, ...videosToDisplay] = this.step.videos;
+const StepVideoLinks = defineComponent({
+  components: { PureTag },
+  props: {
+    step: {
+      type: Object as PropType<Step>,
+      required: true
+    },
+    skipFirst: Boolean
+  },
+  emits: ["openVideo"],
+  setup({ step, skipFirst }, { emit }) {
+    function openVideo(video: VideoObject) {
+      emit("openVideo", video);
     }
 
-    return videosToDisplay;
-  }
+    const videoUrls = computed(() => {
+      let videosToDisplay: VideoObject[] = step.videos;
 
-  get indexOffset() {
-    return this.skipFirst ? 2 : 1;
+      if (skipFirst) {
+        [, ...videosToDisplay] = step.videos;
+      }
+
+      return videosToDisplay;
+    });
+
+    const indexOffset = computed(() => (skipFirst ? 2 : 1));
+
+    return {
+      openVideo,
+      videoUrls,
+      indexOffset
+    };
   }
-}
+});
+
+export default StepVideoLinks;
 </script>
 
 <template>

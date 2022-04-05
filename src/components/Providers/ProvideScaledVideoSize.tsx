@@ -1,31 +1,38 @@
-import { PropType } from "vue";
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { VideoObject } from "../../../common/types/VideoObject";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  watch
+} from "@vue/composition-api";
 
-@Component
-export default class ProvideScaledVideoSize extends Vue {
-  @Prop({ required: true, type: Object as PropType<VideoObject> })
-  video!: VideoObject;
-  @Prop() targetWidth!: number;
-  @Prop({ default: 400 }) defaultHeight!: number;
-
-  get scaledVideoHeight(): number {
-    const { height, width } = this.video;
-    if (!height || !width || !this.targetWidth) {
-      return this.defaultHeight;
+const ProvideScaledVideoSize = defineComponent({
+  props: {
+    video: { required: true, type: Object as PropType<VideoObject> },
+    targetWidth: Number,
+    defaultHeight: {
+      type: Number,
+      default: 400
     }
+  },
+  emits: ["updatedHeight"],
+  setup({ video, targetWidth, defaultHeight }, { emit, slots }) {
+    const scaledVideoHeight = computed(() => {
+      const { height, width } = video;
+      if (!height || !width || !targetWidth) {
+        return defaultHeight;
+      }
 
-    const scaleRatio = this.targetWidth / width;
-    return scaleRatio * height;
-  }
-
-  @Watch("scaledVideoHeight")
-  @Emit()
-  updatedHeight() {}
-
-  render() {
-    return this.$scopedSlots.default?.({
-      scaledVideoHeight: this.scaledVideoHeight
+      const scaleRatio = targetWidth / width;
+      return scaleRatio * height;
     });
+
+    watch(scaledVideoHeight, () => {
+      emit("updatedHeight");
+    });
+
+    return () => slots.default?.({ scaledVideoHeight });
   }
-}
+});
+export default ProvideScaledVideoSize;
