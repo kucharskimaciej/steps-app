@@ -1,29 +1,33 @@
 <script lang="ts">
-import {
-  Vue,
-  Component,
-  Prop,
-  Emit,
-  InjectReactive
-} from "vue-property-decorator";
+import { computed, defineComponent, inject } from "@vue/composition-api";
 
-@Component
-export default class Textarea extends Vue {
-  @Prop() private value!: string;
+const Textarea = defineComponent({
+  props: {
+    value: String
+  },
+  emits: ["input"],
+  setup(_, { emit }) {
+    const hasError = inject<boolean>("hasError", false);
 
-  @Emit("input")
-  handleValueChange(event: InputEvent) {
-    return (event.target as HTMLInputElement).value;
+    const validityClasses = computed(() =>
+      hasError
+        ? "border-red-light text-red-lighter placeholder-red-darker"
+        : "border-gray-200 text-base"
+    );
+
+    function handleValueChange(event: InputEvent) {
+      emit("input", (event.target as HTMLInputElement).value);
+    }
+
+    return {
+      hasError,
+      validityClasses,
+      handleValueChange
+    };
   }
+});
 
-  @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
-
-  get validityClasses() {
-    return this.hasError
-      ? "border-red-light text-red-lighter placeholder-red-darker"
-      : "border-gray-200 text-base";
-  }
-}
+export default Textarea;
 </script>
 
 <template>
@@ -31,6 +35,6 @@ export default class Textarea extends Vue {
     class="w-full font-light bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
     :value="value"
     :class="validityClasses"
-    @input="handleValueChange"
+    @input="handleValueChange($event)"
   />
 </template>

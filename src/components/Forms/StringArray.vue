@@ -1,32 +1,51 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { last } from "lodash";
+import { defineComponent, PropType, ref, watch } from "@vue/composition-api";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import { Focusable } from "@/components/Forms/types";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
+import { Focusable } from "@/components/Forms/types";
+import { last } from "lodash";
 
-@Component({
-  components: { FormGroup, SimpleInput, PureButton, PureIcon }
-})
-export default class StringArray extends Vue {
-  @Prop({ default: () => [] }) private value!: string[];
+const StringArray = defineComponent({
+  components: { FormGroup, SimpleInput, PureButton, PureIcon },
+  props: {
+    value: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    }
+  },
+  setup({ value }, ctx) {
+    const items = ref<Focusable[]>([]);
 
-  async addElement() {
-    this.value.push("");
-    await this.$nextTick();
-    this.lastInput()?.focus();
+    watch(
+      () => value.length,
+      () => lastInput()?.focus()
+    );
+
+    async function addElement() {
+      ctx.emit("input", [...value, ""]);
+    }
+
+    function lastInput(): Focusable | undefined {
+      return last(items.value);
+    }
+
+    function removeAt(index: number) {
+      ctx.emit(
+        "input",
+        value.filter((_, i) => i !== index)
+      );
+    }
+
+    return {
+      addElement,
+      removeAt
+    };
   }
+});
 
-  lastInput(): Focusable | undefined {
-    return last((this.$refs.items as unknown) as Focusable[]);
-  }
-
-  removeAt(index: number) {
-    this.value.splice(index, 1);
-  }
-}
+export default StringArray;
 </script>
 
 <template>

@@ -4,11 +4,12 @@
   </div>
 </template>
 
-<script>
-import { Component, Vue } from "vue-property-decorator";
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class GlobalStyles extends Vue {}
+const GlobalStyles = defineComponent({});
+
+export default GlobalStyles;
 </script>
 
 <style lang="scss">

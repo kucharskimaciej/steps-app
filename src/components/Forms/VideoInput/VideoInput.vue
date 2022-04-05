@@ -29,7 +29,6 @@ const VideoInput = defineComponent({
     }
   },
   setup({ value }) {
-    console.log(value);
     const fileIdentity = Container.get(FileIdentityService);
     const videoUpload = Container.get(VideoUploaderToken);
 

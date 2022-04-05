@@ -1,28 +1,46 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
-import PureCheckbox from "./PureCheckbox.vue";
-import { without, sortBy } from "lodash";
+import { defineComponent, PropType } from "@vue/composition-api";
+import PureCheckbox from "@/components/Forms/PureCheckbox.vue";
+import { sortBy, without } from "lodash";
 
-@Component({
+const Checklist = defineComponent({
   components: {
     PureCheckbox
-  }
-})
-export default class Checklist extends Vue {
-  @Prop({ default: () => [] }) private value!: string[];
-  @Prop({ default: () => [] }) private options!: any[];
+  },
+  props: {
+    value: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
+    options: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    }
+  },
+  emits: ["input"],
+  setup({ value, options }, { emit }) {
+    function isChecked(option: string): boolean {
+      return value.includes(option);
+    }
 
-  @Emit("input")
-  handleChange(option: string) {
-    return this.value.includes(option)
-      ? without(this.value, option)
-      : sortBy([...this.value, option], el => this.options.indexOf(el));
-  }
+    function handleChange(option: string) {
+      const updatedValue = value.includes(option)
+        ? without(value, option)
+        : sortBy([...value, option], el => options.indexOf(el));
 
-  isChecked(option: string): boolean {
-    return this.value.includes(option);
+      console.log("updatedValue: ", updatedValue);
+
+      emit("input", updatedValue);
+    }
+
+    return {
+      isChecked,
+      handleChange
+    };
   }
-}
+});
+
+export default Checklist;
 </script>
 
 <template>

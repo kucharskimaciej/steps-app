@@ -1,24 +1,33 @@
 <script lang="ts">
-import { Vue, Component, Prop, ProvideReactive } from "vue-property-decorator";
-import { Validation } from "vuelidate";
+import {
+  computed,
+  defineComponent,
+  PropType,
+  provide
+} from "@vue/composition-api";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
+import { Validation } from "vuelidate";
 
-@Component({
-  components: { ValidationHint }
-})
-export default class FormGroup extends Vue {
-  @Prop({ default: "" }) private label!: string;
-  @Prop() private invalid!: boolean;
-  @Prop() private validation!: Validation;
+const FormGroup = defineComponent({
+  components: { ValidationHint },
+  props: {
+    label: String,
+    invalid: Boolean,
+    validation: Object as PropType<Validation>
+  },
+  setup({ invalid, validation }) {
+    const hasError = computed(() => invalid || !!validation?.$anyError);
 
-  @ProvideReactive("hasError") get hasError(): boolean {
-    return this.invalid || (this.validation && this.validation.$anyError);
+    provide("hasError", hasError);
+    provide("validation", validation);
+
+    return {
+      hasError
+    };
   }
+});
 
-  @ProvideReactive("validation") get validationProvider(): Validation {
-    return this.validation;
-  }
-}
+export default FormGroup;
 </script>
 
 <template>

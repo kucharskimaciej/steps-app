@@ -1,41 +1,41 @@
 <script lang="ts">
-import {
-  Vue,
-  Component,
-  Prop,
-  Emit,
-  InjectReactive
-} from "vue-property-decorator";
-import { Focusable } from "@/components/Forms/types";
+import { computed, defineComponent, inject, ref } from "@vue/composition-api";
 
-@Component
-export default class SimpleInput extends Vue implements Focusable {
-  @Prop() private value!: string;
-  @Prop() private lazy!: boolean;
+const SimpleInput = defineComponent({
+  components: {},
+  props: {
+    value: String,
+    lazy: Boolean
+  },
+  emits: ["input"],
+  setup(_, { emit }) {
+    const hasError = inject<boolean>("hasError", false);
+    const inputElement = ref<HTMLInputElement>();
 
-  @Emit("input")
-  handleValueInput(event: InputEvent) {
-    return (event.target as HTMLInputElement).value;
-  }
+    const validityClasses = computed(() =>
+      hasError
+        ? "border-red-light text-red-lighter placeholder-red-darker"
+        : "border-gray-200 text-base"
+    );
 
-  @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
-
-  get validityClasses() {
-    return this.hasError
-      ? "border-red-light text-red-lighter placeholder-red-darker"
-      : "border-gray-200 text-base";
-  }
-
-  get inputElement() {
-    return this.$refs.element as HTMLInputElement;
-  }
-
-  focus() {
-    if (this.inputElement) {
-      this.inputElement.focus();
+    function handleValueInput(event: InputEvent) {
+      emit("input", (event.target as HTMLInputElement).value);
     }
+
+    function focus() {
+      inputElement.value?.focus();
+    }
+
+    return {
+      hasError,
+      validityClasses,
+      handleValueInput,
+      focus
+    };
   }
-}
+});
+
+export default SimpleInput;
 </script>
 
 <template>

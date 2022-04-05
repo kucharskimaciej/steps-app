@@ -1,21 +1,38 @@
 <script lang="ts">
-import { Vue, Component, InjectReactive, Prop } from "vue-property-decorator";
+import {
+  computed,
+  defineComponent,
+  inject,
+  PropType
+} from "@vue/composition-api";
 import { Validation } from "vuelidate";
 
-@Component
-export default class ValidationHint extends Vue {
-  @Prop() private validation!: Validation;
+const ValidationHint = defineComponent({
+  components: {},
+  props: {
+    validation: Object as PropType<Validation>
+  },
+  setup({ validation }) {
+    const hasError = inject<boolean>("hasError", false);
+    const isRequired = computed(() =>
+      Boolean(validation && "required" in validation)
+    );
 
-  @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
+    function customError(validator: string): boolean {
+      return Boolean(
+        validation && validator in validation && !(validation as any)[validator]
+      );
+    }
 
-  get isRequired() {
-    return "required" in this.validation;
+    return {
+      hasError,
+      customError,
+      isRequired
+    };
   }
+});
 
-  customError(validator: string): boolean {
-    return validator in this.validation && !(this.validation as any)[validator];
-  }
-}
+export default ValidationHint;
 </script>
 
 <template>

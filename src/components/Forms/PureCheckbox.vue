@@ -1,31 +1,27 @@
 <script lang="ts">
-import {
-  Vue,
-  Component,
-  InjectReactive,
-  Prop,
-  Emit
-} from "vue-property-decorator";
+import { computed, defineComponent, inject } from "@vue/composition-api";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
-@Component({
-  components: {
-    PureIcon
-  }
-})
-export default class PureCheckbox extends Vue {
-  @Prop() private value!: boolean;
-  @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
+const PureCheckbox = defineComponent({
+  components: { PureIcon },
+  props: {
+    value: Boolean
+  },
+  emits: ["input"],
+  setup() {
+    const hasError = inject<boolean>("hasError", false);
+    const iconClasses = computed(
+      () => `text-3xl ${hasError ? "text-red-lighter" : "text-gray-700"}`
+    );
 
-  @Emit("input")
-  handleChange() {
-    return !this.value;
+    return {
+      hasError,
+      iconClasses
+    };
   }
+});
 
-  get iconClasses() {
-    return `text-3xl ${this.hasError ? "text-red-lighter" : "text-gray-700"}`;
-  }
-}
+export default PureCheckbox;
 </script>
 
 <template>
@@ -37,7 +33,7 @@ export default class PureCheckbox extends Vue {
       type="checkbox"
       :checked="value"
       class="hidden"
-      @change="handleChange"
+      @change="$emit('input', !value)"
     />
     <span class="block mr-1">
       <PureIcon v-if="value" type="check_box" :class="iconClasses" />
