@@ -1,46 +1,65 @@
 <script lang="ts">
 import {
-  Vue,
-  Component,
-  Prop,
-  Emit,
-  InjectReactive
-} from "vue-property-decorator";
-import VueTagsInput from "@johmun/vue-tags-input";
+  computed,
+  defineComponent,
+  inject,
+  PropType,
+  ref
+} from "@vue/composition-api";
 import { Tag } from "../../../../common/types/Tag";
 
-@Component({
-  components: {
-    VueTagsInput
-  }
-})
-export default class TagsInput extends Vue {
-  @Prop() private readonly value!: string[];
-  @Prop({ default: () => [] }) private readonly autocomplete!: string[];
-  @Prop({ default: true }) private allowNew!: boolean;
+const TagsInput = defineComponent({
+  components: {},
+  props: {
+    value: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
+    allowNew: {
+      type: Boolean,
+      default: true
+    },
+    autocomplete: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    }
+  },
+  emits: ["input"],
+  setup({ autocomplete }, { emit }) {
+    const hasError = inject<boolean>("hasError", false);
+    const inputValue = ref<string>("");
 
-  inputValue = "";
+    const filteredItems = computed(() => {
+      if (!autocomplete.length) {
+        return [];
+      }
 
-  @InjectReactive({ from: "hasError", default: false }) hasError!: boolean;
+      const query = inputValue.value.toLowerCase();
+      return autocomplete.filter(tag => tag.toLowerCase().includes(query));
+    });
 
-  @Emit("input")
-  handleTagsChanged(tags: Tag[]): string[] {
-    return tags.map(t => t.text);
-  }
-
-  get filteredItems(): string[] | null {
-    if (!this.autocomplete) {
-      return null;
+    function asTags(items: string[] = []): Tag[] {
+      return items.map(text => ({ text }));
     }
 
-    const query = this.inputValue.toLowerCase();
-    return this.autocomplete.filter(tag => tag.toLowerCase().includes(query));
-  }
+    function handleTagsChanged(tags: Tag[]) {
+      emit(
+        "input",
+        tags.map(t => t.text)
+      );
+    }
 
-  asTags(items: string[] = []): Tag[] {
-    return items.map(text => ({ text }));
+    return {
+      hasError,
+      filteredItems,
+      inputValue,
+      asTags,
+      handleTagsChanged
+    };
   }
-}
+});
+
+export default TagsInput;
 </script>
 
 <template>

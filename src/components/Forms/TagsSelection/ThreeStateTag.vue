@@ -1,39 +1,46 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import { Tag } from "../../../../common/types/Tag";
+import { computed, defineComponent, PropType } from "@vue/composition-api";
 import PureTag from "@/components/Tags/PureTag.vue";
+import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import { ValueType } from "@/components/Forms/TagsSelection/types";
+import { Tag } from "../../../../common/types/Tag";
 
-@Component({
+const nextState: Record<ValueType, ValueType> = {
+  "-1": 0,
+  0: 1,
+  1: -1
+};
+
+const ThreeStateTag = defineComponent({
   components: {
     PureTag,
     PureIcon
-  }
-})
-export default class ThreeStateTag extends Vue {
-  @Prop() private tag!: Tag;
-  @Prop() private value!: ValueType;
+  },
+  props: {
+    tag: Object as PropType<Tag>,
+    value: {
+      type: Number as PropType<ValueType>,
+      default: 0
+    }
+  },
+  emits: ["input"],
+  setup({ value }, { emit }) {
+    const isIncluded = computed(() => value === 1);
+    const isExcluded = computed(() => value === -1);
 
-  private nextState: Record<ValueType, ValueType> = {
-    "-1": 0,
-    0: 1,
-    1: -1
-  };
+    function handleChange() {
+      emit("input", nextState[value]);
+    }
 
-  @Emit("input")
-  handleChange() {
-    return this.nextState[this.value];
+    return {
+      handleChange,
+      isExcluded,
+      isIncluded
+    };
   }
+});
 
-  get isIncluded() {
-    return this.value === 1;
-  }
-
-  get isExcluded() {
-    return this.value === -1;
-  }
-}
+export default ThreeStateTag;
 </script>
 
 <template>

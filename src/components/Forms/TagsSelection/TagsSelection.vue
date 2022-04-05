@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { defineComponent, PropType } from "@vue/composition-api";
 import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
 import {
   KeyValueTuple,
@@ -7,43 +7,60 @@ import {
   ValueType
 } from "@/components/Forms/TagsSelection/types";
 
-@Component({
+const TagsSelection = defineComponent({
   components: {
     ThreeStateTag
-  }
-})
-export default class TagsSelection extends Vue {
-  @Prop({ required: true }) private options!: OptionWithLabel[];
-  @Prop({ default: () => [] }) private value!: KeyValueTuple[];
-
-  @Emit("input")
-  handleChange(key: string, newValue: ValueType): KeyValueTuple[] {
-    if (this.getValueTuple(key)) {
-      return this.value
-        .map(tuple => {
-          const [k] = tuple;
-
-          if (k !== key) {
-            return tuple;
-          }
-
-          return [key, newValue] as KeyValueTuple;
-        })
-        .filter(([, value]) => value !== 0);
-    } else {
-      return [...this.value, [key, newValue]];
+  },
+  props: {
+    value: {
+      type: Array as PropType<KeyValueTuple[]>,
+      default: () => []
+    },
+    options: {
+      type: Array as PropType<OptionWithLabel[]>,
+      required: true
     }
-  }
+  },
+  emit: ["input"],
+  setup({ value }, { emit }) {
+    function getValueTuple(key: string): KeyValueTuple | undefined {
+      return value.find(([k]) => k === key);
+    }
 
-  getValueOrDefault(key: string): ValueType {
-    const [, value] = this.getValueTuple(key) || [key, 0];
-    return value;
-  }
+    function handleChange(key: string, newValue: ValueType) {
+      let result: KeyValueTuple[];
+      if (getValueTuple(key)) {
+        result = value
+          .map(tuple => {
+            const [k] = tuple;
 
-  private getValueTuple(key: string): KeyValueTuple | undefined {
-    return this.value.find(([k]) => k === key);
+            if (k !== key) {
+              return tuple;
+            }
+
+            return [key, newValue] as KeyValueTuple;
+          })
+          .filter(([, v]) => v !== 0);
+      } else {
+        result = [...value, [key, newValue]];
+      }
+
+      emit("input", result);
+    }
+
+    function getValueOrDefault(key: string): ValueType {
+      const [, v] = getValueTuple(key) || [key, 0];
+      return v;
+    }
+
+    return {
+      handleChange,
+      getValueOrDefault
+    };
   }
-}
+});
+
+export default TagsSelection;
 </script>
 
 <template>
