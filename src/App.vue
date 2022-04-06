@@ -7,20 +7,24 @@ import { Container } from "typedi";
 import { uiContextKey } from "@/uiContext";
 import TheNavigationOverlay from "@/components/TheNavigationOverlay.vue";
 import { useRouter } from "vue-router";
+import { dispatchHandleAuthStateChange, useStore } from "@/store";
 
 const App = defineComponent({
   components: {
     GlobalStyles,
     ModalContainer,
-    TheNavigationOverlay,
+    TheNavigationOverlay
   },
   setup() {
     const router = useRouter();
+    const store = useStore();
 
-    console.log("#1");
     const firebaseAuth = Container.get(AuthService);
-    console.log("#2", firebaseAuth);
     onMounted(() => firebaseAuth.setup());
+
+    firebaseAuth.onAuthStateChange(user => {
+      dispatchHandleAuthStateChange(store, user?.uid || "");
+    });
 
     const navigationOpen = ref(false);
 
@@ -30,7 +34,7 @@ const App = defineComponent({
 
     provide(uiContextKey, {
       navigationOpen,
-      toggleNavigation,
+      toggleNavigation
     });
 
     router.beforeEach((to, from, next) => {
@@ -40,7 +44,7 @@ const App = defineComponent({
 
     watch(
       () => navigationOpen.value,
-      (value) => {
+      value => {
         if (value) {
           document.body.classList.add("overflow-hidden");
         } else {
@@ -50,9 +54,9 @@ const App = defineComponent({
     );
 
     return {
-      ui: computed(() => navigationOpen.value),
+      ui: computed(() => navigationOpen.value)
     };
-  },
+  }
 });
 
 export default App;

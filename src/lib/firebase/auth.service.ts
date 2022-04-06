@@ -21,7 +21,21 @@ export class AuthService {
     this.auth.onAuthStateChanged(cb);
   }
 
+  authStateResolved(): Promise<firebase.User> {
+    return new Promise(resolve => {
+      this.auth.onAuthStateChanged(async user => {
+        console.log("changed", user);
+        if (!user) {
+          await this.authenticate();
+        } else {
+          resolve(user);
+        }
+      });
+    });
+  }
+
   public async authenticate() {
+    console.log("e?");
     await this.auth.signInWithPopup(authProvider);
   }
 }

@@ -13,20 +13,20 @@ const PureStepListItem = defineComponent({
     Tags,
     PureButton,
     PureIcon,
-    CopyToClipboard,
+    CopyToClipboard
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true,
+      required: true
     },
-    isSelected: Boolean,
+    isSelected: Boolean
   },
   setup(props) {
     const primaryVideoUrl = computed(() => props.step.videos[0].url);
     const restVideoUrls = computed(() => {
       const [, ...restVideos] = props.step.videos || [];
-      return restVideos.map((video) => video.url);
+      return restVideos.map(video => video.url);
     });
 
     const hasMoreVideos = computed(() => props.step.videos.length > 1);
@@ -43,9 +43,9 @@ const PureStepListItem = defineComponent({
       hasVariations,
       lastPracticeDate,
       detailClasses: "text-sm text-gray-700 mb-1",
-      detailIconClasses: "mr-2 text-lg",
+      detailIconClasses: "mr-2 text-lg"
     };
-  },
+  }
 });
 
 export default PureStepListItem;
@@ -57,7 +57,7 @@ export default PureStepListItem;
     class="p-4 bg-mono-white rounded flex items-start"
     :class="{
       'border-white border': !isSelected,
-      'border-green-base border-2': isSelected,
+      'border-green-base border-2': isSelected
     }"
   >
     <main class="w-full">
@@ -131,7 +131,6 @@ export default PureStepListItem;
         </a>
       </section>
 
-      {{ $router }}
       <section class="mt-3 text-sm">
         Shortlink:
         <CopyToClipboard :value="$filters.shortLink(step, $router)">

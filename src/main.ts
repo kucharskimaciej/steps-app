@@ -10,36 +10,32 @@ import {
   DateFilter,
   FullDateFilter,
   ShortLinkFilter,
-  SmartDateFilter,
+  SmartDateFilter
 } from "@/filters";
 import ClientPlugin from "@/plugins/client";
 import MatchMediaPlugin from "@/plugins/matchMedia";
 import RoutesPlugin from "@/plugins/routes";
 import ModalsPlugin from "@/plugins/modals";
-import { StepsResource } from "@/lib/steps.resource";
-import { Container } from "typedi";
 
-// const store = provideStore();
-// const app = createApp(App, {
-//   store
-// });
-//
-// app.use(store);
-// app.use(router);
-// app.config.globalProperties.$filters = {
-//   shortLink: ShortLinkFilter,
-//   date: DateFilter,
-//   fullDate: FullDateFilter,
-//   smartDate: SmartDateFilter
-// };
-//
-// app.use(MatchMediaPlugin);
-// app.use(ClientPlugin);
-// app.use(RoutesPlugin);
-// app.use(ModalsPlugin);
-//
-// app.mount("#app");
+const store = provideStore();
+const app = createApp(App, {
+  store
+});
 
-Container.get(StepsResource);
+app.use(store);
+app.use(router);
+app.config.globalProperties.$filters = {
+  shortLink: ShortLinkFilter,
+  date: DateFilter,
+  fullDate: FullDateFilter,
+  smartDate: SmartDateFilter
+};
+
+app.use(MatchMediaPlugin);
+app.use(ClientPlugin);
+app.use(RoutesPlugin);
+app.use(ModalsPlugin);
+
+app.mount("#app");
 
 // import "./registerServiceWorker";

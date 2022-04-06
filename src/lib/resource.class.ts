@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import { Container, Service } from "typedi";
 import { CollectionRef, DocumentSnapshot } from "@/lib/firebase/firebase";
 import { DatabaseItem } from "../../common/types/common/DatabaseItem";
 import { Owned } from "../../common/types/common/Owned";
@@ -13,12 +13,14 @@ export abstract class Resource<
   UpdateParams extends Partial<T>
 > {
   protected abstract readonly collection: CollectionRef;
+  protected firestore = Container.get(FirestoreService);
 
-  constructor(protected firestore: FirestoreService) {
-    console.log("firestore", firestore);
+  constructor() {
+    console.log("firestore", this.firestore);
   }
 
   public async query(uid: string): Promise<T[]> {
+    console.log(":aaaa", uid);
     const querySnapshot = await this.collection
       .where("owner_uid", "==", uid)
       .get();
@@ -48,7 +50,7 @@ export abstract class Resource<
   protected toDocument(snapshot: DocumentSnapshot): T {
     return {
       ...snapshot.data(),
-      id: snapshot.id,
+      id: snapshot.id
     } as T;
   }
 }

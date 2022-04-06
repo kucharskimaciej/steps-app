@@ -5,10 +5,6 @@ import { firebase, CollectionRef } from "@/lib/firebase/firebase";
 export class FirestoreService {
   private readonly firestore = firebase.firestore();
 
-  constructor() {
-    console.log("hm");
-  }
-
   collection(name: string): CollectionRef {
     return this.firestore.collection(name);
   }

@@ -9,16 +9,19 @@ const Steps = defineComponent({
   components: {
     Container,
     PureStepList,
-    AllStepsProvider,
+    AllStepsProvider
   },
   setup() {
     const store = useStore();
-    const steps = computed(() => getSteps(store));
+    const steps = computed(() => {
+      console.log("rerun");
+      return getSteps(store);
+    });
 
     return {
-      steps,
+      steps
     };
-  },
+  }
 });
 
 export default Steps;
