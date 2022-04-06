@@ -1,4 +1,4 @@
-const functions = require("firebase-functions");
+import functions from "firebase-functions";
 import { initializeApp } from "firebase-admin";
 import thumbnailAndPreviewHandler from "./thumbnailGenerator";
 

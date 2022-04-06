@@ -1,13 +1,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { ModalStyleComponents } from "@/components/Modal/lib";
-import Backdrop from "@/components/Modal/Backdrop.vue";
 import { MODAL_STYLE } from "@/lib/modals/modals";
 
 const InlineModal = defineComponent({
   components: {
     ...ModalStyleComponents,
-    Backdrop,
   },
   props: {
     modalStyle: {

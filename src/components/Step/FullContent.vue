@@ -13,13 +13,13 @@ const FullContent = defineComponent({
     StepVideoLinks,
     Tags,
     Variations,
-    VideoModal
+    VideoModal,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const firstVideo = computed(() => props.step.videos[0]);
@@ -27,9 +27,9 @@ const FullContent = defineComponent({
 
     return {
       firstVideo,
-      videoModal
+      videoModal,
     };
-  }
+  },
 });
 
 export default FullContent;
@@ -41,7 +41,7 @@ export default FullContent;
       <StepTitle
         :step="step"
         link-to-video
-        @click.native="videoModal.openModal(firstVideo)"
+        @click="videoModal.openModal(firstVideo)"
       />
       <StepVideoLinks
         :step="step"

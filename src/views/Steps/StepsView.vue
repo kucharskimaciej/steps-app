@@ -5,23 +5,23 @@ import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import { getSteps, useStore } from "@/store";
 
-const Steps = defineComponent({
+const StepsView = defineComponent({
   components: {
     Container,
     PureStepList,
-    AllStepsProvider
+    AllStepsProvider,
   },
   setup() {
     const store = useStore();
     const steps = computed(() => getSteps(store));
 
     return {
-      steps
+      steps,
     };
-  }
+  },
 });
 
-export default Steps;
+export default StepsView;
 </script>
 
 <template>

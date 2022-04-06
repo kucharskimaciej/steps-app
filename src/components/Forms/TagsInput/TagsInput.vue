@@ -6,16 +6,16 @@ const TagsInput = defineComponent({
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => []
+      default: () => [],
     },
     allowNew: {
       type: Boolean,
-      default: true
+      default: true,
     },
     autocomplete: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ["input"],
   setup(props, { emit }) {
@@ -28,19 +28,19 @@ const TagsInput = defineComponent({
       }
 
       const query = inputValue.value.toLowerCase();
-      return props.autocomplete.filter(tag =>
+      return props.autocomplete.filter((tag) =>
         tag.toLowerCase().includes(query)
       );
     });
 
     function asTags(items: string[] = []): Tag[] {
-      return items.map(text => ({ text }));
+      return items.map((text) => ({ text }));
     }
 
     function handleTagsChanged(tags: Tag[]) {
       emit(
         "input",
-        tags.map(t => t.text)
+        tags.map((t) => t.text)
       );
     }
 
@@ -49,9 +49,9 @@ const TagsInput = defineComponent({
       filteredItems,
       inputValue,
       asTags,
-      handleTagsChanged
+      handleTagsChanged,
     };
-  }
+  },
 });
 
 export default TagsInput;

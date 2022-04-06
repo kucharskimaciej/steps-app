@@ -2,19 +2,18 @@
 import { computed, defineComponent, ref } from "vue";
 import InlineStepEdit from "@/features/CreateEditStep/InlineStepEdit.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
 import { rawStepsById, useStore } from "@/store";
 
 const ProvideInlineEdit = defineComponent({
   components: {
     InlineModal,
-    InlineStepEdit
+    InlineStepEdit,
   },
   props: {
     stepId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const store = useStore();
@@ -29,9 +28,9 @@ const ProvideInlineEdit = defineComponent({
     return {
       step,
       edit,
-      modalOpen
+      modalOpen,
     };
-  }
+  },
 });
 
 export default ProvideInlineEdit;

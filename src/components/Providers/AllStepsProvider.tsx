@@ -3,7 +3,7 @@ import { computed, defineComponent, onBeforeMount } from "vue";
 
 const AllStepsProvider = defineComponent({
   props: {
-    alwaysFetch: Boolean
+    alwaysFetch: Boolean,
   },
   setup(props, { slots }) {
     const store = useStore();
@@ -26,7 +26,7 @@ const AllStepsProvider = defineComponent({
         return slots.default?.();
       }
     };
-  }
+  },
 });
 
 export default AllStepsProvider;

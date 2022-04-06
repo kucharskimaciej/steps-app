@@ -6,8 +6,8 @@ const StepProvider = defineComponent({
   props: {
     stepId: {
       required: true,
-      type: String
-    }
+      type: String,
+    },
   },
   setup(props) {
     const store = useStore();
@@ -22,9 +22,9 @@ const StepProvider = defineComponent({
     onActivated(loadStep);
 
     return {
-      loading
+      loading,
     };
-  }
+  },
 });
 
 export default StepProvider;

@@ -1,16 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, watch } from "vue";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
-import PureTag from "@/components/Tags/PureTag.vue";
-import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
-import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
-import FeedActions from "@/features/Feed/FeedActions.vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import PureButton from "@/components/PureButton/PureButton.vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import IntersectSwitch from "@/components/Intersect/IntersectSwitch.vue";
 import ProvideVideoModal from "@/components/Providers/ProvideVideoModal.vue";
-import Badge from "@/components/Badge/Badge.vue";
 import { Step } from "../../../common/types/Step";
 
 const FeedStep = defineComponent({
@@ -18,20 +11,20 @@ const FeedStep = defineComponent({
     VideoPlayer,
     Tags,
     IntersectSwitch,
-    ProvideVideoModal
+    ProvideVideoModal,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
     autoplay: Boolean,
     showVariations: {
       type: Boolean,
-      default: true
+      default: true,
     },
     practiceActions: Boolean,
-    videoHeight: Number
+    videoHeight: Number,
   },
   emits: ["edit", "viewed", "play"],
   setup(props, { emit }) {
@@ -55,9 +48,9 @@ const FeedStep = defineComponent({
     return {
       anchor,
       primaryVideo,
-      handleViewed
+      handleViewed,
     };
-  }
+  },
 });
 
 export default FeedStep;
@@ -69,7 +62,7 @@ export default FeedStep;
       class="flex items-stretch overflow-hidden mb-2"
       :style="{
         height: videoHeight ? `${videoHeight}px` : 'auto',
-        maxHeight: `60vh`
+        maxHeight: `60vh`,
       }"
     >
       <template #default="{ open }">

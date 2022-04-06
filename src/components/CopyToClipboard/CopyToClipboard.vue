@@ -5,8 +5,8 @@ const CopyTyClipboard = defineComponent({
   props: {
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     function copy() {
@@ -14,9 +14,9 @@ const CopyTyClipboard = defineComponent({
     }
 
     return {
-      copy
+      copy,
     };
-  }
+  },
 });
 
 export default CopyTyClipboard;

@@ -50,7 +50,7 @@ export abstract class Resource<
   protected toDocument(snapshot: DocumentSnapshot): T {
     return {
       ...snapshot.data(),
-      id: snapshot.id
+      id: snapshot.id,
     } as T;
   }
 }

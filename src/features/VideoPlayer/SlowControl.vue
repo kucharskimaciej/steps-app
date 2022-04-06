@@ -1,19 +1,19 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import Control from "@/features/VideoPlayer/Control.vue";
+import Control from "@/features/VideoPlayer/VideoControl.vue";
 
 const SlowControl = defineComponent({
   components: {
     PureIcon,
-    Control
+    Control,
   },
   props: {
     enabled: {
       type: Boolean,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 });
 
 export default SlowControl;

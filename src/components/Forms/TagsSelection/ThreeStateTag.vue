@@ -8,20 +8,20 @@ import { Tag } from "../../../../common/types/Tag";
 const nextState: Record<ValueType, ValueType> = {
   "-1": 0,
   0: 1,
-  1: -1
+  1: -1,
 };
 
 const ThreeStateTag = defineComponent({
   components: {
     PureTag,
-    PureIcon
+    PureIcon,
   },
   props: {
     tag: Object as PropType<Tag>,
     value: {
       type: Number as PropType<ValueType>,
-      default: 0
-    }
+      default: 0,
+    },
   },
   emits: ["input"],
   setup(props, { emit }) {
@@ -35,9 +35,9 @@ const ThreeStateTag = defineComponent({
     return {
       handleChange,
       isExcluded,
-      isIncluded
+      isIncluded,
     };
-  }
+  },
 });
 
 export default ThreeStateTag;
@@ -49,10 +49,10 @@ export default ThreeStateTag;
     :show-type="false"
     :class="{
       'bg-mono-100 text-mono-white': isIncluded,
-      'opacity-50': isExcluded
+      'opacity-50': isExcluded,
     }"
     class="cursor-pointer select-none text-normal px-4 py-2"
-    @click.native="handleChange"
+    @click="handleChange"
   >
     <template #prepend>
       <PureIcon v-if="value === 1" type="done" class="-ml-1" />

@@ -3,7 +3,7 @@
 <!--import { VueWithStore } from "@/lib/vueWithStore";-->
 <!--import AllStepsProvider from "@/components/Providers/AllStepsProvider";-->
 <!--import { stepsById } from "@/store";-->
-<!--import Feed from "@/features/Feed/Feed.vue";-->
+<!--import Feed from "@/features/Feed/StepsFeed.vue";-->
 <!--import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";-->
 <!--import InlineModal from "@/components/Modal/InlineModal.vue";-->
 

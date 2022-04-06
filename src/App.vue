@@ -13,7 +13,7 @@ const App = defineComponent({
   components: {
     GlobalStyles,
     ModalContainer,
-    TheNavigationOverlay
+    TheNavigationOverlay,
   },
   setup() {
     const router = useRouter();
@@ -22,7 +22,7 @@ const App = defineComponent({
     const firebaseAuth = Container.get(AuthService);
     onMounted(() => firebaseAuth.setup());
 
-    firebaseAuth.onAuthStateChange(user => {
+    firebaseAuth.onAuthStateChange((user) => {
       dispatchHandleAuthStateChange(store, user?.uid || "");
     });
 
@@ -34,7 +34,7 @@ const App = defineComponent({
 
     provide(uiContextKey, {
       navigationOpen,
-      toggleNavigation
+      toggleNavigation,
     });
 
     router.beforeEach((to, from, next) => {
@@ -44,7 +44,7 @@ const App = defineComponent({
 
     watch(
       () => navigationOpen.value,
-      value => {
+      (value) => {
         if (value) {
           document.body.classList.add("overflow-hidden");
         } else {
@@ -54,9 +54,9 @@ const App = defineComponent({
     );
 
     return {
-      ui: computed(() => navigationOpen.value)
+      ui: computed(() => navigationOpen.value),
     };
-  }
+  },
 });
 
 export default App;

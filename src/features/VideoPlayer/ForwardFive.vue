@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import Control from "@/features/VideoPlayer/Control.vue";
+import Control from "@/features/VideoPlayer/VideoControl.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const ForwardFive = defineComponent({
   components: {
     Control,
-    PureIcon
-  }
+    PureIcon,
+  },
 });
 
 export default ForwardFive;

@@ -10,7 +10,7 @@ import {
   DateFilter,
   FullDateFilter,
   ShortLinkFilter,
-  SmartDateFilter
+  SmartDateFilter,
 } from "@/filters";
 import ClientPlugin from "@/plugins/client";
 import MatchMediaPlugin from "@/plugins/matchMedia";
@@ -19,7 +19,7 @@ import ModalsPlugin from "@/plugins/modals";
 
 const store = provideStore();
 const app = createApp(App, {
-  store
+  store,
 });
 
 app.use(store);
@@ -28,7 +28,7 @@ app.config.globalProperties.$filters = {
   shortLink: ShortLinkFilter,
   date: DateFilter,
   fullDate: FullDateFilter,
-  smartDate: SmartDateFilter
+  smartDate: SmartDateFilter,
 };
 
 app.use(MatchMediaPlugin);

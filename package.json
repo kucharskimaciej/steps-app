@@ -6,7 +6,7 @@
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .vue,.mjs,.ts,.tsx --fix --ignore-path .gitignore",
     "backup": "firestore-backup-restore --accountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json} --backupPath ./backups/database.$(date \"+%Y%m%d-%H%M%S\")",
     "migrate": "ts-node scripts/migrate/lib/migrate.ts --accountCredentials ${FIREBASE_CREDENTIALS:-./account.${FIREBASE_ENV:-development}.json}",
     "prettify": "pretty-quick --staged",
@@ -95,8 +95,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettify && npm run lint -- --fix",
-      "pre-push": "npm run test:unit && npm run build"
+      "pre-commit": "npm run prettify && npm run lint"
     }
   }
 }

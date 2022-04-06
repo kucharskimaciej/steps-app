@@ -8,12 +8,12 @@ const Video = defineComponent({
   components: {
     VideoModal,
     PureButton,
-    PureIcon
+    PureIcon,
   },
   props: {
     title: String,
     filename: String,
-    url: String
+    url: String,
   },
   emits: ["remove"],
   setup(props) {
@@ -24,9 +24,9 @@ const Video = defineComponent({
 
     return {
       asVideo,
-      videoModal
+      videoModal,
     };
-  }
+  },
 });
 
 export default Video;

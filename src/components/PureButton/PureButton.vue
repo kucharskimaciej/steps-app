@@ -68,21 +68,21 @@ const PureButton = defineComponent({
   props: {
     kind: {
       type: String as PropType<ButtonKind>,
-      default: "primary"
+      default: "primary",
     },
     size: {
       type: String as PropType<ButtonSize>,
-      default: "regular"
+      default: "regular",
     },
     spacing: {
       type: String as PropType<ButtonSpacing>,
-      default: "regular"
+      default: "regular",
     },
     tag: {
       type: String,
-      default: "button"
+      default: "button",
     },
-    disabled: Boolean
+    disabled: Boolean,
   },
   setup(props) {
     const sizeClasses = computed(() => buttonSize(props.size, props.spacing));
@@ -90,9 +90,9 @@ const PureButton = defineComponent({
 
     return {
       sizeClasses,
-      colorClasses
+      colorClasses,
     };
-  }
+  },
 });
 
 export default PureButton;
@@ -105,7 +105,7 @@ export default PureButton;
     :class="[
       { 'opacity-50 cursor-not-allowed': disabled },
       sizeClasses,
-      colorClasses
+      colorClasses,
     ]"
     :disabled="disabled"
     v-bind="$attrs"

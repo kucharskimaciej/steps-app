@@ -2,7 +2,6 @@
 import { defineComponent, PropType } from "vue";
 import StepListStep from "@/components/StepList/StepListStep.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
-import Card from "@/components/Card/Card.vue";
 import { Step } from "../../../common/types/Step";
 
 type StateFn = (step: Step) => boolean;
@@ -11,7 +10,6 @@ const StepList = defineComponent({
   components: {
     StepListStep,
     SelectToggleWidget,
-    Card,
   },
   props: {
     steps: {

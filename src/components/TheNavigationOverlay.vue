@@ -1,14 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useUi } from "@/uiContext";
-import PureButton from "./PureButton/PureButton.vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const TheNavigationOverlay = defineComponent({
-  components: {
-    PureButton,
-    PureIcon,
-  },
+  components: {},
   setup() {
     const ui = useUi();
 

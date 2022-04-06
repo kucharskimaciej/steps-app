@@ -7,21 +7,21 @@ import { Step } from "../../../common/types/Step";
 const ReadonlyStep = defineComponent({
   components: {
     VideoPlayer,
-    Tags
+    Tags,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const primaryVideo = computed(() => props.step.videos[0]);
 
     return {
-      primaryVideo
+      primaryVideo,
     };
-  }
+  },
 });
 
 export default ReadonlyStep;

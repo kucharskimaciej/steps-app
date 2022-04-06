@@ -6,11 +6,11 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 const SearchWidget = defineComponent({
   components: {
     PureIcon,
-    PureButton
+    PureButton,
   },
   props: {
-    searchActive: Boolean
-  }
+    searchActive: Boolean,
+  },
 });
 
 export default SearchWidget;

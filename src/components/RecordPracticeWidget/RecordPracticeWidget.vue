@@ -8,14 +8,14 @@ import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 const RecordPracticeWidget = defineComponent({
   components: {
     PureButton,
-    PureIcon
+    PureIcon,
   },
   props: {
     stepId: {
       type: String,
-      required: true
+      required: true,
     },
-    collectionId: String
+    collectionId: String,
   },
   setup(props) {
     const store = useStore();
@@ -31,9 +31,9 @@ const RecordPracticeWidget = defineComponent({
 
     return {
       handleRecordPractice,
-      isTodayRecordedForCollection
+      isTodayRecordedForCollection,
     };
-  }
+  },
 });
 
 export default RecordPracticeWidget;

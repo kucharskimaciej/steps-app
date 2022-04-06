@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { ROUTES } from "@/router/routes";
 import CreateStep from "@/views/CreateStep/CreateStep.vue";
-import Steps from "@/views/Steps/Steps.vue";
+import Steps from "@/views/Steps/StepsView.vue";
 import FeedView from "@/views/Feed/FeedView.vue";
 import PublicStep from "@/views/PublicStep/PublicStep.vue";
 import SessionsView from "@/views/Sessions/SessionsView.vue";

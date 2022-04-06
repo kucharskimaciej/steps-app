@@ -12,8 +12,8 @@ const StringArray = defineComponent({
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const items = ref<Focusable[]>([]);
@@ -40,9 +40,9 @@ const StringArray = defineComponent({
 
     return {
       addElement,
-      removeAt
+      removeAt,
     };
-  }
+  },
 });
 
 export default StringArray;

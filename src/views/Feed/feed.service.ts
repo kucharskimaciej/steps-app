@@ -24,7 +24,7 @@ export class FeedService {
       case FeedPresets.PRACTICED_ASC:
         selectedSteps = orderBy(
           steps.filter((step) => step.practice_records?.length),
-          [(step) => first(step.practice_records)!.date, "updated_at"],
+          [(step) => first(step.practice_records)?.date || 0, "updated_at"],
           ["asc", "desc"]
         );
         break;
@@ -32,7 +32,7 @@ export class FeedService {
       case FeedPresets.PRACTICED_DESC:
         selectedSteps = orderBy(
           steps.filter((step) => step.practice_records?.length),
-          [(step) => first(step.practice_records)!.date, "updated_at"],
+          [(step) => first(step.practice_records)?.date || 0, "updated_at"],
           ["desc", "desc"]
         );
         break;

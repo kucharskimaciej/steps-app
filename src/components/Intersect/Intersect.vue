@@ -19,13 +19,13 @@ const Intersect = defineComponent({
       },
       {
         threshold: props.threshold,
-        root: props.viewportRoot
+        root: props.viewportRoot,
       }
     );
 
     watch(
       content,
-      el => {
+      (el) => {
         if (el) {
           observer.value?.disconnect();
           observer.value?.observe(el as Element);
@@ -41,9 +41,9 @@ const Intersect = defineComponent({
     });
 
     return {
-      content
+      content,
     };
-  }
+  },
 });
 
 export default Intersect;

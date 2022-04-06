@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import Control from "@/features/VideoPlayer/Control.vue";
+import Control from "@/features/VideoPlayer/VideoControl.vue";
 
 const SizeControl = defineComponent({
   components: {
     PureIcon,
-    Control
-  }
+    Control,
+  },
 });
 
 export default SizeControl;

@@ -1,7 +1,7 @@
 import { withKnobs } from "@storybook/addon-knobs";
 import { Container, Spacing, WithGlobalStyles } from "@/stories/decorators";
 import Vue, { Component } from "vue";
-import Progress from "@/features/VideoPlayer/Progress.vue";
+import Progress from "@/features/VideoPlayer/ProgressTrack.vue";
 
 export default {
   title: "Components/VideoPlayer/Progress",

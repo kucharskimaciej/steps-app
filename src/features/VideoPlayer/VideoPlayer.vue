@@ -5,12 +5,11 @@ import PlayControl from "@/features/VideoPlayer/PlayControl.vue";
 import SizeControl from "@/features/VideoPlayer/SizeControl.vue";
 import MuteControl from "@/features/VideoPlayer/MuteControl.vue";
 import ForwardOne from "@/features/VideoPlayer/ForwardOne.vue";
-import ForwardFive from "@/features/VideoPlayer/ForwardFive.vue";
 import BackFive from "@/features/VideoPlayer/BackFive.vue";
 import BackOne from "@/features/VideoPlayer/BackOne.vue";
 import PlayFromStart from "@/features/VideoPlayer/PlayFromStart.vue";
 import SlowControl from "@/features/VideoPlayer/SlowControl.vue";
-import Progress from "@/features/VideoPlayer/Progress.vue";
+import Progress from "@/features/VideoPlayer/ProgressTrack.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
 
 const FULL_SPEED = 1;
@@ -43,7 +42,7 @@ const mediaEvents = [
   "suspend",
   "timeupdate",
   "volumechange",
-  "waiting"
+  "waiting",
 ];
 
 const VideoPlayer = defineComponent({
@@ -52,24 +51,23 @@ const VideoPlayer = defineComponent({
     SizeControl,
     MuteControl,
     ForwardOne,
-    ForwardFive,
     BackFive,
     BackOne,
     PlayFromStart,
     SlowControl,
-    Progress
+    Progress,
   },
   props: {
     video: {
       required: true,
-      type: Object as PropType<VideoObject>
+      type: Object as PropType<VideoObject>,
     },
     autoplay: Boolean,
     background: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    sizeControl: Boolean
+    sizeControl: Boolean,
   },
   emits: ["viewed", "open-full-size"],
   setup(props, ctx) {
@@ -202,9 +200,9 @@ const VideoPlayer = defineComponent({
       playFromStart,
       handlePlayingChange,
       handleVolumeChange,
-      handleTimeUpdate
+      handleTimeUpdate,
     };
-  }
+  },
 });
 
 export default VideoPlayer;

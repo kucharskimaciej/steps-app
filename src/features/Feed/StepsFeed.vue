@@ -5,19 +5,19 @@ import FeedStep from "@/features/Feed/FeedStep.vue";
 import ProvideScaledVideoSize from "@/components/Providers/ProvideScaledVideoSize";
 import { Step } from "../../../common/types/Step";
 
-const Feed = defineComponent({
+const StepsFeed = defineComponent({
   components: {
     DynamicScroller,
     DynamicScrollerItem,
     FeedStep,
-    ProvideScaledVideoSize
+    ProvideScaledVideoSize,
   },
   props: {
     steps: {
       type: Array as PropType<Step[]>,
-      required: true
+      required: true,
     },
-    pageMode: Boolean
+    pageMode: Boolean,
   },
   setup() {
     const rootEl = ref<HTMLElement>();
@@ -31,12 +31,12 @@ const Feed = defineComponent({
     return {
       rootEl,
       stepVideoHeight,
-      width
+      width,
     };
-  }
+  },
 });
 
-export default Feed;
+export default StepsFeed;
 </script>
 
 <template>

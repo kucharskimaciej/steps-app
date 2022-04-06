@@ -1,19 +1,19 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
-import Feed from "@/features/Feed/Feed.vue";
+import Feed from "@/features/Feed/StepsFeed.vue";
 import { stepsById, useStore } from "@/store";
 
 const ProvideStepVariations = defineComponent({
   components: {
     InlineModal,
-    Feed
+    Feed,
   },
   props: {
     stepId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const store = useStore();
@@ -30,9 +30,9 @@ const ProvideStepVariations = defineComponent({
       step,
       variationsOpen,
       variationsCount,
-      openVariationsModal
+      openVariationsModal,
     };
-  }
+  },
 });
 
 export default ProvideStepVariations;

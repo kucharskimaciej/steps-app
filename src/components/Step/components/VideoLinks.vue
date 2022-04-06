@@ -7,9 +7,9 @@ const StepVideoLinks = defineComponent({
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
-    skipFirst: Boolean
+    skipFirst: Boolean,
   },
   emits: ["openVideo"],
   setup(props, { emit }) {
@@ -32,9 +32,9 @@ const StepVideoLinks = defineComponent({
     return {
       openVideo,
       videoUrls,
-      indexOffset
+      indexOffset,
     };
-  }
+  },
 });
 
 export default StepVideoLinks;

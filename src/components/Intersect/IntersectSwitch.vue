@@ -5,14 +5,14 @@ import Intersect from "@/components/Intersect/Intersect.vue";
 
 const IntersectSwitch = defineComponent({
   components: {
-    Intersect
+    Intersect,
   },
   props: {
     ...intersectComponentPropsType,
     visibilityThreshold: {
       type: Number,
-      default: 0.7
-    }
+      default: 0.7,
+    },
   },
   emits: ["change"],
   setup(props, { emit }) {
@@ -26,16 +26,16 @@ const IntersectSwitch = defineComponent({
       emit("change", {
         entry,
         ratio: currentRatio.value,
-        visible: currentlyVisible.value
+        visible: currentlyVisible.value,
       });
     }
 
     return {
       handleChange,
       currentRatio,
-      currentlyVisible
+      currentlyVisible,
     };
-  }
+  },
 });
 
 export default IntersectSwitch;

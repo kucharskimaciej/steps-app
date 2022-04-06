@@ -3,7 +3,7 @@ import { action } from "@storybook/addon-actions";
 import { Container, Spacing, WithGlobalStyles } from "@/stories/decorators";
 import Vue, { Component } from "vue";
 import { stepsFactory } from "@/stories/fixtures/steps";
-import Feed from "@/features/Feed/Feed.vue";
+import Feed from "@/features/Feed/StepsFeed.vue";
 import StoryRouter from "storybook-vue-router";
 import { ROUTES } from "@/router";
 

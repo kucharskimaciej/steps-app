@@ -3,8 +3,6 @@ import { computed, defineComponent, ref } from "vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
-import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
-import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import ContentBox from "@/components/ContentBox/ContentBox.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
@@ -43,8 +41,6 @@ const CreateStep = defineComponent({
     WideWithSidebarRight,
     StepForm,
     PureButton,
-    VideoInput,
-    PureStepList,
     AllStepsProvider,
     ContentBox,
     SelectToggleWidget,

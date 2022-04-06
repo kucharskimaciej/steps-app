@@ -9,6 +9,7 @@ import { Container } from "typedi";
 import { FileIdentityService } from "@/lib/fileIdentity.service";
 import { VideoUploaderToken } from "@/lib/tokens";
 import type { Validation } from "@vuelidate/core";
+import { without } from "lodash";
 
 const VideoInput = defineComponent({
   components: {
@@ -23,7 +24,8 @@ const VideoInput = defineComponent({
       default: () => [],
     },
   },
-  setup(props) {
+  emit: ["input"],
+  setup(props, { emit }) {
     const fileIdentity = Container.get(FileIdentityService);
     const videoUpload = Container.get(VideoUploaderToken);
 
@@ -41,8 +43,7 @@ const VideoInput = defineComponent({
     }
 
     function handleVideoRemoved(video: VideoObject): void {
-      const index = props.value.indexOf(video);
-      props.value.splice(index, 1);
+      emit("input", without(props.value, video));
       triggerValidation();
     }
 
@@ -60,11 +61,7 @@ const VideoInput = defineComponent({
       }
       const url = await videoUpload.upload(file, hash);
 
-      props.value.push({
-        hash,
-        url,
-      });
-
+      emit("input", [...props.value, { hash, url }]);
       triggerValidation();
     }
 

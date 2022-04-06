@@ -7,8 +7,8 @@ const ProvideScaledVideoSize = defineComponent({
     targetWidth: Number,
     defaultHeight: {
       type: Number,
-      default: 400
-    }
+      default: 400,
+    },
   },
   emits: ["updatedHeight"],
   setup(props, { emit, slots }) {
@@ -32,6 +32,6 @@ const ProvideScaledVideoSize = defineComponent({
 
     return () =>
       slots.default?.({ scaledVideoHeight: scaledVideoHeight.value });
-  }
+  },
 });
 export default ProvideScaledVideoSize;

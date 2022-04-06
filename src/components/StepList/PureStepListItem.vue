@@ -1,8 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import Tags from "@/components/Step/components/Tags.vue";
-import PureTag from "@/components/Tags/PureTag.vue";
-import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
@@ -13,20 +11,20 @@ const PureStepListItem = defineComponent({
     Tags,
     PureButton,
     PureIcon,
-    CopyToClipboard
+    CopyToClipboard,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
-    isSelected: Boolean
+    isSelected: Boolean,
   },
   setup(props) {
     const primaryVideoUrl = computed(() => props.step.videos[0].url);
     const restVideoUrls = computed(() => {
       const [, ...restVideos] = props.step.videos || [];
-      return restVideos.map(video => video.url);
+      return restVideos.map((video) => video.url);
     });
 
     const hasMoreVideos = computed(() => props.step.videos.length > 1);
@@ -43,9 +41,9 @@ const PureStepListItem = defineComponent({
       hasVariations,
       lastPracticeDate,
       detailClasses: "text-sm text-gray-700 mb-1",
-      detailIconClasses: "mr-2 text-lg"
+      detailIconClasses: "mr-2 text-lg",
     };
-  }
+  },
 });
 
 export default PureStepListItem;
@@ -57,7 +55,7 @@ export default PureStepListItem;
     class="p-4 bg-mono-white rounded flex items-start"
     :class="{
       'border-white border': !isSelected,
-      'border-green-base border-2': isSelected
+      'border-green-base border-2': isSelected,
     }"
   >
     <main class="w-full">

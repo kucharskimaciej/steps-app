@@ -22,10 +22,7 @@ import { minLength, required } from "@vuelidate/validators";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { AppConfigToken } from "../../../../common/tokens";
 import { Ref } from "@vue/reactivity";
-import {
-  DuplicateLocator,
-  StepDuplicateLocator,
-} from "@/lib/duplicateLocator.interface";
+import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 
 function getDataObject(step: Partial<StepDTO> = {}): StepFormData {
   const {

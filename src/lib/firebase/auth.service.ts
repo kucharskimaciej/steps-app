@@ -22,8 +22,8 @@ export class AuthService {
   }
 
   authStateResolved(): Promise<firebase.User> {
-    return new Promise(resolve => {
-      this.auth.onAuthStateChanged(async user => {
+    return new Promise((resolve) => {
+      this.auth.onAuthStateChanged(async (user) => {
         console.log("changed", user);
         if (!user) {
           await this.authenticate();
