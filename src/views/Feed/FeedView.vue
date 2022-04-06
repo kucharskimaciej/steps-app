@@ -4,11 +4,7 @@ import StepActions from "@/views/Feed/components/StepActions.vue";
 import Container from "@/components/Layout/Container.vue";
 import Feed from "@/features/Feed/Feed.vue";
 import FeedStep from "@/features/Feed/FeedStep.vue";
-import PureButton from "@/components/PureButton/PureButton.vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
-import RecordPracticeWidget from "@/components/RecordPracticeWidget/RecordPracticeWidget.vue";
-import DropdownMenu from "@/components/DropdownMenu/DropdownMenu.vue";
 import SearchWidget from "@/features/Search/SearchWidget.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import SearchOverlay from "@/features/Search/SearchOverlay.vue";
@@ -23,7 +19,7 @@ import {
   getStepsMatchingSearch,
   stableStepIds,
   stepsById,
-  useStore,
+  useStore
 } from "@/store";
 import { isEqual } from "lodash";
 import { Step } from "../../../common/types/Step";
@@ -35,16 +31,12 @@ const FeedView = defineComponent({
     Container,
     Feed,
     FeedStep,
-    PureButton,
-    PureIcon,
     AllStepsProvider,
-    RecordPracticeWidget,
-    DropdownMenu,
     SearchWidget,
     InlineModal,
     SearchOverlay,
     Badge,
-    TheTopBarContainer,
+    TheTopBarContainer
   },
   setup() {
     const store = useStore();
@@ -54,7 +46,7 @@ const FeedView = defineComponent({
     const stepIds = computed(() => stableStepIds(store));
     const selectedSteps = computed((): Step[] => {
       const byId = stepsById(store);
-      return selectedStepIds.value.map((id) => byId[id]);
+      return selectedStepIds.value.map(id => byId[id]);
     });
     const search = computed(() => getSearch(store));
     const hasActiveSearch = computed(() => !getIsSearchEmpty(store));
@@ -101,9 +93,9 @@ const FeedView = defineComponent({
       handleStepViewed,
       handleSearchChange,
       handleClearSearch,
-      selectStepsForFeed,
+      selectStepsForFeed
     };
-  },
+  }
 });
 
 export default FeedView;

@@ -10,14 +10,14 @@ const Feed = defineComponent({
     DynamicScroller,
     DynamicScrollerItem,
     FeedStep,
-    ProvideScaledVideoSize,
+    ProvideScaledVideoSize
   },
   props: {
     steps: {
       type: Array as PropType<Step[]>,
-      required: true,
+      required: true
     },
-    pageMode: Boolean,
+    pageMode: Boolean
   },
   setup() {
     const rootEl = ref<HTMLElement>();
@@ -31,9 +31,9 @@ const Feed = defineComponent({
     return {
       rootEl,
       stepVideoHeight,
-      width,
+      width
     };
-  },
+  }
 });
 
 export default Feed;

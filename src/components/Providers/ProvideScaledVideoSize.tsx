@@ -22,11 +22,16 @@ const ProvideScaledVideoSize = defineComponent({
       return scaleRatio * height;
     });
 
-    watch(scaledVideoHeight, () => {
-      emit("updatedHeight");
-    });
+    watch(
+      () => scaledVideoHeight.value,
+      () => {
+        emit("updatedHeight", scaledVideoHeight.value);
+      },
+      { immediate: true }
+    );
 
-    return () => slots.default?.({ scaledVideoHeight });
+    return () =>
+      slots.default?.({ scaledVideoHeight: scaledVideoHeight.value });
   }
 });
 export default ProvideScaledVideoSize;

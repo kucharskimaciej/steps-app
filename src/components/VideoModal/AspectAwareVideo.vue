@@ -33,7 +33,7 @@ const AspectAwareVideo = defineComponent({
     });
 
     const shouldRotate = computed(() => {
-      console.log("shouldRotate recalculated");
+      console.log("shouldRotate recalculated: ");
       return client.aspectRatio < 1 && !loading.value && aspectRatio.value > 1;
     });
 

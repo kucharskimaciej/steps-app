@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { intersectComponentPropsType } from "@/components/Intersect/intersectComponentProps";
-import Intersect from "@/components/Intersect/Intersect";
+import Intersect from "@/components/Intersect/Intersect.vue";
 
 const IntersectSwitch = defineComponent({
   components: {

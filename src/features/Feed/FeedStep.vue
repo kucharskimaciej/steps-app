@@ -16,16 +16,9 @@ import { Step } from "../../../common/types/Step";
 const FeedStep = defineComponent({
   components: {
     VideoPlayer,
-    PureTag,
-    OptionsPopup,
-    PopupMenuItem,
-    FeedActions,
-    PureIcon,
-    PureButton,
     Tags,
     IntersectSwitch,
-    ProvideVideoModal,
-    Badge
+    ProvideVideoModal
   },
   props: {
     step: {
