@@ -5,13 +5,13 @@ import Progress from "@/features/VideoPlayer/Progress.vue";
 
 export default {
   title: "Components/VideoPlayer/Progress",
-  decorators: [withKnobs, Container("600px"), Spacing, WithGlobalStyles]
+  decorators: [withKnobs, Container("600px"), Spacing, WithGlobalStyles],
 };
 
 export const Default: () => Component = () =>
   Vue.extend({
     components: {
-      Progress
+      Progress,
     },
     template: `<main>
         <Progress :current="0" :total="100" class="mb-2" />
@@ -19,5 +19,5 @@ export const Default: () => Component = () =>
         <Progress :current="25" :total="100" class="mb-2" />
         <Progress :current="50" :total="100" class="mb-2" />
         <Progress :current="100" :total="100" class="mb-2" />
-    </main>`
+    </main>`,
   });

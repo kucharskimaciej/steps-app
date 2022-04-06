@@ -3,7 +3,7 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import Sessions from "@/components/Sessions/Sessions.vue";
 import { sessionsFactory } from "@/stories/fixtures/sessions";
@@ -19,26 +19,26 @@ export default {
         routes: [
           {
             name: ROUTES.SESSION,
-            path: "/session/:stepId"
-          }
-        ]
+            path: "/session/:stepId",
+          },
+        ],
       }
     ),
     Container("800px"),
     Spacing,
     WithGlobalStyles,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    Sessions
+    Sessions,
   },
   template: `<Sessions :sessions="sessions"/>`,
   methods: {},
   data: () => ({
-    sessions: sessionsFactory()
+    sessions: sessionsFactory(),
   }),
-  props: {}
+  props: {},
 });

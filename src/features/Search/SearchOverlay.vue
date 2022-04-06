@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import { Search } from "@/features/Search/types";
 import FullSearch from "@/features/Search/FullSearch.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -8,12 +8,12 @@ import { existingTags, existingArtists, useStore } from "@/store";
 const SearchOverlay = defineComponent({
   components: {
     FullSearch,
-    PureButton
+    PureButton,
   },
   props: {
     search: {
-      type: Object as PropType<Search>
-    }
+      type: Object as PropType<Search>,
+    },
   },
   emits: ["search-change", "close-modal", "clear-search"],
   setup() {
@@ -24,9 +24,9 @@ const SearchOverlay = defineComponent({
 
     return {
       artists,
-      tags
+      tags,
     };
-  }
+  },
 });
 
 export default SearchOverlay;

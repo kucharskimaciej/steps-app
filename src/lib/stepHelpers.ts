@@ -11,7 +11,7 @@ export function hasRecordedPracticeOnDate(
   return Boolean(
     step.practice_records &&
       step.practice_records.some(
-        record =>
+        (record) =>
           record.start_of_day === dayStart &&
           (!collectionId || record.collection_id === collectionId)
       )

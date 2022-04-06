@@ -1,25 +1,18 @@
-import "vuelidate";
 import { Matchers } from "@/plugins/matchMedia";
 import { RouterOptions } from "vue-router/types/router";
 import { MODAL_STYLE } from "@/lib/modals/modals";
 import { ClientInfo } from "@/lib/clientInfo.service";
 import { ROUTES } from "@/router";
+import { Router } from "vue-router";
 
-declare module "vuelidate" {
-  interface Validation {
-    $each?: {
-      [index: number]: Validation;
-      $iter: Validation;
-    };
-  }
-}
-
-declare module "vue/types/vue" {
-  interface Vue {
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $router: Router;
     $match(matcher: Matchers): boolean;
     $modalStyle: typeof MODAL_STYLE;
     $client: ClientInfo;
     $routes: typeof ROUTES;
+    $filters: Record<string, any>;
   }
 }
 
@@ -29,3 +22,5 @@ declare module "storybook-vue-router" {
     routerOptions: RouterOptions
   ): any;
 }
+
+export {};

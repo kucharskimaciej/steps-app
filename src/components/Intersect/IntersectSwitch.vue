@@ -1,18 +1,18 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import { intersectComponentPropsType } from "@/components/Intersect/intersectComponentProps";
 import Intersect from "@/components/Intersect/Intersect";
 
 const IntersectSwitch = defineComponent({
   components: {
-    Intersect
+    Intersect,
   },
   props: {
     ...intersectComponentPropsType,
     visibilityThreshold: {
       type: Number,
-      default: 0.7
-    }
+      default: 0.7,
+    },
   },
   emits: ["change"],
   setup({ visibilityThreshold }, { emit }) {
@@ -26,16 +26,16 @@ const IntersectSwitch = defineComponent({
       emit("change", {
         entry,
         ratio: currentRatio.value,
-        visible: currentlyVisible.value
+        visible: currentlyVisible.value,
       });
     }
 
     return {
       handleChange,
       currentRatio,
-      currentlyVisible
+      currentlyVisible,
     };
-  }
+  },
 });
 
 export default IntersectSwitch;

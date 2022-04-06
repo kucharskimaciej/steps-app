@@ -1,25 +1,25 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
 import {
   KeyValueTuple,
   OptionWithLabel,
-  ValueType
+  ValueType,
 } from "@/components/Forms/TagsSelection/types";
 
 const TagsSelection = defineComponent({
   components: {
-    ThreeStateTag
+    ThreeStateTag,
   },
   props: {
     value: {
       type: Array as PropType<KeyValueTuple[]>,
-      default: () => []
+      default: () => [],
     },
     options: {
       type: Array as PropType<OptionWithLabel[]>,
-      required: true
-    }
+      required: true,
+    },
   },
   emit: ["input"],
   setup({ value }, { emit }) {
@@ -31,7 +31,7 @@ const TagsSelection = defineComponent({
       let result: KeyValueTuple[];
       if (getValueTuple(key)) {
         result = value
-          .map(tuple => {
+          .map((tuple) => {
             const [k] = tuple;
 
             if (k !== key) {
@@ -55,9 +55,9 @@ const TagsSelection = defineComponent({
 
     return {
       handleChange,
-      getValueOrDefault
+      getValueOrDefault,
     };
-  }
+  },
 });
 
 export default TagsSelection;

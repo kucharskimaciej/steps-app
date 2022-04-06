@@ -1,9 +1,9 @@
 <script lang="ts">
-import { computed, defineComponent, inject } from "@vue/composition-api";
+import { computed, defineComponent, inject } from "vue";
 
 const Textarea = defineComponent({
   props: {
-    value: String
+    value: String,
   },
   emits: ["input"],
   setup(_, { emit }) {
@@ -22,9 +22,9 @@ const Textarea = defineComponent({
     return {
       hasError,
       validityClasses,
-      handleValueChange
+      handleValueChange,
     };
-  }
+  },
 });
 
 export default Textarea;

@@ -1,4 +1,4 @@
-import { inject, InjectionKey, Ref } from "@vue/composition-api";
+import { inject, InjectionKey, Ref } from "vue";
 
 export interface UiContext {
   navigationOpen: Ref<boolean>;

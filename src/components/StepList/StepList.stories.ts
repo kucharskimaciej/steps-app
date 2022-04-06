@@ -3,7 +3,7 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import StepList from "@/components/StepList/StepList.vue";
 import { stepsFactory } from "@/stories/fixtures/steps";
@@ -11,12 +11,17 @@ import { Step } from "../../../common/types/Step";
 
 export default {
   title: "Components/StepList/List",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    StepList
+    StepList,
   },
   template: `
     <StepList :steps="steps" @active-step-change="changeActiveStep" @toggle="handleToggle" :is-selected="isSelected" :is-active="isActive"/>
@@ -39,12 +44,12 @@ export const Default: () => Component = () => ({
     },
     isSelected(this: any, step: Step) {
       return this.selectedSteps.includes(step.id);
-    }
+    },
   },
   data: () => ({
     steps: stepsFactory(),
     activeStepId: "",
-    selectedSteps: []
+    selectedSteps: [],
   }),
-  props: {}
+  props: {},
 });

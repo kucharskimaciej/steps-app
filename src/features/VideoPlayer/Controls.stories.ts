@@ -19,76 +19,76 @@ export default {
     Container("600px"),
     Spacing,
     // DarkBackground,
-    WithGlobalStyles
-  ]
+    WithGlobalStyles,
+  ],
 };
 
 export const Mute: () => Component = () =>
   Vue.extend({
     components: {
-      MuteControl
+      MuteControl,
     },
     props: {},
     data: () => ({
-      muted: false
+      muted: false,
     }),
     methods: {
       toggleMuted() {
         this.muted = !this.muted;
         action("TOGGLE_MUTED")();
-      }
+      },
     },
-    template: `<MuteControl :muted="muted" @toggle-muted="toggleMuted" />`
+    template: `<MuteControl :muted="muted" @toggle-muted="toggleMuted" />`,
   });
 
 export const Size: () => Component = () =>
   Vue.extend({
     components: {
-      SizeControl
+      SizeControl,
     },
     props: {},
     data: () => ({
-      fullscreen: false
+      fullscreen: false,
     }),
     methods: {
       toggle() {
         this.fullscreen = !this.fullscreen;
         action("TOGGLE")();
-      }
+      },
     },
-    template: `<SizeControl :enabled="fullscreen" @toggle="toggle" />`
+    template: `<SizeControl :enabled="fullscreen" @toggle="toggle" />`,
   });
 
 export const Play: () => Component = () =>
   Vue.extend({
     components: {
-      PlayControl
+      PlayControl,
     },
     methods: {
-      clicked: action("CLICKED")
+      clicked: action("CLICKED"),
     },
-    template: `<PlayControl @click="clicked" />`
+    template: `<PlayControl @click="clicked" />`,
   });
 
 export const Slow: () => Component = () =>
   Vue.extend({
     components: {
-      SlowControl
+      SlowControl,
     },
     props: {},
     data: () => ({
-      slow: false
+      slow: false,
     }),
     methods: {
       toggle() {
         this.slow = !this.slow;
         action("TOGGLE")();
-      }
+      },
     },
     template: `<main>
         <span class="p-5 bg-black inline-block"><SlowControl :enabled="slow" @toggle="toggle" /></span>
         <span class="p-5 inline-block"><SlowControl :enabled="slow" @toggle="toggle" /></span>
-    </main>`
+    </main>`,
   });
 
 export const SeekControls: () => Component = () =>
@@ -98,10 +98,10 @@ export const SeekControls: () => Component = () =>
       BackFive,
       ForwardOne,
       ForwardFive,
-      PlayFromStart
+      PlayFromStart,
     },
     methods: {
-      clicked: action("CLICKED")
+      clicked: action("CLICKED"),
     },
     template: `<div>
         <div class="p-5 bg-black">
@@ -119,5 +119,5 @@ export const SeekControls: () => Component = () =>
             <ForwardOne @click="clicked('+1s')" />
             <ForwardFive @click="clicked('+5s')" />
         </div>
-    </div>`
+    </div>`,
   });

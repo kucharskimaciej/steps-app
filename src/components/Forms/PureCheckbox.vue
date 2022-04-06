@@ -1,11 +1,11 @@
 <script lang="ts">
-import { computed, defineComponent, inject } from "@vue/composition-api";
+import { computed, defineComponent, inject } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const PureCheckbox = defineComponent({
   components: { PureIcon },
   props: {
-    value: Boolean
+    value: Boolean,
   },
   emits: ["input"],
   setup() {
@@ -16,9 +16,9 @@ const PureCheckbox = defineComponent({
 
     return {
       hasError,
-      iconClasses
+      iconClasses,
     };
-  }
+  },
 });
 
 export default PureCheckbox;

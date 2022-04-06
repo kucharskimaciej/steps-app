@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 import VideoModal from "@/components/VideoModal/VideoModal.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
@@ -8,12 +8,12 @@ const Video = defineComponent({
   components: {
     VideoModal,
     PureButton,
-    PureIcon
+    PureIcon,
   },
   props: {
     title: String,
     filename: String,
-    url: String
+    url: String,
   },
   emits: ["remove"],
   setup({ url, title }) {
@@ -24,9 +24,9 @@ const Video = defineComponent({
 
     return {
       asVideo,
-      videoModal
+      videoModal,
     };
-  }
+  },
 });
 
 export default Video;
@@ -46,9 +46,7 @@ export default Video;
           <PureIcon type="open_in_new" /> Open
         </PureButton>
 
-        <PureButton kind="ghost" @click="$emit('remove')">
-          Delete
-        </PureButton>
+        <PureButton kind="ghost" @click="$emit('remove')"> Delete </PureButton>
       </aside>
     </header>
     <p v-if="filename" class="font-light text-sm">

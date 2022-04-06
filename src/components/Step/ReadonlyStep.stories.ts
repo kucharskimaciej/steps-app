@@ -3,40 +3,45 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import ReadonlyStep from "@/components/Step/ReadonlyStep.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
 
 export default {
   title: "Components/Step/ReadonlyStep",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    ReadonlyStep
+    ReadonlyStep,
   },
   template: `
     <ReadonlyStep :step="step" />
   `,
   methods: {},
   data: () => ({
-    step: stepFactory()
+    step: stepFactory(),
   }),
-  props: {}
+  props: {},
 });
 
 export const LongTitle: () => Component = () => ({
   components: {
-    ReadonlyStep
+    ReadonlyStep,
   },
   template: `
     <ReadonlyStep :step="step" />
   `,
   methods: {},
   data: () => ({
-    step: stepFactory(1)
+    step: stepFactory(1),
   }),
-  props: {}
+  props: {},
 });

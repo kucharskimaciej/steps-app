@@ -1,11 +1,11 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 const Card = defineComponent({
   props: {
     active: Boolean,
-    allowActive: Boolean
-  }
+    allowActive: Boolean,
+  },
 });
 
 export default Card;
@@ -18,7 +18,7 @@ export default Card;
       'cursor-pointer hover:bg-gray-300': allowActive,
       'bg-white shadow-sm': !allowActive,
       'bg-gray-300': active,
-      'hover:bg-opacity-95': allowActive && !active
+      'hover:bg-opacity-95': allowActive && !active,
     }"
     @click="$emit('toggle-active', active)"
   >

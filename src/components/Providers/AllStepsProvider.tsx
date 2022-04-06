@@ -1,9 +1,9 @@
 import { dispatchFetchAllSteps, useStore } from "@/store";
-import { computed, defineComponent, onBeforeMount } from "@vue/composition-api";
+import { computed, defineComponent, onBeforeMount } from "vue";
 
 const AllStepsProvider = defineComponent({
   props: {
-    alwaysFetch: Boolean
+    alwaysFetch: Boolean,
   },
   setup({ alwaysFetch }, { slots }) {
     const store = useStore();
@@ -26,7 +26,7 @@ const AllStepsProvider = defineComponent({
         return slots.default?.();
       }
     };
-  }
+  },
 });
 
 export default AllStepsProvider;

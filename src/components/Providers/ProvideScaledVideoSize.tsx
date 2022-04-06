@@ -1,11 +1,5 @@
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 import { VideoObject } from "../../../common/types/VideoObject";
-import {
-  computed,
-  defineComponent,
-  PropType,
-  watch
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType, watch } from "vue";
 
 const ProvideScaledVideoSize = defineComponent({
   props: {
@@ -13,8 +7,8 @@ const ProvideScaledVideoSize = defineComponent({
     targetWidth: Number,
     defaultHeight: {
       type: Number,
-      default: 400
-    }
+      default: 400,
+    },
   },
   emits: ["updatedHeight"],
   setup({ video, targetWidth, defaultHeight }, { emit, slots }) {
@@ -33,6 +27,6 @@ const ProvideScaledVideoSize = defineComponent({
     });
 
     return () => slots.default?.({ scaledVideoHeight });
-  }
+  },
 });
 export default ProvideScaledVideoSize;

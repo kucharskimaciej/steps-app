@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import {
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
 
@@ -14,13 +14,13 @@ const stories = storiesOf("Components/PureToggleButton", module)
 stories.add("Default", () => {
   return {
     components: { PureToggleButton },
-    template: `<PureToggleButton/>`
+    template: `<PureToggleButton/>`,
   };
 });
 
 stories.add("Toggled", () => {
   return {
     components: { PureToggleButton },
-    template: `<PureToggleButton :toggled="true"/>`
+    template: `<PureToggleButton :toggled="true"/>`,
   };
 });

@@ -1,21 +1,21 @@
 import {
   getStepScore,
-  StepForScoring
+  StepForScoring,
 } from "@/lib/variations/variationStepScore";
 import { rawStepsById, stableStepIds, useStore } from "@/store";
 import { sortBy, without } from "lodash";
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 
 const ProvideScoring = defineComponent({
   props: {
     dataForScoring: {
       type: Object as PropType<StepForScoring>,
-      required: true
+      required: true,
     },
     exclude: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup({ dataForScoring, exclude }, { slots }) {
     const store = useStore();
@@ -33,17 +33,17 @@ const ProvideScoring = defineComponent({
     const stepIdsByScore = computed<string[]>(() =>
       sortBy(
         without(stableStepIds(store), ...exclude),
-        stepId => -results.value[stepId]
+        (stepId) => -results.value[stepId]
       )
     );
 
     return () => {
       return slots.default?.({
         results: results.value,
-        stepIdsByScore: stepIdsByScore.value
+        stepIdsByScore: stepIdsByScore.value,
       });
     };
-  }
+  },
 });
 
 export default ProvideScoring;

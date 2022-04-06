@@ -1,34 +1,29 @@
 <script lang="ts">
-import {
-  defineComponent,
-  inject,
-  PropType,
-  reactive
-} from "@vue/composition-api";
+import { defineComponent, inject, PropType, reactive } from "vue";
 import FileInput from "@/components/Forms/FileInput.vue";
 import Video from "@/components/Forms/VideoInput/Video.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
-import { VideoObject } from "../../../../common/types/VideoObject";
-import { Container } from "vue-typedi";
+import type { VideoObject } from "../../../../common/types/VideoObject";
+import { Container } from "typedi";
 import { FileIdentityService } from "@/lib/fileIdentity.service";
 import { VideoUploaderToken } from "@/lib/tokens";
-import { Validation } from "vuelidate";
+import type { Validation } from "@vuelidate/core";
 
 const VideoInput = defineComponent({
   components: {
     FileInput,
     Video,
     PureButton,
-    PureIcon
+    PureIcon,
   },
   props: {
     value: {
       type: Array as PropType<VideoObject[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  setup({ value }) {
+  setup(props) {
     const fileIdentity = Container.get(FileIdentityService);
     const videoUpload = Container.get(VideoUploaderToken);
 
@@ -42,12 +37,12 @@ const VideoInput = defineComponent({
     }
 
     function fileAlreadySelected(hash: string) {
-      return value.some(video => video.hash === hash);
+      return props.value.some((video) => video.hash === hash);
     }
 
     function handleVideoRemoved(video: VideoObject): void {
-      const index = value.indexOf(video);
-      value.splice(index, 1);
+      const index = props.value.indexOf(video);
+      props.value.splice(index, 1);
       triggerValidation();
     }
 
@@ -65,9 +60,9 @@ const VideoInput = defineComponent({
       }
       const url = await videoUpload.upload(file, hash);
 
-      value.push({
+      props.value.push({
         hash,
-        url
+        url,
       });
 
       triggerValidation();
@@ -77,9 +72,9 @@ const VideoInput = defineComponent({
       handleVideoRemoved,
       onFileSelected,
       validation,
-      originalFilenames
+      originalFilenames,
     };
-  }
+  },
 });
 
 export default VideoInput;
@@ -101,7 +96,7 @@ export default VideoInput;
       :key="video.hash"
       class="border-t"
       :class="{
-        'text-red-lighter': validation.$each[index].$error
+        'text-red-lighter': validation.$each[index].$error,
       }"
     >
       <Video

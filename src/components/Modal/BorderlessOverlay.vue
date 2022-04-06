@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import Overlay from "@/components/Modal/Overlay.vue";
 import { useModalView } from "@/components/Modal/modalClass";
 
 const BorderlessOverlay = defineComponent({
   components: {
-    Overlay
+    Overlay,
   },
   emits: ["close"],
   setup(_, ctx) {
     return useModalView(ctx);
-  }
+  },
 });
 
 export default BorderlessOverlay;

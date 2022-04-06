@@ -1,12 +1,12 @@
 import { createVariationId } from "@/lib/variations/variationId";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { ActionContext } from "vuex";
 import { getStoreAccessors } from "typesafe-vuex";
 import { RootState, Status, StepsState } from "@/store/types";
 import {
   CreateParams,
   StepsResource,
-  UpdateParams
+  UpdateParams,
 } from "@/lib/steps.resource";
 import { StepDTO, Step } from "../../../common/types/Step";
 import { orderBy, uniq, uniqBy, maxBy, keyBy, groupBy } from "lodash";
@@ -34,7 +34,7 @@ export const steps = {
   state: {
     rawSteps: [],
     stepsViewedInCurrentSession: [],
-    status: "clean"
+    status: "clean",
   },
   getters: {
     rawStepsById(state: StepsState) {
@@ -45,7 +45,7 @@ export const steps = {
     },
     getSteps(state: StepsState): Step[] {
       const variationsByKey = getVariationsByKey(provideStore());
-      const convertedSteps = state.rawSteps.map(rawStep =>
+      const convertedSteps = state.rawSteps.map((rawStep) =>
         convertToStep(rawStep, variationsByKey)
       );
 
@@ -59,12 +59,12 @@ export const steps = {
       return keyBy(getSteps(provideStore()), "id");
     },
     existingArtists(state: StepsState) {
-      return uniq(state.rawSteps.map(step => step.artists).flat());
+      return uniq(state.rawSteps.map((step) => step.artists).flat());
     },
     existingTags(state: StepsState): string[] {
       return uniq([
-        ...state.rawSteps.map(step => step.tags).flat(),
-        ...state.rawSteps.map(step => step.smart_tags).flat()
+        ...state.rawSteps.map((step) => step.tags).flat(),
+        ...state.rawSteps.map((step) => step.smart_tags).flat(),
       ]);
     },
     stepsByPracticeDate(): Record<number, Step[]> {
@@ -80,9 +80,9 @@ export const steps = {
     },
     stableStepIds(): string[] {
       return getSteps(provideStore())
-        .map(step => step.id)
+        .map((step) => step.id)
         .sort();
-    }
+    },
   },
   mutations: {
     setSteps(state: StepsState, payload: StepDTO[]) {
@@ -93,14 +93,14 @@ export const steps = {
       { updatedStep, variationsToMerge }: UpdateStepMutationPayload
     ) {
       const previousValue = state.rawSteps.find(
-        step => updatedStep.id === step.id
+        (step) => updatedStep.id === step.id
       );
 
       if (!previousValue) {
         return;
       }
 
-      state.rawSteps = state.rawSteps.map(step => {
+      state.rawSteps = state.rawSteps.map((step) => {
         if (step.id === updatedStep.id) {
           return updatedStep;
         }
@@ -108,7 +108,7 @@ export const steps = {
         if (variationsToMerge?.includes(step.variationKey)) {
           return {
             ...step,
-            variationKey: updatedStep.variationKey
+            variationKey: updatedStep.variationKey,
           };
         }
 
@@ -120,7 +120,7 @@ export const steps = {
     },
     markStepAsViewed(state: StepsState, stepId: string) {
       state.stepsViewedInCurrentSession.push(stepId);
-    }
+    },
   },
   actions: {
     async fetchAllSteps(context: StepsContext) {
@@ -155,7 +155,7 @@ export const steps = {
 
       commitUpdateStep(context, {
         updatedStep,
-        variationsToMerge: selectedVariations
+        variationsToMerge: selectedVariations,
       });
 
       await stepsResource.update(
@@ -179,19 +179,19 @@ export const steps = {
 
       const record: PracticeRecord = {
         start_of_day: startOfToday,
-        date: Date.now()
+        date: Date.now(),
       };
       if (collectionId) {
         record.collection_id = collectionId;
       }
 
       const updatePayload: UpdateParams = {
-        practice_records: [record, ...(step.practice_records || [])]
+        practice_records: [record, ...(step.practice_records || [])],
       };
 
       const optimisticUpdatedStep: StepDTO = {
         ...step,
-        ...updatePayload
+        ...updatePayload,
       };
 
       commitUpdateStep(context, { updatedStep: optimisticUpdatedStep });
@@ -207,12 +207,12 @@ export const steps = {
       const step = stepsById(provideStore())[stepId];
 
       const updatedStep = await stepsResource.update(stepId, {
-        view_records: [Date.now(), ...(step.view_records || [])]
+        view_records: [Date.now(), ...(step.view_records || [])],
       });
       commitMarkStepAsViewed(context, step.id);
       commitUpdateStep(context, { updatedStep });
-    }
-  }
+    },
+  },
 };
 
 const { commit, read, dispatch } = getStoreAccessors<StepsState, RootState>(

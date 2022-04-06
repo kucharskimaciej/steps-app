@@ -1,30 +1,24 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  ref,
-  watch
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
 import {
   VideoDimensionsService,
-  VideoMetadata
+  VideoMetadata,
 } from "@/lib/videoDimensionsService";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 
 const AspectAwareVideo = defineComponent({
   components: {
     VideoPlayer,
-    BasicLoader
+    BasicLoader,
   },
   props: {
     video: {
       type: Object as PropType<VideoObject>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ video }, ctx) {
     const dimensions = Container.get(VideoDimensionsService);
@@ -54,7 +48,7 @@ const AspectAwareVideo = defineComponent({
         width: `${ctx.root.$client.height}px`,
         height: `${ctx.root.$client.width}px`,
         position: "relative",
-        right: "-100%"
+        right: "-100%",
       };
     });
 
@@ -64,7 +58,7 @@ const AspectAwareVideo = defineComponent({
         loading.value = true;
         dimensions
           .getVideoDimensions(v)
-          .then(videoWithDimensions => {
+          .then((videoWithDimensions) => {
             metadata.value = videoWithDimensions;
           })
           .finally(() => (loading.value = false));
@@ -76,9 +70,9 @@ const AspectAwareVideo = defineComponent({
       loading,
       metadata,
       shouldRotate,
-      videoPlayerStyles
+      videoPlayerStyles,
     };
-  }
+  },
 });
 
 export default AspectAwareVideo;

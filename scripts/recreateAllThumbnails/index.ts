@@ -29,7 +29,7 @@ try {
   const credentials = JSON.parse(credentialsBuffer.toString());
   firebase = Firebase.initializeApp(
     {
-      credential: Firebase.credential.cert(credentials)
+      credential: Firebase.credential.cert(credentials),
     },
     accountCredentialsPath
   );
@@ -46,17 +46,17 @@ try {
 async function run(db: Firebase.firestore.Firestore) {
   const allSteps = await db.collection("steps").get();
 
-  allSteps.forEach(doc => {
+  allSteps.forEach((doc) => {
     const step = doc.data() as Pick<StepDTO, "videos">;
 
-    const updatedVideos = step.videos.map(v =>
+    const updatedVideos = step.videos.map((v) =>
       omit(v, ["thumbnail_url", "snapshot_url"])
     );
 
     return doc.ref.set(
       {
         videos: updatedVideos,
-        __t: Date.now()
+        __t: Date.now(),
       },
       { merge: true }
     );
@@ -65,12 +65,12 @@ async function run(db: Firebase.firestore.Firestore) {
 
 run(firebase.firestore())
   .then(() => console.log(colors.bold(colors.green("All done."))))
-  .catch(err => {
+  .catch((err) => {
     console.log(colors.bold(colors.red("Error running script: ")));
     console.error(err);
   });
 
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   console.error(error);
   process.exit(1);
 });

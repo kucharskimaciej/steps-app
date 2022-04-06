@@ -1,11 +1,11 @@
 <script lang="ts">
-import { computed, defineComponent, inject } from "@vue/composition-api";
+import { computed, defineComponent, inject } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const Select = defineComponent({
   components: { PureIcon },
   props: {
-    value: [String, Number]
+    value: [String, Number],
   },
   emits: ["input"],
   setup(_, { emit }) {
@@ -24,9 +24,9 @@ const Select = defineComponent({
     return {
       hasError,
       validityClasses,
-      handleValueChange
+      handleValueChange,
     };
-  }
+  },
 });
 
 export default Select;

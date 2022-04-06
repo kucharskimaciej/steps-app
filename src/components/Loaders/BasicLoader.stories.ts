@@ -3,23 +3,28 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import BasicLoader from "@/components/Loaders/BasicLoader.vue";
 
 export default {
   title: "Components/Loaders/BasicLoader",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    BasicLoader
+    BasicLoader,
   },
   template: `
     <BasicLoader />
   `,
   methods: {},
   data: () => ({}),
-  props: {}
+  props: {},
 });

@@ -1,15 +1,15 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const ForwardOne = defineComponent({
   components: {
     Control,
-    PureIcon
+    PureIcon,
   },
   props: {},
-  emits: []
+  emits: [],
 });
 
 export default ForwardOne;

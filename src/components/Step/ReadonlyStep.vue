@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import Tags from "@/components/Step/components/Tags.vue";
@@ -9,21 +9,21 @@ const ReadonlyStep = defineComponent({
   components: {
     VideoPlayer,
     PureTag,
-    Tags
+    Tags,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ step }) {
     const primaryVideo = computed(() => step.videos[0]);
 
     return {
-      primaryVideo
+      primaryVideo,
     };
-  }
+  },
 });
 
 export default ReadonlyStep;
@@ -31,7 +31,7 @@ export default ReadonlyStep;
 
 <template>
   <article class="desktop:p-2 flex flex-col w-full h-full">
-    <header class=" px-2 desktop:px-0">
+    <header class="px-2 desktop:px-0">
       <h1
         class="text-lg desktop:text-2xl font-heading font-bold leading-tight mt-3 desktop:mt-0"
       >

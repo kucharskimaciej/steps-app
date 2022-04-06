@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "@vue/composition-api";
+import { computed, defineComponent, ref, watch } from "vue";
 import StepActions from "@/views/Feed/components/StepActions.vue";
 import Container from "@/components/Layout/Container.vue";
 import Feed from "@/features/Feed/Feed.vue";
@@ -23,7 +23,7 @@ import {
   getStepsMatchingSearch,
   stableStepIds,
   stepsById,
-  useStore
+  useStore,
 } from "@/store";
 import { isEqual } from "lodash";
 import { Step } from "../../../common/types/Step";
@@ -44,7 +44,7 @@ const FeedView = defineComponent({
     InlineModal,
     SearchOverlay,
     Badge,
-    TheTopBarContainer
+    TheTopBarContainer,
   },
   setup() {
     const store = useStore();
@@ -54,7 +54,7 @@ const FeedView = defineComponent({
     const stepIds = computed(() => stableStepIds(store));
     const selectedSteps = computed((): Step[] => {
       const byId = stepsById(store);
-      return selectedStepIds.value.map(id => byId[id]);
+      return selectedStepIds.value.map((id) => byId[id]);
     });
     const search = computed(() => getSearch(store));
     const hasActiveSearch = computed(() => !getIsSearchEmpty(store));
@@ -101,9 +101,9 @@ const FeedView = defineComponent({
       handleStepViewed,
       handleSearchChange,
       handleClearSearch,
-      selectStepsForFeed
+      selectStepsForFeed,
     };
-  }
+  },
 });
 
 export default FeedView;

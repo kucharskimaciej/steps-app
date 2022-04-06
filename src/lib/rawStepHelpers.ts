@@ -3,7 +3,7 @@ import { Tag, TagTypes } from "../../common/types/Tag";
 import { KINDS } from "../../common/constants";
 import { AppConfigToken } from "../../common/tokens";
 import { AppConfig } from "../../common/config/types";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 
 export function convertToStep(
   raw: StepDTO,
@@ -27,44 +27,44 @@ export function convertToStep(
     variationKey,
     practice_records,
     view_records,
-    kind
+    kind,
   } = raw;
 
-  const artistTags: Tag<TagTypes.ARTIST>[] = artists.map(artist => ({
+  const artistTags: Tag<TagTypes.ARTIST>[] = artists.map((artist) => ({
     type: TagTypes.ARTIST,
-    text: artist
+    text: artist,
   }));
 
-  const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map(f => ({
+  const feelingTags: Tag<TagTypes.FEELING>[] = feeling.map((f) => ({
     type: TagTypes.FEELING,
-    text: feelings[f]
+    text: feelings[f],
   }));
 
   const kindTag: Tag<TagTypes.KIND> = {
     type: TagTypes.KIND,
-    text: KINDS[kind]
+    text: KINDS[kind],
   };
 
   const difficultyTag: Tag<TagTypes.DIFFICULTY> = {
     type: TagTypes.DIFFICULTY,
-    text: difficulties[difficulty]
+    text: difficulties[difficulty],
   };
 
   const metaTags: Tag[] = [
     kindTag,
     ...feelingTags,
     ...artistTags,
-    difficultyTag
+    difficultyTag,
   ];
 
   const contentTags: Tag[] = [
-    ...tags.map(tag => ({
-      text: tag
+    ...tags.map((tag) => ({
+      text: tag,
     })),
-    ...(smart_tags || []).map(tag => ({
+    ...(smart_tags || []).map((tag) => ({
       type: TagTypes.SMART,
-      text: tag
-    }))
+      text: tag,
+    })),
   ];
 
   const tagCategories: TagCategories = {
@@ -74,14 +74,14 @@ export function convertToStep(
     content: contentTags,
     meta: metaTags,
     kind: [kindTag],
-    all: [...metaTags, ...contentTags]
+    all: [...metaTags, ...contentTags],
   };
 
   const variations =
     variationsByKey && variationsByKey[variationKey] && variationKey
       ? variationsByKey[variationKey]
-          .filter(ref => ref.id !== raw.id)
-          .map(rawStep => convertToStep(rawStep))
+          .filter((ref) => ref.id !== raw.id)
+          .map((rawStep) => convertToStep(rawStep))
       : [];
 
   return {
@@ -96,6 +96,6 @@ export function convertToStep(
     variations,
     variationKey,
     practice_records,
-    view_records
+    view_records,
   };
 }

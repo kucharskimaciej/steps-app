@@ -5,7 +5,7 @@ import {
   Spacing,
   WithGlobalStyles,
   Container,
-  WithModals
+  WithModals,
 } from "@/stories/decorators";
 import PopupMenu from "@/components/PopupMenu/PopupMenu.vue";
 import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
@@ -17,14 +17,14 @@ export default {
     Spacing,
     WithGlobalStyles,
     NeutralBackground,
-    WithModals
-  ]
+    WithModals,
+  ],
 };
 
 export const BasicUsage: () => Component = () => ({
   components: {
     PopupMenu,
-    PopupMenuItem
+    PopupMenuItem,
   },
   template: `<PopupMenu>
       <template #toggle="{ open }">
@@ -39,8 +39,8 @@ export const BasicUsage: () => Component = () => ({
       </PopupMenuItem>
     </PopupMenu>`,
   methods: {
-    itemClick: action("ITEM_CLICK")
+    itemClick: action("ITEM_CLICK"),
   },
   data: () => ({}),
-  props: {}
+  props: {},
 });

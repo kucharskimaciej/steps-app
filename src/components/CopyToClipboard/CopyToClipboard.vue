@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const CopyTyClipboard = defineComponent({
   components: {
-    PureIcon
+    PureIcon,
   },
   props: {
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ value }) {
     function copy() {
@@ -18,9 +18,9 @@ const CopyTyClipboard = defineComponent({
     }
 
     return {
-      copy
+      copy,
     };
-  }
+  },
 });
 
 export default CopyTyClipboard;

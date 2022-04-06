@@ -14,7 +14,7 @@ export function DebounceTime(
     const originalFn = componentOptions.methods[fnName];
 
     componentOptions.methods[fnName] = debounce(
-      function(this: Vue, ...args) {
+      function (this: Vue, ...args) {
         originalFn.apply(this, args);
       },
       time,

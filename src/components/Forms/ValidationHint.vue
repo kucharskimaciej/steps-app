@@ -1,35 +1,32 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  inject,
-  PropType
-} from "@vue/composition-api";
-import { Validation } from "vuelidate";
+import { computed, defineComponent, inject, PropType } from "vue";
+import type { Validation } from "@vuelidate/core";
 
 const ValidationHint = defineComponent({
   components: {},
   props: {
-    validation: Object as PropType<Validation>
+    validation: Object as PropType<Validation>,
   },
-  setup({ validation }) {
+  setup(props) {
     const hasError = inject<boolean>("hasError", false);
     const isRequired = computed(() =>
-      Boolean(validation && "required" in validation)
+      Boolean(props.validation && "required" in props.validation)
     );
 
     function customError(validator: string): boolean {
       return Boolean(
-        validation && validator in validation && !(validation as any)[validator]
+        props.validation &&
+          validator in props.validation &&
+          !(props.validation as any)[validator]
       );
     }
 
     return {
       hasError,
       customError,
-      isRequired
+      isRequired,
     };
-  }
+  },
 });
 
 export default ValidationHint;
@@ -43,17 +40,11 @@ export default ValidationHint;
       v-if="validation.$anyError"
       class="ml-2 text-2xs uppercase tracking-wider font-medium"
     >
-      <span v-if="customError('required')">
-        Required
-      </span>
+      <span v-if="customError('required')"> Required </span>
 
-      <span v-else-if="customError('duplicate')">
-        Duplicate
-      </span>
+      <span v-else-if="customError('duplicate')"> Duplicate </span>
 
-      <span v-else>
-        Invalid
-      </span>
+      <span v-else> Invalid </span>
     </span>
   </aside>
 </template>

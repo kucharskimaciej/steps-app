@@ -1,21 +1,21 @@
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 
 const Progress = defineComponent({
   props: {
     current: {
       type: Number,
-      default: 0
+      default: 0,
     },
     total: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ current, total }) {
     const progress = computed(() => (current / total) * 100);
     return { progress };
-  }
+  },
 });
 
 export default Progress;

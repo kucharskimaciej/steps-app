@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, inject } from "@vue/composition-api";
+import { defineComponent, inject } from "vue";
 
 const PopupMenuItem = defineComponent({
   setup(_, ctx) {
@@ -11,9 +11,9 @@ const PopupMenuItem = defineComponent({
     }
 
     return {
-      handleItemClick
+      handleItemClick,
     };
-  }
+  },
 });
 
 export default PopupMenuItem;

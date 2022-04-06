@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { CollectionRef, DocumentSnapshot } from "@/lib/firebase/firebase";
 import { DatabaseItem } from "../../common/types/common/DatabaseItem";
 import { Owned } from "../../common/types/common/Owned";
@@ -14,7 +14,9 @@ export abstract class Resource<
 > {
   protected abstract readonly collection: CollectionRef;
 
-  constructor(protected firestore: FirestoreService) {}
+  constructor(protected firestore: FirestoreService) {
+    console.log("firestore", firestore);
+  }
 
   public async query(uid: string): Promise<T[]> {
     const querySnapshot = await this.collection
@@ -46,7 +48,7 @@ export abstract class Resource<
   protected toDocument(snapshot: DocumentSnapshot): T {
     return {
       ...snapshot.data(),
-      id: snapshot.id
+      id: snapshot.id,
     } as T;
   }
 }

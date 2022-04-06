@@ -30,7 +30,7 @@ try {
   const credentials = JSON.parse(credentialsBuffer.toString());
   firebase = Firebase.initializeApp(
     {
-      credential: Firebase.credential.cert(credentials)
+      credential: Firebase.credential.cert(credentials),
     },
     accountCredentialsPath
   );
@@ -47,7 +47,7 @@ try {
 async function run(db: Firebase.firestore.Firestore) {
   const service = DIContainer.get(SmartTags);
   const allSteps = await db.collection("steps").get();
-  allSteps.forEach(doc => {
+  allSteps.forEach((doc) => {
     const step = doc.data() as Pick<
       StepDTO,
       "name" | "tags" | "smart_tags" | "removed_smart_tags"
@@ -56,10 +56,10 @@ async function run(db: Firebase.firestore.Firestore) {
     const smartTags = service.getSmartTags(step.name);
 
     const updatedSmartTags = smartTags.filter(
-      tag => !step.removed_smart_tags.includes(tag)
+      (tag) => !step.removed_smart_tags.includes(tag)
     );
-    const updatedTags = step.tags.filter(tag => !smartTags.includes(tag));
-    const updatedRemovedTags = smartTags.filter(tag =>
+    const updatedTags = step.tags.filter((tag) => !smartTags.includes(tag));
+    const updatedRemovedTags = smartTags.filter((tag) =>
       step.removed_smart_tags.includes(tag)
     );
 
@@ -67,7 +67,7 @@ async function run(db: Firebase.firestore.Firestore) {
       {
         tags: updatedTags,
         smart_tags: updatedSmartTags,
-        removed_smart_tags: updatedRemovedTags
+        removed_smart_tags: updatedRemovedTags,
       } as Pick<StepDTO, "tags" | "smart_tags" | "removed_smart_tags">,
       { merge: true }
     );
@@ -76,12 +76,12 @@ async function run(db: Firebase.firestore.Firestore) {
 
 run(firebase.firestore())
   .then(() => console.log(colors.bold(colors.green("All done."))))
-  .catch(err => {
+  .catch((err) => {
     console.log(colors.bold(colors.red("Error running script: ")));
     console.error(err);
   });
 
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   console.error(error);
   process.exit(1);
 });

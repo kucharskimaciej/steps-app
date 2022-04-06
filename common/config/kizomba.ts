@@ -7,14 +7,14 @@ const kizombaConfig: AppConfig = {
     tarraxa: "Tarraxa",
     fusion: "Kizomba fusion",
     urban: "Urban Kizz",
-    doucer: "Doucer"
+    doucer: "Doucer",
   },
   difficulties: {
     1: "Very easy",
     2: "Easy",
     3: "Intermediate",
     5: "Hard",
-    8: "Very hard"
+    8: "Very hard",
   },
   smartTagMatchers: [
     ["Saida damska", ["said(a|y|zie) damsk(a|iej)"]],
@@ -27,14 +27,14 @@ const kizombaConfig: AppConfig = {
     ["Otwarcie", ["otwarci(e|a|u)"]],
     [
       "Przesunięcie nogi",
-      ["przesunięci(e|u)", "przesunięciem? nogi", "przesunięcie stopy"]
+      ["przesunięci(e|u)", "przesunięciem? nogi", "przesunięcie stopy"],
     ],
     ["Zatrzymanie", ["zatrzymani(u|e|em)"]],
     ["Grande-saida", ["grande(-|\\s)said(a|y|zie)"]],
     ["Podniesienie nogi", ["podniesieni(e|u|em)( nogi|stopy)?"]],
     [
       "Odwrotne trzymanie",
-      ["odwrotnego trzymania", "odwrotnym trzymani(u|em)"]
+      ["odwrotnego trzymania", "odwrotnym trzymani(u|em)"],
     ],
     ["Położenie", ["położeni(a|u|e|em)"]],
     ["Podcięcie", ["podcięci(a|u|e|em)"]],
@@ -48,15 +48,15 @@ const kizombaConfig: AppConfig = {
     ["Za partnerką", ["pozycj(a|i|ą) z tyłu", "za partnerką", "z tyłu"]],
     [
       "Przed partnerką",
-      ["pozycj(a|i|ą) z przodu", "z przodu", "przed partnerką"]
+      ["pozycj(a|i|ą) z przodu", "z przodu", "przed partnerką"],
     ],
     ["Wypuszczenie", ["wypuszcze(ń|nie|niu|nia|niem)"]],
     ["Wyrzucenie ręki", ["wyrzucen(iem?|iu)"]],
     ["Slide", ["slid(u|e|em|zie)"]],
     ["Pivot", ["pivot(em|u)?", "pivocie"]],
     ["Izolacja", ["izolacj(i|a|ami|ą)"]],
-    ["Cyrkiel", ["cyrkiel", "cyrkl(u|a|em)"]]
-  ]
+    ["Cyrkiel", ["cyrkiel", "cyrkl(u|a|em)"]],
+  ],
 };
 
 export default kizombaConfig;

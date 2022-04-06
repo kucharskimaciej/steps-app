@@ -1,19 +1,19 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import { Step, TagCategory } from "../../../../common/types/Step";
 
 const Tags = defineComponent({
   components: {
-    PureTag
+    PureTag,
   },
   props: {
     step: Object as PropType<Step>,
     category: {
       type: String as PropType<TagCategory>,
-      default: "all"
-    }
-  }
+      default: "all",
+    },
+  },
 });
 
 export default Tags;

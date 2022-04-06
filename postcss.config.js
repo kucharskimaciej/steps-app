@@ -14,7 +14,7 @@ module.exports = {
           whitelist: [
             /* buttons colors classes */
             ..._.flatten(
-              ["blue", "green", "red", "yellow"].map(color => {
+              ["blue", "green", "red", "yellow"].map((color) => {
                 return [
                   `bg-${color}-base`,
                   `border-${color}-base`,
@@ -27,7 +27,7 @@ module.exports = {
                   `text-${color}-base`,
                   `hover:text-${color}-light`,
                   `border-transparent`,
-                  `hover:bg-gray-100`
+                  `hover:bg-gray-100`,
                 ];
               })
             ),
@@ -43,7 +43,7 @@ module.exports = {
             "ready",
             "page-mode",
             "direction-vertical",
-            "overflow-hidden"
+            "overflow-hidden",
           ],
           whitelistPatterns: [/^vue-recycle-scroller/],
           extractors: [
@@ -53,10 +53,10 @@ module.exports = {
                   return content.match(/[A-z0-9-:\/]+/g) || [];
                 }
               },
-              extensions: ["vue"]
-            }
-          ]
+              extensions: ["vue"],
+            },
+          ],
         })
-      : null
-  ]
+      : null,
+  ],
 };

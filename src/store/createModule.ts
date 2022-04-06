@@ -4,7 +4,7 @@ import {
   ActionHandlerWithPayload,
   GetterHandler,
   MutationHandlerNoPayload,
-  MutationHandlerWithPayload
+  MutationHandlerWithPayload,
 } from "typesafe-vuex";
 
 export type ModuleWithState<T> = {
@@ -36,7 +36,7 @@ export function createModule<
   return {
     namespaced: true,
     state: initialState,
-    ...accessors
+    ...accessors,
   };
 }
 
@@ -46,6 +46,6 @@ export function updateStatus<T extends WithStatus>(state: T, payload: Status) {
 
 export function provideInitialStatus(status: Status = "clean") {
   return {
-    status
+    status,
   };
 }

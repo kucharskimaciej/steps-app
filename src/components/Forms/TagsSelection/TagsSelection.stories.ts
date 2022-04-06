@@ -3,18 +3,23 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 
 export default {
   title: "Components/Forms/TagsSelection",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const BasicUsage: () => Component = () => ({
   components: {
-    TagsSelection
+    TagsSelection,
   },
   template: `<section>
     <TagsSelection :options="options" v-model="value" />
@@ -25,16 +30,16 @@ export const BasicUsage: () => Component = () => ({
     options: [
       { key: "one", label: "One" },
       { key: "two", label: "Two" },
-      { key: "three", label: "Three" }
+      { key: "three", label: "Three" },
     ],
-    value: []
+    value: [],
   }),
-  props: {}
+  props: {},
 });
 
 export const WithValueProvided: () => Component = () => ({
   components: {
-    TagsSelection
+    TagsSelection,
   },
   template: `<section>
     <TagsSelection :options="options" v-model="value" />
@@ -45,9 +50,9 @@ export const WithValueProvided: () => Component = () => ({
     options: [
       { key: "one", label: "One" },
       { key: "two", label: "Two" },
-      { key: "three", label: "Three" }
+      { key: "three", label: "Three" },
     ],
-    value: [["one", 1]]
+    value: [["one", 1]],
   }),
-  props: {}
+  props: {},
 });

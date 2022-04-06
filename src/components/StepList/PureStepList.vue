@@ -1,19 +1,19 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PureStepListItem from "@/components/StepList/PureStepListItem.vue";
 import { Step } from "../../../common/types/Step";
 
 const PureStepList = defineComponent({
   components: {
-    PureStepListItem
+    PureStepListItem,
   },
   props: {
     steps: Array as PropType<Step[]>,
     isSelected: {
       type: Function as PropType<(stepId: string) => boolean>,
-      default: () => false
-    }
-  }
+      default: () => false,
+    },
+  },
 });
 
 export default PureStepList;

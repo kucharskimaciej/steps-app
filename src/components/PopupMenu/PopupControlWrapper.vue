@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, provide } from "@vue/composition-api";
+import { defineComponent, provide } from "vue";
 
 const PopupControlWrapper = defineComponent({
   setup(_, ctx) {
@@ -8,7 +8,7 @@ const PopupControlWrapper = defineComponent({
     }
 
     provide("onItemClick", onItemClick);
-  }
+  },
 });
 
 export default PopupControlWrapper;

@@ -1,8 +1,8 @@
-import { Service } from "vue-typedi";
-import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
+import { Service } from "typedi";
+import type { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { provideStore } from "@/store";
-import { VideoObject } from "../../common/types/VideoObject";
+import type { VideoObject } from "../../common/types/VideoObject";
 
 @Service(StepsDuplicateLocatorToken)
 export class StepsByHashDuplicateLocator implements StepDuplicateLocator {
@@ -12,9 +12,9 @@ export class StepsByHashDuplicateLocator implements StepDuplicateLocator {
 
   getDuplicate(key: VideoObject, ignoreId = "") {
     return provideStore().state.steps.rawSteps.find(
-      step =>
+      (step) =>
         ignoreId !== step.id &&
-        step.videos.some(video => video.hash === key.hash)
+        step.videos.some((video) => video.hash === key.hash)
     );
   }
 }

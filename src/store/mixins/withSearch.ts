@@ -16,12 +16,12 @@ function initialSearch(): Search {
       anyArtists: [],
       includeAllTags: [],
       feeling: [],
-      excludeAnyTags: []
+      excludeAnyTags: [],
     },
     sort: {
       type: SortType.ADDED_DATE,
-      direction: SortDirection.DESCENDING
-    }
+      direction: SortDirection.DESCENDING,
+    },
   };
 }
 
@@ -43,17 +43,17 @@ export function searchMixin(namespace: string) {
         search(context, value) {
           commitSetSearch(context, {
             ...context.state.search,
-            ...value
+            ...value,
           });
         },
         clearSearch(context: ActionContext<SearchState, RootState>) {
           commitSetSearch(context, null);
-        }
+        },
       },
       mutations: {
         setSearch(state, payload) {
           state.search = payload ? payload : initialSearch();
-        }
+        },
       },
       getters: {
         getSearch(state) {
@@ -62,9 +62,9 @@ export function searchMixin(namespace: string) {
         searchEmpty(state) {
           const emptySearchState = initialSearch();
           return !state.search || isEqual(state.search, emptySearchState);
-        }
-      }
-    })
+        },
+      },
+    }),
   };
 
   const { commit, dispatch, read } = getStoreAccessors<SearchState, RootState>(
@@ -83,6 +83,6 @@ export function searchMixin(namespace: string) {
     dispatchSearch,
     dispatchClearSearch,
     getSearch: getSearchAccessor,
-    getIsSearchEmpty
+    getIsSearchEmpty,
   };
 }

@@ -1,8 +1,8 @@
+import { StepDifficulty } from "../types/Step";
 import {
   ReadonlyRecord,
-  TagMatcherDefinitionTuple
-} from "common/types/helperTypes";
-import { StepDifficulty } from "../types/Step";
+  TagMatcherDefinitionTuple,
+} from "../types/helperTypes";
 
 export type AppConfig = {
   feelings: ReadonlyRecord<string, string>;

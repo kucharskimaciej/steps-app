@@ -3,20 +3,25 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
 
 export default {
   title: "Components/Forms/ThreeStateTag",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const BasicUsage: () => Component = () => ({
   components: {
     FormGroup,
-    ThreeStateTag
+    ThreeStateTag,
   },
   template: `
       <section>
@@ -30,10 +35,10 @@ export const BasicUsage: () => Component = () => ({
   methods: {},
   data: () => ({
     tag: {
-      text: "Example tag"
+      text: "Example tag",
     },
     value: 1,
-    label: "this is label"
+    label: "this is label",
   }),
-  props: {}
+  props: {},
 });

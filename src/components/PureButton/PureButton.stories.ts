@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import {
   WithGlobalStyles,
   NeutralBackground,
-  Spacing
+  Spacing,
 } from "@/stories/decorators";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
@@ -22,7 +22,7 @@ stories.add("Regular", () => {
                 <PureButton kind="outline">Outline</PureButton>
                 <PureButton kind="ghost">Ghost</PureButton>
             </div>
-        `
+        `,
   };
 });
 
@@ -34,7 +34,7 @@ stories.add("Small", () => {
     <PureButton kind="primary" size="small">Primary</PureButton>
     <PureButton kind="secondary" size="small">Success</PureButton>
 </div>
-        `
+        `,
   };
 });
 
@@ -46,7 +46,7 @@ stories.add("Large", () => {
     <PureButton kind="primary" size="large">Primary</PureButton>
     <PureButton kind="secondary" size="large">Secondary</PureButton>
 </div>
-        `
+        `,
   };
 });
 
@@ -63,7 +63,7 @@ stories.add("Icon only", () => {
     <PureButton kind="outline" size="large"><PureIcon  type="check"/></PureButton>
     <PureButton kind="ghost" size="large"><PureIcon  type="check"/></PureButton>
 </div>
-        `
+        `,
   };
 });
 
@@ -77,6 +77,6 @@ stories.add("Disabled", () => {
     <PureButton kind="outline" disabled="true">Outline</PureButton>
     <PureButton kind="ghost" disabled="true">Ghost</PureButton>
 </div>
-        `
+        `,
   };
 });

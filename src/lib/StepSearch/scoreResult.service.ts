@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { FilteredResult } from "@/lib/StepSearch/types";
 import { SearchFilters } from "@/features/Search/types";
 

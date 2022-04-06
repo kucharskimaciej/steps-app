@@ -1,27 +1,25 @@
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  provide,
-  computed,
-  watch
-} from "@vue/composition-api";
+import { defineComponent, onMounted, ref, provide, computed, watch } from "vue";
 import GlobalStyles from "@/components/GlobalStyles.vue";
 import ModalContainer from "@/components/Modal/ModalContainer.vue";
 import { AuthService } from "@/lib/firebase/auth.service";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { uiContextKey } from "@/uiContext";
 import TheNavigationOverlay from "@/components/TheNavigationOverlay.vue";
+import { useRouter } from "vue-router";
 
 const App = defineComponent({
   components: {
     GlobalStyles,
     ModalContainer,
-    TheNavigationOverlay
+    TheNavigationOverlay,
   },
-  setup(_, { root }) {
+  setup() {
+    const router = useRouter();
+
+    console.log("#1");
     const firebaseAuth = Container.get(AuthService);
+    console.log("#2", firebaseAuth);
     onMounted(() => firebaseAuth.setup());
 
     const navigationOpen = ref(false);
@@ -32,17 +30,17 @@ const App = defineComponent({
 
     provide(uiContextKey, {
       navigationOpen,
-      toggleNavigation
+      toggleNavigation,
     });
 
-    root.$router.beforeEach((to, from, next) => {
+    router.beforeEach((to, from, next) => {
       navigationOpen.value = false;
       next();
     });
 
     watch(
       () => navigationOpen.value,
-      value => {
+      (value) => {
         if (value) {
           document.body.classList.add("overflow-hidden");
         } else {
@@ -52,9 +50,9 @@ const App = defineComponent({
     );
 
     return {
-      ui: computed(() => navigationOpen.value)
+      ui: computed(() => navigationOpen.value),
     };
-  }
+  },
 });
 
 export default App;

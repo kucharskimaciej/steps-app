@@ -3,54 +3,59 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import StepVideoLinks from "@/components/Step/components/VideoLinks.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
 
 export default {
   title: "Components/Step/components/VideoLinks",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const AllLinks: () => Component = () => ({
   components: {
-    StepVideoLinks
+    StepVideoLinks,
   },
   template: `
     <StepVideoLinks :step="step"/>
   `,
   methods: {},
   data: () => ({
-    step: stepFactory(3)
+    step: stepFactory(3),
   }),
-  props: {}
+  props: {},
 });
 
 export const SkipFirstLink: () => Component = () => ({
   components: {
-    StepVideoLinks
+    StepVideoLinks,
   },
   template: `
     <StepVideoLinks :step="step" skip-first/>
   `,
   methods: {},
   data: () => ({
-    step: stepFactory(3)
+    step: stepFactory(3),
   }),
-  props: {}
+  props: {},
 });
 
 export const SkipFirstWhenOnlyOne: () => Component = () => ({
   components: {
-    StepVideoLinks
+    StepVideoLinks,
   },
   template: `
     <StepVideoLinks :step="step" skip-first/>
   `,
   methods: {},
   data: () => ({
-    step: stepFactory()
+    step: stepFactory(),
   }),
-  props: {}
+  props: {},
 });

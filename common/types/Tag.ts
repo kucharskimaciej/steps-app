@@ -3,7 +3,7 @@ export enum TagTypes {
   FEELING = "FEELING",
   ARTIST = "ARTIST",
   SMART = "SMART",
-  KIND = "KIND"
+  KIND = "KIND",
 }
 
 export interface Tag<T extends TagTypes = TagTypes> {

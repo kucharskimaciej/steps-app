@@ -1,30 +1,28 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  provide
-} from "@vue/composition-api";
+import { computed, defineComponent, provide } from "vue";
+import type { PropType } from "vue";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
-import { Validation } from "vuelidate";
+import type { Validation } from "@vuelidate/core";
 
 const FormGroup = defineComponent({
   components: { ValidationHint },
   props: {
     label: String,
     invalid: Boolean,
-    validation: Object as PropType<Validation>
+    validation: Object as PropType<Validation>,
   },
-  setup({ invalid, validation }) {
-    const hasError = computed(() => invalid || !!validation?.$anyError);
+  setup(props) {
+    const hasError = computed(
+      () => props.invalid || !!props.validation?.$error
+    );
 
     provide("hasError", hasError);
-    provide("validation", validation);
+    provide("validation", props.validation);
 
     return {
-      hasError
+      hasError,
     };
-  }
+  },
 });
 
 export default FormGroup;
@@ -35,7 +33,7 @@ export default FormGroup;
     class="mb-5"
     :class="{
       'text-gray-700': !hasError,
-      'text-red-lighter': hasError
+      'text-red-lighter': hasError,
     }"
   >
     <label class="block ml-3 mb-1 text-sm font-bold">

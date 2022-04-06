@@ -1,4 +1,4 @@
-import { Token } from "vue-typedi";
+import { Token } from "typedi";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { StepDTO } from "../../common/types/Step";
 import { Uploader } from "@/lib/uploader.interface";

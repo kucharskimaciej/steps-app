@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 
 const PureIcon = defineComponent({
   props: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 export default PureIcon;

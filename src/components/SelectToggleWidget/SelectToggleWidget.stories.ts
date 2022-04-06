@@ -3,18 +3,23 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 
 export default {
   title: "Components/SelectToggleWidget",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    SelectToggleWidget
+    SelectToggleWidget,
   },
   template: `
     <SelectToggleWidget :selected="selected" @toggle="toggle" />
@@ -22,10 +27,10 @@ export const Default: () => Component = () => ({
   methods: {
     toggle(this: any) {
       this.selected = !this.selected;
-    }
+    },
   },
   data: () => ({
-    selected: false
+    selected: false,
   }),
-  props: {}
+  props: {},
 });

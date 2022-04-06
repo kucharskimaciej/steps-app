@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import { Step } from "../../../../common/types/Step";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
@@ -19,11 +19,11 @@ const StepActions = defineComponent({
     OptionsPopup,
     PopupMenuItem,
     ProvideStepVariations,
-    ProvideInlineEdit
+    ProvideInlineEdit,
   },
   props: {
-    step: Object as PropType<Step>
-  }
+    step: Object as PropType<Step>,
+  },
 });
 
 export default StepActions;
@@ -48,9 +48,7 @@ export default StepActions;
           </PureButton>
         </span>
 
-        <span class="flex-shrink-0 text-center">
-          &nbsp;
-        </span>
+        <span class="flex-shrink-0 text-center"> &nbsp; </span>
 
         <span class="w-full ml-auto flex justify-end">
           <RecordPracticeWidget :step-id="step.id">
@@ -69,7 +67,7 @@ export default StepActions;
           </RecordPracticeWidget>
 
           <ProvideInlineEdit :step-id="step.id">
-            <template #default="{edit}">
+            <template #default="{ edit }">
               <OptionsPopup :step="step">
                 <template #toggle="{ open }">
                   <PureButton size="small" kind="ghost" @click="open">
@@ -85,9 +83,7 @@ export default StepActions;
                     Show variations
                   </PopupMenuItem>
 
-                  <PopupMenuItem @click="edit">
-                    Edit
-                  </PopupMenuItem>
+                  <PopupMenuItem @click="edit"> Edit </PopupMenuItem>
                 </template>
               </OptionsPopup>
             </template>

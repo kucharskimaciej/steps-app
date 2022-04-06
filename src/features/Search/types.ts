@@ -16,12 +16,12 @@ export enum SortType {
   VIEW_COUNT = "VIEW_COUNT",
   PRACTICE_DATE = "PRACTICE_DATE",
   ADDED_DATE = "ADDED_DATE",
-  RANDOM = "RANDOM"
+  RANDOM = "RANDOM",
 }
 
 export enum SortDirection {
   ASCENDING = "ASCENDING",
-  DESCENDING = "DESCENDING"
+  DESCENDING = "DESCENDING",
 }
 
 export type SearchSort = {
@@ -35,12 +35,12 @@ export const sortTypeLabels: ReadonlyRecord<SortType, string> = {
   [SortType.ADDED_DATE]: "Date added",
   [SortType.PRACTICE_DATE]: "Last practice date",
   [SortType.VIEW_COUNT]: "View count",
-  [SortType.VIEW_DATE]: "Last view date"
+  [SortType.VIEW_DATE]: "Last view date",
 };
 
 export const sortDirectionLabels: ReadonlyRecord<SortDirection, string> = {
   [SortDirection.ASCENDING]: "Ascending",
-  [SortDirection.DESCENDING]: "Descending"
+  [SortDirection.DESCENDING]: "Descending",
 };
 
 export type Search = {

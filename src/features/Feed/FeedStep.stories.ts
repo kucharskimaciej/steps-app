@@ -3,7 +3,7 @@ import {
   Container,
   Spacing,
   WithGlobalStyles,
-  WithModals
+  WithModals,
 } from "@/stories/decorators";
 import Vue, { Component } from "vue";
 import FeedStep from "@/features/Feed/FeedStep.vue";
@@ -26,51 +26,51 @@ export default {
         routes: [
           {
             name: ROUTES.PUBLIC_STEP,
-            path: "/s/:stepId"
-          }
-        ]
+            path: "/s/:stepId",
+          },
+        ],
       }
-    )
-  ]
+    ),
+  ],
 };
 
 export const Default: () => Component = () =>
   Vue.extend({
     components: {
-      FeedStep
+      FeedStep,
     },
     data: () => ({
-      step: stepFactory()
+      step: stepFactory(),
     }),
     template: `
-      <FeedStep :step="step"/>`
+      <FeedStep :step="step"/>`,
   });
 
 export const CustomAction: () => Component = () =>
   Vue.extend({
     components: {
       FeedStep,
-      PureButton
+      PureButton,
     },
     data: () => ({
-      step: stepFactory()
+      step: stepFactory(),
     }),
     template: `
       <FeedStep :step="step">
         <template #actions>
           <PureButton kind="ghost">Only action</PureButton>
         </template>
-      </FeedStep>`
+      </FeedStep>`,
   });
 
 export const MultipleCustomActions: () => Component = () =>
   Vue.extend({
     components: {
       FeedStep,
-      PureButton
+      PureButton,
     },
     data: () => ({
-      step: stepFactory()
+      step: stepFactory(),
     }),
     template: `
       <FeedStep :step="step">
@@ -78,5 +78,5 @@ export const MultipleCustomActions: () => Component = () =>
           <PureButton kind="ghost">Action 1</PureButton>
           <PureButton kind="ghost">Action 2</PureButton>
         </template>
-      </FeedStep>`
+      </FeedStep>`,
   });

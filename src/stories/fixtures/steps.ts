@@ -13,8 +13,8 @@ export function rawStepsFactory(): StepDTO[] {
       videos: [
         {
           url: "https://example.com/videos/hash-1",
-          hash: "hash-1"
-        }
+          hash: "hash-1",
+        },
       ],
       tags: ["Grande saida", "Zatrzymanie"],
       difficulty: 3,
@@ -25,20 +25,19 @@ export function rawStepsFactory(): StepDTO[] {
       smart_tags: [],
       removed_smart_tags: [],
       tokens: [],
-      variationKey: "A"
+      variationKey: "A",
     },
     {
       id: "step-id-2",
       kind: "step",
       owner_uid: "owner-id-1",
       identifier: 2,
-      name:
-        "Tepy na 4 kroku saidy damskej + przesunięcie nogi, a potem dodatkowe przejścia",
+      name: "Tepy na 4 kroku saidy damskej + przesunięcie nogi, a potem dodatkowe przejścia",
       videos: [
         {
           url: "https://example.com/videos/hash-2",
-          hash: "hash-2"
-        }
+          hash: "hash-2",
+        },
       ],
       tags: ["Tep", "Przesunięcie nogi"],
       difficulty: 3,
@@ -49,7 +48,7 @@ export function rawStepsFactory(): StepDTO[] {
       smart_tags: [],
       removed_smart_tags: [],
       tokens: [],
-      variationKey: "A"
+      variationKey: "A",
     },
     {
       id: "step-id-3",
@@ -60,8 +59,8 @@ export function rawStepsFactory(): StepDTO[] {
       videos: [
         {
           url: "https://example.com/videos/hash-3",
-          hash: "hash-3"
-        }
+          hash: "hash-3",
+        },
       ],
       tags: [],
       difficulty: 3,
@@ -72,7 +71,7 @@ export function rawStepsFactory(): StepDTO[] {
       smart_tags: ["Shadow position"],
       removed_smart_tags: ["Obrót"],
       tokens: [],
-      variationKey: "B"
+      variationKey: "B",
     },
     {
       id: "step-id-1",
@@ -83,16 +82,16 @@ export function rawStepsFactory(): StepDTO[] {
       videos: [
         {
           url: "https://example.com/videos/hash-1",
-          hash: "hash-1"
+          hash: "hash-1",
         },
         {
           url: "https://example.com/videos/hash-2",
-          hash: "hash-2"
+          hash: "hash-2",
         },
         {
           url: "https://example.com/videos/hash-3",
-          hash: "hash-3"
-        }
+          hash: "hash-3",
+        },
       ],
       tags: ["Grande saida", "Zatrzymanie"],
       difficulty: 3,
@@ -103,8 +102,8 @@ export function rawStepsFactory(): StepDTO[] {
       smart_tags: [],
       removed_smart_tags: [],
       tokens: [],
-      variationKey: "A"
-    }
+      variationKey: "A",
+    },
   ];
 }
 
@@ -114,7 +113,7 @@ export function rawStepFactory(n = 0): StepDTO {
 
 export function stepsFactory(rawSteps: StepDTO[] = rawStepsFactory()): Step[] {
   const variationsByKey = groupBy(rawSteps, "variationKey");
-  return rawSteps.map(rawStep => convertToStep(rawStep, variationsByKey));
+  return rawSteps.map((rawStep) => convertToStep(rawStep, variationsByKey));
 }
 
 export function stepFactory(n = 0): Step {

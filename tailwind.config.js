@@ -17,35 +17,35 @@ const BASE_COLORS = {
     400: "#E1E1E1",
     500: "#C1C7D0",
     600: "#97A0A3",
-    700: "#505050"
+    700: "#505050",
   },
   blue: {
     darker: "#126eca",
     dark: "#157be3",
     base: "#1789fc",
     light: "#2e95fc",
-    lighter: "#45a1fd"
+    lighter: "#45a1fd",
   },
   green: {
     darker: "#298852",
     dark: "#2e995c",
     base: "#33aa66",
     light: "#47b375",
-    lighter: "#5cbb85"
+    lighter: "#5cbb85",
   },
   yellow: {
     darker: "#cc7a00",
     dark: "#e68a00",
     base: "#ff9900",
     light: "#ffa31a",
-    lighter: "#ffad33"
+    lighter: "#ffad33",
   },
   red: {
     darker: "#96291b",
     dark: "#a82e1f",
     base: "#bb3322",
     light: "#c24738",
-    lighter: "#c95c4e"
+    lighter: "#c95c4e",
   },
   mono: {
     black: "#000",
@@ -56,8 +56,8 @@ const BASE_COLORS = {
     800: "#ebebeb",
     900: "#fafafa",
     950: "#fdfdfd",
-    white: "#fff"
-  }
+    white: "#fff",
+  },
 };
 
 module.exports = {
@@ -65,19 +65,19 @@ module.exports = {
   theme: {
     extend: {
       zIndex: {
-        "-1": -1
-      }
+        "-1": -1,
+      },
     },
     colors: {
       ...BASE_COLORS,
       transparent: "transparent",
       white: "#fff",
-      black: "#000"
+      black: "#000",
     },
     fontFamily: {
       primary: ["Lato", "sans-serif"],
       heading: ["Lato", "sans-serif"],
-      logo: ["Dancing Script"]
+      logo: ["Dancing Script"],
     },
     fontSize: {
       "2xs": ".675rem",
@@ -90,11 +90,11 @@ module.exports = {
       "3xl": "1.875rem",
       "4xl": "2.25rem",
       "5xl": "3rem",
-      "6xl": "5rem"
+      "6xl": "5rem",
     },
     screens: {
-      desktop: "75rem"
-    }
+      desktop: "75rem",
+    },
   },
-  plugins: []
+  plugins: [],
 };

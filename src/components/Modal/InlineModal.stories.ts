@@ -4,7 +4,7 @@ import {
   Spacing,
   WithGlobalStyles,
   Container,
-  WithModals
+  WithModals,
 } from "@/stories/decorators";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 
@@ -15,13 +15,13 @@ export default {
     Spacing,
     WithGlobalStyles,
     NeutralBackground,
-    WithModals
-  ]
+    WithModals,
+  ],
 };
 
 export const Overlay: () => Component = () => ({
   components: {
-    InlineModal
+    InlineModal,
   },
   template: `
       <section>
@@ -33,14 +33,14 @@ export const Overlay: () => Component = () => ({
     `,
   methods: {},
   data: () => ({
-    modalOpen: false
+    modalOpen: false,
   }),
-  props: {}
+  props: {},
 });
 
 export const BorderlessOverlay: () => Component = () => ({
   components: {
-    InlineModal
+    InlineModal,
   },
   template: `
       <section>
@@ -52,14 +52,14 @@ export const BorderlessOverlay: () => Component = () => ({
     `,
   methods: {},
   data: () => ({
-    modalOpen: false
+    modalOpen: false,
   }),
-  props: {}
+  props: {},
 });
 
 export const Drawer: () => Component = () => ({
   components: {
-    InlineModal
+    InlineModal,
   },
   template: `
       <section>
@@ -71,14 +71,14 @@ export const Drawer: () => Component = () => ({
     `,
   methods: {},
   data: () => ({
-    modalOpen: false
+    modalOpen: false,
   }),
-  props: {}
+  props: {},
 });
 
 export const Popup: () => Component = () => ({
   components: {
-    InlineModal
+    InlineModal,
   },
   template: `
       <section>
@@ -90,7 +90,7 @@ export const Popup: () => Component = () => ({
     `,
   methods: {},
   data: () => ({
-    modalOpen: false
+    modalOpen: false,
   }),
-  props: {}
+  props: {},
 });

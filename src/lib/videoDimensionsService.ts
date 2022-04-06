@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { VideoObject } from "../../common/types/VideoObject";
 
 export type VideoMetadata = {
@@ -9,7 +9,7 @@ export type VideoMetadata = {
 @Service()
 export class VideoDimensionsService {
   getVideoDimensions(video: string | VideoObject): Promise<VideoMetadata> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (isVideoObject(video) && video.width && video.height) {
         return resolve(video as VideoMetadata);
       }
@@ -24,7 +24,7 @@ export class VideoDimensionsService {
         () => {
           resolve({
             width: videoEl.videoWidth,
-            height: videoEl.videoHeight
+            height: videoEl.videoHeight,
           });
         },
         { once: true }

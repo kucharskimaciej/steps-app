@@ -3,7 +3,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import StringArray from "@/components/Forms/StringArray.vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
@@ -15,8 +15,8 @@ export default {
     Spacing,
     WithGlobalStyles,
     NeutralBackground,
-    withKnobs
-  ]
+    withKnobs,
+  ],
 };
 
 export const Default = () => ({
@@ -33,6 +33,6 @@ export const Default = () => ({
   `,
   props: {},
   data: () => ({
-    values: ["a", "b"]
-  })
+    values: ["a", "b"],
+  }),
 });

@@ -1,7 +1,9 @@
-import Vue from "vue";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { ClientInfo } from "@/lib/clientInfo.service";
+import { Plugin } from "vue";
 
-export default function ClientPlugin() {
-  Vue.prototype.$client = Container.get(ClientInfo);
-}
+const ClientPlugin: Plugin = (app) => {
+  app.config.globalProperties.$client = Container.get(ClientInfo);
+};
+
+export default ClientPlugin;

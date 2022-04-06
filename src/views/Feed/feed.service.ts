@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { shuffle, orderBy, first } from "lodash";
 import { Step } from "../../../common/types/Step";
 
@@ -14,7 +14,8 @@ export class FeedService {
       case FeedPresets.NEVER_PRACTICED:
         selectedSteps = orderBy(
           steps.filter(
-            step => !step.practice_records || step.practice_records.length === 0
+            (step) =>
+              !step.practice_records || step.practice_records.length === 0
           ),
           ["updated_at"],
           ["desc"]
@@ -22,16 +23,16 @@ export class FeedService {
         break;
       case FeedPresets.PRACTICED_ASC:
         selectedSteps = orderBy(
-          steps.filter(step => step.practice_records?.length),
-          [step => first(step.practice_records)!.date, "updated_at"],
+          steps.filter((step) => step.practice_records?.length),
+          [(step) => first(step.practice_records)!.date, "updated_at"],
           ["asc", "desc"]
         );
         break;
 
       case FeedPresets.PRACTICED_DESC:
         selectedSteps = orderBy(
-          steps.filter(step => step.practice_records?.length),
-          [step => first(step.practice_records)!.date, "updated_at"],
+          steps.filter((step) => step.practice_records?.length),
+          [(step) => first(step.practice_records)!.date, "updated_at"],
           ["desc", "desc"]
         );
         break;
@@ -43,7 +44,7 @@ export class FeedService {
       case FeedPresets.LEAST_RECENTLY_VIEWED:
         selectedSteps = orderBy(
           steps,
-          [step => first(step.view_records), "updated_at"],
+          [(step) => first(step.view_records), "updated_at"],
           ["asc", "desc"]
         );
         break;
@@ -51,13 +52,13 @@ export class FeedService {
       case FeedPresets.LEAST_VIEWED:
         selectedSteps = orderBy(
           steps,
-          [step => step.view_records?.length || 0, "updated_at"],
+          [(step) => step.view_records?.length || 0, "updated_at"],
           ["asc", "desc"]
         );
         break;
     }
 
-    return selectedSteps.map(step => step.id);
+    return selectedSteps.map((step) => step.id);
   }
 }
 
@@ -68,5 +69,5 @@ export enum FeedPresets {
   NEVER_PRACTICED = "NEVER_PRACTICED",
   PRACTICED_DESC = "PRACTICED_DESC",
   PRACTICED_ASC = "PRACTICED_ASC",
-  RECENTLY_ADDED = "RECENTLY_ADDED"
+  RECENTLY_ADDED = "RECENTLY_ADDED",
 }

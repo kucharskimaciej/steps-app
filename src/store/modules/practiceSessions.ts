@@ -1,5 +1,5 @@
 import { ActionContext } from "vuex";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { getStoreAccessors } from "typesafe-vuex";
 import { pick } from "lodash";
 import { PracticeSessionsState, RootState, Status } from "@/store/types";
@@ -7,7 +7,7 @@ import { PracticeSession } from "../../../common/types/PracticeSession";
 import { createModule } from "@/store/createModule";
 import {
   CreateParams,
-  PracticeSessionsResource
+  PracticeSessionsResource,
 } from "@/lib/practiceSessions.resource";
 import { getUid, provideStore } from "@/store/index";
 import router, { ROUTES } from "@/router";
@@ -26,12 +26,12 @@ export const practiceSessions = createModule(
       },
       removeSession(state: PracticeSessionsState, sessionId: string) {
         state.sessions = state.sessions.filter(
-          session => session.id !== sessionId
+          (session) => session.id !== sessionId
         );
       },
       addSession(state: PracticeSessionsState, session: PracticeSession) {
         state.sessions.push(session);
-      }
+      },
     },
     actions: {
       async fetchAllSessions(context: Context) {
@@ -45,14 +45,14 @@ export const practiceSessions = createModule(
         const resource = Container.get(PracticeSessionsResource);
         const newSession = await resource.create({
           ...payload,
-          owner_uid: getUid(provideStore())
+          owner_uid: getUid(provideStore()),
         });
         commitAddSessions(context, newSession);
         await router.push(ROUTES.SESSIONS);
       },
       async duplicateSession(context: Context, payload: string) {
         const sessionToDuplicate = context.state.sessions.find(
-          session => session.id === payload
+          (session) => session.id === payload
         );
 
         if (!sessionToDuplicate) {
@@ -63,17 +63,17 @@ export const practiceSessions = createModule(
           context,
           pick(sessionToDuplicate, "name", "steps", "owner_uid")
         );
-      }
+      },
     },
     getters: {
       getSessions(state: PracticeSessionsState): PracticeSession[] {
         return sortBy(state.sessions, "status", "-created_at");
-      }
-    }
+      },
+    },
   },
   {
     status: "clean",
-    sessions: []
+    sessions: [],
   } as PracticeSessionsState
 );
 

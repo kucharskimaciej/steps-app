@@ -1,12 +1,12 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import PopupControlWrapper from "@/components/PopupMenu/PopupControlWrapper.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 
 const PopupMenu = defineComponent({
   components: {
     PopupControlWrapper,
-    InlineModal
+    InlineModal,
   },
   setup() {
     const popupOpen = ref(false);
@@ -23,9 +23,9 @@ const PopupMenu = defineComponent({
       popupOpen,
       openMenu,
       closeMenu,
-      onItemClick: closeMenu
+      onItemClick: closeMenu,
     };
-  }
+  },
 });
 
 export default PopupMenu;

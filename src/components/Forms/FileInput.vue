@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 
 type FileEventTarget = EventTarget & { files: FileList };
 
@@ -24,9 +24,9 @@ const FileInput = defineComponent({
 
     return {
       input,
-      fileSelected
+      fileSelected,
     };
-  }
+  },
 });
 
 export default FileInput;

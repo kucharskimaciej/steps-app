@@ -2,7 +2,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
@@ -18,8 +18,8 @@ export default {
     Container("600px"),
     Spacing,
     NeutralBackground,
-    WithGlobalStyles
-  ]
+    WithGlobalStyles,
+  ],
 };
 
 export const BasicInput = () => ({
@@ -28,16 +28,16 @@ export const BasicInput = () => ({
   props: {
     label: {
       type: String,
-      default: text("label", "Just an input")
+      default: text("label", "Just an input"),
     },
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    value: ""
-  })
+    value: "",
+  }),
 });
 
 export const BasicSelect = () => ({
@@ -51,24 +51,24 @@ export const BasicSelect = () => ({
   props: {
     label: {
       type: String,
-      default: text("label", "Just a select")
+      default: text("label", "Just a select"),
     },
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
+      default: boolean("invalid", false),
     },
     options: {
       default: [
         { id: 1, text: "Option 1" },
         { id: 2, text: "Option 2" },
         { id: 3, text: "Option 3" },
-        { id: 4, text: "Option 4" }
-      ]
-    }
+        { id: 4, text: "Option 4" },
+      ],
+    },
   },
   data: () => ({
-    value: null
-  })
+    value: null,
+  }),
 });
 
 export const Checkbox = () => ({
@@ -86,12 +86,12 @@ export const Checkbox = () => ({
   props: {
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    value: true
-  })
+    value: true,
+  }),
 });
 
 export const BasicTextarea = () => ({
@@ -100,16 +100,16 @@ export const BasicTextarea = () => ({
   props: {
     label: {
       type: String,
-      default: text("label", "Textarea")
+      default: text("label", "Textarea"),
     },
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    value: ""
-  })
+    value: "",
+  }),
 });
 
 export const NestedFormGroup = () => ({
@@ -124,10 +124,10 @@ export const NestedFormGroup = () => ({
   props: {
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    value: ""
-  })
+    value: "",
+  }),
 });

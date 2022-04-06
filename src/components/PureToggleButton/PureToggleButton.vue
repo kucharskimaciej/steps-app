@@ -1,14 +1,14 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const PureToggleButton = defineComponent({
   components: { PureButton, PureIcon },
   props: {
-    toggled: Boolean
+    toggled: Boolean,
   },
-  emits: []
+  emits: [],
 });
 
 export default PureToggleButton;

@@ -1,6 +1,6 @@
 import { RunFn } from "../types";
 
-const run: RunFn = async db => {
+const run: RunFn = async (db) => {
   // migration body
 };
 

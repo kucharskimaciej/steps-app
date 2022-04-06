@@ -3,29 +3,34 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import Card from "@/components/Card/Card.vue";
 
 export default {
   title: "Components/Card",
-  decorators: [Container("600px"), Spacing, WithGlobalStyles, NeutralBackground]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    WithGlobalStyles,
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    Card
+    Card,
   },
   template: `
     <Card>Card content</Card>`,
   methods: {},
   data: () => ({}),
-  props: {}
+  props: {},
 });
 
 export const Active: () => Component = () => ({
   components: {
-    Card
+    Card,
   },
   template: `
     <Card allow-active
@@ -36,7 +41,7 @@ export const Active: () => Component = () => ({
     </Card>`,
   methods: {},
   data: () => ({
-    parentActive: false
+    parentActive: false,
   }),
-  props: {}
+  props: {},
 });

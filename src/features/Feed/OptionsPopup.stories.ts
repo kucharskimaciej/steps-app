@@ -5,7 +5,7 @@ import {
   Spacing,
   WithGlobalStyles,
   Container,
-  WithModals
+  WithModals,
 } from "@/stories/decorators";
 import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
@@ -26,28 +26,28 @@ export default {
         routes: [
           {
             name: ROUTES.PUBLIC_STEP,
-            path: "/s/:stepId"
+            path: "/s/:stepId",
           },
           {
             name: ROUTES.EDIT_STEP,
-            path: "/edit/:stepId"
-          }
-        ]
+            path: "/edit/:stepId",
+          },
+        ],
       }
-    )
-  ]
+    ),
+  ],
 };
 
 export const BasicUsage: () => Component = () => ({
   components: {
-    OptionsPopup
+    OptionsPopup,
   },
   template: `<OptionsPopup :step="step" />`,
   methods: {
-    itemClick: action("ITEM_CLICK")
+    itemClick: action("ITEM_CLICK"),
   },
   data: () => ({
-    step: stepFactory()
+    step: stepFactory(),
   }),
-  props: {}
+  props: {},
 });

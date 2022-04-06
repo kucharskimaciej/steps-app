@@ -30,7 +30,7 @@ try {
   const credentials = JSON.parse(credentialsBuffer.toString());
   firebase = Firebase.initializeApp(
     {
-      credential: Firebase.credential.cert(credentials)
+      credential: Firebase.credential.cert(credentials),
     },
     accountCredentialsPath
   );
@@ -52,14 +52,14 @@ function getAllMigrations(): Migration[] {
     const filenames = readdirSync(migrationsPath);
 
     return filenames
-      .filter(name => extensionRegexp.test(name))
+      .filter((name) => extensionRegexp.test(name))
       .sort()
-      .map(name => {
+      .map((name) => {
         const run: RunFn = require(join(migrationsPath, name)).default;
         const id = name.replace(extensionRegexp, "");
         return {
           id,
-          run
+          run,
         };
       });
   } catch (err) {
@@ -85,7 +85,7 @@ async function runAllMigrations(db: Firebase.firestore.Firestore) {
     console.log(`Running migration ${colors.bold(migration.id)}...`);
     await migration.run(db);
     await ref.set({
-      created_at: Date.now()
+      created_at: Date.now(),
     });
     console.log(
       `Migration ${colors.bold(migration.id)}: ${colors.bold(
@@ -97,12 +97,12 @@ async function runAllMigrations(db: Firebase.firestore.Firestore) {
 
 runAllMigrations(firebase.firestore())
   .then(() => console.log(colors.bold(colors.green("All done."))))
-  .catch(err => {
+  .catch((err) => {
     console.log(colors.bold(colors.red("Error running migrations: ")));
     console.error(err);
   });
 
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   console.error(error);
   process.exit(1);
 });

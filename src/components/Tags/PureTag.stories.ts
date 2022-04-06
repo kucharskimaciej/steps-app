@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import {
   WithGlobalStyles,
   NeutralBackground,
-  Spacing
+  Spacing,
 } from "@/stories/decorators";
 import { Tag as TagType, TagTypes } from "../../../common/types/Tag";
 import PureTag from "@/components/Tags/PureTag.vue";
@@ -17,8 +17,8 @@ tagStories.add("Basic display", () => {
     components: { PureTag },
     template: '<PureTag :tag="tag"/>',
     data: () => ({
-      tag: { text: "Podniesienie nogi" } as TagType
-    })
+      tag: { text: "Podniesienie nogi" } as TagType,
+    }),
   };
 });
 
@@ -27,7 +27,7 @@ tagStories.add("With type", () => {
     components: { PureTag },
     template: '<PureTag :tag="tag"/>',
     data: () => ({
-      tag: { text: "Semba", type: TagTypes.FEELING } as TagType
-    })
+      tag: { text: "Semba", type: TagTypes.FEELING } as TagType,
+    }),
   };
 });

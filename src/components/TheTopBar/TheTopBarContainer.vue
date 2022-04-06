@@ -1,19 +1,19 @@
 <script lang="ts">
-import { defineComponent, inject } from "@vue/composition-api";
+import { defineComponent, inject } from "vue";
 import TheTopBar from "@/components/TheTopBar/TheTopBar.vue";
 import { uiContextKey } from "@/uiContext";
 
 const TheTopBarContainer = defineComponent({
   components: {
-    TheTopBar
+    TheTopBar,
   },
   setup() {
     const state = inject(uiContextKey);
 
     return {
-      toggleNavigation: state?.toggleNavigation
+      toggleNavigation: state?.toggleNavigation,
     };
-  }
+  },
 });
 
 export default TheTopBarContainer;

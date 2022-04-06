@@ -1,19 +1,19 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import Control from "@/features/VideoPlayer/Control.vue";
 
 const MuteControl = defineComponent({
   components: {
     PureIcon,
-    Control
+    Control,
   },
   props: {
     muted: {
       required: true,
-      type: Boolean
-    }
-  }
+      type: Boolean,
+    },
+  },
 });
 
 export default MuteControl;

@@ -1,5 +1,5 @@
 import { ActionContext } from "vuex";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { CurrentStepState, RootState, Status, WithStatus } from "@/store/types";
 import { convertToStep } from "@/lib/rawStepHelpers";
 import { getStoreAccessors } from "typesafe-vuex";
@@ -12,7 +12,7 @@ export const currentStep = {
   namespaced: true,
   state: {
     raw: null,
-    status: "clean"
+    status: "clean",
   } as CurrentStepState,
   getters: {
     step(state: CurrentStepState) {
@@ -21,7 +21,7 @@ export const currentStep = {
       }
 
       return null;
-    }
+    },
   },
   mutations: {
     setStep(state: CurrentStepState, payload: StepDTO) {
@@ -29,7 +29,7 @@ export const currentStep = {
     },
     updateStatus(state: WithStatus, payload: Status) {
       state.status = payload;
-    }
+    },
   },
   actions: {
     async fetch(context: CurrentStepContext, stepId: string) {
@@ -38,8 +38,8 @@ export const currentStep = {
       const result = await stepsResource.fetch(stepId);
       commitSetStep(context, result);
       commitUpdateStatus(context, "dirty");
-    }
-  }
+    },
+  },
 };
 const { commit, read, dispatch } = getStoreAccessors<
   CurrentStepState,

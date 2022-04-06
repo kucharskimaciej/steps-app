@@ -1,15 +1,23 @@
-import { Container as DIContainer } from "typedi/Container";
+import { Container as DIContainer } from "typedi";
 import { AppConfigToken } from "../tokens";
+import kizomba from "./kizomba";
+import zouk from "./zouk";
+import { AppConfig } from "./types";
 
-if (!process.env.VUE_APP_DANCE) {
+if (!import.meta.env.VITE_DANCE) {
   throw new Error("Must specify dance in environment");
 }
-
+const configs = {
+  kizomba,
+  zouk,
+};
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const config = require(`./${process.env.VUE_APP_DANCE}`);
+const config: AppConfig | undefined =
+  configs[import.meta.env.VITE_DANCE as keyof typeof configs];
+
 if (!config) {
   throw new Error("Config not found!");
 }
 
-console.log(config.default);
-DIContainer.set(AppConfigToken, config.default);
+console.log(config);
+DIContainer.set(AppConfigToken, config);

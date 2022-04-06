@@ -1,15 +1,15 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const SelectToggleWidget = defineComponent({
   components: {
-    PureIcon
+    PureIcon,
   },
   props: {
-    selected: Boolean
+    selected: Boolean,
   },
-  emits: ["toggle"]
+  emits: ["toggle"],
 });
 
 export default SelectToggleWidget;

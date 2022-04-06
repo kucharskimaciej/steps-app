@@ -1,5 +1,5 @@
 import { TokenizeService } from "./tokenize.service";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { range } from "lodash";
 
 const service = Container.get(TokenizeService);
@@ -24,7 +24,7 @@ describe("#clean", () => {
       ["test.test", "test test"],
       ["test!test", "test test"],
       ["test?test", "test test"],
-      ["test (test)", "test test"]
+      ["test (test)", "test test"],
     ].forEach(([stringToTest, result]) => {
       expect(service.clean(stringToTest)).toEqual(result);
     });
@@ -75,7 +75,7 @@ describe("#getTokenChains", () => {
   test("returns correct number of chains", () => {
     const tokenList = createTokenArray(10);
 
-    range(1, 10).forEach(chainSize => {
+    range(1, 10).forEach((chainSize) => {
       expect(service.getTokenChains(chainSize, tokenList).length).toEqual(
         numberOfChains(chainSize, tokenList)
       );
@@ -129,7 +129,7 @@ describe("#tokenize", () => {
       "odwrotnego|trzymania|wyjście",
       "trzymania|wyjście|obrotem",
       "wejście|odwrotnego|trzymania|wyjście",
-      "odwrotnego|trzymania|wyjście|obrotem"
+      "odwrotnego|trzymania|wyjście|obrotem",
     ]);
 
     expect(service.tokenize("Zatrzymanie ręką za stopę")).toEqual([
@@ -138,7 +138,7 @@ describe("#tokenize", () => {
       "stopę",
       "zatrzymanie|ręką",
       "ręką|stopę",
-      "zatrzymanie|ręką|stopę"
+      "zatrzymanie|ręką|stopę",
     ]);
 
     expect(
@@ -157,7 +157,7 @@ describe("#tokenize", () => {
       "obrót|przeprowadzeniem|partnerki",
       "przeprowadzeniem|partnerki|plecami",
       "potrójny|obrót|przeprowadzeniem|partnerki",
-      "obrót|przeprowadzeniem|partnerki|plecami"
+      "obrót|przeprowadzeniem|partnerki|plecami",
     ]);
   });
 });

@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { ArrayBuffer as HashBuffer } from "spark-md5";
 
 @Service()
@@ -20,7 +20,7 @@ export class FileIdentityService {
         }
       }
 
-      fileReader.onload = event => {
+      fileReader.onload = (event) => {
         spark.append(event.target?.result as ArrayBuffer);
         next();
       };

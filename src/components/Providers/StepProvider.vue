@@ -1,13 +1,13 @@
 <script lang="ts">
-import { computed, defineComponent, onActivated } from "@vue/composition-api";
+import { computed, defineComponent, onActivated } from "vue";
 import { dispatchFetchCurrentStep, useStore } from "@/store";
 
 const StepProvider = defineComponent({
   props: {
     stepId: {
       required: true,
-      type: String
-    }
+      type: String,
+    },
   },
   setup({ stepId }) {
     const store = useStore();
@@ -22,9 +22,9 @@ const StepProvider = defineComponent({
     onActivated(loadStep);
 
     return {
-      loading
+      loading,
     };
-  }
+  },
 });
 
 export default StepProvider;

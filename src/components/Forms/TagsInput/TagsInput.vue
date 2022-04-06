@@ -1,11 +1,5 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  inject,
-  PropType,
-  ref
-} from "@vue/composition-api";
+import { computed, defineComponent, inject, PropType, ref } from "vue";
 import { Tag } from "../../../../common/types/Tag";
 
 const TagsInput = defineComponent({
@@ -13,16 +7,16 @@ const TagsInput = defineComponent({
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => []
+      default: () => [],
     },
     allowNew: {
       type: Boolean,
-      default: true
+      default: true,
     },
     autocomplete: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ["input"],
   setup({ autocomplete }, { emit }) {
@@ -35,17 +29,17 @@ const TagsInput = defineComponent({
       }
 
       const query = inputValue.value.toLowerCase();
-      return autocomplete.filter(tag => tag.toLowerCase().includes(query));
+      return autocomplete.filter((tag) => tag.toLowerCase().includes(query));
     });
 
     function asTags(items: string[] = []): Tag[] {
-      return items.map(text => ({ text }));
+      return items.map((text) => ({ text }));
     }
 
     function handleTagsChanged(tags: Tag[]) {
       emit(
         "input",
-        tags.map(t => t.text)
+        tags.map((t) => t.text)
       );
     }
 
@@ -54,9 +48,9 @@ const TagsInput = defineComponent({
       filteredItems,
       inputValue,
       asTags,
-      handleTagsChanged
+      handleTagsChanged,
     };
-  }
+  },
 });
 
 export default TagsInput;

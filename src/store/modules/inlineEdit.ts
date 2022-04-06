@@ -16,7 +16,7 @@ export const inlineEdit = createModule(
     getters: {
       currentlyEditingStepId(state: InlineEditState) {
         return state.stepId;
-      }
+      },
     },
     actions: {
       inlineEdit(context: InlineEditContext, payload: string) {
@@ -24,16 +24,16 @@ export const inlineEdit = createModule(
       },
       clearInlineEdit(context: InlineEditContext) {
         commitSetStepId(context, null);
-      }
+      },
     },
     mutations: {
       setStepId(state, payload: string | null) {
         state.stepId = payload;
-      }
-    }
+      },
+    },
   },
   {
-    stepId: null
+    stepId: null,
   } as InlineEditState
 );
 const { commit, read, dispatch } = getStoreAccessors<

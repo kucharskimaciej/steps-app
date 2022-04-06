@@ -16,45 +16,45 @@ export default {
         routes: [
           {
             name: ROUTES.PUBLIC_STEP,
-            path: "/s/:stepId"
-          }
-        ]
+            path: "/s/:stepId",
+          },
+        ],
       }
     ),
     withKnobs,
     Container("600px"),
     Spacing,
-    WithGlobalStyles
-  ]
+    WithGlobalStyles,
+  ],
 };
 
 export const Default: () => Component = () =>
   Vue.extend({
     components: {
-      Feed
+      Feed,
     },
     data: () => ({
-      steps: stepsFactory()
+      steps: stepsFactory(),
     }),
     template: `
-      <Feed :steps="steps"/>`
+      <Feed :steps="steps"/>`,
   });
 
 export const WithCustomAction: () => Component = () =>
   Vue.extend({
     components: {
-      Feed
+      Feed,
     },
     data: () => ({
-      steps: stepsFactory()
+      steps: stepsFactory(),
     }),
     methods: {
-      handler: action("clicked")
+      handler: action("clicked"),
     },
     template: `
       <Feed :steps="steps">
       <template #stepActions="{step}">
         <span @click="handler(step.id)">Do it</span>
       </template>
-      </Feed>`
+      </Feed>`,
   });

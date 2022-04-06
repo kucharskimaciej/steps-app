@@ -1,4 +1,4 @@
-import { Service, Inject } from "vue-typedi";
+import { Service, Inject } from "typedi";
 import { AppConfigToken } from "../../tokens";
 import { AppConfig } from "../../config/types";
 
@@ -12,7 +12,7 @@ export class SmartTags {
   set appConfig(config: AppConfig) {
     this.matchers = config.smartTagMatchers.reduce(
       ($, [tag, matcherStrings]) => {
-        const cases = matcherStrings.map(ms => `(?:${ms})`).join("|");
+        const cases = matcherStrings.map((ms) => `(?:${ms})`).join("|");
         $[tag] = new RegExp(`(?:^|\\W+)(${cases})(?:\\W+|$)`, "i");
         return $;
       },

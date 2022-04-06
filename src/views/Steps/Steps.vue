@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import Container from "@/components/Layout/Container.vue";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
@@ -9,16 +9,16 @@ const Steps = defineComponent({
   components: {
     Container,
     PureStepList,
-    AllStepsProvider
+    AllStepsProvider,
   },
   setup() {
     const store = useStore();
     const steps = computed(() => getSteps(store));
 
     return {
-      steps
+      steps,
     };
-  }
+  },
 });
 
 export default Steps;

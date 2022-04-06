@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
+import { computed, defineComponent, PropType, ref } from "vue";
 import { pick, throttle } from "lodash";
 import PlayControl from "@/features/VideoPlayer/PlayControl.vue";
 import SizeControl from "@/features/VideoPlayer/SizeControl.vue";
@@ -43,7 +43,7 @@ const mediaEvents = [
   "suspend",
   "timeupdate",
   "volumechange",
-  "waiting"
+  "waiting",
 ];
 
 const VideoPlayer = defineComponent({
@@ -57,19 +57,19 @@ const VideoPlayer = defineComponent({
     BackOne,
     PlayFromStart,
     SlowControl,
-    Progress
+    Progress,
   },
   props: {
     video: {
       required: true,
-      type: Object as PropType<VideoObject>
+      type: Object as PropType<VideoObject>,
     },
     autoplay: Boolean,
     background: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    sizeControl: Boolean
+    sizeControl: Boolean,
   },
   emits: ["viewed", "open-full-size"],
   setup({ video }, ctx) {
@@ -87,7 +87,9 @@ const VideoPlayer = defineComponent({
     const isSlow = computed(() => speed.value < 1);
     const snapshotUrl = computed(
       () =>
-        `https://storage.googleapis.com/${process.env.VUE_APP_FIREBASE_STORAGE_BUCKET}/${video.snapshot_url}`
+        `https://storage.googleapis.com/${
+          import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
+        }/${video.snapshot_url}`
     );
 
     function updateViewedStatus() {
@@ -201,9 +203,9 @@ const VideoPlayer = defineComponent({
       playFromStart,
       handlePlayingChange,
       handleVolumeChange,
-      handleTimeUpdate
+      handleTimeUpdate,
     };
-  }
+  },
 });
 
 export default VideoPlayer;

@@ -3,7 +3,7 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
 import { stepFactory } from "@/stories/fixtures/steps";
@@ -19,26 +19,26 @@ export default {
         routes: [
           {
             name: ROUTES.PUBLIC_STEP,
-            path: "/s/:stepId"
-          }
-        ]
+            path: "/s/:stepId",
+          },
+        ],
       }
     ),
     Container("600px"),
     Spacing,
     WithGlobalStyles,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    CopyToClipboard
+    CopyToClipboard,
   },
-  template: `<CopyToClipboard :value="step | shortLink($router)" />`,
+  template: `<CopyToClipboard :value="$filters.shortLink(step, $router)" />`,
   methods: {},
   data: () => ({
-    step: stepFactory()
+    step: stepFactory(),
   }),
-  props: {}
+  props: {},
 });

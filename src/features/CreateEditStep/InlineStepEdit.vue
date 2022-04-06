@@ -1,11 +1,5 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  ref,
-  watch
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -20,7 +14,7 @@ import {
   existingArtists as getExistingArtists,
   existingTags as getExistingTags,
   useStore,
-  dispatchUpdateStep
+  dispatchUpdateStep,
 } from "@/store";
 import { without } from "lodash";
 
@@ -32,13 +26,13 @@ const InlineStepEdit = defineComponent({
     SelectToggleWidget,
     Card,
     FullContent,
-    ProvideScoring
+    ProvideScoring,
   },
   props: {
     step: {
       type: Object as PropType<StepDTO>,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ["finished"],
   setup({ step }, ctx) {
@@ -47,7 +41,7 @@ const InlineStepEdit = defineComponent({
     const selectedVariations = ref<string[]>([]);
     const form = ref<StepFormApi>();
 
-    watch(step, newStep => {
+    watch(step, (newStep) => {
       if (newStep) {
         selectedVariations.value = newStep.variationKey
           ? [newStep.variationKey]
@@ -94,7 +88,7 @@ const InlineStepEdit = defineComponent({
         await dispatchUpdateStep(store, {
           stepId: step.id,
           params: form.value.value,
-          selectedVariations: selectedVariations.value
+          selectedVariations: selectedVariations.value,
         });
 
         ctx.emit("finished");
@@ -108,9 +102,9 @@ const InlineStepEdit = defineComponent({
       existingTags,
       isPartOfSelectedVariation,
       toggleVariationSelected,
-      saveStep
+      saveStep,
     };
-  }
+  },
 });
 
 export default InlineStepEdit;

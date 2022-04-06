@@ -9,5 +9,5 @@ export const ModalStyleComponents: Record<MODAL_STYLE, VueConstructor> = {
   // [MODAL_STYLE.DRAWER]: Drawer,
   [MODAL_STYLE.OVERLAY]: Overlay,
   [MODAL_STYLE.BORDERLESS]: BorderlessOverlay,
-  [MODAL_STYLE.POPUP]: Popup
+  [MODAL_STYLE.POPUP]: Popup,
 };

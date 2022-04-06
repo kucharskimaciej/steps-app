@@ -1,4 +1,4 @@
-import { Inject, Service } from "vue-typedi";
+import { Inject, Service } from "typedi";
 import { StorageService } from "@/lib/firebase/storage.service";
 import { provideStore } from "@/store";
 import { Uploader } from "@/lib/uploader.interface";

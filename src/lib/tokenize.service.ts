@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { range } from "lodash";
 
 @Service()
@@ -38,8 +38,8 @@ export class TokenizeService {
 
   getTokenChains(chainSize: number, tokens: string[]): string[] {
     return range(tokens.length)
-      .map(startIndex => tokens.slice(startIndex, startIndex + chainSize))
-      .filter(chain => chain.length === chainSize)
-      .map(chain => chain.join(TokenizeService.TOKEN_SEPARATOR));
+      .map((startIndex) => tokens.slice(startIndex, startIndex + chainSize))
+      .filter((chain) => chain.length === chainSize)
+      .map((chain) => chain.join(TokenizeService.TOKEN_SEPARATOR));
   }
 }

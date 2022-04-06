@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import FullSearchFilters from "@/features/Search/FullSearchFilters.vue";
 import FullSearchSort from "@/features/Search/FullSearchSort.vue";
 import { Search, SearchFilters, SearchSort } from "@/features/Search/types";
@@ -7,43 +7,43 @@ import { Search, SearchFilters, SearchSort } from "@/features/Search/types";
 const FullSearch = defineComponent({
   components: {
     FullSearchFilters,
-    FullSearchSort
+    FullSearchSort,
   },
   props: {
     value: {
       type: Object as PropType<Search>,
-      default: () => ({})
+      default: () => ({}),
     },
     existingTags: {
       type: Array as PropType<string[]>,
-      default: () => []
+      default: () => [],
     },
     existingArtists: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ["search"],
   setup({ value }, ctx) {
     function handleSortChange(sort: SearchSort) {
       ctx.emit("search", {
         ...value,
-        sort
+        sort,
       });
     }
 
     function handleFiltersChange(filters: SearchFilters) {
       ctx.emit("search", {
         ...value,
-        filters
+        filters,
       });
     }
 
     return {
       handleFiltersChange,
-      handleSortChange
+      handleSortChange,
     };
-  }
+  },
 });
 
 export default FullSearch;

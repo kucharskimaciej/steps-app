@@ -3,7 +3,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import StoryRouter from "storybook-vue-router";
@@ -22,11 +22,11 @@ stories.add("Basic display", () => {
     components: { PureStepList },
     template: '<PureStepList :steps="list" :is-selected="isSelected"/>',
     data: () => ({
-      list
+      list,
     }),
     methods: {
-      isSelected: () => false
-    }
+      isSelected: () => false,
+    },
   };
 });
 
@@ -36,10 +36,10 @@ stories.add("With scroll", () => {
     components: { PureStepList },
     template: `<PureStepList :steps="list" :is-selected="isSelected"/>`,
     data: () => ({
-      list
+      list,
     }),
     methods: {
-      isSelected: () => false
-    }
+      isSelected: () => false,
+    },
   };
 });

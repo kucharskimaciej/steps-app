@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import { useUi } from "@/uiContext";
 import PureButton from "./PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
@@ -7,7 +7,7 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const TheNavigationOverlay = defineComponent({
   components: {
     PureButton,
-    PureIcon
+    PureIcon,
   },
   setup() {
     const ui = useUi();
@@ -16,9 +16,9 @@ const TheNavigationOverlay = defineComponent({
       open: computed(() => ui?.navigationOpen.value),
       toggle() {
         ui?.toggleNavigation();
-      }
+      },
     };
-  }
+  },
 });
 
 export default TheNavigationOverlay;
@@ -29,14 +29,14 @@ export default TheNavigationOverlay;
     class="desktop:hidden relative z-10"
     :class="{
       invisible: !open,
-      visible: open
+      visible: open,
     }"
   >
     <aside
       class="fixed inset-0 bg-mono-black transition-all"
       :class="{
         'visible bg-opacity-40': open,
-        'invisible bg-opacity-0': !open
+        'invisible bg-opacity-0': !open,
       }"
       @click="toggle()"
     ></aside>
@@ -44,7 +44,7 @@ export default TheNavigationOverlay;
       class="fixed inset-y-0 transition-transform w-4/5 bg-mono-900 flex flex-col p-5"
       :class="{
         '-translate-x-full': !open,
-        'translate-x-0': open
+        'translate-x-0': open,
       }"
     >
       <section>
@@ -57,7 +57,7 @@ export default TheNavigationOverlay;
                 class="py-2 block hover:text-mono-100"
                 :class="{
                   'text-mono-600': !isActive,
-                  'text-mono-100': isActive
+                  'text-mono-100': isActive,
                 }"
                 @click="navigate"
                 >Feed</a

@@ -1,18 +1,18 @@
-import Vue from "vue";
+import { Plugin } from "vue";
 
 const defaultMatchers = {
   desktop: "(min-width: 75rem)",
   portrait: "(orientation: portrait)",
-  landscape: "(orientation: landscape)"
+  landscape: "(orientation: landscape)",
 };
 
 export type Matchers = keyof typeof defaultMatchers;
 
-export default function MatchMediaPlugin() {
-  Vue.prototype.$match = function $match(matcher: Matchers) {
+const MatchMediaPlugin: Plugin = (app, options) => {
+  function $match(matcher: Matchers) {
     const breakpoints = {
       ...defaultMatchers,
-      ...this.$options.customMatchers
+      ...options.customMatchers,
     };
 
     if (!breakpoints[matcher]) {
@@ -20,5 +20,9 @@ export default function MatchMediaPlugin() {
     }
 
     return window.matchMedia(breakpoints[matcher]).matches;
-  };
-}
+  }
+
+  app.config.globalProperties.$match = $match;
+};
+
+export default MatchMediaPlugin;

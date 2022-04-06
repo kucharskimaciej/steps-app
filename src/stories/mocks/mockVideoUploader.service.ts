@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { VideoUploaderToken } from "@/lib/tokens";
 import { Uploader } from "@/lib/uploader.interface";
 

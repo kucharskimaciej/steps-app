@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import StepListStep from "@/components/StepList/StepListStep.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 import Card from "@/components/Card/Card.vue";
@@ -11,23 +11,23 @@ const StepList = defineComponent({
   components: {
     StepListStep,
     SelectToggleWidget,
-    Card
+    Card,
   },
   props: {
     steps: {
       type: Array as PropType<Step[]>,
-      required: true
+      required: true,
     },
     isSelected: {
       type: Function as PropType<StateFn>,
-      default: () => false
+      default: () => false,
     },
     isActive: {
       type: Function as PropType<StateFn>,
-      default: () => false
-    }
+      default: () => false,
+    },
   },
-  emits: ["toggle", "activeStepChange"]
+  emits: ["toggle", "activeStepChange"],
 });
 
 export default StepList;

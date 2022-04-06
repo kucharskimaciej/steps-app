@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { PracticeSession } from "../../common/types/PracticeSession";
 import { Resource } from "@/lib/resource.class";
 import { DateFilter } from "@/filters/date";
@@ -14,9 +14,8 @@ export class PracticeSessionsResource extends Resource<
   CreateParams,
   UpdateParams
 > {
-  protected readonly collection = this.firestore.collection(
-    "practice-sessions"
-  );
+  protected readonly collection =
+    this.firestore.collection("practice-sessions");
 
   async create(params: CreateParams): Promise<PracticeSession> {
     const stepToSave: Omit<PracticeSession, "id"> = {
@@ -24,7 +23,7 @@ export class PracticeSessionsResource extends Resource<
       steps: [],
       name: `Practice ${DateFilter(Date.now())}`,
       created_at: Date.now(),
-      ...params
+      ...params,
     };
 
     const documentRef = await this.collection.add(stepToSave);

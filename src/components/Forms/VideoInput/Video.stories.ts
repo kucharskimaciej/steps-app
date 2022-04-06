@@ -2,7 +2,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import { withKnobs } from "@storybook/addon-knobs";
 import Video from "@/components/Forms/VideoInput/Video.vue";
@@ -14,14 +14,14 @@ export default {
     Container("600px"),
     Spacing,
     NeutralBackground,
-    WithGlobalStyles
-  ]
+    WithGlobalStyles,
+  ],
 };
 export const Default = () => ({
   components: {
-    Video
+    Video,
   },
   template: `
     <Video :title="'VideoPlayer 1'" filename="some_file.mp4" url="http://www.youtube.com/" />
-  `
+  `,
 });

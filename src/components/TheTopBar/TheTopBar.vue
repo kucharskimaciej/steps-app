@@ -1,17 +1,17 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureButton from "../PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const TheTopBar = defineComponent({
   components: {
     PureIcon,
-    PureButton
+    PureButton,
   },
   props: {
-    isNavigationOpen: Boolean
+    isNavigationOpen: Boolean,
   },
-  emits: ["openNavigation"]
+  emits: ["openNavigation"],
 });
 
 export default TheTopBar;
@@ -34,7 +34,7 @@ export default TheTopBar;
               class=""
               :class="{
                 'text-mono-600': !isActive,
-                'text-mono-100': isActive
+                'text-mono-100': isActive,
               }"
               @click="navigate"
               >Feed</a
@@ -58,7 +58,7 @@ export default TheTopBar;
       <PureButton
         class="desktop:hidden"
         :class="{
-          'navigation-open': isNavigationOpen
+          'navigation-open': isNavigationOpen,
         }"
         kind="ghost"
         @click="$emit('openNavigation')"

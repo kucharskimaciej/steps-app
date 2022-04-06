@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from "@vue/composition-api";
+import { defineComponent, PropType, ref, watch } from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -12,8 +12,8 @@ const StringArray = defineComponent({
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup({ value }, ctx) {
     const items = ref<Focusable[]>([]);
@@ -40,9 +40,9 @@ const StringArray = defineComponent({
 
     return {
       addElement,
-      removeAt
+      removeAt,
     };
-  }
+  },
 });
 
 export default StringArray;

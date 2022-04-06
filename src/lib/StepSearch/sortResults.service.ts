@@ -1,4 +1,4 @@
-import { Inject, Service } from "vue-typedi";
+import { Inject, Service } from "typedi";
 import { FilteredResult } from "@/lib/StepSearch/types";
 import { Search, SortDirection, SortType } from "@/features/Search/types";
 import { StepDTO } from "../../../common/types/Step";
@@ -7,7 +7,7 @@ import { ScoreResultService } from "@/lib/StepSearch/scoreResult.service";
 // @todo: each of sort types should be a separate strategy
 @Service()
 export class SortResultsService {
-  @Inject()
+  @Inject(() => ScoreResultService)
   scorer!: ScoreResultService;
 
   sortResults(results: FilteredResult[], { sort, filters }: Search): StepDTO[] {
@@ -35,7 +35,7 @@ export class SortResultsService {
           results,
           [
             ({ item }) => item.view_records?.length || 0,
-            ({ item }) => item.updated_at
+            ({ item }) => item.updated_at,
           ],
           [sortDirection, reverseSortDirection]
         );
@@ -46,7 +46,7 @@ export class SortResultsService {
           results,
           [
             ({ item }) => first(item.view_records),
-            ({ item }) => item.updated_at
+            ({ item }) => item.updated_at,
           ],
           [sortDirection, reverseSortDirection]
         );
@@ -57,7 +57,7 @@ export class SortResultsService {
           results,
           [
             ({ item }) => first(item.practice_records)?.date || 0,
-            ({ item }) => item.updated_at
+            ({ item }) => item.updated_at,
           ],
           [sortDirection, reverseSortDirection]
         );
@@ -65,9 +65,9 @@ export class SortResultsService {
 
       case SortType.SCORE:
         sortedResults = orderBy(
-          results.map(result => ({
+          results.map((result) => ({
             item: result.item,
-            score: this.scorer.score(result, filters)
+            score: this.scorer.score(result, filters),
           })),
           ["score"],
           [sortDirection]
@@ -76,6 +76,6 @@ export class SortResultsService {
         break;
     }
 
-    return sortedResults.map(result => result.item);
+    return sortedResults.map((result) => result.item);
   }
 }

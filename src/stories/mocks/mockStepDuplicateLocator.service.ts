@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { DuplicateLocator } from "@/lib/duplicateLocator.interface";
 import { StepDTO } from "../../../common/types/Step";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";

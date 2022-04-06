@@ -3,7 +3,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "../../stories/decorators";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Checklist from "@/components/Forms/Checklist.vue";
@@ -15,8 +15,8 @@ export default {
     Spacing,
     WithGlobalStyles,
     Container("600px"),
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const ListOfCheckboxes = () => ({
@@ -34,20 +34,20 @@ export const ListOfCheckboxes = () => ({
   props: {
     label: {
       type: String,
-      default: text("label", "Just a select")
+      default: text("label", "Just a select"),
     },
     options: {
       type: Array,
-      default: ["a", "b", "c"]
+      default: ["a", "b", "c"],
     },
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    values: []
-  })
+    values: [],
+  }),
 });
 
 export const GivenValues = () => ({
@@ -65,18 +65,18 @@ export const GivenValues = () => ({
   props: {
     label: {
       type: String,
-      default: text("label", "Just a select")
+      default: text("label", "Just a select"),
     },
     options: {
       type: Array,
-      default: ["a", "b", "c"]
+      default: ["a", "b", "c"],
     },
     hasError: {
       type: Boolean,
-      default: boolean("invalid", false)
-    }
+      default: boolean("invalid", false),
+    },
   },
   data: () => ({
-    values: ["c", "b"]
-  })
+    values: ["c", "b"],
+  }),
 });

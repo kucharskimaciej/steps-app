@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { firebase, UploadTask } from "@/lib/firebase/firebase";
 
 @Service()

@@ -4,7 +4,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
@@ -20,7 +20,7 @@ stories.add("Basic", () => ({
   template: `<PureIcon :type="type" />`,
   props: {
     type: {
-      default: text("Type", "search")
-    }
-  }
+      default: text("Type", "search"),
+    },
+  },
 }));

@@ -1,13 +1,13 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import { Step } from "../../../../common/types/Step";
 
 const StepTitle = defineComponent({
   components: {},
   props: {
     step: Object as PropType<Step>,
-    linkToVideo: Boolean
-  }
+    linkToVideo: Boolean,
+  },
 });
 
 export default StepTitle;
@@ -19,7 +19,7 @@ export default StepTitle;
 
     <span
       :class="{
-        'focus:outline-none focus:bg-yellow-base cursor-pointer': linkToVideo
+        'focus:outline-none focus:bg-yellow-base cursor-pointer': linkToVideo,
       }"
       >{{ step.name }}</span
     >

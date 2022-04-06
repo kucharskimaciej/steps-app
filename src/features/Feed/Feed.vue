@@ -1,11 +1,5 @@
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  PropType,
-  reactive,
-  ref
-} from "@vue/composition-api";
+import { defineComponent, onMounted, PropType, reactive, ref } from "vue";
 import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
 import FeedStep from "@/features/Feed/FeedStep.vue";
 import ProvideScaledVideoSize from "@/components/Providers/ProvideScaledVideoSize";
@@ -16,14 +10,14 @@ const Feed = defineComponent({
     DynamicScroller,
     DynamicScrollerItem,
     FeedStep,
-    ProvideScaledVideoSize
+    ProvideScaledVideoSize,
   },
   props: {
     steps: {
       type: Array as PropType<Step[]>,
-      required: true
+      required: true,
     },
-    pageMode: Boolean
+    pageMode: Boolean,
   },
   setup() {
     const rootEl = ref<HTMLElement>();
@@ -37,9 +31,9 @@ const Feed = defineComponent({
     return {
       rootEl,
       stepVideoHeight,
-      width
+      width,
     };
-  }
+  },
 });
 
 export default Feed;
@@ -66,7 +60,7 @@ export default Feed;
             :target-width="width"
             @updated-height="stepVideoHeight[item.id] = $event"
           >
-            <template #default="{scaledVideoHeight}">
+            <template #default="{ scaledVideoHeight }">
               <div class="mb-4">
                 <slot :step="item" :video-height="scaledVideoHeight">
                   <FeedStep :step="item" :video-height="scaledVideoHeight" />

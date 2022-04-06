@@ -3,35 +3,40 @@ import {
   Spacing,
   WithGlobalStyles,
   Container,
-  NeutralBackground
+  NeutralBackground,
 } from "@/stories/decorators";
 import SearchWidget from "@/features/Search/SearchWidget.vue";
 
 export default {
   title: "Components/SearchWidget",
-  decorators: [Container("600px"), Spacing, NeutralBackground, WithGlobalStyles]
+  decorators: [
+    Container("600px"),
+    Spacing,
+    NeutralBackground,
+    WithGlobalStyles,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    SearchWidget
+    SearchWidget,
   },
   template: `
       <SearchWidget />
     `,
   methods: {},
   data: () => ({}),
-  props: {}
+  props: {},
 });
 
 export const WithActiveSearch: () => Component = () => ({
   components: {
-    SearchWidget
+    SearchWidget,
   },
   template: `
       <SearchWidget search-active />
     `,
   methods: {},
   data: () => ({}),
-  props: {}
+  props: {},
 });

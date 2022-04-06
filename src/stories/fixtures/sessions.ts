@@ -9,7 +9,7 @@ export function sessionsFactory(): PracticeSession[] {
       locked: false,
       name: "Pusta sesja",
       steps: [],
-      created_at: Date.now() - 10
+      created_at: Date.now() - 10,
     },
     {
       id: "session-5",
@@ -17,7 +17,7 @@ export function sessionsFactory(): PracticeSession[] {
       locked: false,
       name: "A practice session",
       steps: ["step-1", "step-2", "step-3"],
-      created_at: Date.now() - 9
+      created_at: Date.now() - 9,
     },
     {
       id: "session-2",
@@ -25,7 +25,7 @@ export function sessionsFactory(): PracticeSession[] {
       locked: false,
       name: "Tepy",
       steps: ["step-1", "step-2", "step-3", "step-4"],
-      created_at: Date.now() - 8
+      created_at: Date.now() - 8,
     },
     {
       id: "session-3",
@@ -33,7 +33,7 @@ export function sessionsFactory(): PracticeSession[] {
       locked: false,
       name: "Prywatna z nowaczkami 23/03",
       steps: ["step-1", "step-2", "step-3", "step-4"],
-      created_at: Date.now() - 7
+      created_at: Date.now() - 7,
     },
     {
       id: "session-4",
@@ -41,14 +41,14 @@ export function sessionsFactory(): PracticeSession[] {
       locked: true,
       name: "Another practice session",
       steps: ["step-1", "step-2", "step-3"],
-      created_at: Date.now() - 6
-    }
+      created_at: Date.now() - 6,
+    },
   ];
 }
 
 export function makeSession({
   steps = 3,
-  longName = false
+  longName = false,
 }: {
   steps?: number;
   longName?: boolean;
@@ -56,10 +56,10 @@ export function makeSession({
   const session: Partial<PracticeSession> = {
     id: "session-1",
     owner_uid: "user-1",
-    created_at: Date.now()
+    created_at: Date.now(),
   };
 
-  session.steps = range(steps).map(idx => `step-${idx}`);
+  session.steps = range(steps).map((idx) => `step-${idx}`);
 
   if (longName) {
     session.name =

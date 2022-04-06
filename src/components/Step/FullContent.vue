@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "@vue/composition-api";
+import { computed, defineComponent, PropType, ref } from "vue";
 import StepTitle from "@/components/Step/components/StepTitle.vue";
 import StepVideoLinks from "@/components/Step/components/VideoLinks.vue";
 import Tags from "@/components/Step/components/Tags.vue";
@@ -15,13 +15,13 @@ const FullContent = defineComponent({
     Tags,
     Variations,
     InlineModal,
-    VideoModal
+    VideoModal,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ step }) {
     const firstVideo = computed(() => step.videos[0]);
@@ -29,9 +29,9 @@ const FullContent = defineComponent({
 
     return {
       firstVideo,
-      videoModal
+      videoModal,
     };
-  }
+  },
 });
 
 export default FullContent;
@@ -56,9 +56,7 @@ export default FullContent;
     <Tags :step="step" category="content" class="mb-2" />
 
     <section v-if="step.variations.length > 0" class="text-sm">
-      <h2 class="font-semibold">
-        Variations
-      </h2>
+      <h2 class="font-semibold">Variations</h2>
       <Variations :step="step" />
     </section>
 

@@ -1,6 +1,8 @@
-import Vue from "vue";
 import { MODAL_STYLE } from "@/lib/modals/modals";
+import { Plugin } from "vue";
 
-export default function ModalsPlugin() {
-  Vue.prototype.$modalStyle = MODAL_STYLE;
-}
+const ModalsPlugin: Plugin = (app) => {
+  app.config.globalProperties.$modalStyle = MODAL_STYLE;
+};
+
+export default ModalsPlugin;

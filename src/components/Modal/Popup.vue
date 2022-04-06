@@ -1,12 +1,12 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import { useModalView } from "@/components/Modal/modalClass";
 
 const Popup = defineComponent({
   emits: ["close"],
   setup(_, ctx) {
     return useModalView(ctx);
-  }
+  },
 });
 
 export default Popup;

@@ -3,7 +3,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import FileInput from "@/components/Forms/FileInput.vue";
 import { action } from "@storybook/addon-actions";
@@ -16,8 +16,8 @@ export default {
     Container("600px"),
     Spacing,
     NeutralBackground,
-    WithGlobalStyles
-  ]
+    WithGlobalStyles,
+  ],
 };
 
 export const Default = () => ({
@@ -26,8 +26,8 @@ export const Default = () => ({
       <FileInput @file-selected="handleChange" />
   </section>`,
   methods: {
-    handleChange: action("CHANGE")
-  }
+    handleChange: action("CHANGE"),
+  },
 });
 
 export const CustomCTA = () => ({
@@ -38,6 +38,6 @@ export const CustomCTA = () => ({
       </FileInput>
   </section>`,
   methods: {
-    handleChange: action("CHANGE")
-  }
+    handleChange: action("CHANGE"),
+  },
 });

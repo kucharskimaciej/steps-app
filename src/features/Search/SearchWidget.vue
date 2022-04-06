@@ -1,17 +1,17 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 
 const SearchWidget = defineComponent({
   components: {
     PureIcon,
-    PureButton
+    PureButton,
   },
   props: {
-    searchActive: Boolean
+    searchActive: Boolean,
   },
-  emits: []
+  emits: [],
 });
 
 export default SearchWidget;

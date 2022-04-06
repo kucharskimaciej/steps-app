@@ -6,11 +6,11 @@ export const STEP_DIFFICULTIES: ReadonlyRecord<StepDifficulty, string> = {
   2: "Easy",
   3: "Intermediate",
   5: "Hard",
-  8: "Very hard"
+  8: "Very hard",
 };
 
 export const KINDS: ReadonlyRecord<StepKind, string> = {
   step: "Step",
   inspiration: "Inspiration",
-  routine: "Routine"
+  routine: "Routine",
 };

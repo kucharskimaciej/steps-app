@@ -2,7 +2,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import { Tag as TagType, TagTypes } from "../../../common/types/Tag";
 import RemovableTag from "@/components/Tags/RemovableTag.vue";
@@ -16,17 +16,17 @@ export default {
     WithGlobalStyles,
     Container("600px"),
     Spacing,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const CanBeRemoved = () => ({
   components: { RemovableTag },
   template: "<RemovableTag :tag='tag' @remove='handleRemove' />",
   data: () => ({
-    tag: { text: "Semba", type: TagTypes.FEELING } as TagType
+    tag: { text: "Semba", type: TagTypes.FEELING } as TagType,
   }),
   methods: {
-    handleRemove: action("REMOVE")
-  }
+    handleRemove: action("REMOVE"),
+  },
 });

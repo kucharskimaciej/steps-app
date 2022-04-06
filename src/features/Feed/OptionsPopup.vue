@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PopupMenu from "@/components/PopupMenu/PopupMenu.vue";
 import PopupMenuItem from "@/components/PopupMenu/PopupMenuItem.vue";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard.vue";
@@ -9,14 +9,14 @@ const OptionsPopup = defineComponent({
   components: {
     PopupMenu,
     PopupMenuItem,
-    CopyToClipboard
+    CopyToClipboard,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 });
 
 export default OptionsPopup;
@@ -29,18 +29,14 @@ export default OptionsPopup;
     </template>
 
     <CopyToClipboard
-      :value="step | shortLink($router)"
+      :value="$filters.shortLink(step, $router)"
       class="ml-auto self-start"
     >
-      <PopupMenuItem>
-        Copy link
-      </PopupMenuItem>
+      <PopupMenuItem> Copy link </PopupMenuItem>
     </CopyToClipboard>
 
     <slot name="customOptions" />
 
-    <PopupMenuItem>
-      Cancel
-    </PopupMenuItem>
+    <PopupMenuItem> Cancel </PopupMenuItem>
   </PopupMenu>
 </template>

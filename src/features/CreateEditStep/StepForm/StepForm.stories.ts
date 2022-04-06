@@ -4,11 +4,11 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import { Component } from "vue";
 import { AlwaysDuplicate } from "@/stories/mocks/mockStepDuplicateLocator.service";
-import { Container as DIContainer } from "vue-typedi";
+import { Container as DIContainer } from "typedi";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -25,14 +25,14 @@ export default {
     Container("600px"),
     Spacing,
     WithGlobalStyles,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const EmptyForm: () => Component = () => ({
   components: {
     StepForm,
-    PureButton
+    PureButton,
   },
   template: `<main>
       <StepForm ref="form" :existing-tags="tags" :existing-artists="artists" />
@@ -40,22 +40,22 @@ export const EmptyForm: () => Component = () => ({
   </main>`,
   methods: {
     handleSave() {
-      const form = ((this as Vue).$refs.form as unknown) as StepFormApi;
+      const form = (this as Vue).$refs.form as unknown as StepFormApi;
       if (form.validate()) {
         action("HANDLE_SAVE")(form.value);
       }
-    }
+    },
   },
   data: () => ({
     tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
-    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"]
-  })
+    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"],
+  }),
 });
 
 export const WithData: () => Component = () => ({
   components: {
     StepForm,
-    PureButton
+    PureButton,
   },
   template: `<main>
       <StepForm ref="form" :step="step" :existing-tags="tags" :existing-artists="artists" />
@@ -63,19 +63,19 @@ export const WithData: () => Component = () => ({
   </main>`,
   methods: {
     handleSave() {
-      const form = ((this as Vue).$refs.form as unknown) as StepFormApi;
+      const form = (this as Vue).$refs.form as unknown as StepFormApi;
       if (form.validate()) {
         action("HANDLE_SAVE")(form.value);
       }
-    }
+    },
   },
   data: () => ({
     tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
-    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"]
+    artists: ["Nowak & Majchrowska", "Ricardo & Paula", "Tomek & Marzena"],
   }),
   props: {
     step: {
-      default: rawStepFactory()
-    }
-  }
+      default: rawStepFactory(),
+    },
+  },
 });

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import Tags from "@/components/Step/components/Tags.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import PureToggleButton from "@/components/PureToggleButton/PureToggleButton.vue";
@@ -11,30 +11,30 @@ import { Step } from "../../../common/types/Step";
 const PureStepListItem = defineComponent({
   components: {
     Tags,
-    PureTag,
-    PureToggleButton,
     PureButton,
     PureIcon,
-    CopyToClipboard
+    CopyToClipboard,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
-    isSelected: Boolean
+    isSelected: Boolean,
   },
-  setup({ step }) {
-    const primaryVideoUrl = computed(() => step.videos[0].url);
+  setup(props) {
+    const primaryVideoUrl = computed(() => props.step.videos[0].url);
     const restVideoUrls = computed(() => {
-      const [, ...restVideos] = step.videos || [];
-      return restVideos.map(video => video.url);
+      const [, ...restVideos] = props.step.videos || [];
+      return restVideos.map((video) => video.url);
     });
 
-    const hasMoreVideos = computed(() => step.videos.length > 1);
-    const hasVariations = computed(() => step.variations.length > 1);
+    const hasMoreVideos = computed(() => props.step.videos.length > 1);
+    const hasVariations = computed(() => props.step.variations.length > 1);
 
-    const lastPracticeDate = computed(() => step.practice_records?.[0]?.date);
+    const lastPracticeDate = computed(
+      () => props.step.practice_records?.[0]?.date
+    );
 
     return {
       primaryVideoUrl,
@@ -43,9 +43,9 @@ const PureStepListItem = defineComponent({
       hasVariations,
       lastPracticeDate,
       detailClasses: "text-sm text-gray-700 mb-1",
-      detailIconClasses: "mr-2 text-lg"
+      detailIconClasses: "mr-2 text-lg",
     };
-  }
+  },
 });
 
 export default PureStepListItem;
@@ -57,7 +57,7 @@ export default PureStepListItem;
     class="p-4 bg-mono-white rounded flex items-start"
     :class="{
       'border-white border': !isSelected,
-      'border-green-base border-2': isSelected
+      'border-green-base border-2': isSelected,
     }"
   >
     <main class="w-full">
@@ -76,7 +76,7 @@ export default PureStepListItem;
 
         <aside class="flex flex-shrink-0 ml-4">
           <router-link v-slot="{ navigate }" :to="`/edit/${step.id}`">
-            <PureButton kind="ghost" class="mr-2" @click.native="navigate">
+            <PureButton kind="ghost" class="mr-2" @click="navigate">
               <PureIcon type="edit" /> Edit
             </PureButton>
           </router-link>
@@ -109,20 +109,18 @@ export default PureStepListItem;
           <li v-if="step.created_at" :class="detailClasses">
             <PureIcon type="date_range" :class="detailIconClasses" />
             <strong>Created</strong>
-            {{ step.created_at | smartDate }}
+            {{ $filters.smartDate(step.created_at) }}
           </li>
 
           <li v-if="lastPracticeDate" :class="detailClasses">
             <PureIcon type="timer" :class="detailIconClasses" />
             <strong>Last practiced </strong>
-            {{ lastPracticeDate | smartDate }}
+            {{ $filters.smartDate(lastPracticeDate) }}
           </li>
         </ul>
       </section>
       <section v-if="hasVariations" class="text-sm text-gray-700 mt-3">
-        <h2 class="font-semibold">
-          Variations
-        </h2>
+        <h2 class="font-semibold">Variations</h2>
         <a
           v-for="variation in step.variations"
           :key="variation.id"
@@ -133,10 +131,11 @@ export default PureStepListItem;
         </a>
       </section>
 
+      {{ $router }}
       <section class="mt-3 text-sm">
         Shortlink:
-        <CopyToClipboard :value="step | shortLink($router)">
-          {{ step | shortLink($router) }}
+        <CopyToClipboard :value="$filters.shortLink(step, $router)">
+          {{ $filters.shortLink(step, $router) }}
         </CopyToClipboard>
       </section>
     </main>

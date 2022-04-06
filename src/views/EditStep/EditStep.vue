@@ -1,20 +1,8 @@
 <script lang="ts">
-import { Component, Ref, Watch } from "vue-property-decorator";
-import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
-import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
-import { StepDTO, Step } from "../../../common/types/Step";
-import "@/lib/stepsByHashDuplicateLocator";
-import { ROUTES } from "@/router/routes";
-import PureButton from "@/components/PureButton/PureButton.vue";
-import {
-  dispatchUpdateStep,
-  existingArtists,
-  existingTags,
-  getSteps,
-  stepsById
-} from "@/store";
-import { VueWithStore } from "@/lib/vueWithStore";
+import { defineComponent } from "vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
+import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
+import PureButton from "@/components/PureButton/PureButton.vue";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 import PureStepList from "@/components/StepList/PureStepList.vue";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
@@ -22,108 +10,131 @@ import ContentBox from "@/components/ContentBox/ContentBox.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 import FullContent from "@/components/Step/FullContent.vue";
 import Card from "@/components/Card/Card.vue";
+import {
+  dispatchUpdateStep,
+  existingArtists as getExistingArtists,
+  existingTags as getExistingTags,
+  getSteps,
+  stepsById,
+  useStore,
+} from "@/store";
+import { computed, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { StepFormApi } from "@/features/CreateEditStep/StepForm/types";
+import { ROUTES } from "@/router";
 import { sortBy, without } from "lodash";
 import { getStepScore } from "@/lib/variations/variationStepScore";
 
-@Component({
+const EditStep = defineComponent({
   components: {
     WideWithSidebarRight,
     StepForm,
     PureButton,
-    VideoInput,
-    PureStepList,
     AllStepsProvider,
     ContentBox,
     SelectToggleWidget,
     FullContent,
-    Card
-  }
-})
-export default class EditStep extends VueWithStore {
-  @Ref("form") readonly form!: StepFormApi;
-  selectedVariations: string[] = [];
+    Card,
+  },
+  emits: [],
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
 
-  get step(): StepDTO {
-    return this.$store.state.steps.rawSteps.find(
-      step => this.$route.params.stepId === step.id
-    )!;
-  }
+    const selectedVariations = ref<string[]>([]);
+    const form = ref<StepFormApi>();
 
-  @Watch("step", { immediate: true })
-  handleStepsLoaded() {
-    if (this.step) {
-      this.selectedVariations = this.step.variationKey
-        ? [this.step.variationKey]
-        : [];
-    }
-  }
-
-  async saveStep() {
-    if (this.form.validate()) {
-      await dispatchUpdateStep(this.$store, {
-        stepId: this.step.id,
-        params: this.form.value,
-        selectedVariations: this.selectedVariations
-      });
-    }
-  }
-
-  async submitAndRedirect() {
-    try {
-      await this.saveStep();
-      await this.$router.push({ name: ROUTES.STEP_LIST });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  toggleVariationSelected(stepId: string): void {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return;
-    }
-
-    if (this.selectedVariations.includes(step.variationKey)) {
-      this.selectedVariations = without(
-        this.selectedVariations,
-        step.variationKey
+    const step = computed(() => {
+      return store.state.steps.rawSteps.find(
+        (s) => route.params.stepId === s.id
       );
-    } else {
-      this.selectedVariations.push(step.variationKey);
-    }
-  }
+    });
 
-  isPartOfSelectedVariation(stepId: string): boolean {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return false;
-    }
+    const existingTags = computed(() => getExistingTags(store));
+    const existingArtists = computed(() => getExistingArtists(store));
 
-    return this.selectedVariations.includes(step.variationKey);
-  }
-
-  get stepsByScore(): Step[] {
-    const scoringResults = this.$store.state.steps.rawSteps.reduce(
-      (acc, step) => {
-        acc[step.id] = this.form?.value
-          ? getStepScore(step, this.form.value)
+    const stepsByScore = computed(() => {
+      const scoringResults = store.state.steps.rawSteps.reduce((acc, step) => {
+        acc[step.id] = form.value?.value
+          ? getStepScore(step, form.value?.value)
           : 0;
         return acc;
+      }, {} as Record<string, number>);
+
+      return sortBy(getSteps(store), (step) => -scoringResults[step.id]);
+    });
+
+    watch(
+      step,
+      (newStep) => {
+        if (newStep) {
+          selectedVariations.value = newStep.variationKey
+            ? [newStep.variationKey]
+            : [];
+        }
       },
-      {} as Record<string, number>
+      { immediate: true }
     );
 
-    return sortBy(getSteps(this.$store), step => -scoringResults[step.id]);
-  }
+    async function saveStep() {
+      if (step.value && form.value && form.value?.validate()) {
+        await dispatchUpdateStep(store, {
+          stepId: step.value.id,
+          params: form.value.value,
+          selectedVariations: selectedVariations.value,
+        });
+      }
+    }
 
-  get existingTags() {
-    return existingTags(this.$store);
-  }
+    async function submitAndRedirect() {
+      try {
+        await saveStep();
+        await router.push({ name: ROUTES.STEP_LIST });
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-  get existingArtists() {
-    return existingArtists(this.$store);
-  }
-}
+    function toggleVariationSelected(stepId: string): void {
+      const step = stepsById(store)[stepId];
+      if (!step) {
+        return;
+      }
+
+      if (selectedVariations.value.includes(step.variationKey)) {
+        selectedVariations.value = without(
+          selectedVariations.value,
+          step.variationKey
+        );
+      } else {
+        selectedVariations.value.push(step.variationKey);
+      }
+    }
+
+    function isPartOfSelectedVariation(stepId: string): boolean {
+      const step = stepsById(store)[stepId];
+      if (!step) {
+        return false;
+      }
+
+      return selectedVariations.value.includes(step.variationKey);
+    }
+
+    return {
+      step,
+      existingTags,
+      existingArtists,
+      stepsByScore,
+      submitAndRedirect,
+      toggleVariationSelected,
+      isPartOfSelectedVariation,
+      saveStep,
+    };
+  },
+});
+
+export default EditStep;
 </script>
 
 <template>
@@ -134,7 +145,7 @@ export default class EditStep extends VueWithStore {
           class="mr-2"
           kind="primary"
           spacing="wide"
-          @click.native="submitAndRedirect"
+          @click="submitAndRedirect"
         >
           Save
         </PureButton>

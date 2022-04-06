@@ -1,16 +1,11 @@
-import { CreateElement } from "vue";
-import { Component, Emit } from "vue-property-decorator";
-import {
-  IntersectComponentProps,
-  intersectComponentPropsType
-} from "@/components/Intersect/intersectComponentProps";
+import { intersectComponentPropsType } from "@/components/Intersect/intersectComponentProps";
 import {
   defineComponent,
   onMounted,
   ref,
   nextTick,
-  onBeforeUnmount
-} from "@vue/composition-api";
+  onBeforeUnmount,
+} from "vue";
 
 const Intersect = defineComponent({
   props: intersectComponentPropsType,
@@ -30,7 +25,7 @@ const Intersect = defineComponent({
         },
         {
           threshold,
-          root: viewportRoot
+          root: viewportRoot,
         }
       );
 
@@ -56,7 +51,7 @@ const Intersect = defineComponent({
     });
 
     return () => defaultSlot.value;
-  }
+  },
 });
 
 export default Intersect;

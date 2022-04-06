@@ -1,4 +1,4 @@
-import Vuex, { Store } from "vuex";
+import { Store, createStore, useStore as originalUseStore } from "vuex";
 import { RootState } from "@/store/types";
 import { auth } from "@/store/modules/auth";
 import { steps } from "@/store/modules/steps";
@@ -12,7 +12,7 @@ let store: Store<RootState>;
 
 export function provideStore(): Store<RootState> {
   if (!store) {
-    store = new Vuex.Store<RootState>({
+    store = createStore<RootState>({
       modules: {
         auth,
         steps,
@@ -20,8 +20,8 @@ export function provideStore(): Store<RootState> {
         currentStep,
         practiceSessions,
         selectedSession,
-        inlineEdit
-      }
+        inlineEdit,
+      },
     });
   }
 
@@ -29,5 +29,5 @@ export function provideStore(): Store<RootState> {
 }
 
 export function useStore() {
-  return provideStore();
+  return originalUseStore();
 }

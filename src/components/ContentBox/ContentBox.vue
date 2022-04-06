@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 
 type Overflow = "default" | "hidden" | "scroll";
 
@@ -7,9 +7,9 @@ const ContentBox = defineComponent({
   props: {
     overflow: {
       type: String as PropType<Overflow>,
-      default: "default"
-    }
-  }
+      default: "default",
+    },
+  },
 });
 
 export default ContentBox;
@@ -20,7 +20,7 @@ export default ContentBox;
     class="p-4 border-gray-300"
     :class="{
       'overflow-y-hidden': overflow === 'hidden',
-      'overflow-y-auto': overflow === 'scroll'
+      'overflow-y-auto': overflow === 'scroll',
     }"
   >
     <div>

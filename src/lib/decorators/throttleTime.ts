@@ -14,7 +14,7 @@ export function ThrottleTime(
     const originalFn = componentOptions.methods[fnName];
 
     componentOptions.methods[fnName] = throttle(
-      function(this: Vue, ...args) {
+      function (this: Vue, ...args) {
         originalFn.apply(this, args);
       },
       time,

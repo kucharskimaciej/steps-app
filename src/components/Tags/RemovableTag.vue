@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import { Tag } from "../../../common/types/Tag";
@@ -7,16 +7,16 @@ import { Tag } from "../../../common/types/Tag";
 const RemovableTag = defineComponent({
   components: {
     PureTag,
-    PureIcon
+    PureIcon,
   },
   props: {
     tag: Object as PropType<Tag>,
     showType: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  emits: ["remove"]
+  emits: ["remove"],
 });
 
 export default RemovableTag;

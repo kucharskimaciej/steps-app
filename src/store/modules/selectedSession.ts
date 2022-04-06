@@ -1,10 +1,10 @@
 import { ActionContext } from "vuex";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { RootState, SelectedSessionState } from "@/store/types";
 import {
   createModule,
   provideInitialStatus,
-  updateStatus
+  updateStatus,
 } from "@/store/createModule";
 import { PracticeSession } from "../../../common/types/PracticeSession";
 import { getStoreAccessors } from "typesafe-vuex";
@@ -30,7 +30,7 @@ export const selectedSession = createModule(
         }
 
         await dispatchUpdateSession(context, {
-          steps: [...context.state.session.steps, stepId]
+          steps: [...context.state.session.steps, stepId],
         });
       },
       async removeStep(context: SelectedSessionContext, stepId: string) {
@@ -39,7 +39,7 @@ export const selectedSession = createModule(
         }
 
         await dispatchUpdateSession(context, {
-          steps: without(context.state.session.steps, stepId)
+          steps: without(context.state.session.steps, stepId),
         });
       },
       async changeName(context: SelectedSessionContext, name: string) {
@@ -65,7 +65,7 @@ export const selectedSession = createModule(
         const resource = Container.get(PracticeSessionsResource);
         const updatedSession: PracticeSession = {
           ...context.state.session,
-          locked: !context.state.session.locked
+          locked: !context.state.session.locked,
         };
 
         commitSetSession(context, updatedSession);
@@ -80,7 +80,7 @@ export const selectedSession = createModule(
         await resource.remove(context.state.session.id);
         await router.push({ name: ROUTES.SESSIONS });
         commitSetSession(context, null);
-      }
+      },
     },
     mutations: {
       updateStatus,
@@ -94,16 +94,16 @@ export const selectedSession = createModule(
         if (state.session && !state.session.locked) {
           state.session = {
             ...state.session,
-            ...payload
+            ...payload,
           };
         }
-      }
+      },
     },
-    getters: {}
+    getters: {},
   },
   {
     ...provideInitialStatus(),
-    session: null
+    session: null,
   } as SelectedSessionState
 );
 

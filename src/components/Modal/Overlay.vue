@@ -1,19 +1,19 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import Close from "@/components/Modal/Close.vue";
 import { useModalView } from "@/components/Modal/modalClass";
 
 const Overlay = defineComponent({
   components: {
-    Close
+    Close,
   },
   emits: ["close"],
   props: {
-    borderless: Boolean
+    borderless: Boolean,
   },
   setup(_, ctx) {
     return useModalView(ctx);
-  }
+  },
 });
 
 export default Overlay;
@@ -21,12 +21,12 @@ export default Overlay;
 
 <template>
   <div
-    class="relative overflow-hidden desktop:rounded desktop:my-10 desktop:mx-auto max-w-6xl w-full desktop:m-h-80 desktop:m-w-screen "
+    class="relative overflow-hidden desktop:rounded desktop:my-10 desktop:mx-auto max-w-6xl w-full desktop:m-h-80 desktop:m-w-screen"
   >
     <main
       class="bg-gray-100 w-full h-full overflow-y-auto"
       :class="{
-        'p-2 pt-10 desktop:p-14': !borderless
+        'p-2 pt-10 desktop:p-14': !borderless,
       }"
     >
       <slot />

@@ -1,33 +1,63 @@
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Feeling, StepDTO } from "../../../../common/types/Step";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
-import { KINDS } from "../../../../common/constants";
 import Checklist from "@/components/Forms/Checklist.vue";
-import {
-  StepFormApi,
-  StepFormData
-} from "@/features/CreateEditStep/StepForm/types";
-import { validationMixin } from "vuelidate";
-import { minLength, required } from "vuelidate/lib/validators";
-import { oneOf } from "@/lib/validators/oneOf";
-import { duplicate } from "@/lib/validators/duplicate";
-import { Inject } from "vue-typedi";
-import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import Textarea from "@/components/Forms/Textarea.vue";
-import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
-import { SmartTags } from "../../../../common/lib/smartTags/smartTags.service";
-import { DebounceTime } from "@/lib/decorators/debouceTime";
-import { uniq, head, difference } from "lodash";
-import { TokenizeService } from "@/lib/tokenize.service";
 import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
+import type { StepDTO } from "../../../../common/types/Step";
+import { Container } from "typedi";
+import { SmartTags } from "../../../../common/lib/smartTags/smartTags.service";
+import { TokenizeService } from "@/lib/tokenize.service";
+import { StepFormData } from "@/features/CreateEditStep/StepForm/types";
+import { KINDS } from "../../../../common/constants";
+import { Feeling } from "../../../../common/types/Step";
+import useVuelidate from "@vuelidate/core";
+import { debounce, difference, head, uniq } from "lodash";
+import { duplicate } from "@/lib/validators/duplicate";
+import { oneOf } from "@/lib/validators/oneOf";
+import { minLength, required } from "@vuelidate/validators";
+import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { AppConfigToken } from "../../../../common/tokens";
-import { AppConfig } from "../../../../common/config/types";
+import { Ref } from "@vue/reactivity";
+import {
+  DuplicateLocator,
+  StepDuplicateLocator,
+} from "@/lib/duplicateLocator.interface";
 
-@Component({
+function getDataObject(step: Partial<StepDTO> = {}): StepFormData {
+  const {
+    videos = [],
+    name = "",
+    difficulty = 1,
+    feeling = [],
+    kind = "step",
+    tags = [],
+    artists = [],
+    notes = "",
+    smart_tags = [],
+    removed_smart_tags = [],
+    tokens = [],
+  } = step;
+
+  return {
+    videos,
+    name,
+    difficulty,
+    feeling,
+    kind,
+    tags,
+    artists,
+    notes,
+    smart_tags,
+    removed_smart_tags,
+    tokens,
+  };
+}
+
+const StepForm = defineComponent({
   components: {
     FormGroup,
     SimpleInput,
@@ -35,215 +65,175 @@ import { AppConfig } from "../../../../common/config/types";
     TagsInput,
     Checklist,
     Textarea,
-    VideoInput
+    VideoInput,
   },
-  mixins: [validationMixin],
-  validations(this: StepForm) {
-    return {
-      formData: {
-        videos: {
-          required,
-          minLength: minLength(1),
-          $each: {
-            required,
-            duplicate: duplicate(
-              this.duplicateLocator,
-              this.step && this.step.id
-            )
-          }
-        },
-        name: {
-          required
-        },
-        difficulty: {
-          required,
-          oneOf: oneOf(Object.keys(this.appConfig.difficulties).map(Number))
-        },
-        kind: {
-          required,
-          oneOf: oneOf(Object.keys(KINDS))
-        },
-        feeling: {
-          required,
-          minLength: minLength(1)
-        },
-        artists: {},
-        tags: {
-          minLength: minLength(1)
-        },
-        notes: {},
-        smart_tags: {},
-        removed_smart_tags: {},
-        tokens: {}
-      }
-    };
-  }
-})
-export default class StepForm extends Vue implements StepFormApi {
-  @Prop({ default: () => [] }) private existingTags!: string[];
-  @Prop({ default: () => [] }) private existingArtists!: string[];
-  @Prop() private step!: StepDTO;
-
-  @Inject(StepsDuplicateLocatorToken)
-  private readonly duplicateLocator!: StepDuplicateLocator;
-
-  @Inject(AppConfigToken)
-  private readonly appConfig!: AppConfig;
-
-  @Inject()
-  private readonly smartTags!: SmartTags;
-
-  @Inject() private readonly tokenizer!: TokenizeService;
-
-  get value() {
-    return this.formData;
-  }
-
-  validate(): boolean {
-    this.$v.$touch();
-    return !this.$v.$invalid;
-  }
-
-  reset(value?: StepFormData): void {
-    this.formData = this.getDataObject(value);
-  }
-
-  formData: StepFormData = this.getDataObject(this.step);
-
-  @Watch("step", { immediate: true })
-  handleStepChange(step: StepDTO) {
-    if (step) {
-      this.formData = this.getDataObject(step);
-    }
-  }
-
-  @Watch("form.name.$model")
-  @DebounceTime(200)
-  handleNameChange(name: string) {
-    this.formData.smart_tags = difference(
-      this.smartTags.getSmartTags(name),
-      this.formData.removed_smart_tags
+  props: {
+    step: Object as PropType<StepDTO>,
+    existingTags: Array as PropType<string[]>,
+    existingArtists: Array as PropType<string[]>,
+  },
+  emits: ["input"],
+  setup(props, ctx) {
+    const duplicateLocator = Container.get<StepDuplicateLocator>(
+      StepsDuplicateLocatorToken
     );
+    const appConfig = Container.get(AppConfigToken);
+    const smartTags = Container.get(SmartTags);
+    const tokenizer = Container.get(TokenizeService);
 
-    this.formData.tokens = this.tokenizer.tokenize(name);
-  }
-
-  @Watch("formData", { immediate: true, deep: true })
-  handleFormValueChange(value: StepFormData) {
-    this.$emit("input", value);
-  }
-
-  get feelingValues(): Feeling[] {
-    return Object.keys(this.appConfig.feelings) as Feeling[];
-  }
-
-  feelingLabel(feeling: Feeling): string {
-    return this.appConfig.feelings[feeling];
-  }
-
-  get stepDifficulties() {
-    return this.appConfig.difficulties;
-  }
-
-  get stepKinds() {
-    return KINDS;
-  }
-
-  private getDataObject(step: Partial<StepDTO> = {}): StepFormData {
-    const {
-      videos = [],
-      name = "",
-      difficulty = 1,
-      feeling = [],
-      kind = "step",
-      tags = [],
-      artists = [],
-      notes = "",
-      smart_tags = [],
-      removed_smart_tags = [],
-      tokens = []
-    } = step;
-
-    return {
-      videos,
-      name,
-      difficulty,
-      feeling,
-      kind,
-      tags,
-      artists,
-      notes,
-      smart_tags,
-      removed_smart_tags,
-      tokens
-    };
-  }
-
-  get form() {
-    return this.$v.formData;
-  }
-
-  handleSmartTagRemove(newValue: string[]) {
-    const removedTag = head(difference(this.formData.smart_tags, newValue));
-    if (!removedTag) {
-      return;
-    }
-
-    this.formData.removed_smart_tags = uniq([
-      ...this.formData.removed_smart_tags,
-      removedTag
-    ]);
-  }
-
-  private isDuplicateAt(index: number): boolean {
-    return Boolean(
-      this.form?.videos?.$each && this.form?.videos?.$each[index].$error
+    const state: Ref<StepFormData> = ref<StepFormData>(
+      getDataObject(props.step)
     );
-  }
+    const rules = {
+      videos: {
+        required,
+        minLength: minLength(1),
+        $each: {
+          required,
+          duplicate: duplicate(duplicateLocator, props.step && props.step.id),
+        },
+      },
+      name: {
+        required,
+      },
+      difficulty: {
+        required,
+        oneOf: oneOf(Object.keys(appConfig.difficulties).map(Number)),
+      },
+      kind: {
+        required,
+        oneOf: oneOf(Object.keys(KINDS)),
+      },
+      feeling: {
+        required,
+        minLength: minLength(1),
+      },
+      artists: {},
+      tags: {
+        minLength: minLength(1),
+      },
+      notes: {},
+      smart_tags: {},
+      removed_smart_tags: {},
+      tokens: {},
+    };
 
-  get duplicateSteps(): Record<string, StepDTO> {
-    return this.value.videos.reduce((acc, element, index) => {
-      if (this.isDuplicateAt(index)) {
-        const duplicateStep = this.duplicateLocator.getDuplicate(
-          element,
-          this.step?.id
-        );
-        if (duplicateStep) {
-          acc[index] = duplicateStep;
+    const $v = useVuelidate(rules, state);
+
+    watch(
+      () => props.step,
+      (newStep) => {
+        if (newStep) {
+          state.value = getDataObject(props.step);
         }
       }
+    );
 
-      return acc;
-    }, {} as Record<string, StepDTO>);
-  }
-}
+    watch(
+      state,
+      (value) => {
+        ctx.emit("input", value);
+      },
+      { immediate: true, deep: true }
+    );
+
+    watch(
+      () => $v.value.name.$model,
+      debounce((name: string) => {
+        state.value.smart_tags = difference(
+          smartTags.getSmartTags(name),
+          state.value.removed_smart_tags
+        );
+
+        state.value.tokens = tokenizer.tokenize(name);
+      }, 200)
+    );
+
+    function feelingLabel(feeling: Feeling): string {
+      return appConfig.feelings[feeling];
+    }
+
+    function handleSmartTagRemove(newValue: string[]) {
+      const removedTag = head(difference(state.value.smart_tags, newValue));
+      if (!removedTag) {
+        return;
+      }
+
+      state.value.removed_smart_tags = uniq([
+        ...state.value.removed_smart_tags,
+        removedTag,
+      ]);
+    }
+
+    function isDuplicateAt(index: number): boolean {
+      return false;
+      // return Boolean(
+      //     this.form?.videos?.$each && this.form?.videos?.$each[index].$error
+      // );
+    }
+
+    const duplicateSteps = computed(() => {
+      return state.value.videos.reduce((acc, element, index) => {
+        if (isDuplicateAt(index)) {
+          const duplicateStep = duplicateLocator.getDuplicate(
+            element,
+            props.step?.id
+          );
+          if (duplicateStep) {
+            acc[index] = duplicateStep;
+          }
+        }
+
+        return acc;
+      }, {} as Record<string, StepDTO>);
+    });
+
+    function validate() {}
+    function reset(value?: StepFormData) {
+      state.value = getDataObject(value);
+    }
+
+    return {
+      stepKinds: KINDS,
+      stepDifficulties: appConfig.difficulties,
+      feelingValues: Object.keys(appConfig.feelings) as Feeling[],
+      feelingLabel,
+      handleSmartTagRemove,
+      duplicateSteps,
+      value: state,
+      $v,
+    };
+  },
+});
+
+export default StepForm;
 </script>
 
 <template>
   <form novalidate @submit.prevent>
     <main>
-      <FormGroup :validation="form.videos" label="Videos">
-        <VideoInput v-model="form.videos.$model">
+      <FormGroup :validation="$v.videos" label="Videos">
+        <VideoInput v-model="$v.videos.$model">
           <template
             v-for="(duplicateStep, index) in duplicateSteps"
             :slot="`helper-${index}`"
-            class="text-red-lighter"
+            :key="index"
           >
-            <span :key="index" class="text-sm">
+            <span class="text-red-lighter">
               Duplicate of {{ duplicateStep.name }}
             </span>
           </template>
         </VideoInput>
       </FormGroup>
 
-      <FormGroup label="Name" :validation="form.name">
-        <SimpleInput v-model.lazy="form.name.$model" />
+      <FormGroup label="Name" :validation="$v.name">
+        <SimpleInput v-model.lazy="$v.name.$model" />
       </FormGroup>
 
       <section class="flex">
         <div class="w-1/2 pr-3">
-          <FormGroup label="Kind" :validation="form.kind">
-            <Select v-model.number="form.kind.$model">
+          <FormGroup label="Kind" :validation="$v.kind">
+            <Select v-model.number="$v.kind.$model">
               <option
                 v-for="(label, value) in stepKinds"
                 :key="value"
@@ -254,8 +244,8 @@ export default class StepForm extends Vue implements StepFormApi {
             </Select>
           </FormGroup>
 
-          <FormGroup label="Difficulty" :validation="form.difficulty">
-            <Select v-model.number="form.difficulty.$model">
+          <FormGroup label="Difficulty" :validation="$v.difficulty">
+            <Select v-model.number="$v.difficulty.$model">
               <option
                 v-for="(label, value) in stepDifficulties"
                 :key="value"
@@ -267,20 +257,16 @@ export default class StepForm extends Vue implements StepFormApi {
           </FormGroup>
           <FormGroup label="Artists">
             <TagsInput
-              v-model="form.artists.$model"
+              v-model="$v.artists.$model"
               :autocomplete="existingArtists"
             />
           </FormGroup>
         </div>
 
-        <FormGroup
-          class="w-1/2 pl-3"
-          label="Feeling"
-          :validation="form.feeling"
-        >
+        <FormGroup class="w-1/2 pl-3" label="Feeling" :validation="$v.feeling">
           <Checklist
-            #default="{option}"
-            v-model="form.feeling.$model"
+            #default="{ option }"
+            v-model="$v.feeling.$model"
             :options="feelingValues"
           >
             {{ feelingLabel(option) }}
@@ -288,18 +274,18 @@ export default class StepForm extends Vue implements StepFormApi {
         </FormGroup>
       </section>
 
-      <FormGroup label="Tags" :validation="form.tags">
-        <TagsInput v-model="form.tags.$model" :autocomplete="existingTags" />
+      <FormGroup label="Tags" :validation="$v.tags">
+        <TagsInput v-model="$v.tags.$model" :autocomplete="existingTags" />
       </FormGroup>
 
       <section class="flex">
         <FormGroup
           class="w-1/2 pr-3"
           label="Smart tags"
-          :validation="form.smart_tags"
+          :validation="$v.smart_tags"
         >
           <TagsInput
-            :value="form.smart_tags.$model"
+            :value="$v.smart_tags.$model"
             :allow-new="false"
             @input="handleSmartTagRemove($event)"
           />
@@ -307,17 +293,14 @@ export default class StepForm extends Vue implements StepFormApi {
         <FormGroup
           class="w-1/2 pl-3"
           label="Removed smart tags"
-          :validation="form.removed_smart_tags"
+          :validation="$v.removed_smart_tags"
         >
-          <TagsInput
-            :value="form.removed_smart_tags.$model"
-            :allow-new="false"
-          />
+          <TagsInput :value="$v.removed_smart_tags.$model" :allow-new="false" />
         </FormGroup>
       </section>
 
-      <FormGroup label="Notes" :validation="form.notes">
-        <Textarea v-model="form.notes.$model" />
+      <FormGroup label="Notes" :validation="$v.notes">
+        <Textarea v-model="$v.notes.$model" />
       </FormGroup>
     </main>
   </form>

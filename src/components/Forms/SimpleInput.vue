@@ -1,11 +1,11 @@
 <script lang="ts">
-import { computed, defineComponent, inject, ref } from "@vue/composition-api";
+import { computed, defineComponent, inject, ref } from "vue";
 
 const SimpleInput = defineComponent({
   components: {},
   props: {
     value: String,
-    lazy: Boolean
+    lazy: Boolean,
   },
   emits: ["input"],
   setup(_, { emit }) {
@@ -30,9 +30,9 @@ const SimpleInput = defineComponent({
       hasError,
       validityClasses,
       handleValueInput,
-      focus
+      focus,
     };
-  }
+  },
 });
 
 export default SimpleInput;

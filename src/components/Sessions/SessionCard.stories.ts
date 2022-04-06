@@ -3,7 +3,7 @@ import {
   NeutralBackground,
   Spacing,
   WithGlobalStyles,
-  Container
+  Container,
 } from "@/stories/decorators";
 import SessionCard from "@/components/Sessions/SessionCard.vue";
 import { makeSession } from "@/stories/fixtures/sessions";
@@ -19,50 +19,50 @@ export default {
         routes: [
           {
             name: ROUTES.SESSION,
-            path: "/session/:stepId"
-          }
-        ]
+            path: "/session/:stepId",
+          },
+        ],
       }
     ),
     Container("300px"),
     Spacing,
     WithGlobalStyles,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const Default: () => Component = () => ({
   components: {
-    SessionCard
+    SessionCard,
   },
   template: `<SessionCard :session="session" />`,
   methods: {},
   data: () => ({
-    session: makeSession()
+    session: makeSession(),
   }),
-  props: {}
+  props: {},
 });
 
 export const Empty: () => Component = () => ({
   components: {
-    SessionCard
+    SessionCard,
   },
   template: `<SessionCard :session="session" />`,
   methods: {},
   data: () => ({
-    session: makeSession({ steps: 0 })
+    session: makeSession({ steps: 0 }),
   }),
-  props: {}
+  props: {},
 });
 
 export const LongName: () => Component = () => ({
   components: {
-    SessionCard
+    SessionCard,
   },
   template: `<SessionCard :session="session" />`,
   methods: {},
   data: () => ({
-    session: makeSession({ longName: true })
+    session: makeSession({ longName: true }),
   }),
-  props: {}
+  props: {},
 });

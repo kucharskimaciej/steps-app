@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { StepDTO } from "../../common/types/Step";
 import { createVariationId } from "@/lib/variations/variationId";
 import { Resource } from "@/lib/resource.class";
@@ -44,7 +44,7 @@ export class StepsResource extends Resource<
     const stepToSave: Omit<StepDTO, "id"> = {
       ...params,
       created_at: Date.now(),
-      variationKey
+      variationKey,
     };
 
     const batch = await this.createBatchVariationUpdate(
@@ -101,7 +101,7 @@ export class StepsResource extends Resource<
 
     const batch = this.firestore.db.batch();
 
-    documentsToUpdate.forEach(document => {
+    documentsToUpdate.forEach((document) => {
       batch.update(document.ref, { variationKey: newVariationKey });
     });
 

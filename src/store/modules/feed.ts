@@ -1,7 +1,7 @@
 import { searchMixin, SearchState } from "@/store/mixins/withSearch";
 import { createModule } from "@/store/createModule";
 import { provideStore } from "@/store";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { SearchService } from "@/lib/StepSearch/search.service";
 import { getStoreAccessors } from "typesafe-vuex";
 import { RootState } from "@/store/types";
@@ -19,17 +19,17 @@ export const feed = createModule(
         const rawSteps = provideStore().state.steps.rawSteps;
 
         return searcher.search(rawSteps, state.search);
-      }
+      },
     },
     mutations: {
-      ...search.mutations
+      ...search.mutations,
     },
     actions: {
-      ...search.actions
-    }
+      ...search.actions,
+    },
   },
   {
-    ...search.state
+    ...search.state,
   }
 );
 
@@ -37,7 +37,7 @@ export const {
   dispatchClearSearch,
   getIsSearchEmpty,
   getSearch,
-  dispatchSearch
+  dispatchSearch,
 } = search;
 
 const { read } = getStoreAccessors<SearchState, RootState>(MODULE_NAMESPACE);

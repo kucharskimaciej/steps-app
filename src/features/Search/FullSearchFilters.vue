@@ -1,16 +1,9 @@
 <script lang="ts">
-import {
-  computed,
-  ComputedRef,
-  defineComponent,
-  PropType,
-  watch
-} from "@vue/composition-api";
+import { computed, ComputedRef, defineComponent, PropType, watch } from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import { SearchFilters } from "@/features/Search/types";
-import { validationMixin } from "vuelidate";
 import { AppConfigToken } from "../../../common/tokens";
-import { Container } from "vue-typedi";
+import { Container } from "typedi";
 import { entries } from "lodash";
 import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
@@ -18,23 +11,23 @@ import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 
 const FullSearchFilters = defineComponent({
-  mixins: [validationMixin],
-  validations() {
-    return {
-      filters: {
-        query: {},
-        feeling: {},
-        includeAllTags: {},
-        excludeAnyTags: {},
-        anyArtists: {}
-      }
-    };
-  },
+  // mixins: [validationMixin],
+  // validations() {
+  //   return {
+  //     filters: {
+  //       query: {},
+  //       feeling: {},
+  //       includeAllTags: {},
+  //       excludeAnyTags: {},
+  //       anyArtists: {}
+  //     }
+  //   };
+  // },
   components: {
     TagsInput,
     TagsSelection,
     FormGroup,
-    SimpleInput
+    SimpleInput,
   },
   props: {
     filters: {
@@ -44,22 +37,22 @@ const FullSearchFilters = defineComponent({
         feeling: [],
         includeAllTags: [],
         excludeAnyTags: [],
-        anyArtists: []
-      })
+        anyArtists: [],
+      }),
     },
     existingTags: {
       type: Array as PropType<string[]>,
-      default: () => []
+      default: () => [],
     },
     existingArtists: {
       type: Array as PropType<string[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ["input"],
-  setup({ filters }, ctx) {
+  setup(props, ctx) {
     watch(
-      () => filters,
+      () => props.filters,
       (filters: SearchFilters) => ctx.emit("input", filters),
       { deep: true }
     );
@@ -68,14 +61,14 @@ const FullSearchFilters = defineComponent({
     const feelingOptions: ComputedRef<OptionWithLabel[]> = computed(() =>
       entries(appConfig.feelings).map(([key, label]) => ({
         key,
-        label
+        label,
       }))
     );
 
     return {
-      feelingOptions
+      feelingOptions,
     };
-  }
+  },
 });
 
 export default FullSearchFilters;

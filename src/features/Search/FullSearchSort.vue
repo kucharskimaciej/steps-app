@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, watch } from "@vue/composition-api";
+import { defineComponent, PropType, watch } from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import Select from "@/components/Forms/Select.vue";
 import {
@@ -7,46 +7,45 @@ import {
   SortDirection,
   sortDirectionLabels,
   SortType,
-  sortTypeLabels
+  sortTypeLabels,
 } from "@/features/Search/types";
-import { validationMixin } from "vuelidate";
 
 const FullSearchSort = defineComponent({
-  mixins: [validationMixin],
-  validations() {
-    return {
-      sort: {
-        type: {},
-        direction: {}
-      }
-    };
-  },
+  // mixins: [validationMixin],
+  // validations() {
+  //   return {
+  //     sort: {
+  //       type: {},
+  //       direction: {}
+  //     }
+  //   };
+  // },
   components: {
     FormGroup,
-    Select
+    Select,
   },
   props: {
     sort: {
       type: Object as PropType<SearchSort>,
       default: () => ({
         type: SortType.SCORE,
-        direction: SortDirection.DESCENDING
-      })
-    }
+        direction: SortDirection.DESCENDING,
+      }),
+    },
   },
   emits: ["input"],
-  setup({ sort }, ctx) {
+  setup(props, ctx) {
     watch(
-      () => sort,
+      () => props.sort,
       (newSearch: SearchSort) => ctx.emit("input", newSearch),
       { deep: true }
     );
 
     return {
       sortDirections: sortDirectionLabels,
-      sortTypes: sortTypeLabels
+      sortTypes: sortTypeLabels,
     };
-  }
+  },
 });
 
 export default FullSearchSort;

@@ -1,11 +1,11 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import { Step } from "../../../../common/types/Step";
 
 const Variations = defineComponent({
   props: {
-    step: Object as PropType<Step>
-  }
+    step: Object as PropType<Step>,
+  },
 });
 
 export default Variations;

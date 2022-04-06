@@ -1,4 +1,4 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { StepDTO } from "../../../common/types/Step";
 import { FilteredResult } from "@/lib/StepSearch/types";
 import Fuse from "fuse.js";
@@ -16,12 +16,12 @@ export class QuerySearchService {
         ignoreLocation: true,
         useExtendedSearch: true,
         shouldSort: false,
-        threshold: 0.4
+        threshold: 0.4,
       });
 
       return searcher.search(query);
     } else {
-      return steps.map(item => ({ item, score: 0 }));
+      return steps.map((item) => ({ item, score: 0 }));
     }
   }
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType } from "@vue/composition-api";
+import { computed, defineComponent, PropType } from "vue";
 import { Step } from "../../../../common/types/Step";
 import PureTag from "@/components/Tags/PureTag.vue";
 import { VideoObject } from "../../../../common/types/VideoObject";
@@ -9,9 +9,9 @@ const StepVideoLinks = defineComponent({
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
-    skipFirst: Boolean
+    skipFirst: Boolean,
   },
   emits: ["openVideo"],
   setup({ step, skipFirst }, { emit }) {
@@ -34,9 +34,9 @@ const StepVideoLinks = defineComponent({
     return {
       openVideo,
       videoUrls,
-      indexOffset
+      indexOffset,
     };
-  }
+  },
 });
 
 export default StepVideoLinks;

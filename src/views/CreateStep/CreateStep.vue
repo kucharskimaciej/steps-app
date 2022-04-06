@@ -1,38 +1,44 @@
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
-import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
-import {
-  PersistentFormData,
-  StepFormApi,
-  StepFormData
-} from "@/features/CreateEditStep/StepForm/types";
-import PureButton from "@/components/PureButton/PureButton.vue";
-import "@/lib/rawStepHelpers";
-import { ROUTES } from "@/router/routes";
-import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
-import "@/lib/stepsByHashDuplicateLocator";
-import "@/lib/videoUpload.service";
+import { computed, defineComponent, ref } from "vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
+import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
+import PureButton from "@/components/PureButton/PureButton.vue";
+import VideoInput from "@/components/Forms/VideoInput/VideoInput.vue";
 import PureStepList from "@/components/StepList/PureStepList.vue";
-import { without, sortBy } from "lodash";
-import { Step } from "../../../common/types/Step";
-import { getStepScore } from "@/lib/variations/variationStepScore";
-import {
-  dispatchCreateStep,
-  existingTags,
-  existingArtists,
-  getSteps,
-  nextIdentifier,
-  stepsById
-} from "@/store";
-import { VueWithStore } from "@/lib/vueWithStore";
 import AllStepsProvider from "@/components/Providers/AllStepsProvider";
 import ContentBox from "@/components/ContentBox/ContentBox.vue";
 import SelectToggleWidget from "@/components/SelectToggleWidget/SelectToggleWidget.vue";
 import FullContent from "@/components/Step/FullContent.vue";
 import Card from "@/components/Card/Card.vue";
+import {
+  PersistentFormData,
+  StepFormApi,
+  StepFormData,
+} from "@/features/CreateEditStep/StepForm/types";
+import {
+  dispatchCreateStep,
+  existingArtists as getExistingArtists,
+  existingTags as getExistingTags,
+  getSteps,
+  nextIdentifier,
+  stepsById,
+  useStore,
+} from "@/store";
+import { ROUTES } from "@/router";
+import { useRouter } from "vue-router";
+import { sortBy, without } from "lodash";
+import { getStepScore } from "@/lib/variations/variationStepScore";
 
-@Component({
+function getPersistentValue({
+  feeling,
+  artists,
+  tags,
+  difficulty,
+}: StepFormData): PersistentFormData {
+  return { feeling, artists, tags, difficulty };
+}
+
+const CreateStep = defineComponent({
   components: {
     WideWithSidebarRight,
     StepForm,
@@ -43,107 +49,107 @@ import Card from "@/components/Card/Card.vue";
     ContentBox,
     SelectToggleWidget,
     FullContent,
-    Card
-  }
-})
-export default class CreateStep extends VueWithStore {
-  @Ref("form") readonly form!: StepFormApi;
-  selectedVariations: string[] = [];
+    Card,
+  },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
 
-  async saveStep() {
-    await dispatchCreateStep(this.$store, {
-      params: {
-        ...this.form.value,
-        owner_uid: this.$store.state.auth.uid,
-        identifier: nextIdentifier(this.$store)
-      },
-      selectedVariations: this.selectedVariations
-    });
-  }
+    const form = ref<StepFormApi>();
+    const selectedVariations = ref<string[]>([]);
 
-  async submitAndRedirect() {
-    try {
-      if (this.form.validate()) {
-        await this.saveStep();
-        await this.$router.push({ name: ROUTES.STEP_LIST });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async submitAndClear() {
-    try {
-      if (this.form.validate()) {
-        await this.saveStep();
-        this.reset(CreateStep.getPersistentValue(this.form.value));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  static getPersistentValue({
-    feeling,
-    artists,
-    tags,
-    difficulty
-  }: StepFormData): PersistentFormData {
-    return { feeling, artists, tags, difficulty };
-  }
-
-  toggleVariationSelected(stepId: string): void {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return;
-    }
-
-    if (this.selectedVariations.includes(step.variationKey)) {
-      this.selectedVariations = without(
-        this.selectedVariations,
-        step.variationKey
-      );
-    } else {
-      this.selectedVariations.push(step.variationKey);
-    }
-  }
-
-  isPartOfSelectedVariation(stepId: string): boolean {
-    const step = stepsById(this.$store)[stepId];
-    if (!step) {
-      return false;
-    }
-
-    return this.selectedVariations.includes(step.variationKey);
-  }
-
-  get stepsByScore(): Step[] {
-    const scoringResults = this.$store.state.steps.rawSteps.reduce(
-      (acc, step) => {
-        acc[step.id] = this.form?.value
-          ? getStepScore(step, this.form.value)
+    const existingTags = computed(() => getExistingTags(store));
+    const existingArtists = computed(() => getExistingArtists(store));
+    const stepsByScore = computed(() => {
+      const scoringResults = store.state.steps.rawSteps.reduce((acc, step) => {
+        acc[step.id] = form.value?.value
+          ? getStepScore(step, form.value?.value)
           : 0;
         return acc;
-      },
-      {} as Record<string, number>
-    );
+      }, {} as Record<string, number>);
 
-    return sortBy(getSteps(this.$store), step => -scoringResults[step.id]);
-  }
+      return sortBy(getSteps(store), (step) => -scoringResults[step.id]);
+    });
 
-  reset(value?: Partial<StepFormData>) {
-    this.form.reset(value);
-    this.selectedVariations = [];
-  }
+    async function saveStep() {
+      if (!form.value) {
+        return;
+      }
 
-  get existingTags() {
-    return existingTags(this.$store);
-  }
+      await dispatchCreateStep(store, {
+        params: {
+          ...form.value.value,
+          owner_uid: store.state.auth.uid,
+          identifier: nextIdentifier(store),
+        },
+        selectedVariations: selectedVariations.value,
+      });
+    }
 
-  get existingArtists() {
-    return existingArtists(this.$store);
-  }
-}
+    function reset(value?: Partial<StepFormData>) {
+      form.value?.reset(value);
+      selectedVariations.value = [];
+    }
+
+    async function submitAndRedirect() {
+      try {
+        await saveStep();
+        await router.push({ name: ROUTES.STEP_LIST });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function submitAndClear() {
+      try {
+        if (form.value?.validate()) {
+          await saveStep();
+          reset(getPersistentValue(this.form.value));
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function toggleVariationSelected(stepId: string): void {
+      const step = stepsById(store)[stepId];
+      if (!step) {
+        return;
+      }
+
+      if (selectedVariations.value.includes(step.variationKey)) {
+        selectedVariations.value = without(
+          selectedVariations.value,
+          step.variationKey
+        );
+      } else {
+        selectedVariations.value.push(step.variationKey);
+      }
+    }
+
+    function isPartOfSelectedVariation(stepId: string): boolean {
+      const step = stepsById(store)[stepId];
+      if (!step) {
+        return false;
+      }
+
+      return selectedVariations.value.includes(step.variationKey);
+    }
+
+    return {
+      existingTags,
+      existingArtists,
+      stepsByScore,
+      submitAndRedirect,
+      submitAndClear,
+      toggleVariationSelected,
+      isPartOfSelectedVariation,
+      saveStep,
+    };
+  },
+});
+
+export default CreateStep;
 </script>
 
 <template>
@@ -154,16 +160,12 @@ export default class CreateStep extends VueWithStore {
           class="mr-2"
           spacing="wide"
           kind="secondary"
-          @click.native="submitAndRedirect"
+          @click="submitAndRedirect"
         >
           Save
         </PureButton>
 
-        <PureButton
-          kind="primary"
-          spacing="wide"
-          @click.native="submitAndClear"
-        >
+        <PureButton kind="primary" spacing="wide" @click="submitAndClear">
           Save &amp; create another
         </PureButton>
       </ContentBox>

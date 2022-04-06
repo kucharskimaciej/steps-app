@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import { VideoObject } from "../../../common/types/VideoObject";
@@ -7,7 +7,7 @@ import { VideoObject } from "../../../common/types/VideoObject";
 const VideoModal = defineComponent({
   components: {
     AspectAwareVideo,
-    InlineModal
+    InlineModal,
   },
   setup() {
     const video = ref<VideoObject>();
@@ -18,9 +18,9 @@ const VideoModal = defineComponent({
 
     return {
       video,
-      openModal
+      openModal,
     };
-  }
+  },
 });
 
 export default VideoModal;

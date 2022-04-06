@@ -6,6 +6,5 @@ export interface DuplicateLocator<ElementType, KeyType> {
   getDuplicate(key: KeyType, ignoreId?: string): ElementType | void;
 }
 
-export type StepDuplicateLocator<
-  T extends StepDTO = StepDTO
-> = DuplicateLocator<T, VideoObject>;
+export type StepDuplicateLocator<T extends StepDTO = StepDTO> =
+  DuplicateLocator<T, VideoObject>;

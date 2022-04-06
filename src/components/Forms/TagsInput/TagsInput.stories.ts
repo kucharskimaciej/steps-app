@@ -3,7 +3,7 @@ import {
   Container,
   NeutralBackground,
   Spacing,
-  WithGlobalStyles
+  WithGlobalStyles,
 } from "@/stories/decorators";
 import { Component } from "vue";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
@@ -16,8 +16,8 @@ export default {
     WithGlobalStyles,
     Container("600px"),
     Spacing,
-    NeutralBackground
-  ]
+    NeutralBackground,
+  ],
 };
 
 export const BasicView: () => Component = () => ({
@@ -33,8 +33,8 @@ export const BasicView: () => Component = () => ({
         </section>
     `,
   data: () => ({
-    value: []
-  })
+    value: [],
+  }),
 });
 
 export const EditExistingTags: () => Component = () => ({
@@ -45,8 +45,8 @@ export const EditExistingTags: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    value: ["A tag"]
-  })
+    value: ["A tag"],
+  }),
 });
 
 export const Autocomplete: () => Component = () => ({
@@ -57,8 +57,8 @@ export const Autocomplete: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
-  })
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
+  }),
 });
 
 export const AutocompleteOnly: () => Component = () => ({
@@ -69,8 +69,8 @@ export const AutocompleteOnly: () => Component = () => ({
         </FormGroup>
     `,
   data: () => ({
-    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
-  })
+    tags: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"],
+  }),
 });
 
 export const RemoveOnly: () => Component = () => ({
@@ -81,6 +81,13 @@ export const RemoveOnly: () => Component = () => ({
       </FormGroup>
   `,
   data: () => ({
-    value: ["saida", "Kizomba fusion", "Semba", "Obrót", "Zatrzymanie", "Łatwe"]
-  })
+    value: [
+      "saida",
+      "Kizomba fusion",
+      "Semba",
+      "Obrót",
+      "Zatrzymanie",
+      "Łatwe",
+    ],
+  }),
 });

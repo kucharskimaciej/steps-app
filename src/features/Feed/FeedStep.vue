@@ -1,10 +1,5 @@
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  watch
-} from "@vue/composition-api";
+import { computed, defineComponent, PropType, watch } from "vue";
 import VideoPlayer from "@/features/VideoPlayer/VideoPlayer.vue";
 import PureTag from "@/components/Tags/PureTag.vue";
 import OptionsPopup from "@/features/Feed/OptionsPopup.vue";
@@ -30,20 +25,20 @@ const FeedStep = defineComponent({
     Tags,
     IntersectSwitch,
     ProvideVideoModal,
-    Badge
+    Badge,
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true
+      required: true,
     },
     autoplay: Boolean,
     showVariations: {
       type: Boolean,
-      default: true
+      default: true,
     },
     practiceActions: Boolean,
-    videoHeight: Number
+    videoHeight: Number,
   },
   emits: ["edit", "viewed", "play"],
   setup({ step }, { emit }) {
@@ -67,9 +62,9 @@ const FeedStep = defineComponent({
     return {
       anchor,
       primaryVideo,
-      handleViewed
+      handleViewed,
     };
-  }
+  },
 });
 
 export default FeedStep;
@@ -81,10 +76,10 @@ export default FeedStep;
       class="flex items-stretch overflow-hidden mb-2"
       :style="{
         height: videoHeight ? `${videoHeight}px` : 'auto',
-        maxHeight: `60vh`
+        maxHeight: `60vh`,
       }"
     >
-      <template #default="{open}">
+      <template #default="{ open }">
         <IntersectSwitch :threshold="[0, 0.25, 0.5, 0.75, 1]">
           <template #default="{ visible }">
             <div class="w-full h-full">

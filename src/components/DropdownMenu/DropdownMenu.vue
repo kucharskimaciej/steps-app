@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 type OptionType = {
@@ -9,23 +9,23 @@ type OptionType = {
 
 const DropdownMenu = defineComponent({
   components: {
-    PureIcon
+    PureIcon,
   },
   props: {
     value: String,
     options: {
       type: Array as PropType<OptionType[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ["input"],
   setup(_, { emit }) {
     return {
       handleValueChange(event: InputEvent) {
         emit("input", (event.target as HTMLInputElement).value);
-      }
+      },
     };
-  }
+  },
 });
 
 export default DropdownMenu;

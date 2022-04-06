@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType } from "@vue/composition-api";
+import { defineComponent, PropType } from "vue";
 import { Tag } from "../../../common/types/Tag";
 
 const PureTag = defineComponent({
@@ -7,9 +7,9 @@ const PureTag = defineComponent({
     tag: Object as PropType<Tag>,
     showType: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 });
 
 export default PureTag;

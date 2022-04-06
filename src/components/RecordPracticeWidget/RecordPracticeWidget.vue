@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
 import PureIcon from "@/components/PureIcon/PureIcon.vue";
 import { dispatchRecordPractice, stepsById, useStore } from "@/store";
@@ -8,14 +8,14 @@ import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 const RecordPracticeWidget = defineComponent({
   components: {
     PureButton,
-    PureIcon
+    PureIcon,
   },
   props: {
     stepId: {
       type: String,
-      required: true
+      required: true,
     },
-    collectionId: String
+    collectionId: String,
   },
   setup({ stepId, collectionId }) {
     const store = useStore();
@@ -31,9 +31,9 @@ const RecordPracticeWidget = defineComponent({
 
     return {
       handleRecordPractice,
-      isTodayRecordedForCollection
+      isTodayRecordedForCollection,
     };
-  }
+  },
 });
 
 export default RecordPracticeWidget;

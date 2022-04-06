@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from "@vue/composition-api";
+import { computed, defineComponent, ref } from "vue";
 import InlineStepEdit from "@/features/CreateEditStep/InlineStepEdit.vue";
 import InlineModal from "@/components/Modal/InlineModal.vue";
 import AspectAwareVideo from "@/components/VideoModal/AspectAwareVideo.vue";
@@ -9,13 +9,13 @@ const ProvideInlineEdit = defineComponent({
   components: {
     InlineModal,
     AspectAwareVideo,
-    InlineStepEdit
+    InlineStepEdit,
   },
   props: {
     stepId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup({ stepId }) {
     const store = useStore();
@@ -30,9 +30,9 @@ const ProvideInlineEdit = defineComponent({
     return {
       step,
       edit,
-      modalOpen
+      modalOpen,
     };
-  }
+  },
 });
 
 export default ProvideInlineEdit;

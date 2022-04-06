@@ -1,9 +1,13 @@
-import { Service } from "vue-typedi";
+import { Service } from "typedi";
 import { firebase, CollectionRef } from "@/lib/firebase/firebase";
 
 @Service()
 export class FirestoreService {
   private readonly firestore = firebase.firestore();
+
+  constructor() {
+    console.log("hm");
+  }
 
   collection(name: string): CollectionRef {
     return this.firestore.collection(name);
