@@ -6,15 +6,15 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const BackOne = defineComponent({
   components: {
     Control,
-    PureIcon,
-  },
+    PureIcon
+  }
 });
 
 export default BackOne;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control>
     <PureIcon class="text-2xl" type="chevron_left" />
   </Control>
 </template>

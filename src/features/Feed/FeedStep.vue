@@ -25,32 +25,32 @@ const FeedStep = defineComponent({
     Tags,
     IntersectSwitch,
     ProvideVideoModal,
-    Badge,
+    Badge
   },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true,
+      required: true
     },
     autoplay: Boolean,
     showVariations: {
       type: Boolean,
-      default: true,
+      default: true
     },
     practiceActions: Boolean,
-    videoHeight: Number,
+    videoHeight: Number
   },
   emits: ["edit", "viewed", "play"],
-  setup({ step }, { emit }) {
-    const anchor = computed(() => `step-${step.id}`);
-    const primaryVideo = computed(() => step.videos[0]);
+  setup(props, { emit }) {
+    const anchor = computed(() => `step-${props.step.id}`);
+    const primaryVideo = computed(() => props.step.videos[0]);
 
     watch(
-      () => step.id,
+      () => props.step.id,
       () => {
-        fetch(step.videos[0].url);
-        if (step.videos[0].snapshot_url) {
-          fetch(step.videos[0].snapshot_url);
+        fetch(props.step.videos[0].url);
+        if (props.step.videos[0].snapshot_url) {
+          fetch(props.step.videos[0].snapshot_url);
         }
       },
       { immediate: true }
@@ -62,9 +62,9 @@ const FeedStep = defineComponent({
     return {
       anchor,
       primaryVideo,
-      handleViewed,
+      handleViewed
     };
-  },
+  }
 });
 
 export default FeedStep;
@@ -76,7 +76,7 @@ export default FeedStep;
       class="flex items-stretch overflow-hidden mb-2"
       :style="{
         height: videoHeight ? `${videoHeight}px` : 'auto',
-        maxHeight: `60vh`,
+        maxHeight: `60vh`
       }"
     >
       <template #default="{ open }">

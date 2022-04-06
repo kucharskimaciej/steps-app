@@ -6,17 +6,17 @@ import Control from "@/features/VideoPlayer/Control.vue";
 const PlayControl = defineComponent({
   components: {
     PureIcon,
-    Control,
+    Control
   },
   props: {},
-  emits: [],
+  emits: []
 });
 
 export default PlayControl;
 </script>
 
 <template>
-  <Control class="text-6xl" v-on="$listeners">
+  <Control class="text-6xl" v-bind="$attrs">
     <PureIcon type="play_circle_outline" />
   </Control>
 </template>

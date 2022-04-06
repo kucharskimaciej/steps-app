@@ -4,34 +4,34 @@ import ThreeStateTag from "@/components/Forms/TagsSelection/ThreeStateTag.vue";
 import {
   KeyValueTuple,
   OptionWithLabel,
-  ValueType,
+  ValueType
 } from "@/components/Forms/TagsSelection/types";
 
 const TagsSelection = defineComponent({
   components: {
-    ThreeStateTag,
+    ThreeStateTag
   },
   props: {
     value: {
       type: Array as PropType<KeyValueTuple[]>,
-      default: () => [],
+      default: () => []
     },
     options: {
       type: Array as PropType<OptionWithLabel[]>,
-      required: true,
-    },
+      required: true
+    }
   },
   emit: ["input"],
-  setup({ value }, { emit }) {
+  setup(props, { emit }) {
     function getValueTuple(key: string): KeyValueTuple | undefined {
-      return value.find(([k]) => k === key);
+      return props.value.find(([k]) => k === key);
     }
 
     function handleChange(key: string, newValue: ValueType) {
       let result: KeyValueTuple[];
       if (getValueTuple(key)) {
-        result = value
-          .map((tuple) => {
+        result = props.value
+          .map(tuple => {
             const [k] = tuple;
 
             if (k !== key) {
@@ -42,7 +42,7 @@ const TagsSelection = defineComponent({
           })
           .filter(([, v]) => v !== 0);
       } else {
-        result = [...value, [key, newValue]];
+        result = [...props.value, [key, newValue]];
       }
 
       emit("input", result);
@@ -55,9 +55,9 @@ const TagsSelection = defineComponent({
 
     return {
       handleChange,
-      getValueOrDefault,
+      getValueOrDefault
     };
-  },
+  }
 });
 
 export default TagsSelection;

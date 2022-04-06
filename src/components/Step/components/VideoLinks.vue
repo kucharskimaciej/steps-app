@@ -1,42 +1,40 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import { Step } from "../../../../common/types/Step";
-import PureTag from "@/components/Tags/PureTag.vue";
 import { VideoObject } from "../../../../common/types/VideoObject";
 
 const StepVideoLinks = defineComponent({
-  components: { PureTag },
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true,
+      required: true
     },
-    skipFirst: Boolean,
+    skipFirst: Boolean
   },
   emits: ["openVideo"],
-  setup({ step, skipFirst }, { emit }) {
+  setup(props, { emit }) {
     function openVideo(video: VideoObject) {
       emit("openVideo", video);
     }
 
     const videoUrls = computed(() => {
-      let videosToDisplay: VideoObject[] = step.videos;
+      let videosToDisplay: VideoObject[] = props.step.videos;
 
-      if (skipFirst) {
-        [, ...videosToDisplay] = step.videos;
+      if (props.skipFirst) {
+        [, ...videosToDisplay] = props.step.videos;
       }
 
       return videosToDisplay;
     });
 
-    const indexOffset = computed(() => (skipFirst ? 2 : 1));
+    const indexOffset = computed(() => (props.skipFirst ? 2 : 1));
 
     return {
       openVideo,
       videoUrls,
-      indexOffset,
+      indexOffset
     };
-  },
+  }
 });
 
 export default StepVideoLinks;

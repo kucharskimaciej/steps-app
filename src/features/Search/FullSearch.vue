@@ -7,43 +7,43 @@ import { Search, SearchFilters, SearchSort } from "@/features/Search/types";
 const FullSearch = defineComponent({
   components: {
     FullSearchFilters,
-    FullSearchSort,
+    FullSearchSort
   },
   props: {
     value: {
       type: Object as PropType<Search>,
-      default: () => ({}),
+      default: () => ({})
     },
     existingTags: {
       type: Array as PropType<string[]>,
-      default: () => [],
+      default: () => []
     },
     existingArtists: {
       type: Array as PropType<string[]>,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   emits: ["search"],
-  setup({ value }, ctx) {
+  setup(props, ctx) {
     function handleSortChange(sort: SearchSort) {
       ctx.emit("search", {
-        ...value,
-        sort,
+        ...props.value,
+        sort
       });
     }
 
     function handleFiltersChange(filters: SearchFilters) {
       ctx.emit("search", {
-        ...value,
-        filters,
+        ...props.value,
+        filters
       });
     }
 
     return {
       handleFiltersChange,
-      handleSortChange,
+      handleSortChange
     };
-  },
+  }
 });
 
 export default FullSearch;

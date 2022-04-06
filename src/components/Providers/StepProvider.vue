@@ -6,25 +6,25 @@ const StepProvider = defineComponent({
   props: {
     stepId: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
-  setup({ stepId }) {
+  setup(props) {
     const store = useStore();
     const loading = computed(
       () => store.state.currentStep.status === "pending"
     );
 
     function loadStep() {
-      return dispatchFetchCurrentStep(store, stepId);
+      return dispatchFetchCurrentStep(store, props.stepId);
     }
 
     onActivated(loadStep);
 
     return {
-      loading,
+      loading
     };
-  },
+  }
 });
 
 export default StepProvider;

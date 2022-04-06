@@ -6,15 +6,15 @@ import Control from "@/features/VideoPlayer/Control.vue";
 const SizeControl = defineComponent({
   components: {
     PureIcon,
-    Control,
-  },
+    Control
+  }
 });
 
 export default SizeControl;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon type="fullscreen" />
   </Control>
 </template>

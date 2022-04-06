@@ -12,19 +12,19 @@ const StringArray = defineComponent({
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
-  setup({ value }, ctx) {
+  setup(props, ctx) {
     const items = ref<Focusable[]>([]);
 
     watch(
-      () => value.length,
+      () => props.value.length,
       () => lastInput()?.focus()
     );
 
     async function addElement() {
-      ctx.emit("input", [...value, ""]);
+      ctx.emit("input", [...props.value, ""]);
     }
 
     function lastInput(): Focusable | undefined {
@@ -34,15 +34,15 @@ const StringArray = defineComponent({
     function removeAt(index: number) {
       ctx.emit(
         "input",
-        value.filter((_, i) => i !== index)
+        props.value.filter((_, i) => i !== index)
       );
     }
 
     return {
       addElement,
-      removeAt,
+      removeAt
     };
-  },
+  }
 });
 
 export default StringArray;

@@ -7,18 +7,18 @@ const ProvideScaledVideoSize = defineComponent({
     targetWidth: Number,
     defaultHeight: {
       type: Number,
-      default: 400,
-    },
+      default: 400
+    }
   },
   emits: ["updatedHeight"],
-  setup({ video, targetWidth, defaultHeight }, { emit, slots }) {
+  setup(props, { emit, slots }) {
     const scaledVideoHeight = computed(() => {
-      const { height, width } = video;
-      if (!height || !width || !targetWidth) {
-        return defaultHeight;
+      const { height, width } = props.video;
+      if (!height || !width || !props.targetWidth) {
+        return props.defaultHeight;
       }
 
-      const scaleRatio = targetWidth / width;
+      const scaleRatio = props.targetWidth / width;
       return scaleRatio * height;
     });
 
@@ -27,6 +27,6 @@ const ProvideScaledVideoSize = defineComponent({
     });
 
     return () => slots.default?.({ scaledVideoHeight });
-  },
+  }
 });
 export default ProvideScaledVideoSize;

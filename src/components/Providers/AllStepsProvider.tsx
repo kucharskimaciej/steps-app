@@ -3,14 +3,14 @@ import { computed, defineComponent, onBeforeMount } from "vue";
 
 const AllStepsProvider = defineComponent({
   props: {
-    alwaysFetch: Boolean,
+    alwaysFetch: Boolean
   },
-  setup({ alwaysFetch }, { slots }) {
+  setup(props, { slots }) {
     const store = useStore();
     const loading = computed(() => store.state.steps.status === "pending");
 
     async function loadSteps() {
-      if (!alwaysFetch && store.state.steps.status !== "clean") {
+      if (!props.alwaysFetch && store.state.steps.status !== "clean") {
         return;
       }
 
@@ -26,7 +26,7 @@ const AllStepsProvider = defineComponent({
         return slots.default?.();
       }
     };
-  },
+  }
 });
 
 export default AllStepsProvider;

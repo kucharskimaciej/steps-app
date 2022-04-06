@@ -6,7 +6,7 @@ export default {};
   <div
     tabindex="-1"
     class="text-2xl text-white leading-none p-1 inline-flex rounded cursor-pointer select-none outline-none"
-    v-on="$listeners"
+    v-bind="$attrs"
   >
     <slot />
   </div>

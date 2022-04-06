@@ -5,37 +5,37 @@ import Intersect from "@/components/Intersect/Intersect";
 
 const IntersectSwitch = defineComponent({
   components: {
-    Intersect,
+    Intersect
   },
   props: {
     ...intersectComponentPropsType,
     visibilityThreshold: {
       type: Number,
-      default: 0.7,
-    },
+      default: 0.7
+    }
   },
   emits: ["change"],
-  setup({ visibilityThreshold }, { emit }) {
+  setup(props, { emit }) {
     const currentlyVisible = ref(false);
     const currentRatio = ref(1);
 
     function handleChange(entry: IntersectionObserverEntry) {
       currentRatio.value = entry.intersectionRatio;
-      currentlyVisible.value = currentRatio.value > visibilityThreshold;
+      currentlyVisible.value = currentRatio.value > props.visibilityThreshold;
 
       emit("change", {
         entry,
         ratio: currentRatio.value,
-        visible: currentlyVisible.value,
+        visible: currentlyVisible.value
       });
     }
 
     return {
       handleChange,
       currentRatio,
-      currentlyVisible,
+      currentlyVisible
     };
-  },
+  }
 });
 
 export default IntersectSwitch;

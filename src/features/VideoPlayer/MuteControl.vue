@@ -6,21 +6,21 @@ import Control from "@/features/VideoPlayer/Control.vue";
 const MuteControl = defineComponent({
   components: {
     PureIcon,
-    Control,
+    Control
   },
   props: {
     muted: {
       required: true,
-      type: Boolean,
-    },
-  },
+      type: Boolean
+    }
+  }
 });
 
 export default MuteControl;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon v-if="muted" type="volume_off" />
     <PureIcon v-else type="volume_up" />
   </Control>

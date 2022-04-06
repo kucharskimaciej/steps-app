@@ -10,14 +10,14 @@ const Close = defineComponent({
   props: {
     iconPosition: {
       type: String as PropType<Positions>,
-      default: "topLeft",
+      default: "topLeft"
     },
     iconStyle: {
       type: String as PropType<Style>,
-      default: "default",
-    },
+      default: "default"
+    }
   },
-  emits: [],
+  emits: []
 });
 
 export default Close;
@@ -30,9 +30,8 @@ export default Close;
     :class="{
       'right-0': iconPosition === 'topRight',
       'left-0': iconPosition === 'topLeft',
-      'bg-white rounded-full': iconStyle === 'filled',
+      'bg-white rounded-full': iconStyle === 'filled'
     }"
-    v-on="$listeners"
   >
     <PureIcon type="close" />
   </aside>

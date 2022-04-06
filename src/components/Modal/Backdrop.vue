@@ -6,9 +6,5 @@ export default Backdrop;
 </script>
 
 <template>
-  <aside
-    class="absolute inset-0 bg-black opacity-25"
-    v-bind="$attrs"
-    v-on="$listeners"
-  />
+  <aside class="absolute inset-0 bg-black opacity-25" v-bind="$attrs" />
 </template>

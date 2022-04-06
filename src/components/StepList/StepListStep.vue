@@ -8,11 +8,11 @@ const StepListStep = defineComponent({
   props: {
     step: {
       type: Object as PropType<Step>,
-      required: true,
+      required: true
     },
     isActive: Boolean,
-    isSelected: Boolean,
-  },
+    isSelected: Boolean
+  }
 });
 
 export default StepListStep;
@@ -24,9 +24,8 @@ export default StepListStep;
     :class="{
       'bg-gray-200 bg-opacity-50': !isActive && !isSelected,
       'bg-gray-200 bg-opacity-75': isSelected,
-      'bg-white shadow-md border-gray-400 z-10': isActive,
+      'bg-white shadow-md border-gray-400 z-10': isActive
     }"
-    v-on="$listeners"
   >
     <slot name="before" />
 

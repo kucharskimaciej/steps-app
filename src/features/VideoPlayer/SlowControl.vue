@@ -6,21 +6,21 @@ import Control from "@/features/VideoPlayer/Control.vue";
 const SlowControl = defineComponent({
   components: {
     PureIcon,
-    Control,
+    Control
   },
   props: {
     enabled: {
       type: Boolean,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 });
 
 export default SlowControl;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon
       v-if="enabled"
       type="slow_motion_video"

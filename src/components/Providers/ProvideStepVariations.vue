@@ -7,17 +7,17 @@ import { stepsById, useStore } from "@/store";
 const ProvideStepVariations = defineComponent({
   components: {
     InlineModal,
-    Feed,
+    Feed
   },
   props: {
     stepId: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  setup({ stepId }) {
+  setup(props) {
     const store = useStore();
-    const step = computed(() => stepsById(store)[stepId]);
+    const step = computed(() => stepsById(store)[props.stepId]);
     const variationsOpen = ref(false);
 
     const variationsCount = computed(() => step.value.variations?.length ?? 0);
@@ -30,9 +30,9 @@ const ProvideStepVariations = defineComponent({
       step,
       variationsOpen,
       variationsCount,
-      openVariationsModal,
+      openVariationsModal
     };
-  },
+  }
 });
 
 export default ProvideStepVariations;

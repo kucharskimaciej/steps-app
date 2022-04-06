@@ -13,10 +13,7 @@ const Steps = defineComponent({
   },
   setup() {
     const store = useStore();
-    const steps = computed(() => {
-      console.log("rerun");
-      return getSteps(store);
-    });
+    const steps = computed(() => getSteps(store));
 
     return {
       steps

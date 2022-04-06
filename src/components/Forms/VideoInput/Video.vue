@@ -8,25 +8,25 @@ const Video = defineComponent({
   components: {
     VideoModal,
     PureButton,
-    PureIcon,
+    PureIcon
   },
   props: {
     title: String,
     filename: String,
-    url: String,
+    url: String
   },
   emits: ["remove"],
-  setup({ url, title }) {
+  setup(props) {
     const asVideo = computed(() => {
-      return { url, hash: title };
+      return { url: props.url, hash: props.title };
     });
     const videoModal = ref<typeof VideoModal>();
 
     return {
       asVideo,
-      videoModal,
+      videoModal
     };
-  },
+  }
 });
 
 export default Video;

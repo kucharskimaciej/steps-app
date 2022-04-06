@@ -4,13 +4,13 @@ import {
   onMounted,
   ref,
   nextTick,
-  onBeforeUnmount,
+  onBeforeUnmount
 } from "vue";
 
 const Intersect = defineComponent({
   props: intersectComponentPropsType,
   emits: ["change"],
-  setup({ threshold, viewportRoot }, { emit, slots }) {
+  setup(props, { emit, slots }) {
     const observer = ref<IntersectionObserver>();
     const defaultSlot = ref();
 
@@ -24,8 +24,8 @@ const Intersect = defineComponent({
           onChange(entry);
         },
         {
-          threshold,
-          root: viewportRoot,
+          threshold: props.threshold,
+          root: props.viewportRoot
         }
       );
 
@@ -51,7 +51,7 @@ const Intersect = defineComponent({
     });
 
     return () => defaultSlot.value;
-  },
+  }
 });
 
 export default Intersect;

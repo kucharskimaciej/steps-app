@@ -43,7 +43,7 @@ const mediaEvents = [
   "suspend",
   "timeupdate",
   "volumechange",
-  "waiting",
+  "waiting"
 ];
 
 const VideoPlayer = defineComponent({
@@ -57,22 +57,22 @@ const VideoPlayer = defineComponent({
     BackOne,
     PlayFromStart,
     SlowControl,
-    Progress,
+    Progress
   },
   props: {
     video: {
       required: true,
-      type: Object as PropType<VideoObject>,
+      type: Object as PropType<VideoObject>
     },
     autoplay: Boolean,
     background: {
       type: Boolean,
-      default: true,
+      default: true
     },
-    sizeControl: Boolean,
+    sizeControl: Boolean
   },
   emits: ["viewed", "open-full-size"],
-  setup({ video }, ctx) {
+  setup(props, ctx) {
     const muted = ref(true);
     const playing = ref(false);
     const speed = ref(FULL_SPEED);
@@ -81,15 +81,14 @@ const VideoPlayer = defineComponent({
 
     const videoElementRef = ref<HTMLVideoElement>();
 
-    const videoEventListeners = computed(() =>
-      pick(ctx.listeners, mediaEvents)
-    );
+    console.log(ctx.attrs);
+    const videoEventListeners = computed(() => pick(ctx.attrs, mediaEvents));
     const isSlow = computed(() => speed.value < 1);
     const snapshotUrl = computed(
       () =>
         `https://storage.googleapis.com/${
           import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
-        }/${video.snapshot_url}`
+        }/${props.video.snapshot_url}`
     );
 
     function updateViewedStatus() {
@@ -203,9 +202,9 @@ const VideoPlayer = defineComponent({
       playFromStart,
       handlePlayingChange,
       handleVolumeChange,
-      handleTimeUpdate,
+      handleTimeUpdate
     };
-  },
+  }
 });
 
 export default VideoPlayer;

@@ -6,16 +6,16 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const PlayFromStart = defineComponent({
   components: {
     Control,
-    PureIcon,
+    PureIcon
   },
-  props: {},
+  props: {}
 });
 
 export default PlayFromStart;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon class="text-2xl" type="first_page" />
   </Control>
 </template>

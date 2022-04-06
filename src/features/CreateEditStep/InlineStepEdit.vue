@@ -14,7 +14,7 @@ import {
   existingArtists as getExistingArtists,
   existingTags as getExistingTags,
   useStore,
-  dispatchUpdateStep,
+  dispatchUpdateStep
 } from "@/store";
 import { without } from "lodash";
 
@@ -26,22 +26,22 @@ const InlineStepEdit = defineComponent({
     SelectToggleWidget,
     Card,
     FullContent,
-    ProvideScoring,
+    ProvideScoring
   },
   props: {
     step: {
       type: Object as PropType<StepDTO>,
-      required: true,
-    },
+      required: true
+    }
   },
   emits: ["finished"],
-  setup({ step }, ctx) {
+  setup(props, ctx) {
     const store = useStore();
 
     const selectedVariations = ref<string[]>([]);
     const form = ref<StepFormApi>();
 
-    watch(step, (newStep) => {
+    watch(props.step, newStep => {
       if (newStep) {
         selectedVariations.value = newStep.variationKey
           ? [newStep.variationKey]
@@ -86,9 +86,9 @@ const InlineStepEdit = defineComponent({
 
       if (form.value.validate()) {
         await dispatchUpdateStep(store, {
-          stepId: step.id,
+          stepId: props.step.id,
           params: form.value.value,
-          selectedVariations: selectedVariations.value,
+          selectedVariations: selectedVariations.value
         });
 
         ctx.emit("finished");
@@ -102,9 +102,9 @@ const InlineStepEdit = defineComponent({
       existingTags,
       isPartOfSelectedVariation,
       toggleVariationSelected,
-      saveStep,
+      saveStep
     };
-  },
+  }
 });
 
 export default InlineStepEdit;
@@ -113,7 +113,7 @@ export default InlineStepEdit;
 <template>
   <section class="h-full flex flex-col gap-4">
     <header class="p-4 text-right">
-      <PureButton kind="primary" spacing="wide" @click.native="saveStep()">
+      <PureButton kind="primary" spacing="wide" @click="saveStep()">
         Save
       </PureButton>
     </header>

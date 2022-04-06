@@ -1,26 +1,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import PureIcon from "@/components/PureIcon/PureIcon.vue";
 
 const CopyTyClipboard = defineComponent({
-  components: {
-    PureIcon,
-  },
   props: {
     value: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  setup({ value }) {
+  setup(props) {
     function copy() {
-      navigator.clipboard.writeText(value);
+      navigator.clipboard.writeText(props.value);
     }
 
     return {
-      copy,
+      copy
     };
-  },
+  }
 });
 
 export default CopyTyClipboard;

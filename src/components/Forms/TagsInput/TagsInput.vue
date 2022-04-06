@@ -3,43 +3,44 @@ import { computed, defineComponent, inject, PropType, ref } from "vue";
 import { Tag } from "../../../../common/types/Tag";
 
 const TagsInput = defineComponent({
-  components: {},
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => [],
+      default: () => []
     },
     allowNew: {
       type: Boolean,
-      default: true,
+      default: true
     },
     autocomplete: {
       type: Array as PropType<string[]>,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   emits: ["input"],
-  setup({ autocomplete }, { emit }) {
+  setup(props, { emit }) {
     const hasError = inject<boolean>("hasError", false);
     const inputValue = ref<string>("");
 
     const filteredItems = computed(() => {
-      if (!autocomplete.length) {
+      if (!props.autocomplete.length) {
         return [];
       }
 
       const query = inputValue.value.toLowerCase();
-      return autocomplete.filter((tag) => tag.toLowerCase().includes(query));
+      return props.autocomplete.filter(tag =>
+        tag.toLowerCase().includes(query)
+      );
     });
 
     function asTags(items: string[] = []): Tag[] {
-      return items.map((text) => ({ text }));
+      return items.map(text => ({ text }));
     }
 
     function handleTagsChanged(tags: Tag[]) {
       emit(
         "input",
-        tags.map((t) => t.text)
+        tags.map(t => t.text)
       );
     }
 
@@ -48,9 +49,9 @@ const TagsInput = defineComponent({
       filteredItems,
       inputValue,
       asTags,
-      handleTagsChanged,
+      handleTagsChanged
     };
-  },
+  }
 });
 
 export default TagsInput;

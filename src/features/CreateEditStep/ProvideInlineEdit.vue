@@ -8,20 +8,19 @@ import { rawStepsById, useStore } from "@/store";
 const ProvideInlineEdit = defineComponent({
   components: {
     InlineModal,
-    AspectAwareVideo,
-    InlineStepEdit,
+    InlineStepEdit
   },
   props: {
     stepId: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  setup({ stepId }) {
+  setup(props) {
     const store = useStore();
     const modalOpen = ref(false);
 
-    const step = computed(() => rawStepsById(store)[stepId]);
+    const step = computed(() => rawStepsById(store)[props.stepId]);
 
     function edit() {
       modalOpen.value = true;
@@ -30,9 +29,9 @@ const ProvideInlineEdit = defineComponent({
     return {
       step,
       edit,
-      modalOpen,
+      modalOpen
     };
-  },
+  }
 });
 
 export default ProvideInlineEdit;

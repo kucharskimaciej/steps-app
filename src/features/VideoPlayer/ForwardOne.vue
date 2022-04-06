@@ -6,17 +6,17 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const ForwardOne = defineComponent({
   components: {
     Control,
-    PureIcon,
+    PureIcon
   },
   props: {},
-  emits: [],
+  emits: []
 });
 
 export default ForwardOne;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon class="text-2xl" type="chevron_right" />
   </Control>
 </template>

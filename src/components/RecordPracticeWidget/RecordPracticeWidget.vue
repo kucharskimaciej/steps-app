@@ -8,32 +8,32 @@ import { hasRecordedPracticeToday } from "@/lib/stepHelpers";
 const RecordPracticeWidget = defineComponent({
   components: {
     PureButton,
-    PureIcon,
+    PureIcon
   },
   props: {
     stepId: {
       type: String,
-      required: true,
+      required: true
     },
-    collectionId: String,
+    collectionId: String
   },
-  setup({ stepId, collectionId }) {
+  setup(props) {
     const store = useStore();
 
     function handleRecordPractice() {
-      dispatchRecordPractice(store, [stepId, collectionId]);
+      dispatchRecordPractice(store, [props.stepId, props.collectionId]);
     }
 
-    const step = computed(() => stepsById(store)[stepId]);
+    const step = computed(() => stepsById(store)[props.stepId]);
     const isTodayRecordedForCollection = computed(() =>
-      hasRecordedPracticeToday(step.value, collectionId)
+      hasRecordedPracticeToday(step.value, props.collectionId)
     );
 
     return {
       handleRecordPractice,
-      isTodayRecordedForCollection,
+      isTodayRecordedForCollection
     };
-  },
+  }
 });
 
 export default RecordPracticeWidget;

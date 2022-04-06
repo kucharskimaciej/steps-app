@@ -6,12 +6,11 @@ import PureButton from "@/components/PureButton/PureButton.vue";
 const SearchWidget = defineComponent({
   components: {
     PureIcon,
-    PureButton,
+    PureButton
   },
   props: {
-    searchActive: Boolean,
-  },
-  emits: [],
+    searchActive: Boolean
+  }
 });
 
 export default SearchWidget;
@@ -22,7 +21,6 @@ export default SearchWidget;
     kind="ghost"
     v-bind="$attrs"
     class="inline-flex justify-center items-center relative select-none"
-    v-on="$listeners"
   >
     <PureIcon type="search" class="text-xl mt-px mr-1 -ml-1" />
     Search

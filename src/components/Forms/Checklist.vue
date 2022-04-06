@@ -5,39 +5,37 @@ import { sortBy, without } from "lodash";
 
 const Checklist = defineComponent({
   components: {
-    PureCheckbox,
+    PureCheckbox
   },
   props: {
     value: {
       type: Array as PropType<string[]>,
-      default: () => [],
+      default: () => []
     },
     options: {
       type: Array as PropType<string[]>,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   emits: ["input"],
-  setup({ value, options }, { emit }) {
+  setup(props, { emit }) {
     function isChecked(option: string): boolean {
-      return value.includes(option);
+      return props.value.includes(option);
     }
 
     function handleChange(option: string) {
-      const updatedValue = value.includes(option)
-        ? without(value, option)
-        : sortBy([...value, option], (el) => options.indexOf(el));
-
-      console.log("updatedValue: ", updatedValue);
+      const updatedValue = props.value.includes(option)
+        ? without(props.value, option)
+        : sortBy([...props.value, option], el => props.options.indexOf(el));
 
       emit("input", updatedValue);
     }
 
     return {
       isChecked,
-      handleChange,
+      handleChange
     };
-  },
+  }
 });
 
 export default Checklist;

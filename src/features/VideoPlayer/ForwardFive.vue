@@ -6,15 +6,15 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const ForwardFive = defineComponent({
   components: {
     Control,
-    PureIcon,
-  },
+    PureIcon
+  }
 });
 
 export default ForwardFive;
 </script>
 
 <template>
-  <Control v-on="$listeners">
+  <Control v-bind="$attrs">
     <PureIcon class="text-2xl" type="arrow_forward_ios" />
   </Control>
 </template>
