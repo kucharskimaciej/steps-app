@@ -60,7 +60,7 @@ const BASE_COLORS = {
   },
 };
 
-export default {
+module.exports = {
   content: ["./src/**/*.vue"],
   theme: {
     extend: {
