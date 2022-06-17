@@ -162,7 +162,7 @@ const StepForm = defineComponent({
       ]);
     }
 
-    function isDuplicateAt(index: number): boolean {
+    function isDuplicateAt(_index: number): boolean {
       return false;
       // return Boolean(
       //     this.form?.videos?.$each && this.form?.videos?.$each[index].$error
@@ -185,10 +185,12 @@ const StepForm = defineComponent({
       }, {} as Record<string, StepDTO>);
     });
 
-    function validate() {}
-    function reset(value?: StepFormData) {
-      state.value = getDataObject(value);
-    }
+    // function validate() {
+    //   return;
+    // }
+    // function reset(value?: StepFormData) {
+    //   state.value = getDataObject(value);
+    // }
 
     return {
       stepKinds: KINDS,

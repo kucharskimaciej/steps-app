@@ -13,7 +13,7 @@ export default GlobalStyles;
 </script>
 
 <style lang="scss">
-$material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
+$material-design-icons-font-directory-path: "material-design-icons-iconfont/dist/fonts/";
 @import "../vendor/material-design-icons";
 
 html {
