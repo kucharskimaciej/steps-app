@@ -44,7 +44,7 @@
 <!--    <slot v-else />-->
 <!--  </div>-->
 <!--</template>-->
-<script>
+<script lang="ts">
 export default {};
 </script>
 <template><span></span></template>
