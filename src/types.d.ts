@@ -10,6 +10,7 @@ declare module "@vue/runtime-core" {
     $router: Router;
     $match(matcher: Matchers): boolean;
     $modalStyle: typeof MODAL_STYLE;
+    $modalTarget: string;
     $client: ClientInfo;
     $routes: typeof ROUTES;
     $filters: Record<string, any>;

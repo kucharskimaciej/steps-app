@@ -2,10 +2,12 @@
 import { defineComponent, PropType } from "vue";
 import { ModalStyleComponents } from "@/components/Modal/lib";
 import { MODAL_STYLE } from "@/lib/modals/modals";
+import Backdrop from "@/components/Modal/Backdrop.vue";
 
 const InlineModal = defineComponent({
   components: {
     ...ModalStyleComponents,
+    Backdrop,
   },
   props: {
     modalStyle: {
@@ -32,18 +34,18 @@ export default InlineModal;
 
 <template>
   <span></span>
-  <!--  <Portal to="modal">-->
-  <!--    <div class="fixed inset-0 flex">-->
-  <!--      <Backdrop @click="closeModal()" />-->
+  <Teleport :to="`#${$modalTarget}`">
+    <div class="fixed inset-0 flex">
+      <Backdrop @click="closeModal()" />
 
-  <!--      <component-->
-  <!--        :is="modalStyle"-->
-  <!--        class="z-0"-->
-  <!--        v-bind="{ modalProps }"-->
-  <!--        @close="closeModal()"-->
-  <!--      >-->
-  <!--        <slot :close="closeModal" />-->
-  <!--      </component>-->
-  <!--    </div>-->
-  <!--  </Portal>-->
+      <component
+        :is="modalStyle"
+        class="z-0"
+        v-bind="{ modalProps }"
+        @close="closeModal()"
+      >
+        <slot :close="closeModal" />
+      </component>
+    </div>
+  </Teleport>
 </template>
