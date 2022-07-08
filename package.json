@@ -29,7 +29,7 @@
     "fuse.js": "^6.4.6",
     "lodash": "^4.17.15",
     "material-design-icons-iconfont": "^5.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "portal-vue": "^2.1.7",
     "pretty-quick": "^2.0.1",
     "reflect-metadata": "^0.1.13",
