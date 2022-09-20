@@ -10,21 +10,22 @@ import { last } from "lodash";
 const StringArray = defineComponent({
   components: { FormGroup, SimpleInput, PureButton, PureIcon },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<string[]>,
       default: () => [],
     },
   },
+  emits: ["update:modelValue"],
   setup(props, ctx) {
     const items = ref<Focusable[]>([]);
 
     watch(
-      () => props.value.length,
+      () => props.modelValue.length,
       () => lastInput()?.focus()
     );
 
     async function addElement() {
-      ctx.emit("input", [...props.value, ""]);
+      ctx.emit("update:modelValue", [...props.modelValue, ""]);
     }
 
     function lastInput(): Focusable | undefined {
@@ -33,14 +34,22 @@ const StringArray = defineComponent({
 
     function removeAt(index: number) {
       ctx.emit(
-        "input",
-        props.value.filter((_, i) => i !== index)
+        "update:modelValue",
+        props.modelValue.filter((_, i) => i !== index)
+      );
+    }
+
+    function updateAt(index: number, newValue: string) {
+      ctx.emit(
+        "update:modelValue",
+        props.modelValue.map((el, i) => (index === i ? newValue : el))
       );
     }
 
     return {
       addElement,
       removeAt,
+      updateAt,
     };
   },
 });
@@ -50,8 +59,12 @@ export default StringArray;
 
 <template>
   <div>
-    <FormGroup v-for="(_, index) in value" :key="index">
-      <SimpleInput ref="items" v-model.trim="value[index]">
+    <FormGroup v-for="(_, index) in modelValue" :key="index">
+      <SimpleInput
+        ref="items"
+        :model-value="modelValue[index]"
+        @update:modelValue="updateAt(index, $event)"
+      >
         <template #after>
           <PureButton
             size="small"

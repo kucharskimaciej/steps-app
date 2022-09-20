@@ -4,10 +4,10 @@ import { computed, defineComponent, inject, ref } from "vue";
 const SimpleInput = defineComponent({
   components: {},
   props: {
-    value: String,
+    modelValue: String,
     lazy: Boolean,
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(_, { emit }) {
     const hasError = inject<boolean>("hasError", false);
     const inputElement = ref<HTMLInputElement>();
@@ -19,7 +19,7 @@ const SimpleInput = defineComponent({
     );
 
     function handleValueInput(event: InputEvent) {
-      emit("input", (event.target as HTMLInputElement).value);
+      emit("update:modelValue", (event.target as HTMLInputElement).value);
     }
 
     function focus() {
@@ -46,7 +46,7 @@ export default SimpleInput;
       ref="element"
       v-bind="$attrs"
       class="outline-none font-light bg-transparent w-full"
-      :value="value"
+      :value="modelValue"
       :class="validityClasses"
       @input="lazy ? null : handleValueInput($event)"
       @change="lazy ? handleValueInput($event) : null"

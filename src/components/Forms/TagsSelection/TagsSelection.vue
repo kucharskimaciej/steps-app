@@ -12,7 +12,7 @@ const TagsSelection = defineComponent({
     ThreeStateTag,
   },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<KeyValueTuple[]>,
       default: () => [],
     },
@@ -21,16 +21,16 @@ const TagsSelection = defineComponent({
       required: true,
     },
   },
-  emit: ["input"],
+  emit: ["update:modelValue"],
   setup(props, { emit }) {
     function getValueTuple(key: string): KeyValueTuple | undefined {
-      return props.value.find(([k]) => k === key);
+      return props.modelValue.find(([k]) => k === key);
     }
 
     function handleChange(key: string, newValue: ValueType) {
       let result: KeyValueTuple[];
       if (getValueTuple(key)) {
-        result = props.value
+        result = props.modelValue
           .map((tuple) => {
             const [k] = tuple;
 
@@ -42,10 +42,10 @@ const TagsSelection = defineComponent({
           })
           .filter(([, v]) => v !== 0);
       } else {
-        result = [...props.value, [key, newValue]];
+        result = [...props.modelValue, [key, newValue]];
       }
 
-      emit("input", result);
+      emit("update:modelValue", result);
     }
 
     function getValueOrDefault(key: string): ValueType {
@@ -70,8 +70,8 @@ export default TagsSelection;
       :key="option.key"
       class="mr-2 mt-2 inline-block"
       :tag="{ text: option.key }"
-      :value="getValueOrDefault(option.key)"
-      @input="handleChange(option.key, $event)"
+      :model-value="getValueOrDefault(option.key)"
+      @update:modelValue="handleChange(option.key, $event)"
     >
       {{ option.label }}
     </ThreeStateTag>

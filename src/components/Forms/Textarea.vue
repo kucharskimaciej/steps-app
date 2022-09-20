@@ -3,9 +3,9 @@ import { computed, defineComponent, inject } from "vue";
 
 const Textarea = defineComponent({
   props: {
-    value: String,
+    modelValue: String,
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(_, { emit }) {
     const hasError = inject<boolean>("hasError", false);
 
@@ -16,7 +16,7 @@ const Textarea = defineComponent({
     );
 
     function handleValueChange(event: InputEvent) {
-      emit("input", (event.target as HTMLInputElement).value);
+      emit("update:modelValue", (event.target as HTMLInputElement).value);
     }
 
     return {
@@ -33,7 +33,7 @@ export default Textarea;
 <template>
   <textarea
     class="w-full font-light bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
-    :value="value"
+    :value="modelValue"
     :class="validityClasses"
     @input="handleValueChange($event)"
   />

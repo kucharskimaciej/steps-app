@@ -9,20 +9,20 @@ import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
 import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
+import useVuelidate from "@vuelidate/core";
 
 const FullSearchFilters = defineComponent({
-  // mixins: [validationMixin],
-  // validations() {
-  //   return {
-  //     filters: {
-  //       query: {},
-  //       feeling: {},
-  //       includeAllTags: {},
-  //       excludeAnyTags: {},
-  //       anyArtists: {}
-  //     }
-  //   };
-  // },
+  validations() {
+    return {
+      filters: {
+        query: {},
+        feeling: {},
+        includeAllTags: {},
+        excludeAnyTags: {},
+        anyArtists: {},
+      },
+    };
+  },
   components: {
     TagsInput,
     TagsSelection,
@@ -51,6 +51,8 @@ const FullSearchFilters = defineComponent({
   },
   emits: ["input"],
   setup(props, ctx) {
+    const v$ = useVuelidate();
+
     watch(
       () => props.filters,
       (filters: SearchFilters) => ctx.emit("input", filters),
@@ -66,6 +68,7 @@ const FullSearchFilters = defineComponent({
     );
 
     return {
+      v$,
       feelingOptions,
     };
   },
@@ -76,24 +79,24 @@ export default FullSearchFilters;
 
 <template>
   <section>
-    <FormGroup :validation="$v.filters.query">
+    <FormGroup :validation="v$.filters.query">
       <SimpleInput
-        v-model.trim="$v.filters.query.$model"
+        v-model.trim="v$.filters.query.$model"
         lazy
         placeholder="Search"
       />
     </FormGroup>
 
-    <FormGroup label="Feeling" :validation="$v.filters.feeling">
+    <FormGroup label="Feeling" :validation="v$.filters.feeling">
       <TagsSelection
-        v-model="$v.filters.feeling.$model"
+        v-model="v$.filters.feeling.$model"
         :options="feelingOptions"
       />
     </FormGroup>
 
     <FormGroup label="Only include matching all tags">
       <TagsInput
-        v-model="$v.filters.includeAllTags.$model"
+        v-model="v$.filters.includeAllTags.$model"
         :autocomplete="existingTags"
         :allow-new="false"
       />
@@ -101,7 +104,7 @@ export default FullSearchFilters;
 
     <FormGroup label="Exclude matching any tags">
       <TagsInput
-        v-model="$v.filters.excludeAnyTags.$model"
+        v-model="v$.filters.excludeAnyTags.$model"
         :autocomplete="existingTags"
         :allow-new="false"
       />
@@ -109,7 +112,7 @@ export default FullSearchFilters;
 
     <FormGroup label="Artists">
       <TagsInput
-        v-model="$v.filters.anyArtists.$model"
+        v-model="v$.filters.anyArtists.$model"
         :autocomplete="existingArtists"
         :allow-new="false"
       />

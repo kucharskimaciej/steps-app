@@ -5,9 +5,9 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const PureCheckbox = defineComponent({
   components: { PureIcon },
   props: {
-    value: Boolean,
+    modelValue: Boolean,
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup() {
     const hasError = inject<boolean>("hasError", false);
     const iconClasses = computed(
@@ -31,9 +31,9 @@ export default PureCheckbox;
   >
     <input
       type="checkbox"
-      :checked="value"
+      :checked="modelValue"
       class="hidden"
-      @change="$emit('input', !value)"
+      @change="$emit('update:modelValue', !value)"
     />
     <span class="block mr-1">
       <PureIcon v-if="value" type="check_box" :class="iconClasses" />

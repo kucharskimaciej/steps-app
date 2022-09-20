@@ -18,18 +18,18 @@ const ThreeStateTag = defineComponent({
   },
   props: {
     tag: Object as PropType<Tag>,
-    value: {
+    modelValue: {
       type: Number as PropType<ValueType>,
       default: 0,
     },
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
-    const isIncluded = computed(() => props.value === 1);
-    const isExcluded = computed(() => props.value === -1);
+    const isIncluded = computed(() => props.modelValue === 1);
+    const isExcluded = computed(() => props.modelValue === -1);
 
     function handleChange() {
-      emit("input", nextState[props.value]);
+      emit("update:modelValue", nextState[props.modelValue]);
     }
 
     return {
@@ -55,8 +55,8 @@ export default ThreeStateTag;
     @click="handleChange"
   >
     <template #prepend>
-      <PureIcon v-if="value === 1" type="done" class="-ml-1" />
-      <PureIcon v-if="value === -1" type="close" class="-ml-1" />
+      <PureIcon v-if="isIncluded" type="done" class="-ml-1" />
+      <PureIcon v-if="isExcluded" type="close" class="-ml-1" />
     </template>
     <slot></slot>
   </PureTag>

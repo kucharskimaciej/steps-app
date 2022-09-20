@@ -5,9 +5,9 @@ import PureIcon from "@/components/PureIcon/PureIcon.vue";
 const Select = defineComponent({
   components: { PureIcon },
   props: {
-    value: [String, Number],
+    modelValue: [String, Number],
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(_, { emit }) {
     const hasError = inject<boolean>("hasError", false);
 
@@ -18,7 +18,7 @@ const Select = defineComponent({
     );
 
     function handleValueChange(event: InputEvent) {
-      emit("input", (event.target as HTMLInputElement).value);
+      emit("update:modelValue", (event.target as HTMLInputElement).value);
     }
 
     return {
@@ -36,7 +36,7 @@ export default Select;
   <div class="relative">
     <select
       class="relative w-full font-light appearance-none bg-gray-200 outline-none rounded px-3 py-2 border focus:bg-white focus:shadow focus:border-gray-100"
-      :value="value"
+      :value="modelValue"
       :class="validityClasses"
       @input="handleValueChange($event)"
     >

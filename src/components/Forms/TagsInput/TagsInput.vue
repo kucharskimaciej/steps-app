@@ -1,10 +1,14 @@
 <script lang="ts">
 import { computed, defineComponent, inject, PropType, ref } from "vue";
+import { VueTagsInput } from "@sipec/vue3-tags-input";
 import { Tag } from "../../../../common/types/Tag";
 
 const TagsInput = defineComponent({
+  components: {
+    VueTagsInput,
+  },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<string[]>,
       default: () => [],
     },
@@ -17,7 +21,7 @@ const TagsInput = defineComponent({
       default: () => [],
     },
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
     const hasError = inject<boolean>("hasError", false);
     const inputValue = ref<string>("");
@@ -39,7 +43,7 @@ const TagsInput = defineComponent({
 
     function handleTagsChanged(tags: Tag[]) {
       emit(
-        "input",
+        "update:modelValue",
         tags.map((t) => t.text)
       );
     }
@@ -62,7 +66,7 @@ export default TagsInput;
     v-model="inputValue"
     class="tags-input"
     :class="{ invalid: hasError }"
-    :tags="asTags(value)"
+    :tags="asTags(modelValue)"
     :autocomplete-items="asTags(filteredItems)"
     :add-only-from-autocomplete="!allowNew"
     placeholder="+ Add tag"

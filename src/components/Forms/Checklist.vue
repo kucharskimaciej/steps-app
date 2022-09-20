@@ -8,7 +8,7 @@ const Checklist = defineComponent({
     PureCheckbox,
   },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<string[]>,
       default: () => [],
     },
@@ -17,18 +17,20 @@ const Checklist = defineComponent({
       default: () => [],
     },
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
     function isChecked(option: string): boolean {
-      return props.value.includes(option);
+      return props.modelValue.includes(option);
     }
 
     function handleChange(option: string) {
-      const updatedValue = props.value.includes(option)
-        ? without(props.value, option)
-        : sortBy([...props.value, option], (el) => props.options.indexOf(el));
+      const updatedValue = props.modelValue.includes(option)
+        ? without(props.modelValue, option)
+        : sortBy([...props.modelValue, option], (el) =>
+            props.options.indexOf(el)
+          );
 
-      emit("input", updatedValue);
+      emit("update:modelValue", updatedValue);
     }
 
     return {

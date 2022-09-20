@@ -16,7 +16,7 @@ const FormGroup = defineComponent({
       () => props.invalid || !!props.validation?.$error
     );
 
-    provide("hasError", hasError);
+    provide("hasError", hasError.value);
     provide("validation", props.validation);
 
     return {
