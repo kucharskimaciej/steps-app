@@ -24,7 +24,6 @@ export class AuthService {
   authStateResolved(): Promise<firebase.User> {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged(async (user) => {
-        console.log("changed", user);
         if (!user) {
           await this.authenticate();
         } else {
@@ -35,7 +34,6 @@ export class AuthService {
   }
 
   public async authenticate() {
-    console.log("e?");
     await this.auth.signInWithPopup(authProvider);
   }
 }

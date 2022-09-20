@@ -15,12 +15,7 @@ export abstract class Resource<
   protected abstract readonly collection: CollectionRef;
   protected firestore = Container.get(FirestoreService);
 
-  constructor() {
-    console.log("firestore", this.firestore);
-  }
-
   public async query(uid: string): Promise<T[]> {
-    console.log(":aaaa", uid);
     const querySnapshot = await this.collection
       .where("owner_uid", "==", uid)
       .get();

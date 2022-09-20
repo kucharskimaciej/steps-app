@@ -79,7 +79,6 @@ const VideoPlayer = defineComponent({
 
     const videoElementRef = ref<HTMLVideoElement>();
 
-    console.log(ctx.attrs);
     const videoEventListeners = computed(() => pick(ctx.attrs, mediaEvents));
     const isSlow = computed(() => speed.value < 1);
     const snapshotUrl = computed(

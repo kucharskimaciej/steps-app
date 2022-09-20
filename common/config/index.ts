@@ -19,5 +19,4 @@ if (!config) {
   throw new Error("Config not found!");
 }
 
-console.log(config);
 DIContainer.set(AppConfigToken, config);
