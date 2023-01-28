@@ -19,18 +19,20 @@ const VideoInput = defineComponent({
     PureIcon,
   },
   props: {
-    value: {
+    modelValue: {
       type: Array as PropType<VideoObject[]>,
       default: () => [],
     },
   },
-  emit: ["input"],
+  emit: ["update:modelValue"],
   setup(props, { emit }) {
     const fileIdentity = Container.get(FileIdentityService);
     const videoUpload = Container.get(VideoUploaderToken);
 
     const originalFilenames = reactive<Record<string, string>>({});
     const validation = inject<Validation | null>("validation", null);
+
+    console.log("validation", validation);
 
     function triggerValidation() {
       if (validation) {
@@ -39,11 +41,11 @@ const VideoInput = defineComponent({
     }
 
     function fileAlreadySelected(hash: string) {
-      return props.value.some((video) => video.hash === hash);
+      return props.modelValue.some((video) => video.hash === hash);
     }
 
     function handleVideoRemoved(video: VideoObject): void {
-      emit("input", without(props.value, video));
+      emit("update:modelValue", without(props.modelValue, video));
       triggerValidation();
     }
 
@@ -61,7 +63,7 @@ const VideoInput = defineComponent({
       }
       const url = await videoUpload.upload(file, hash);
 
-      emit("input", [...props.value, { hash, url }]);
+      emit("update:modelValue", [...props.modelValue, { hash, url }]);
       triggerValidation();
     }
 
@@ -89,11 +91,11 @@ export default VideoInput;
     </header>
 
     <section
-      v-for="(video, index) in value"
+      v-for="(video, index) in modelValue"
       :key="video.hash"
       class="border-t"
       :class="{
-        'text-red-lighter': validation.$each[index].$error,
+        'text-red-lighter': validation.$each.$response.$errors[index].length,
       }"
     >
       <Video

@@ -1,8 +1,10 @@
 import { Service } from "typedi";
 import { firebase, UploadTask } from "@/lib/firebase/firebase";
+import { FileStorage } from "@/lib/fileStorage.interface";
+import { StorageServiceToken } from "@/lib/tokens";
 
-@Service()
-export class StorageService {
+@Service(StorageServiceToken)
+export class StorageService implements FileStorage {
   private readonly storage = firebase.storage();
 
   upload(path: string, file: File): UploadTask {

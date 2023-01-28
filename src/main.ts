@@ -16,6 +16,8 @@ import ClientPlugin from "@/plugins/client";
 import MatchMediaPlugin from "@/plugins/matchMedia";
 import RoutesPlugin from "@/plugins/routes";
 import ModalsPlugin from "@/plugins/modals";
+import "@/lib/stepsByHashDuplicateLocator";
+import "@/lib/videoUpload.service";
 
 const store = provideStore();
 const app = createApp(App, {

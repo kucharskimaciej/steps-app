@@ -48,8 +48,8 @@ export default Checklist;
     <PureCheckbox
       v-for="option of options"
       :key="option"
-      :value="isChecked(option)"
-      @input="() => handleChange(option)"
+      :model-value="isChecked(option)"
+      @update:model-value="() => handleChange(option)"
     >
       <slot :option="option" />
     </PureCheckbox>

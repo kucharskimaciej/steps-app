@@ -33,10 +33,10 @@ export default PureCheckbox;
       type="checkbox"
       :checked="modelValue"
       class="hidden"
-      @change="$emit('update:modelValue', !value)"
+      @change="$emit('update:modelValue', !modelValue)"
     />
     <span class="block mr-1">
-      <PureIcon v-if="value" type="check_box" :class="iconClasses" />
+      <PureIcon v-if="modelValue" type="check_box" :class="iconClasses" />
       <PureIcon v-else type="check_box_outline_blank" :class="iconClasses" />
     </span>
     <slot />

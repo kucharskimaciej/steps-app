@@ -23,36 +23,10 @@ import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { AppConfigToken } from "../../../../common/tokens";
 import { Ref } from "@vue/reactivity";
 import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
-
-function getDataObject(step: Partial<StepDTO> = {}): StepFormData {
-  const {
-    videos = [],
-    name = "",
-    difficulty = 1,
-    feeling = [],
-    kind = "step",
-    tags = [],
-    artists = [],
-    notes = "",
-    smart_tags = [],
-    removed_smart_tags = [],
-    tokens = [],
-  } = step;
-
-  return {
-    videos,
-    name,
-    difficulty,
-    feeling,
-    kind,
-    tags,
-    artists,
-    notes,
-    smart_tags,
-    removed_smart_tags,
-    tokens,
-  };
-}
+import {
+  getDataObject,
+  stepFormValidationRules,
+} from "@/features/CreateEditStep/StepForm/formHelpers";
 
 const StepForm = defineComponent({
   components: {
@@ -78,43 +52,8 @@ const StepForm = defineComponent({
     const smartTags = Container.get(SmartTags);
     const tokenizer = Container.get(TokenizeService);
 
-    const state: Ref<StepFormData> = ref<StepFormData>(
-      getDataObject(props.step)
-    );
-    const rules = {
-      videos: {
-        required,
-        minLength: minLength(1),
-        $each: {
-          required,
-          duplicate: duplicate(duplicateLocator, props.step && props.step.id),
-        },
-      },
-      name: {
-        required,
-      },
-      difficulty: {
-        required,
-        oneOf: oneOf(Object.keys(appConfig.difficulties).map(Number)),
-      },
-      kind: {
-        required,
-        oneOf: oneOf(Object.keys(KINDS)),
-      },
-      feeling: {
-        required,
-        minLength: minLength(1),
-      },
-      artists: {},
-      tags: {
-        minLength: minLength(1),
-      },
-      notes: {},
-      smart_tags: {},
-      removed_smart_tags: {},
-      tokens: {},
-    };
-
+    const state = ref<StepFormData>(getDataObject(props.step));
+    const rules = stepFormValidationRules(props.step);
     const $v = useVuelidate(rules, state);
 
     watch(
@@ -162,11 +101,11 @@ const StepForm = defineComponent({
       ]);
     }
 
-    function isDuplicateAt(_index: number): boolean {
-      return false;
-      // return Boolean(
-      //     this.form?.videos?.$each && this.form?.videos?.$each[index].$error
-      // );
+    function isDuplicateAt(index: number): boolean {
+      return Boolean(
+        $v.value.videos?.$each &&
+          $v.value.videos?.$each.$response.$errors[index].duplicate?.length
+      );
     }
 
     const duplicateSteps = computed(() => {
@@ -200,7 +139,7 @@ const StepForm = defineComponent({
       handleSmartTagRemove,
       duplicateSteps,
       value: state,
-      $v,
+      form: $v,
     };
   },
 });
@@ -211,11 +150,11 @@ export default StepForm;
 <template>
   <form novalidate @submit.prevent>
     <main>
-      <FormGroup :validation="$v.videos" label="Videos">
-        <VideoInput v-model="$v.videos.$model">
+      <FormGroup :validation="form.videos" label="Videos">
+        <VideoInput v-model="form.videos.$model">
           <template
             v-for="(duplicateStep, index) in duplicateSteps"
-            :slot="`helper-${index}`"
+            v-slot:[`helper-${index}`]
             :key="index"
           >
             <span class="text-red-lighter">
@@ -225,14 +164,14 @@ export default StepForm;
         </VideoInput>
       </FormGroup>
 
-      <FormGroup label="Name" :validation="$v.name">
-        <SimpleInput v-model.lazy="$v.name.$model" />
+      <FormGroup label="Name" :validation="form.name">
+        <SimpleInput v-model.lazy="form.name.$model" />
       </FormGroup>
 
       <section class="flex">
         <div class="w-1/2 pr-3">
-          <FormGroup label="Kind" :validation="$v.kind">
-            <Select v-model.number="$v.kind.$model">
+          <FormGroup label="Kind" :validation="form.kind">
+            <Select v-model.number="form.kind.$model">
               <option
                 v-for="(label, value) in stepKinds"
                 :key="value"
@@ -243,8 +182,8 @@ export default StepForm;
             </Select>
           </FormGroup>
 
-          <FormGroup label="Difficulty" :validation="$v.difficulty">
-            <Select v-model.number="$v.difficulty.$model">
+          <FormGroup label="Difficulty" :validation="form.difficulty">
+            <Select v-model.number="form.difficulty.$model">
               <option
                 v-for="(label, value) in stepDifficulties"
                 :key="value"
@@ -256,16 +195,20 @@ export default StepForm;
           </FormGroup>
           <FormGroup label="Artists">
             <TagsInput
-              v-model="$v.artists.$model"
+              v-model="form.artists.$model"
               :autocomplete="existingArtists"
             />
           </FormGroup>
         </div>
 
-        <FormGroup class="w-1/2 pl-3" label="Feeling" :validation="$v.feeling">
+        <FormGroup
+          class="w-1/2 pl-3"
+          label="Feeling"
+          :validation="form.feeling"
+        >
           <Checklist
             #default="{ option }"
-            v-model="$v.feeling.$model"
+            v-model="form.feeling.$model"
             :options="feelingValues"
           >
             {{ feelingLabel(option) }}
@@ -273,18 +216,18 @@ export default StepForm;
         </FormGroup>
       </section>
 
-      <FormGroup label="Tags" :validation="$v.tags">
-        <TagsInput v-model="$v.tags.$model" :autocomplete="existingTags" />
+      <FormGroup label="Tags" :validation="form.tags">
+        <TagsInput v-model="form.tags.$model" :autocomplete="existingTags" />
       </FormGroup>
 
       <section class="flex">
         <FormGroup
           class="w-1/2 pr-3"
           label="Smart tags"
-          :validation="$v.smart_tags"
+          :validation="form.smart_tags"
         >
           <TagsInput
-            :value="$v.smart_tags.$model"
+            :value="form.smart_tags.$model"
             :allow-new="false"
             @input="handleSmartTagRemove($event)"
           />
@@ -292,14 +235,17 @@ export default StepForm;
         <FormGroup
           class="w-1/2 pl-3"
           label="Removed smart tags"
-          :validation="$v.removed_smart_tags"
+          :validation="form.removed_smart_tags"
         >
-          <TagsInput :value="$v.removed_smart_tags.$model" :allow-new="false" />
+          <TagsInput
+            :value="form.removed_smart_tags.$model"
+            :allow-new="false"
+          />
         </FormGroup>
       </section>
 
-      <FormGroup label="Notes" :validation="$v.notes">
-        <Textarea v-model="$v.notes.$model" />
+      <FormGroup label="Notes" :validation="form.notes">
+        <Textarea v-model="form.notes.$model" />
       </FormGroup>
     </main>
   </form>

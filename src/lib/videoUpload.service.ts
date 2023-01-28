@@ -2,11 +2,11 @@ import { Inject, Service } from "typedi";
 import { StorageService } from "@/lib/firebase/storage.service";
 import { provideStore } from "@/store";
 import { Uploader } from "@/lib/uploader.interface";
-import { VideoUploaderToken } from "@/lib/tokens";
+import { StorageServiceToken, VideoUploaderToken } from "@/lib/tokens";
 
 @Service(VideoUploaderToken)
 export class VideoUploadService implements Uploader {
-  @Inject()
+  @Inject(StorageServiceToken)
   private readonly storage!: StorageService;
 
   async upload(file: File, hash: string): Promise<string> {
@@ -18,6 +18,8 @@ export class VideoUploadService implements Uploader {
       this.getVideoUploadPath(hash),
       file
     );
+
+    console.log(await snapshot.ref.getDownloadURL());
 
     return snapshot.ref.getDownloadURL();
   }
