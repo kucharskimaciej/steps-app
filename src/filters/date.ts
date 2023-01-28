@@ -1,5 +1,4 @@
-import moment from "moment";
-import { format as formatDate } from "date-fns";
+import { format as formatDate, formatDistanceToNow } from "date-fns";
 
 export function DateFilter(value: string | number, format = "dd MMM"): string {
   if (!value) {
@@ -19,7 +18,7 @@ export function FullDateFilter(value: string | number): string {
 
 export function SmartDateFilter(value: string | number): string {
   if (value) {
-    return moment.utc(value).fromNow();
+    return formatDistanceToNow(new Date(value), { addSuffix: true });
   } else {
     return "";
   }
