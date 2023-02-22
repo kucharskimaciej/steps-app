@@ -33,7 +33,7 @@ export default PublicStep;
   <StepProvider :step-id="stepId">
     <template #default>
       <Container>
-        <ReadonlyStep :step="step" />
+        <ReadonlyStep :step="step" v-if="step" />
       </Container>
     </template>
 

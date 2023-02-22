@@ -36,6 +36,7 @@ export const currentStep = {
       commitUpdateStatus(context, "pending");
       const stepsResource = Container.get(StepsResource);
       const result = await stepsResource.fetch(stepId);
+      console.log("actions.fetch", result);
       commitSetStep(context, result);
       commitUpdateStatus(context, "dirty");
     },

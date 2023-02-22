@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, onActivated } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import { dispatchFetchCurrentStep, useStore } from "@/store";
 
 const StepProvider = defineComponent({
@@ -19,7 +19,7 @@ const StepProvider = defineComponent({
       return dispatchFetchCurrentStep(store, props.stepId);
     }
 
-    onActivated(loadStep);
+    onMounted(loadStep);
 
     return {
       loading,
