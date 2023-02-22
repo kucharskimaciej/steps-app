@@ -11,17 +11,16 @@ import type { StepDTO } from "../../../../common/types/Step";
 import { Container } from "typedi";
 import { SmartTags } from "../../../../common/lib/smartTags/smartTags.service";
 import { TokenizeService } from "@/lib/tokenize.service";
-import { StepFormData } from "@/features/CreateEditStep/StepForm/types";
+import {
+  StepFormApi,
+  StepFormData,
+} from "@/features/CreateEditStep/StepForm/types";
 import { KINDS } from "../../../../common/constants";
 import { Feeling } from "../../../../common/types/Step";
 import useVuelidate from "@vuelidate/core";
 import { debounce, difference, head, uniq } from "lodash";
-import { duplicate } from "@/lib/validators/duplicate";
-import { oneOf } from "@/lib/validators/oneOf";
-import { minLength, required } from "@vuelidate/validators";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { AppConfigToken } from "../../../../common/tokens";
-import { Ref } from "@vue/reactivity";
 import { StepDuplicateLocator } from "@/lib/duplicateLocator.interface";
 import {
   getDataObject,
@@ -76,12 +75,14 @@ const StepForm = defineComponent({
     watch(
       () => $v.value.name.$model,
       debounce((name: string) => {
-        state.value.smart_tags = difference(
-          smartTags.getSmartTags(name),
-          state.value.removed_smart_tags
-        );
-
-        state.value.tokens = tokenizer.tokenize(name);
+        state.value = {
+          ...state.value,
+          smart_tags: difference(
+            smartTags.getSmartTags(name),
+            state.value.removed_smart_tags
+          ),
+          tokens: tokenizer.tokenize(name),
+        };
       }, 200)
     );
 
@@ -95,10 +96,13 @@ const StepForm = defineComponent({
         return;
       }
 
-      state.value.removed_smart_tags = uniq([
-        ...state.value.removed_smart_tags,
-        removedTag,
-      ]);
+      state.value = {
+        ...state.value,
+        removed_smart_tags: uniq([
+          ...state.value.removed_smart_tags,
+          removedTag,
+        ]),
+      };
     }
 
     function isDuplicateAt(index: number): boolean {
@@ -124,12 +128,18 @@ const StepForm = defineComponent({
       }, {} as Record<string, StepDTO>);
     });
 
-    // function validate() {
-    //   return;
-    // }
-    // function reset(value?: StepFormData) {
-    //   state.value = getDataObject(value);
-    // }
+    function validate() {
+      return $v.value.$validate();
+    }
+    function reset(value?: StepFormData) {
+      state.value = getDataObject(value);
+    }
+
+    ctx.expose({
+      value: state.value,
+      reset,
+      validate,
+    } as StepFormApi);
 
     return {
       stepKinds: KINDS,
@@ -227,9 +237,9 @@ export default StepForm;
           :validation="form.smart_tags"
         >
           <TagsInput
-            :value="form.smart_tags.$model"
+            :model-value="form.smart_tags.$model"
             :allow-new="false"
-            @input="handleSmartTagRemove($event)"
+            @update:model-value="handleSmartTagRemove($event)"
           />
         </FormGroup>
         <FormGroup
@@ -238,7 +248,7 @@ export default StepForm;
           :validation="form.removed_smart_tags"
         >
           <TagsInput
-            :value="form.removed_smart_tags.$model"
+            :model-value="form.removed_smart_tags.$model"
             :allow-new="false"
           />
         </FormGroup>

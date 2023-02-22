@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -59,7 +59,7 @@ const CreateStep = defineComponent({
     const stepsByScore = computed(() => {
       const scoringResults = store.state.steps.rawSteps.reduce((acc, step) => {
         acc[step.id] = form.value?.value
-          ? getStepScore(step, form.value?.value)
+          ? getStepScore(step, form.value.value)
           : 0;
         return acc;
       }, {} as Record<string, number>);
@@ -89,8 +89,10 @@ const CreateStep = defineComponent({
 
     async function submitAndRedirect() {
       try {
-        await saveStep();
-        await router.push({ name: ROUTES.STEP_LIST });
+        if (await form.value?.validate()) {
+          await saveStep();
+          await router.push({ name: ROUTES.STEP_LIST });
+        }
       } catch (err) {
         console.error(err);
       }
@@ -98,9 +100,9 @@ const CreateStep = defineComponent({
 
     async function submitAndClear() {
       try {
-        if (form.value?.validate()) {
+        if (form.value?.value && (await form.value?.validate())) {
           await saveStep();
-          reset(getPersistentValue(this.form.value));
+          reset(getPersistentValue(form.value.value));
         }
       } catch (err) {
         console.error(err);
@@ -141,6 +143,7 @@ const CreateStep = defineComponent({
       toggleVariationSelected,
       isPartOfSelectedVariation,
       saveStep,
+      form,
     };
   },
 });
