@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import WideWithSidebarRight from "@/components/Layout/WideWithSidebarRight.vue";
 import StepForm from "@/features/CreateEditStep/StepForm/StepForm.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -72,14 +72,20 @@ const CreateStep = defineComponent({
         return;
       }
 
-      await dispatchCreateStep(store, {
-        params: {
-          ...form.value.value,
-          owner_uid: store.state.auth.uid,
-          identifier: nextIdentifier(store),
-        },
-        selectedVariations: selectedVariations.value,
+      console.log("create step #saveStep", {
+        ...form.value.value,
+        owner_uid: store.state.auth.uid,
+        identifier: nextIdentifier(store),
       });
+
+      // await dispatchCreateStep(store, {
+      //   params: {
+      //     ...form.value.value,
+      //     owner_uid: store.state.auth.uid,
+      //     identifier: nextIdentifier(store),
+      //   },
+      //   selectedVariations: selectedVariations.value,
+      // });
     }
 
     function reset(value?: Partial<StepFormData>) {
@@ -91,7 +97,7 @@ const CreateStep = defineComponent({
       try {
         if (await form.value?.validate()) {
           await saveStep();
-          await router.push({ name: ROUTES.STEP_LIST });
+          // await router.push({ name: ROUTES.STEP_LIST });
         }
       } catch (err) {
         console.error(err);

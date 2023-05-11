@@ -1,11 +1,11 @@
 <script lang="ts">
 import { computed, defineComponent, inject, PropType } from "vue";
-import type { Validation } from "@vuelidate/core";
+import type { BaseValidation } from "@vuelidate/core";
 
 const ValidationHint = defineComponent({
   components: {},
   props: {
-    validation: Object as PropType<Validation>,
+    validation: Object as PropType<BaseValidation>,
   },
   setup(props) {
     const hasError = inject<boolean>("hasError", false);
@@ -37,7 +37,7 @@ export default ValidationHint;
     <span v-if="isRequired">*</span>
 
     <span
-      v-if="validation.$anyError"
+      v-if="validation?.$error"
       class="ml-2 text-2xs uppercase tracking-wider font-medium"
     >
       <span v-if="customError('required')"> Required </span>

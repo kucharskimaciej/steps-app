@@ -4,5 +4,9 @@ export function duplicate<ElementType, KeyType>(
   locator: DuplicateLocator<ElementType, KeyType>,
   ignoreId?: string
 ) {
-  return (value: KeyType) => !locator.isDuplicate(value, ignoreId);
+  console.log("validator instanced");
+  return (value: KeyType) => {
+    console.log("validator runs");
+    return !locator.isDuplicate(value, ignoreId);
+  };
 }

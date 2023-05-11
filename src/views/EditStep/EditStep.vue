@@ -76,7 +76,9 @@ const EditStep = defineComponent({
     );
 
     async function saveStep() {
-      if (step.value && form.value && form.value?.validate()) {
+      console.log("saving step", step.value);
+      if (step.value && form.value && (await form.value.validate())) {
+        console.log(form.value?.value);
         await dispatchUpdateStep(store, {
           stepId: step.value.id,
           params: form.value.value,
@@ -128,6 +130,7 @@ const EditStep = defineComponent({
       toggleVariationSelected,
       isPartOfSelectedVariation,
       saveStep,
+      form,
     };
   },
 });

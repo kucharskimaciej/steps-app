@@ -2,14 +2,14 @@
 import { computed, defineComponent, provide } from "vue";
 import type { PropType } from "vue";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
-import type { Validation } from "@vuelidate/core";
+import { BaseValidation } from "@vuelidate/core";
 
 const FormGroup = defineComponent({
   components: { ValidationHint },
   props: {
     label: String,
     invalid: Boolean,
-    validation: Object as PropType<Validation>,
+    validation: Object as PropType<BaseValidation>,
   },
   setup(props) {
     const hasError = computed(

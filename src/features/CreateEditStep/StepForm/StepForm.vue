@@ -106,6 +106,10 @@ const StepForm = defineComponent({
     }
 
     function isDuplicateAt(index: number): boolean {
+      console.log(
+        JSON.stringify($v.value.videos?.$each.$response.$errors, null, 2)
+      );
+
       return Boolean(
         $v.value.videos?.$each &&
           $v.value.videos?.$each.$response.$errors[index].duplicate?.length

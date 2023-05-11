@@ -32,8 +32,6 @@ const VideoInput = defineComponent({
     const originalFilenames = reactive<Record<string, string>>({});
     const validation = inject<Validation | null>("validation", null);
 
-    console.log("validation", validation);
-
     function triggerValidation() {
       if (validation) {
         validation.$touch();
