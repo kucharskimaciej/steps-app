@@ -23,5 +23,5 @@ export type PersistentFormData = Pick<
 export interface StepFormApi {
   reset(value?: Partial<StepFormData>): void;
   validate(): Promise<boolean>;
-  value: StepFormData;
+  getValue(): StepFormData;
 }

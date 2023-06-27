@@ -22,6 +22,11 @@ export function stepFormValidationRules(step?: StepDTO) {
       minLength: minLength(1),
       $each: helpers.forEach({
         required,
+        alwaysFails: () => {
+          console.log("alwaysFails");
+
+          return false;
+        },
         duplicate: duplicate(duplicateLocator, step && step.id),
       }),
     },

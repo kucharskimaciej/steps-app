@@ -73,14 +73,14 @@ const CreateStep = defineComponent({
       }
 
       console.log("create step #saveStep", {
-        ...form.value.value,
+        ...form.value?.getValue(),
         owner_uid: store.state.auth.uid,
         identifier: nextIdentifier(store),
       });
 
       // await dispatchCreateStep(store, {
       //   params: {
-      //     ...form.value.value,
+      //     ...form.value?.getValue(),
       //     owner_uid: store.state.auth.uid,
       //     identifier: nextIdentifier(store),
       //   },
@@ -106,9 +106,9 @@ const CreateStep = defineComponent({
 
     async function submitAndClear() {
       try {
-        if (form.value?.value && (await form.value?.validate())) {
+        if (form.value?.getValue() && (await form.value?.validate())) {
           await saveStep();
-          reset(getPersistentValue(form.value.value));
+          reset(getPersistentValue(form.value?.getValue()));
         }
       } catch (err) {
         console.error(err);

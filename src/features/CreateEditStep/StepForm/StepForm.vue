@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from "vue";
+import { computed, defineComponent, PropType, reactive, ref, watch } from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
 import Select from "@/components/Forms/Select.vue";
@@ -17,7 +17,7 @@ import {
 } from "@/features/CreateEditStep/StepForm/types";
 import { KINDS } from "../../../../common/constants";
 import { Feeling } from "../../../../common/types/Step";
-import useVuelidate from "@vuelidate/core";
+import { useVuelidate } from "@vuelidate/core";
 import { debounce, difference, head, uniq } from "lodash";
 import { StepsDuplicateLocatorToken } from "@/lib/tokens";
 import { AppConfigToken } from "../../../../common/tokens";
@@ -51,15 +51,19 @@ const StepForm = defineComponent({
     const smartTags = Container.get(SmartTags);
     const tokenizer = Container.get(TokenizeService);
 
-    const state = ref<StepFormData>(getDataObject(props.step));
-    const rules = stepFormValidationRules(props.step);
+    const state = reactive<{ data: StepFormData }>({
+      data: getDataObject(props.step),
+    });
+    const rules = computed(() => ({
+      data: stepFormValidationRules(props.step),
+    }));
     const $v = useVuelidate(rules, state);
 
     watch(
       () => props.step,
       (newStep) => {
         if (newStep) {
-          state.value = getDataObject(props.step);
+          state.data = getDataObject(props.step);
         }
       }
     );
@@ -73,13 +77,13 @@ const StepForm = defineComponent({
     );
 
     watch(
-      () => $v.value.name.$model,
+      () => $v.value.data.name.$model,
       debounce((name: string) => {
-        state.value = {
-          ...state.value,
+        state.data = {
+          ...state.data,
           smart_tags: difference(
             smartTags.getSmartTags(name),
-            state.value.removed_smart_tags
+            state.data.removed_smart_tags
           ),
           tokens: tokenizer.tokenize(name),
         };
@@ -91,33 +95,35 @@ const StepForm = defineComponent({
     }
 
     function handleSmartTagRemove(newValue: string[]) {
-      const removedTag = head(difference(state.value.smart_tags, newValue));
+      const removedTag = head(difference(state.data.smart_tags, newValue));
       if (!removedTag) {
         return;
       }
 
-      state.value = {
-        ...state.value,
+      state.data = {
+        ...state.data,
         removed_smart_tags: uniq([
-          ...state.value.removed_smart_tags,
+          ...state.data.removed_smart_tags,
           removedTag,
         ]),
       };
     }
 
     function isDuplicateAt(index: number): boolean {
+      console.log(JSON.stringify($v.value.data.videos, null, 2));
+
       console.log(
-        JSON.stringify($v.value.videos?.$each.$response.$errors, null, 2)
+        JSON.stringify($v.value.data.videos?.$each.$response.$errors, null, 2)
       );
 
       return Boolean(
-        $v.value.videos?.$each &&
-          $v.value.videos?.$each.$response.$errors[index].duplicate?.length
+        $v.value.data.videos?.$each &&
+          $v.value.data.videos?.$each.$response.$errors[index].duplicate?.length
       );
     }
 
     const duplicateSteps = computed(() => {
-      return state.value.videos.reduce((acc, element, index) => {
+      return state.data.videos.reduce((acc, element, index) => {
         if (isDuplicateAt(index)) {
           const duplicateStep = duplicateLocator.getDuplicate(
             element,
@@ -136,11 +142,13 @@ const StepForm = defineComponent({
       return $v.value.$validate();
     }
     function reset(value?: StepFormData) {
-      state.value = getDataObject(value);
+      state.data = getDataObject(value);
     }
 
     ctx.expose({
-      value: state.value,
+      getValue(): StepFormData {
+        return state.data;
+      },
       reset,
       validate,
     } as StepFormApi);
@@ -164,8 +172,8 @@ export default StepForm;
 <template>
   <form novalidate @submit.prevent>
     <main>
-      <FormGroup :validation="form.videos" label="Videos">
-        <VideoInput v-model="form.videos.$model">
+      <FormGroup :validation="form.data.videos" label="Videos">
+        <VideoInput v-model="form.data.videos.$model">
           <template
             v-for="(duplicateStep, index) in duplicateSteps"
             v-slot:[`helper-${index}`]
@@ -178,14 +186,14 @@ export default StepForm;
         </VideoInput>
       </FormGroup>
 
-      <FormGroup label="Name" :validation="form.name">
-        <SimpleInput v-model.lazy="form.name.$model" />
+      <FormGroup label="Name" :validation="form.data.name">
+        <SimpleInput v-model.lazy="form.data.name.$model" />
       </FormGroup>
 
       <section class="flex">
         <div class="w-1/2 pr-3">
-          <FormGroup label="Kind" :validation="form.kind">
-            <Select v-model.number="form.kind.$model">
+          <FormGroup label="Kind" :validation="form.data.kind">
+            <Select v-model.number="form.data.kind.$model">
               <option
                 v-for="(label, value) in stepKinds"
                 :key="value"
@@ -196,8 +204,8 @@ export default StepForm;
             </Select>
           </FormGroup>
 
-          <FormGroup label="Difficulty" :validation="form.difficulty">
-            <Select v-model.number="form.difficulty.$model">
+          <FormGroup label="Difficulty" :validation="form.data.difficulty">
+            <Select v-model.number="form.data.difficulty.$model">
               <option
                 v-for="(label, value) in stepDifficulties"
                 :key="value"
@@ -209,7 +217,7 @@ export default StepForm;
           </FormGroup>
           <FormGroup label="Artists">
             <TagsInput
-              v-model="form.artists.$model"
+              v-model="form.data.artists.$model"
               :autocomplete="existingArtists"
             />
           </FormGroup>
@@ -218,11 +226,11 @@ export default StepForm;
         <FormGroup
           class="w-1/2 pl-3"
           label="Feeling"
-          :validation="form.feeling"
+          :validation="form.data.feeling"
         >
           <Checklist
             #default="{ option }"
-            v-model="form.feeling.$model"
+            v-model="form.data.feeling.$model"
             :options="feelingValues"
           >
             {{ feelingLabel(option) }}
@@ -230,18 +238,21 @@ export default StepForm;
         </FormGroup>
       </section>
 
-      <FormGroup label="Tags" :validation="form.tags">
-        <TagsInput v-model="form.tags.$model" :autocomplete="existingTags" />
+      <FormGroup label="Tags" :validation="form.data.tags">
+        <TagsInput
+          v-model="form.data.tags.$model"
+          :autocomplete="existingTags"
+        />
       </FormGroup>
 
       <section class="flex">
         <FormGroup
           class="w-1/2 pr-3"
           label="Smart tags"
-          :validation="form.smart_tags"
+          :validation="form.data.smart_tags"
         >
           <TagsInput
-            :model-value="form.smart_tags.$model"
+            :model-value="form.data.smart_tags.$model"
             :allow-new="false"
             @update:model-value="handleSmartTagRemove($event)"
           />
@@ -249,17 +260,17 @@ export default StepForm;
         <FormGroup
           class="w-1/2 pl-3"
           label="Removed smart tags"
-          :validation="form.removed_smart_tags"
+          :validation="form.data.removed_smart_tags"
         >
           <TagsInput
-            :model-value="form.removed_smart_tags.$model"
+            :model-value="form.data.removed_smart_tags.$model"
             :allow-new="false"
           />
         </FormGroup>
       </section>
 
-      <FormGroup label="Notes" :validation="form.notes">
-        <Textarea v-model="form.notes.$model" />
+      <FormGroup label="Notes" :validation="form.data.notes">
+        <Textarea v-model="form.data.notes.$model" />
       </FormGroup>
     </main>
   </form>
