@@ -84,10 +84,10 @@ const InlineStepEdit = defineComponent({
         return;
       }
 
-      if (form.value.validate()) {
+      if (await form.value?.validate()) {
         await dispatchUpdateStep(store, {
           stepId: props.step.id,
-          params: form.value.value,
+          params: form.value?.getValue() ?? {},
           selectedVariations: selectedVariations.value,
         });
 
@@ -125,14 +125,13 @@ export default InlineStepEdit;
         :step="step"
         :existing-tags="existingTags"
         :existing-artists="existingArtists"
-        @input="form.value = $event"
       />
 
       <template #sidebar>
         <ProvideScoring
           v-if="form"
           :exclude="[step.id]"
-          :data-for-scoring="form.value"
+          :data-for-scoring="form.getValue()"
           class="h-full overflow-y-auto mr-4"
         >
           <template #default="{ stepIdsByScore, results }">

@@ -16,6 +16,8 @@ import ClientPlugin from "@/plugins/client";
 import MatchMediaPlugin from "@/plugins/matchMedia";
 import RoutesPlugin from "@/plugins/routes";
 import ModalsPlugin from "@/plugins/modals";
+
+// register services that are only available via token
 import "@/lib/stepsByHashDuplicateLocator";
 import "@/lib/videoUpload.service";
 import "@/lib/firebase/storage.service";
