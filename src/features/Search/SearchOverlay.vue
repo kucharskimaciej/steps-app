@@ -38,7 +38,7 @@ export default SearchOverlay;
       :value="search"
       :existing-artists="artists"
       :existing-tags="tags"
-      @search="$emit('search-change')"
+      @search="$emit('search-change', $event)"
     />
     <footer class="flex justify-center">
       <PureButton kind="outline" class="mr-2" @click="$emit('clear-search')">

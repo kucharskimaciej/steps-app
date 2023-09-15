@@ -60,6 +60,7 @@ const FeedView = defineComponent({
     }
 
     function handleSearchChange(search: Search) {
+      console.log("before dispatch of serach change", search);
       dispatchSearch(store, search);
       onSearchChange();
     }

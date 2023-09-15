@@ -1,28 +1,24 @@
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, PropType, watch } from "vue";
+import {
+  computed,
+  ComputedRef,
+  defineComponent,
+  PropType,
+  reactive,
+  watch,
+} from "vue";
 import FormGroup from "@/components/Forms/FormGroup.vue";
 import { SearchFilters } from "@/features/Search/types";
 import { AppConfigToken } from "../../../common/tokens";
 import { Container } from "typedi";
-import { entries } from "lodash";
+import { debounce, entries } from "lodash";
 import { OptionWithLabel } from "@/components/Forms/TagsSelection/types";
 import TagsInput from "@/components/Forms/TagsInput/TagsInput.vue";
 import TagsSelection from "@/components/Forms/TagsSelection/TagsSelection.vue";
 import SimpleInput from "@/components/Forms/SimpleInput.vue";
-import useVuelidate from "@vuelidate/core";
+import { useForm } from "vee-validate";
 
 const FullSearchFilters = defineComponent({
-  validations() {
-    return {
-      filters: {
-        query: {},
-        feeling: {},
-        includeAllTags: {},
-        excludeAnyTags: {},
-        anyArtists: {},
-      },
-    };
-  },
   components: {
     TagsInput,
     TagsSelection,
@@ -51,13 +47,13 @@ const FullSearchFilters = defineComponent({
   },
   emits: ["input"],
   setup(props, ctx) {
-    const v$ = useVuelidate();
+    const state = reactive<{ data: SearchFilters }>({
+      data: props.filters,
+    });
 
-    watch(
-      () => props.filters,
-      (filters: SearchFilters) => ctx.emit("input", filters),
-      { deep: true }
-    );
+    const form = useForm<SearchFilters>({
+      initialValues: state.data,
+    });
 
     const appConfig = Container.get(AppConfigToken);
     const feelingOptions: ComputedRef<OptionWithLabel[]> = computed(() =>
@@ -67,8 +63,21 @@ const FullSearchFilters = defineComponent({
       }))
     );
 
+    watch(
+      form.values,
+      debounce((value) => {
+        ctx.emit("input", value);
+      }, 50),
+      { immediate: true, deep: true }
+    );
+
     return {
-      v$,
+      form,
+      query: form.defineComponentBinds("query"),
+      feeling: form.defineComponentBinds("feeling"),
+      includeAllTags: form.defineComponentBinds("includeAllTags"),
+      excludeAnyTags: form.defineComponentBinds("excludeAnyTags"),
+      anyArtists: form.defineComponentBinds("anyArtists"),
       feelingOptions,
     };
   },
@@ -79,40 +88,33 @@ export default FullSearchFilters;
 
 <template>
   <section>
-    <FormGroup :validation="v$.filters.query">
-      <SimpleInput
-        v-model.trim="v$.filters.query.$model"
-        lazy
-        placeholder="Search"
-      />
+    <FormGroup name="query">
+      <SimpleInput v-bind="query" lazy placeholder="Search" />
     </FormGroup>
 
-    <FormGroup label="Feeling" :validation="v$.filters.feeling">
-      <TagsSelection
-        v-model="v$.filters.feeling.$model"
-        :options="feelingOptions"
-      />
+    <FormGroup label="Feeling" name="feeling">
+      <TagsSelection v-bind="feeling" :options="feelingOptions" />
     </FormGroup>
 
-    <FormGroup label="Only include matching all tags">
+    <FormGroup name="includeAllTags" label="Only include matching all tags">
       <TagsInput
-        v-model="v$.filters.includeAllTags.$model"
+        v-bind="includeAllTags"
         :autocomplete="existingTags"
         :allow-new="false"
       />
     </FormGroup>
 
-    <FormGroup label="Exclude matching any tags">
+    <FormGroup name="excludeAnyTags" label="Exclude matching any tags">
       <TagsInput
-        v-model="v$.filters.excludeAnyTags.$model"
+        v-bind="excludeAnyTags"
         :autocomplete="existingTags"
         :allow-new="false"
       />
     </FormGroup>
 
-    <FormGroup label="Artists">
+    <FormGroup name="artists" label="Artists">
       <TagsInput
-        v-model="v$.filters.anyArtists.$model"
+        v-bind="anyArtists"
         :autocomplete="existingArtists"
         :allow-new="false"
       />

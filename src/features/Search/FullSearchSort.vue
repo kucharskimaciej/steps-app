@@ -9,7 +9,8 @@ import {
   SortType,
   sortTypeLabels,
 } from "@/features/Search/types";
-import useVuelidate, { ValidationArgs } from "@vuelidate/core";
+import { useForm } from "vee-validate";
+import { debounce } from "lodash";
 
 const FullSearchSort = defineComponent({
   components: {
@@ -27,23 +28,26 @@ const FullSearchSort = defineComponent({
   },
   emits: ["input"],
   setup(props, ctx) {
-    const rules: ValidationArgs<{ sort: SearchSort }> = {
-      sort: {
-        type: {},
-        direction: {},
-      },
-    };
+    const state = reactive<{ data: SearchSort }>({
+      data: props.sort,
+    });
+
+    const form = useForm<SearchSort>({
+      initialValues: state.data,
+    });
 
     watch(
-      () => props.sort,
-      (newSearch: SearchSort) => ctx.emit("input", newSearch),
-      { deep: true }
+      form.values,
+      debounce((value) => {
+        ctx.emit("input", value);
+      }, 50),
+      { immediate: true, deep: true }
     );
 
-    const v$ = useVuelidate(rules, { sort: props.sort });
-
     return {
-      v$,
+      form,
+      type: form.defineComponentBinds("type"),
+      direction: form.defineComponentBinds("direction"),
       sortDirections: sortDirectionLabels,
       sortTypes: sortTypeLabels,
     };
@@ -55,12 +59,8 @@ export default FullSearchSort;
 
 <template>
   <section class="desktop:flex">
-    <FormGroup
-      label="Sort by"
-      :validation="v$.sort.type"
-      class="desktop:w-1/2 desktop:pr-3"
-    >
-      <Select v-model.lazy.trim="v$.sort.type.$model">
+    <FormGroup label="Sort by" name="type" class="desktop:w-1/2 desktop:pr-3">
+      <Select v-bind="type">
         <option v-for="(label, value) in sortTypes" :key="value" :value="value">
           {{ label }}
         </option>
@@ -69,10 +69,10 @@ export default FullSearchSort;
 
     <FormGroup
       label="Direction"
-      :validation="v$.sort.direction"
+      name="direction"
       class="desktop:w-1/2 desktop:pl-3"
     >
-      <Select v-model.lazy.trim="v$.sort.direction.$model">
+      <Select v-bind="direction">
         <option
           v-for="(label, value) in sortDirections"
           :key="value"

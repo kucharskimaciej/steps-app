@@ -18,7 +18,7 @@ const SimpleInput = defineComponent({
         : "border-gray-200 text-base"
     );
 
-    function handleValueInput(event: InputEvent) {
+    function handleValueInput(event: Event) {
       emit("update:modelValue", (event.target as HTMLInputElement).value);
     }
 

@@ -1,8 +1,6 @@
 <script lang="ts">
 import { computed, defineComponent, provide } from "vue";
-import type { PropType } from "vue";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
-import { BaseValidation } from "@vuelidate/core";
 import { useField } from "vee-validate";
 
 const FormGroup = defineComponent({
@@ -20,8 +18,6 @@ const FormGroup = defineComponent({
     const hasError = computed(
       () => props.invalid || (field.meta.touched && !field.meta.valid)
     );
-
-    console.log(field, field.errors);
 
     provide("hasError", hasError.value);
 
