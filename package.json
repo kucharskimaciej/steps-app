@@ -21,8 +21,6 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@sipec/vue3-tags-input": "^3.0.4",
     "@vee-validate/zod": "^4.10.2",
-    "@vuelidate/core": "^2.0.0-alpha.44",
-    "@vuelidate/validators": "^2.0.0-alpha.31",
     "add": "^2.0.6",
     "colors": "^1.4.0",
     "commander": "^4.1.1",

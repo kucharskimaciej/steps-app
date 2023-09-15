@@ -20,7 +20,7 @@ export default TheTopBarContainer;
 </script>
 
 <template>
-  <TheTopBar @openNavigation="toggleNavigation()">
+  <TheTopBar @openNavigation="toggleNavigation?.()">
     <template #left>
       <slot name="left" />
     </template>
