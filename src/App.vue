@@ -23,7 +23,7 @@ const App = defineComponent({
     onMounted(() => firebaseAuth.setup());
 
     firebaseAuth.onAuthStateChange((user) => {
-      dispatchHandleAuthStateChange(store, user?.uid || "");
+      dispatchHandleAuthStateChange(store, user?.uid ?? "");
     });
 
     const navigationOpen = ref(false);
@@ -37,7 +37,7 @@ const App = defineComponent({
       toggleNavigation,
     });
 
-    router.beforeEach((to, from, next) => {
+    router.beforeEach((_to, _from, next) => {
       navigationOpen.value = false;
       next();
     });
