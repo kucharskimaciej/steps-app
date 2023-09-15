@@ -3,26 +3,31 @@ import { computed, defineComponent, provide } from "vue";
 import type { PropType } from "vue";
 import ValidationHint from "@/components/Forms/ValidationHint.vue";
 import { BaseValidation } from "@vuelidate/core";
+import { useField } from "vee-validate";
 
 const FormGroup = defineComponent({
   components: { ValidationHint },
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     label: String,
     invalid: Boolean,
-    validation: Object as PropType<BaseValidation>,
   },
   setup(props) {
+    const field = useField(() => props.name);
     const hasError = computed(
-      () => props.invalid || !!props.validation?.$error
+      () => props.invalid || (field.meta.touched && !field.meta.valid)
     );
 
-    console.log(props.label, props.validation);
+    console.log(field, field.errors);
 
     provide("hasError", hasError.value);
-    provide("validation", props.validation);
 
     return {
       hasError,
+      field,
     };
   },
 });
@@ -40,7 +45,7 @@ export default FormGroup;
   >
     <label class="block ml-3 mb-1 text-sm font-bold">
       {{ label }}
-      <ValidationHint v-if="label && validation" :validation="validation" />
+      <ValidationHint v-if="label" :field="field" />
     </label>
     <main class="mb-1">
       <slot />

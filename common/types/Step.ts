@@ -3,10 +3,12 @@ import { DatabaseItem } from "./common/DatabaseItem";
 import { VideoObject } from "./VideoObject";
 import { Owned } from "./common/Owned";
 import { PracticeRecord } from "./PracticeRecord";
+import z from "zod";
 
 export type StepDifficulty = 1 | 2 | 3 | 5 | 8;
 export type Feeling = string;
-export type StepKind = "step" | "routine" | "inspiration";
+export const StepKind = z.enum(["step", "inspiration", "routine"]);
+export type StepKind = z.infer<typeof StepKind>;
 
 interface CommonFields extends DatabaseItem, Owned {
   identifier: number; // internal, auto-incremented identifier assigned per user

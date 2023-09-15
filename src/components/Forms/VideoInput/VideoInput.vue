@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, inject, PropType, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import FileInput from "@/components/Forms/FileInput.vue";
 import Video from "@/components/Forms/VideoInput/Video.vue";
 import PureButton from "@/components/PureButton/PureButton.vue";
@@ -8,8 +8,7 @@ import type { VideoObject } from "../../../../common/types/VideoObject";
 import { Container } from "typedi";
 import { FileIdentityService } from "@/lib/fileIdentity.service";
 import { VideoUploaderToken } from "@/lib/tokens";
-import type { Validation } from "@vuelidate/core";
-import { without } from "lodash";
+import { useField, useFieldArray } from "vee-validate";
 
 const VideoInput = defineComponent({
   components: {
@@ -18,32 +17,27 @@ const VideoInput = defineComponent({
     PureButton,
     PureIcon,
   },
-  props: {
-    modelValue: {
-      type: Array as PropType<VideoObject[]>,
-      default: () => [],
-    },
-  },
-  emit: ["update:modelValue"],
-  setup(props, { emit }) {
+  setup() {
+    const videos = useFieldArray<VideoObject>("videos");
+    const field = useField("videos");
+
     const fileIdentity = Container.get(FileIdentityService);
     const videoUpload = Container.get(VideoUploaderToken);
 
     const originalFilenames = reactive<Record<string, string>>({});
-    const validation = inject<Validation | null>("validation", null);
 
     function triggerValidation() {
-      if (validation) {
-        validation.$touch();
-      }
+      field.setTouched(true);
     }
 
     function fileAlreadySelected(hash: string) {
-      return props.modelValue.some((video) => video.hash === hash);
+      return videos.fields.value.some(
+        (videoRef) => videoRef.value.hash === hash
+      );
     }
 
-    function handleVideoRemoved(video: VideoObject): void {
-      emit("update:modelValue", without(props.modelValue, video));
+    function handleVideoRemoved(index: number): void {
+      videos.remove(index);
       triggerValidation();
     }
 
@@ -61,14 +55,15 @@ const VideoInput = defineComponent({
       }
       const url = await videoUpload.upload(file, hash);
 
-      emit("update:modelValue", [...props.modelValue, { hash, url }]);
+      videos.push({ hash, url });
+
       triggerValidation();
     }
 
     return {
+      videos,
       handleVideoRemoved,
       onFileSelected,
-      validation,
       originalFilenames,
     };
   },
@@ -89,18 +84,15 @@ export default VideoInput;
     </header>
 
     <section
-      v-for="(video, index) in modelValue"
-      :key="video.hash"
+      v-for="(video, index) in videos.fields.value"
+      :key="video.value.hash"
       class="border-t"
-      :class="{
-        'text-red-lighter': validation.$each.$response.$errors[index].length,
-      }"
     >
       <Video
-        :title="video.hash"
-        :filename="originalFilenames[video.hash]"
-        :url="video.url"
-        @remove="handleVideoRemoved(video)"
+        :title="video.value.hash"
+        :filename="originalFilenames[video.value.hash]"
+        :url="video.value.url"
+        @remove="handleVideoRemoved(index)"
       />
       <slot :name="`helper-${index}`" />
     </section>

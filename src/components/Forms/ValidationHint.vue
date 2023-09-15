@@ -1,30 +1,29 @@
 <script lang="ts">
-import { computed, defineComponent, inject, PropType } from "vue";
-import type { BaseValidation } from "@vuelidate/core";
+import { computed, defineComponent, PropType } from "vue";
+import { FieldContext } from "vee-validate";
 
 const ValidationHint = defineComponent({
   components: {},
   props: {
-    validation: Object as PropType<BaseValidation>,
+    field: {
+      type: Object as PropType<FieldContext>,
+      required: true,
+    },
   },
   setup(props) {
-    const hasError = inject<boolean>("hasError", false);
-    const isRequired = computed(() =>
-      Boolean(props.validation && "required" in props.validation)
+    const hasError = computed(
+      () =>
+        (props.field.meta.touched || props.field.meta.dirty) &&
+        !props.field.meta.valid
     );
 
     function customError(validator: string): boolean {
-      return Boolean(
-        props.validation &&
-          validator in props.validation &&
-          !(props.validation as any)[validator]
-      );
+      return props.field.errors.value.includes(validator);
     }
 
     return {
       hasError,
       customError,
-      isRequired,
     };
   },
 });
@@ -34,16 +33,14 @@ export default ValidationHint;
 
 <template>
   <aside class="inline ml-1">
-    <span v-if="isRequired">*</span>
+    <!--    <span v-if="isRequired">*</span>-->
 
     <span
-      v-if="validation?.$error"
+      v-if="hasError"
       class="ml-2 text-2xs uppercase tracking-wider font-medium"
     >
       <span v-if="customError('required')"> Required </span>
-
       <span v-else-if="customError('duplicate')"> Duplicate </span>
-
       <span v-else> Invalid </span>
     </span>
   </aside>

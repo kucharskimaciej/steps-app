@@ -13,4 +13,4 @@ export const KINDS: ReadonlyRecord<StepKind, string> = {
   step: "Step",
   inspiration: "Inspiration",
   routine: "Routine",
-};
+} as const;
