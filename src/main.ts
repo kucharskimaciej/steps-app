@@ -18,6 +18,7 @@ import RoutesPlugin from "@/plugins/routes";
 import ModalsPlugin from "@/plugins/modals";
 import "@/lib/stepsByHashDuplicateLocator";
 import "@/lib/videoUpload.service";
+import "@/lib/firebase/storage.service";
 
 const store = provideStore();
 const app = createApp(App, {
