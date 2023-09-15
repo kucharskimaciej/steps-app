@@ -55,8 +55,8 @@ export default ThreeStateTag;
     @click="handleChange"
   >
     <template #prepend>
-      <PureIcon v-if="isIncluded" type="done" class="-ml-1" />
-      <PureIcon v-if="isExcluded" type="close" class="-ml-1" />
+      <PureIcon v-if="isIncluded" type="done" class="-ml-1 mr-1" />
+      <PureIcon v-if="isExcluded" type="close" class="-ml-1 mr-1" />
     </template>
     <slot></slot>
   </PureTag>
