@@ -24,6 +24,10 @@ export function useStepValidator(step?: StepDTO) {
     kind: StepKind,
     feeling: z.array(z.string().nonempty()).min(1),
     tags: z.array(z.string().nonempty()),
+    smart_tags: z.array(z.string().nonempty()).optional(),
+    artists: z.array(z.string().nonempty()).optional(),
+    removed_smart_tags: z.array(z.string().nonempty()).optional(),
+    notes: z.string().optional(),
     videos: z
       .array(
         VideoObjectValidator.refine(

@@ -22,7 +22,10 @@ const StepActions = defineComponent({
     ProvideInlineEdit,
   },
   props: {
-    step: Object as PropType<Step>,
+    step: {
+      type: Object as PropType<Step>,
+      required: true,
+    },
   },
 });
 

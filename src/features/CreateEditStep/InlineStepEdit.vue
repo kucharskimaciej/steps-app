@@ -52,7 +52,6 @@ const InlineStepEdit = defineComponent({
     const stepsById = computed(() => getStepsById(store));
     const existingArtists = computed(() => getExistingArtists(store));
     const existingTags = computed(() => getExistingTags(store));
-
     function isPartOfSelectedVariation(stepId: string) {
       const stepToCheck = stepsById.value[stepId];
 

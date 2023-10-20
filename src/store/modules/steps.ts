@@ -59,13 +59,15 @@ export const steps = {
       return keyBy(getSteps(provideStore()), "id");
     },
     existingArtists(state: StepsState) {
-      return uniq(state.rawSteps.map((step) => step.artists).flat());
+      return uniq(state.rawSteps.map((step) => step.artists).flat()).filter(
+        Boolean
+      );
     },
     existingTags(state: StepsState): string[] {
       return uniq([
         ...state.rawSteps.map((step) => step.tags).flat(),
         ...state.rawSteps.map((step) => step.smart_tags).flat(),
-      ]);
+      ]).filter(Boolean);
     },
     stepsByPracticeDate(): Record<number, Step[]> {
       return getSteps(provideStore()).reduce(($, step) => {

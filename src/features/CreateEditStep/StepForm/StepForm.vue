@@ -166,6 +166,7 @@ export default StepForm;
 
 <template>
   <form novalidate @submit.prevent>
+    <pre>{{ form.values }}</pre>
     <main>
       <FormGroup name="videos" label="Videos">
         <VideoInput>
